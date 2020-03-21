@@ -48,6 +48,14 @@ public class Tile {
     public boolean getDome()    {
         return this.dome;
     }
+
+    public Constructor getActualConstuctor() {
+        return actualConstuctor;
+    }
+
+    public void setActualConstuctor(Constructor c) {
+        this.actualConstuctor = c;
+    }
 }
 
 

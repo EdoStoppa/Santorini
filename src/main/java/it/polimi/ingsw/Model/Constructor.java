@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model;
 
-// ----- quando committo ricordo di dire che ho cambiato anche constructor ------
-
 public class Constructor {
 
     private boolean canMove;
@@ -12,6 +10,8 @@ public class Constructor {
     public Constructor(int playerNumber){
         this.canMove = true;
         this.playerNumber = playerNumber;
+        this.posConstructor = new Position(-1, -1);
+        this.prevPosConstructor = new Position(-1, -1);
     }
 
 
@@ -42,4 +42,6 @@ public class Constructor {
     public void setPrevPos(Position old){
         this.prevPosConstructor = old;
     }
+
+
 }
