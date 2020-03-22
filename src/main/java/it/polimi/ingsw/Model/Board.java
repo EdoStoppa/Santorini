@@ -14,8 +14,8 @@ public class Board {
     public ArrayList<Position> possibleMoveset(Constructor CurrentConstructor)
     { ArrayList<Position>moves= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
-      int curX=currentPos.getX();
-      int curY=currentPos.getY();
+      int curX=currentPos.getRow();
+      int curY=currentPos.getCol();
       for(int i=curX-1;i<=curX+1;i++) {
           for(int j=curY-1;j<=curY+1;j++) {
                 if((i>=0 && i<=4) && (j>=0 && j<=4) && (i!=curX && j!=curY) &&
@@ -29,8 +29,8 @@ public class Board {
     public ArrayList<Position> possibleBuild(Constructor CurrentConstructor)
     { ArrayList<Position>build= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
-        int curX=currentPos.getX();
-        int curY=currentPos.getY();
+        int curX=currentPos.getRow();
+        int curY=currentPos.getCol();
         for(int i=curX-1;i<=curX+1;i++) {
             for (int j = curY - 1; j <= curY + 1; j++) {
                 if ((i >= 0 && i <= 4) && (j >= 0 && j <= 4) && (i != curX && j != curY) && !tiles[i][j].getDome() && tiles[i][j].getOccupied()) {
@@ -66,13 +66,12 @@ public class Board {
         public  void  pushConstructor (Constructor constructorPushed,int x,int y)
         {Position prev;
         prev=constructorPushed.getPos().clone();
-        int pushX=prev.getX()+x;
-        int pushY=prev.getY()+y;
-        prev.setX(pushX);
-        prev.setY(pushY);
+        int pushX=prev.getRow()+x;
+        int pushY=prev.getCol()+y;
+        prev.setRow(pushX);
+        prev.setCol(pushY);
         constructorPushed.setPos(prev);
-
-            
+        
         }
 
 

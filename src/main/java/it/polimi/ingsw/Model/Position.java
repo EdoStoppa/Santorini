@@ -1,32 +1,32 @@
 package it.polimi.ingsw.Model;
 
 public class Position {
-    private int x;
-    private int y;
+    private int row;
+    private int col;
 
-    public Position(int x, int y){
-        this.x = x;
-        this.y = y;
+    public Position(int row, int col){
+        this.row = row;
+        this.col = col;
     }
 
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setCol(int col) {
+        this.col = col;
     }
 
     public Position clone(){
-        return new Position(this.x, this.y);
+        return new Position(this.row, this.col);
     }
 }
