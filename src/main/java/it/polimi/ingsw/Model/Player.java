@@ -20,20 +20,6 @@ public class Player {
         this.god = null;
     }
 
-    public void move(Constructor c, Tile t){
-
-        c.setPrevPos(c.getPos().clone());
-        c.setPos(t.getPos().clone());
-
-        t.setOccupied(true);
-        t.setActualConstuctor(c);
-
-    }
-
-    public void build(Tile t){
-        t.setConstructionLevel();
-    }
-
     public ArrayList<Constructor> getAllConstructors(){
         return this.ownConstructors;
     }
