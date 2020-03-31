@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-public class Position {
+public class Position implements Cloneable{
     private int row;
     private int col;
 
@@ -26,7 +26,13 @@ public class Position {
         this.col = col;
     }
 
+    @Override
     public Position clone(){
         return new Position(this.row, this.col);
+    }
+
+    public String toString(){
+        String s = row + "," + col;
+        return s;
     }
 }
