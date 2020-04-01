@@ -5,8 +5,8 @@ package it.polimi.ingsw.Model;
  */
 
 public class Position implements Cloneable{
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     /**Creates a Position given the row and column
      *
@@ -23,16 +23,8 @@ public class Position implements Cloneable{
         return row;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
     public int getCol() {
         return col;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
     }
 
     @Override

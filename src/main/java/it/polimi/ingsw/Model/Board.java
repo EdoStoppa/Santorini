@@ -11,23 +11,23 @@ public class Board {
 
 
     //not complete
-    public ArrayList<Position> possibleMoveset(Constructor CurrentConstructor)
-    { ArrayList<Position>moves= new ArrayList<>();
+    public ArrayList<Position> possibleMoveset(Constructor CurrentConstructor){
+        ArrayList<Position>moves= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
-      int curX=currentPos.getRow();
-      int curY=currentPos.getCol();
-      for(int i=curX-1;i<=curX+1;i++) {
-          for(int j=curY-1;j<=curY+1;j++) {
-                if((i>=0 && i<=4) && (j>=0 && j<=4) && (i!=curX && j!=curY) &&
-                        (tiles[curX][curY].getConstructionLevel()+1<=tiles[i][j].getConstructionLevel()       )) {
+        int curX=currentPos.getRow();
+        int curY=currentPos.getCol();
+        for(int i=curX-1;i<=curX+1;i++) {
+            for(int j=curY-1;j<=curY+1;j++) {
+                if((i>=0 && i<=4) && (j>=0 && j<=4) && (i!=curX && j!=curY) && (tiles[curX][curY].getConstructionLevel()+1<=tiles[i][j].getConstructionLevel())) {
                     moves.add(new Position(i, j));
                 }
+             }
          }
-         }
-    return moves; }
+        return moves;
+    }
 
-    public ArrayList<Position> possibleBuild(Constructor CurrentConstructor)
-    { ArrayList<Position>build= new ArrayList<>();
+    public ArrayList<Position> possibleBuild(Constructor CurrentConstructor){
+        ArrayList<Position>build= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
         int curX=currentPos.getRow();
         int curY=currentPos.getCol();
@@ -40,42 +40,35 @@ public class Board {
         }
         return build;}
 
-        public void placeContructor(Tile pos,Constructor currentCon)
-        {currentCon.setPos(pos.getPos());
-        }
+    public void placeContructor(Tile pos,Constructor currentCon) {
+        currentCon.setPos(pos.getPos());
+    }
 
-        public void placeBuilding(Tile current){
+    public void placeBuilding(Tile current){
         current.setConstructionLevel();
-        }
+    }
 
-        public void setCanGoUp(boolean current){
+    public void setCanGoUp(boolean current){
         this.canGoUp=current;
-        }
+    }
 
-        public boolean getCanGoUp(){
+    public boolean getCanGoUp(){
         return canGoUp;
-        }
+    }
 
-        public void swapConstructors ( Constructor player1,Constructor player2){
+    public void swapConstructors ( Constructor player1,Constructor player2){
         Position temp;
         temp=player1.getPos().clone();
-        player1.setPos(player2.getPos());
+        player1.setPos(player2.getPos().clone());
         player2.setPos(temp);
-        }
+    }
 
-        public  void  pushConstructor (Constructor constructorPushed,int x,int y)
-        {Position prev;
+    public void pushConstructor (Constructor constructorPushed, int x, int y){
+        Position prev;
         prev=constructorPushed.getPos().clone();
         int pushX=prev.getRow()+x;
         int pushY=prev.getCol()+y;
-        prev.setRow(pushX);
-        prev.setCol(pushY);
-        constructorPushed.setPos(prev);
-        
-        }
-
-
-
-
-
+        constructorPushed.setPos(new Position(pushX, pushY));
     }
+
+}
