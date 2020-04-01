@@ -5,25 +5,25 @@ import it.polimi.ingsw.Model.PossiblePhases;
 import java.util.ArrayList;
 
 /**
- * Represents the god card: Apollo
+ * Represents the god card: Artemis
  */
-public class Apollo extends God {
-
+public class Artemis extends God {
     /**
-     * It creates the card Apollo, set all the specific data (as godName. godSubtitle and powerDescription)
+     * It creates the card Artemis, set all the specific data (as godName. godSubtitle and powerDescription)
      * the correct sequence of phases and in the end assign he correct GodController
      */
-    public Apollo(){
-        this.godName = "Apollo";
-        this.godSubtitle = "God of Music";
-        this.powerDescription = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
+    public Artemis(){
+        this.godName = "Artemis";
+        this.godSubtitle = "Goddess of the Hunt";
+        this.powerDescription = "Your Move: Your Worker may move one additional time, but not back to its initial space.";
 
         this.phasesList = new ArrayList<PossiblePhases>();
         this.phasesList.add(PossiblePhases.CHOOSE_CONSTRUCTOR);
+        this.phasesList.add(PossiblePhases.MOVE);
         this.phasesList.add(PossiblePhases.SPECIAL_MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
         this.phasesList.add(PossiblePhases.END_TURN);
 
-        this.godController = new ApolloController();
+        this.godController = new ArtemisController();
     }
 }
