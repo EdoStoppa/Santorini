@@ -45,7 +45,7 @@ public class Board {
     }
 
     public void placeBuilding(Tile current){
-        current.setConstructionLevel();
+        current.increaseConstructionLevel();
     }
 
     public void setCanGoUp(boolean current){

@@ -19,7 +19,7 @@ public class Constructor {
     private Position prevPosConstructor;
 
 
-    /**Creates a Constructor in a "dummy" position (-1,-1) that obviously do not
+    /**Creates a Constructor in a "dummy" position (-1,-1) that obviously does not
      * exist on the board, but during the start phase of the game will be changed to
      * a real Position
      *
