@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.God;
 
+import it.polimi.ingsw.Controller.GodController.ArtemisController;
 import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.ArrayList;
