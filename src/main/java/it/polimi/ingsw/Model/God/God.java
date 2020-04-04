@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.God;
 
-import it.polimi.ingsw.Controller.GodController;
+import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.ArrayList;

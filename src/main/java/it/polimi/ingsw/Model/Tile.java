@@ -9,7 +9,7 @@ public class Tile {
     private boolean occupied;
     private int constructionLevel;
     private boolean dome;
-    private Constructor actualConstuctor;
+    private Constructor actualConstructor;
 
     /**
      * Creates a <em>Tile</em>, using a default value for every attribute, except for position, which is set to the value
@@ -22,7 +22,7 @@ public class Tile {
         this.occupied = false;
         this.constructionLevel = 0;
         this.dome = false;
-        this.actualConstuctor = null;
+        this.actualConstructor = null;
     }
 
     public Position getPos()    {
@@ -70,11 +70,11 @@ public class Tile {
     }
 
     public Constructor getActualConstuctor() {
-        return actualConstuctor;
+        return actualConstructor;
     }
 
     public void setActualConstuctor(Constructor c) {
-        this.actualConstuctor = c;
+        this.actualConstructor = c;
     }
 }
 

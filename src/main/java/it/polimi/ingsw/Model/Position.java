@@ -33,7 +33,6 @@ public class Position implements Cloneable{
     }
 
     public String toString(){
-        String s = row + "," + col;
-        return s;
+        return (row + "," + col);
     }
 }
