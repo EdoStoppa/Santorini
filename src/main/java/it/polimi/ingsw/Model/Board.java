@@ -71,4 +71,6 @@ public class Board {
         constructorPushed.setPos(new Position(pushX, pushY));
     }
 
+    public Tile getTile(Position pos)   {}
+
 }
