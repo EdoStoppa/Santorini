@@ -13,9 +13,10 @@ public class Model extends Observable<GameMessage> {
     public Model(){}
 
     public void nextPhase(){
-        boolean hasNextPhase = gameState.nextPhase();
-
-        if(!hasNextPhase){
+        try{
+            this.gameState.nextPhase();
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
             this.gameState.nextTurn();
         }
     }

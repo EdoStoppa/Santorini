@@ -47,14 +47,15 @@ public class GameState {
      *
      * @return boolean used to know if the change of phase ended correctly or there's the need of a new turn
      */
-    public boolean nextPhase(){
-        if(this.currentPhase == PossiblePhases.END_TURN){
-            return false;
+    public void nextPhase() throws IndexOutOfBoundsException{
+        God g = this.currentPlayer.getGod();
+        List<PossiblePhases> phasesList = g.getPhasesList();
+        int index = phasesList.indexOf(this.currentPhase);
+
+        if(index == phasesList.size() -1){
+            throw new IndexOutOfBoundsException("No more phases, required new turn");
         } else {
-            God g = this.currentPlayer.getGod();
-            List<PossiblePhases> phasesList = g.getPhasesList();
-            this.currentPhase = phasesList.get(phasesList.indexOf(this.currentPhase)+1);
-            return true;
+            this.currentPhase = phasesList.get(index +1);
         }
     }
 
