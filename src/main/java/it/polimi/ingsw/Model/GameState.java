@@ -84,6 +84,9 @@ public class GameState {
     }
 
     public void removePlayer(Player p){
+        if(p == getCurrentPlayer()){
+            this.currentPlayer = nextPlayer();
+        }
         this.playerList.remove(p);
     }
 

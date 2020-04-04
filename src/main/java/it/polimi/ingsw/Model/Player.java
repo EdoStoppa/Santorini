@@ -50,4 +50,16 @@ public class Player {
     public void setGod(God g) {
         this.god = g;
     }
+
+    public String getIdPlayer(){
+        return idPlayer;
+    }
+
+    public String getPlayerBirthday(){
+        return playerBirthday;
+    }
+
+    public int getPlayerNumber(){
+        return playerNumber;
+    }
 }
