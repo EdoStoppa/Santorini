@@ -6,14 +6,14 @@ public class Tile {
     private boolean occupied;
     private int constructionLevel;
     private boolean dome;
-    private Constructor actualConstuctor;
+    private Constructor actualConstructor;
 
     public Tile(Position pos)   {
         this.position = pos;
         this.occupied = false;
         this.constructionLevel = 0;
         this.dome = false;
-        this.actualConstuctor = null;
+        this.actualConstructor = null;
     }
 
     public Position getPos()    {
@@ -50,11 +50,11 @@ public class Tile {
     }
 
     public Constructor getActualConstuctor() {
-        return actualConstuctor;
+        return actualConstructor;
     }
 
     public void setActualConstuctor(Constructor c) {
-        this.actualConstuctor = c;
+        this.actualConstructor = c;
     }
 }
 
