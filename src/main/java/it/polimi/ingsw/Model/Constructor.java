@@ -54,7 +54,7 @@ public class Constructor {
     }
 
     public Position getPrevPos(){
-        return this.posConstructor;
+        return this.prevPosConstructor;
     }
 
     public void setPrevPos(Position old){

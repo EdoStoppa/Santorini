@@ -68,11 +68,12 @@ public class Board {
      * @param currentCon is the constructor to move
      */
     public void placeConstructor(Tile pos, Constructor currentCon)
-    {   currentCon.setPrevPos(currentCon.getPos());
-        currentCon.setPos(pos.getPos());
-        if (currentCon.getPrevPos().getRow()!=-1)
+    {   currentCon.setPrevPos(currentCon.getPos().clone());
+        currentCon.setPos(pos.getPos().clone());
         getTile(currentCon.getPrevPos()).setOccupied(false);
         getTile(currentCon.getPos()).setOccupied(true);
+        pos.setActualConstuctor(currentCon);
+        getTile(currentCon.getPrevPos()).setActualConstuctor(null);
     }
 
     /**
@@ -97,24 +98,28 @@ public class Board {
      * @param player2 opponent's constructor
      */
     public void swapConstructors ( Constructor player1,Constructor player2){
-        Position temp;
-        temp=player1.getPos().clone();
-        player1.setPos(player2.getPos().clone());
-        player2.setPos(temp);
+        Position temp = player1.getPos().clone();
+        player1.setPrevPos(player1.getPos().clone());
+player1.setPos(player2.getPos().clone());
+player2.setPos(temp);
+player2.setPrevPos(player1.getPos().clone());
+getTile(player2.getPos()).setActualConstuctor(player2);
+getTile(player1.getPos()).setActualConstuctor(player1);
+
     }
 
     /**
      * implement Minotaur's special power
      * @param constructorPushed
-     * @param row
-     * @param col
+     * @param minotaur
      */
-    public void pushConstructor (Constructor constructorPushed, int row, int col){
-        Position prev;
-        prev=constructorPushed.getPos().clone();
-        int pushRow=prev.getRow()+row;
-        int pushCol=prev.getCol()+col;
-        constructorPushed.setPos(new Position(pushRow, pushCol));
+    public void pushConstructor (Constructor constructorPushed, Constructor minotaur){
+        placeConstructor(getTile(constructorPushed.getPos()),minotaur);
+        int pushRow=(minotaur.getPos().getRow())-(minotaur.getPrevPos().getRow())+constructorPushed.getPos().getRow();
+        int colnew= minotaur.getPos().getCol();
+        int colold= minotaur.getPrevPos().getCol();
+        int pushCol=(minotaur.getPos().getCol())-(minotaur.getPrevPos().getCol())+constructorPushed.getPos().getCol();
+        placeConstructor(getTile(new Position(pushRow,pushCol)),constructorPushed);
     }
 
     public Tile getTile(Position pos)   {
