@@ -15,6 +15,7 @@ public class Tile {
      * Creates a <em>Tile</em>, using a default value for every attribute, except for position, which is set to the value
      * we use as a parameter. The attribute position is Final type because once created, it can not be changed, as
      * it is not allowed to change position of any cell of the <em>Board</em>.
+     *
      * @param pos the actual position of the <em>Tile</em> in the <em>Board</em>;
      */
     public Tile(Position pos)   {
@@ -41,6 +42,7 @@ public class Tile {
      * Increase the constructionLevel value by 1. If the current value of constructionLevel is 3 and the
      * attribute dome is false, the method set dome to true. On the other hand, if constructionLevel is 3, but
      * dome is true, the method throws an exception, because the <em>Tile</em> is already complete.
+     *
      * @exception IllegalArgumentException if the construction on the <em>Tile</em> is already complete.
      */
     public void increaseConstructionLevel()  throws IllegalArgumentException {
@@ -51,10 +53,8 @@ public class Tile {
             setDome(true);
         }
         else    {
-            IllegalArgumentException e = new IllegalArgumentException("Error, max construction's capacity reached");
-            System.out.println(e);
+           throw new IllegalArgumentException("Error, max construction's capacity reached");
         }
-
     }
 
     public int getConstructionLevel()   {
