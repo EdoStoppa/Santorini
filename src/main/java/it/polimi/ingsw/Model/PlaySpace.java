@@ -44,7 +44,7 @@ public class PlaySpace {
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
                 Position pos = new Position(i, j);
-                if(board.getTile(pos).getOccupied())    {
+                if(board.getTile(pos).getActualConstuctor() != null)    {
                     matrix[i][j] = board.getTile(pos).getActualConstuctor().getPlayerNumber();
                 }
                 else    {
