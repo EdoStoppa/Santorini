@@ -46,14 +46,17 @@ public class Tile {
      * @exception IllegalArgumentException if the construction on the <em>Tile</em> is already complete.
      */
     public void increaseConstructionLevel()  throws IllegalArgumentException {
-        if(getConstructionLevel() < 3)  {
-            this.constructionLevel = this.constructionLevel + 1;
-        }
-        else if(getConstructionLevel() == 3 && !getDome())   {
-            setDome(true);
+        if(getDome())   {
+            throw new IllegalArgumentException("Error, max construction's capacity reached");
         }
         else    {
-           throw new IllegalArgumentException("Error, max construction's capacity reached");
+            if(getConstructionLevel() < 3)  {
+                this.constructionLevel = this.constructionLevel + 1;
+            }
+            else if(getConstructionLevel() == 3 && !getDome())   {
+                setDome(true);
+            }
+
         }
     }
 
