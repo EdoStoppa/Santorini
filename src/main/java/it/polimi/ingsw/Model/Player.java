@@ -4,14 +4,14 @@ import it.polimi.ingsw.Model.God.God;
 
 import java.util.ArrayList;
 
-/**Represents the playing Player. After different player's provided information (idPlayer and playerBirthday)
- * the class maintain the assigned Constructor (2 of them), a god Card and the assigned numPlayer.
+/**Represents the playing <em>Player</em>. After getting multiple information from the <em>Player<em> (idPlayer and playerBirthday)
+ * the class creates and stores the assigned <em>Constructor</em> (2 of them), stores a god Card and the assigned numPlayer.
  */
 public class Player {
 
     private String idPlayer;
     private String playerBirthday;
-    /**List containing the 2 Constructors assigned to each Player
+    /**List containing the 2 <em>Constructors</em> assigned to each <em>Player</em>
      */
     private ArrayList<Constructor> ownConstructors;
     private God god;
@@ -21,8 +21,8 @@ public class Player {
 
 
 
-    /**Creates a Player with the chosen id and birthday. Plus assign the corresponding numPlayer and
-     * the 2 Constructors
+    /**Creates a <em>Player</em> with the chosen id and birthday. Plus assign the corresponding numPlayer and
+     * the 2 <em>Constructors</em>
      *
      * @param id id chosen by the Player
      * @param day birthday of the Player
