@@ -1,17 +1,17 @@
 package it.polimi.ingsw.Model;
 
-/**This is an helper class used to represent the position of
- * tiles or any constructors
+/**This is an helper class used to represent the <em>Position</em> of
+ * <em>Tiles</em> or any <em>Constructor</em>
  */
 
 public class Position implements Cloneable{
     private final int row;
     private final int col;
 
-    /**Creates a Position given the row and column
+    /**Creates a <em>Position</em> given the row and column
      *
-     * @param row Actual row on the board
-     * @param col Actual column on the board
+     * @param row Actual row on the <em>Board</em>
+     * @param col Actual column on the <em>Board</em>
      */
     public Position(int row, int col){
         this.row = row;

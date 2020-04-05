@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * Represents the state of the Game, holding all the player, the Player who's playing and the current phase of each turn
+ * Represents the state of the Game, holding all the players, the player who's playing and the current phase of each turn
  */
 public class GameState {
     private List<Player> playerList;
@@ -14,7 +14,7 @@ public class GameState {
     private PossiblePhases currentPhase;
 
     /**
-     * Creates a GameState in which the playerList is the parameter passed,  set currentPlayer as the firs in the list pList
+     * Creates a <em>GameState</em> in which the playerList is the parameter passed, set currentPlayer as the firs in the list pList
      * and set the currentPhase as the first phase contained in the player's god card
      *
      * @param pList List of playing players
@@ -43,9 +43,10 @@ public class GameState {
 
 
     /**
-     * Used to change the phase during a turn. If the game is on END_TURN then nothing is done and simply return false, otherwise return true
+     * Method used to change the turn's phase
+     * If a next phase exist simply refreshes <em>GameState</em>, otherwise throws an exception
      *
-     * @return boolean used to know if the change of phase ended correctly or there's the need of a new turn
+     * @throws IndexOutOfBoundsException to let know the caller that there's no more phases left
      */
     public void nextPhase() throws IndexOutOfBoundsException{
         God g = this.currentPlayer.getGod();
@@ -68,9 +69,9 @@ public class GameState {
     }
 
     /**
-     * Used to change the playng player
+     * Used to change the playing player
      *
-     * @return Player who is the next player
+     * @return <em>Player</em> who is the next player
      */
     private Player nextPlayer(){
         int pLen = playerList.size();
