@@ -14,7 +14,6 @@ public class PosMessage extends GameMessage {
         this.view = view;
     }
 
-
     public Position getPosition() {
         return position;
     }
