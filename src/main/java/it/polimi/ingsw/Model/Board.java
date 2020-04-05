@@ -9,10 +9,10 @@ public class Board {
 
     public Board() {
         this.tiles= new Tile[5][5];
-        for (int i=0;i<=4;i++)
-        {
-            for (int j=0;j<=4;j++)
-            {this.tiles[i][j]=new Tile(new Position(i,j));}
+        for (int i=0;i<=4;i++) {
+            for (int j=0;j<=4;j++){
+                this.tiles[i][j]=new Tile(new Position(i,j));
+            }
         }
         canGoUp=true;
 
@@ -32,10 +32,11 @@ public class Board {
         int curY=currentPos.getCol();
         for(int i=curX-1;i<=curX+1;i++) {
             for(int j=curY-1;j<=curY+1;j++) {
-                if((i>=0 && i<=4) && (j>=0 && j<=4) && (i!=curX && j!=curY) &&(!tiles[i][j].getOccupied()) &&
-                        ((getTile(CurrentConstructor.getPos()).getConstructionLevel()+1<=tiles[i][j].getConstructionLevel() && canGoUp)
+                if((i>=0 && i<=4) && (j>=0 && j<=4) && (currentPos!=new Position(i,j))&&(!tiles[i][j].getOccupied()) &&
+                        (((getTile(CurrentConstructor.getPos()).getConstructionLevel()+1==tiles[i][j].getConstructionLevel()||
+                                getTile(CurrentConstructor.getPos()).getConstructionLevel()==tiles[i][j].getConstructionLevel() ) && canGoUp)
                                 || (!canGoUp && getTile(CurrentConstructor.getPos()).getConstructionLevel()==tiles[i][j].getConstructionLevel()))
-                        && (!tiles[i][j].getDome())) {
+                        && !tiles[i][j].getDome()) {
                         moves.add(new Position(i, j));
                     }
              }
@@ -49,13 +50,13 @@ public class Board {
      * @return return positions where player can build
      */
     public ArrayList<Position> possibleBuild(Constructor CurrentConstructor){
-        ArrayList<Position>build= new ArrayList<>();
+        ArrayList<Position> build= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
         int curX=currentPos.getRow();
         int curY=currentPos.getCol();
         for(int i=curX-1;i<=curX+1;i++) {
             for (int j = curY - 1; j <= curY + 1; j++) {
-                if ((i >= 0 && i <= 4) && (j >= 0 && j <= 4) && (i != curX && j != curY) && !tiles[i][j].getDome() && tiles[i][j].getOccupied()) {
+                if ((i >= 0 && i <= 4) && (j >= 0 && j <= 4) && (currentPos!=new Position(i,j)) && !this.tiles[i][j].getDome() && !this.tiles[i][j].getOccupied()) {
                    build.add(new Position(i,j));
                 }
             }
@@ -68,11 +69,13 @@ public class Board {
      * @param currentCon is the constructor to move
      */
     public void placeConstructor(Tile pos, Constructor currentCon)
-    {   currentCon.setPrevPos(currentCon.getPos().clone());
-        currentCon.setPos(pos.getPos().clone());
+    {   currentCon.setPrevPos(currentCon.getPos());
+        currentCon.setPos(pos.getPos());
+        if (currentCon.getPrevPos().getCol()!=-1)
         getTile(currentCon.getPrevPos()).setOccupied(false);
         getTile(currentCon.getPos()).setOccupied(true);
         pos.setActualConstuctor(currentCon);
+        if (currentCon.getPrevPos().getCol()!=-1)
         getTile(currentCon.getPrevPos()).setActualConstuctor(null);
     }
 
@@ -98,14 +101,11 @@ public class Board {
      * @param player2 opponent's constructor
      */
     public void swapConstructors ( Constructor player1,Constructor player2){
-        Position temp = player1.getPos().clone();
-        player1.setPrevPos(player1.getPos().clone());
-player1.setPos(player2.getPos().clone());
-player2.setPos(temp);
-player2.setPrevPos(player1.getPos().clone());
-getTile(player2.getPos()).setActualConstuctor(player2);
-getTile(player1.getPos()).setActualConstuctor(player1);
-
+     placeConstructor(getTile(player2.getPos()),player1);
+     player2.setPos(player1.getPrevPos());
+     player2.setPrevPos(player1.getPos());
+     getTile(player2.getPos()).setActualConstuctor(player2);
+     getTile(player2.getPos()).setOccupied(true);
     }
 
     /**
