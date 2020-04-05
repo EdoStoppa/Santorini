@@ -8,12 +8,12 @@ import java.util.List;
 
 public class TileToShowMessage extends GameMessage {
     private final PossiblePhases currentPhase;
-    private final List<Position> posList;
+    private final List<Position> tileToShow;
 
     public TileToShowMessage(String message, Player player, PossiblePhases phase, List<Position> list) {
         super(message, player);
         this.currentPhase = phase;
-        this.posList = list;
+        this.tileToShow = list;
     }
 
 
@@ -22,6 +22,6 @@ public class TileToShowMessage extends GameMessage {
     }
 
     public List<Position> getPosList() {
-        return this.posList;
+        return this.tileToShow;
     }
 }
