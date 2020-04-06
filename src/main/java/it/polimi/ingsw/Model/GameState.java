@@ -33,6 +33,10 @@ public class GameState {
         return this.currentPhase;
     }
 
+    public List<Player> getPlayerList(){
+        return this.playerList;
+    }
+
     /**
      * Set the game at the starting point
      */
