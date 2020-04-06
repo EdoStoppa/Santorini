@@ -11,7 +11,6 @@ class TileTest {
     class increaseConstructionLevel {
 
         @RepeatedTest(5)
-        @DisplayName("without Atlas")
         void increaseConstructionLevelTest(RepetitionInfo repetitionInfo)    {
             for(int i = 0; i < repetitionInfo.getCurrentRepetition(); i++)  {
                 if(i < 4)   {
