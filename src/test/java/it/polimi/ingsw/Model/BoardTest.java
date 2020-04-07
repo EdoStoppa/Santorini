@@ -386,7 +386,6 @@ class BoardTest {
             int[][] expected = new int[5][5];
             Random random = new Random();
             Board board = new Board();
-            Board p = new Board();
             int countDome = 0;
 
             for (int i = 0; i < 5; i++) { //creates a random board
@@ -415,7 +414,7 @@ class BoardTest {
                 }
             }
 
-            matrix = p.createBuildingMatrix(board);
+            matrix = board.createBuildingMatrix();
 
             for(int i = 0; i < 5; i++)  {
                 for(int j = 0; j < 5; j++)  {
@@ -430,7 +429,6 @@ class BoardTest {
             int[][] expected = new int[5][5];
             Random random = new Random();
             Board board = new Board();
-            Board p = new Board();
 
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
@@ -447,7 +445,7 @@ class BoardTest {
                     }
                 }
             }
-            matrix = p.createBuildingMatrix(board);
+            matrix = board.createBuildingMatrix();
             for(int i = 0; i < 5; i++)  {
                 for(int j = 0; j < 5; j++)  {
                     assertEquals(expected[i][j], matrix[i][j], "The numbers should be the same");
@@ -467,7 +465,6 @@ class BoardTest {
         int[][] expected = new int[5][5];
         Random random = new Random();
         Board board = new Board();
-        Board p = new Board();
         int numberConstructorsP1 = 0, numberConstructorsP2 = 0;
 
         for(int i = 0; i < 5; i++)  {//expected matrix initialization
@@ -495,7 +492,7 @@ class BoardTest {
                 }
             }
         }
-        matrix = p.createConstructorMatrix(board);
+        matrix = board.createConstructorMatrix();
         for(int i = 0; i < 5; i++)  {
             for(int j = 0; j < 5; j++)  {
                 assertEquals(expected[i][j], matrix[i][j], "These numbers should be the same");

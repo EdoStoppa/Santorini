@@ -131,16 +131,15 @@ public class Board {
      * a number, which represents the level of the building and the presence (or not) of the dome. The presence
      * of the dome is reported adding 4 to the integer we get from getConstructionLevel.
      *
-     * @param board it's the object which contains all informations of every tile.
      * @return the matrix in which there are all informations about the level of every construction.
      */
-    public int[][] createBuildingMatrix(Board board) {
+    public int[][] createBuildingMatrix() {
         int[][] matrix = new int[5][5];
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
                 Position pos = new Position(i, j);
-                matrix[i][j] = board.getTile(pos).getConstructionLevel();
-                if(board.getTile(pos).getDome())    {
+                matrix[i][j] = getTile(pos).getConstructionLevel();
+                if(getTile(pos).getDome())    {
                     matrix[i][j] = matrix[i][j] + 4;
                 }
             }
@@ -152,16 +151,15 @@ public class Board {
      *This method creates a matrix of integer, which represents the constructors in the board. Every constructor is
      * identified with playerNumber, which is used as identifier in the matrix.
      *
-     * @param board it's the object which contains all informations of every tile.
      * @return the matrix in which there are positions of every constructor in the game.
      */
-    public int[][] createConstructorMatrix(Board board)  {
+    public int[][] createConstructorMatrix()  {
         int[][] matrix = new int[5][5];
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
                 Position pos = new Position(i, j);
-                if(board.getTile(pos).getActualConstuctor() != null)    {
-                    matrix[i][j] = board.getTile(pos).getActualConstuctor().getPlayerNumber();
+                if(getTile(pos).getActualConstuctor() != null)    {
+                    matrix[i][j] = getTile(pos).getActualConstuctor().getPlayerNumber();
                 }
                 else    {
                     matrix[i][j] = 0;
