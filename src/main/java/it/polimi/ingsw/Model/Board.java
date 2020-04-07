@@ -101,11 +101,11 @@ public class Board {
      * @param player2 opponent's constructor
      */
     public void swapConstructors ( Constructor player1,Constructor player2){
-     placeConstructor(getTile(player2.getPos()),player1);
-     player2.setPos(player1.getPrevPos());
-     player2.setPrevPos(player1.getPos());
-     getTile(player2.getPos()).setActualConstuctor(player2);
-     getTile(player2.getPos()).setOccupied(true);
+        placeConstructor(getTile(player2.getPos()),player1);
+        player2.setPos(player1.getPrevPos());
+        player2.setPrevPos(player1.getPos());
+        getTile(player2.getPos()).setActualConstuctor(player2);
+        getTile(player2.getPos()).setOccupied(true);
     }
 
     /**
