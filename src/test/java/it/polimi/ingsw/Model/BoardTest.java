@@ -6,6 +6,7 @@ import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -377,33 +378,42 @@ class BoardTest {
      * the possible board in a game with and without Atlas.
      */
     @RepeatedTest(2)
-    @DisplayName("First rep: without Atlas, second rep: with Atlas")
+    @DisplayName("First rep: with Atlas, second rep: without Atlas")
     void createBuildingMatrixTest(RepetitionInfo repetitionInfo) {
         if(repetitionInfo.getCurrentRepetition() == 1)  {
             System.out.println("With Atlas");
-            int[][] matrix = new int[5][5];
+            int[][] matrix;
+            int[][] expected = new int[5][5];
+            Random random = new Random();
             Board board = new Board();
-            for (int i = 0; i < 5; i++) {
+            Board p = new Board();
+            int countDome = 0;
+
+            for (int i = 0; i < 5; i++) { //creates a random board
                 for (int j = 0; j < 5; j++) {
                     Position pos = new Position(i, j);
-                    for (int k = 0; k < j; k++) {
-                        board.getTile(pos).increaseConstructionLevel();
+                    int miavar = random.nextInt(4);
+                    if(miavar < 4)  {
+                        expected[i][j] = miavar;
                     }
-                    if(i == 0 && j == 0 || i == 2 && j == 3 || i == 1 && j == 2 || i == 4 && j == 1)    {
-                        board.getTile(pos).setDome(true);
+                    else if(miavar == 4)    {
+                        expected[i][j] = miavar + 3;
+                    }
+                    for(int k = 0; k < miavar; k++) {
+                        board.getTile(pos).increaseConstructionLevel();
                     }
                 }
             }
-
-            Board p = new Board();
-
-            int[][] expected = {
-                    {4, 1, 2, 3, 7},
-                    {0, 1, 6, 3, 7},
-                    {0, 1, 2, 7, 7},
-                    {0, 1, 2, 3, 7},
-                    {0, 5, 2, 3, 7},
-            };
+            while(countDome < 4)    { //It creates 4 domes in random position of the board
+                int x = random.nextInt(4);
+                int y = random.nextInt(4);
+                Position pos = new Position(x, y);
+                if(!board.getTile(pos).getDome())   {
+                    board.getTile(pos).setDome(true);
+                    countDome++;
+                    expected[x][y] = expected[x][y] + 4;
+                }
+            }
 
             matrix = p.createBuildingMatrix(board);
 
@@ -416,34 +426,31 @@ class BoardTest {
 
         if(repetitionInfo.getCurrentRepetition() == 2)  {
             System.out.println("Without Atlas");
-            int[][] matrix = new int[5][5];
+            int[][] matrix;
+            int[][] expected = new int[5][5];
+            Random random = new Random();
             Board board = new Board();
+            Board p = new Board();
+
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++) {
                     Position pos = new Position(i, j);
-                    for (int k = 0; k < j; k++) {
+                    int miavar = random.nextInt(4);
+                    if(miavar < 4)  {
+                        expected[i][j] = miavar;
+                    }
+                    else if(miavar == 4)    {
+                        expected[i][j] = miavar + 3;
+                    }
+                    for(int k = 0; k < miavar;k++)  {
                         board.getTile(pos).increaseConstructionLevel();
                     }
                 }
             }
-
-            Board p = new Board();
-
-            int[] expected = new int[5];
-            for(int i = 0; i < 5; i++)  {
-                if(i < 4)   {
-                    expected[i] = i;
-                }
-                else if(i == 4) {
-                    expected[i] = 7;
-                }
-            }
-
             matrix = p.createBuildingMatrix(board);
-
             for(int i = 0; i < 5; i++)  {
                 for(int j = 0; j < 5; j++)  {
-                    assertEquals(expected[j], matrix[i][j], "The numbers should be the same");
+                    assertEquals(expected[i][j], matrix[i][j], "The numbers should be the same");
                 }
             }
 
@@ -456,35 +463,39 @@ class BoardTest {
      */
     @Test
     void createConstructorMatrix()  {
+        int[][] matrix;
+        int[][] expected = new int[5][5];
+        Random random = new Random();
         Board board = new Board();
-        int[][] matrix = new int[5][5];
+        Board p = new Board();
+        int numberConstructorsP1 = 0, numberConstructorsP2 = 0;
 
-        for(int i = 0; i < 5; i++)  {
+        for(int i = 0; i < 5; i++)  {//expected matrix initialization
             for(int j = 0; j < 5; j++)  {
-                if(i == 0 && j == 4 || i == 3 && j == 1)    {
-                    Position pos = new Position(i, j);
+                expected[i][j] = 0;
+            }
+        }
+
+        while(numberConstructorsP1 < 2 || numberConstructorsP2 < 2) {//It creates 2 constructors for each player and it places them in random positions
+            int x = random.nextInt(4);
+            int y = random.nextInt(4);
+            Position pos = new Position(x, y);
+            if(board.getTile(pos).getActualConstuctor() == null)    {
+                if(numberConstructorsP1 < 2)    {
                     Constructor c1 = new Constructor(1);
                     board.getTile(pos).setActualConstuctor(c1);
+                    expected[x][y] = 1;
+                    numberConstructorsP1++;
                 }
-                else if(i == 1 && j == 1 || i == 4 && j == 4)   {
-                    Position pos = new Position(i, j);
+                else if(numberConstructorsP2 < 2)   {
                     Constructor c2 = new Constructor(2);
                     board.getTile(pos).setActualConstuctor(c2);
+                    expected[x][y] = 2;
+                    numberConstructorsP2++;
                 }
             }
         }
-        Board p = new Board();
-
-        int[][] expected = {
-                {0, 0, 0, 0, 1},
-                {0, 2, 0, 0, 0},
-                {0, 0, 0, 0, 0},
-                {0, 1, 0, 0, 0},
-                {0, 0, 0, 0, 2}
-        };
-
         matrix = p.createConstructorMatrix(board);
-
         for(int i = 0; i < 5; i++)  {
             for(int j = 0; j < 5; j++)  {
                 assertEquals(expected[i][j], matrix[i][j], "These numbers should be the same");
