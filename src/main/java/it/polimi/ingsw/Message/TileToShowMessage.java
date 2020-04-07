@@ -21,7 +21,7 @@ public class TileToShowMessage extends GameMessage {
         return this.currentPhase;
     }
 
-    public List<Position> getPosList() {
+    public List<Position> getTileToShow() {
         return this.tileToShow;
     }
 }
