@@ -78,6 +78,7 @@ public class Tile {
 
     public void setActualConstuctor(Constructor c) {
         this.actualConstructor = c;
+        this.setOccupied(true);
     }
 }
 

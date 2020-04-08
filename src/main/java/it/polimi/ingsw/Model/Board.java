@@ -71,12 +71,14 @@ public class Board {
     public void placeConstructor(Tile pos, Constructor currentCon)
     {   currentCon.setPrevPos(currentCon.getPos());
         currentCon.setPos(pos.getPos());
-        if (currentCon.getPrevPos().getCol()!=-1)
-        getTile(currentCon.getPrevPos()).setOccupied(false);
-        getTile(currentCon.getPos()).setOccupied(true);
-        pos.setActualConstuctor(currentCon);
-        if (currentCon.getPrevPos().getCol()!=-1)
-        getTile(currentCon.getPrevPos()).setActualConstuctor(null);
+        if (currentCon.getPrevPos().getCol()!=-1) {
+            getTile(currentCon.getPrevPos()).setOccupied(false);
+            getTile(currentCon.getPos()).setOccupied(true);
+            pos.setActualConstuctor(currentCon);
+        }
+        if (currentCon.getPrevPos().getCol()!=-1) {
+            getTile(currentCon.getPrevPos()).setActualConstuctor(null);
+        }
     }
 
     /**

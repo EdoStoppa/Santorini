@@ -13,7 +13,7 @@ public class Model extends Observable<GameMessage> {
     private List<Position> tileToShow;
     private Constructor currentConstructor;
 
-    public Model(List<Player> playerList){
+    public Model(List<Player> playerList) {
         this.gameState = new GameState(playerList);
         this.board = new Board();
         this.tileToShow = null;
@@ -27,7 +27,7 @@ public class Model extends Observable<GameMessage> {
      * @param p <em>Position</em> where the <em>Tile</em> is located
      * @return if the <em>Tile</em> is already occupied
      */
-    public boolean isOccupied(Position p){
+    public boolean isOccupied(Position p) {
         Tile t = board.getTile(p);
         return t.getOccupied();
     }
@@ -36,8 +36,8 @@ public class Model extends Observable<GameMessage> {
      * Method used to change the current phase of the game. If there's no more phases for the current
      * <em>Player</em> then the method change turn instead of the phase
      */
-    public void nextPhase(){
-        try{
+    public void nextPhase() {
+        try {
             this.gameState.nextPhase();
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
@@ -64,10 +64,10 @@ public class Model extends Observable<GameMessage> {
      * @param p <em>Player</em> to check
      * @return if the <em>Player</em> is losing
      */
-    public boolean isLosing(Player p){
+    public boolean isLosing(Player p) {
         List<Constructor> constructorList = p.getAllConstructors();
-        for(Constructor c : constructorList){
-            if(c.getCanMove()){
+        for (Constructor c : constructorList) {
+            if (c.getCanMove()) {
                 return false;
             }
         }
@@ -79,10 +79,12 @@ public class Model extends Observable<GameMessage> {
      *
      * @return if the <em>Player</em> is now located on a level 3 construction
      */
-    public boolean checkWin(){
+    public boolean checkWin() {
         Tile currentTile = board.getTile(currentConstructor.getPos());
         return (currentTile.getConstructionLevel() == 3);
-    };
+    }
+
+    ;
 
     /**
      * Mtehod used to check if it's the turn of the given <em>Player</em>
@@ -90,7 +92,7 @@ public class Model extends Observable<GameMessage> {
      * @param p <em>Player</em> to check
      * @return if it's his/hers turn
      */
-    public boolean isPlayerTurn(Player p){
+    public boolean isPlayerTurn(Player p) {
         Player currentP = gameState.getCurrentPlayer();
         return p.getIdPlayer().equals(currentP.getIdPlayer());
     }
@@ -103,14 +105,14 @@ public class Model extends Observable<GameMessage> {
      *
      * @param pos <em>Position</em> where to move the currentConstructor
      */
-    public void performMove(Position pos){
+    public void performMove(Position pos) {
         Tile t = board.getTile(pos);
         board.placeConstructor(t, currentConstructor);
 
         int[][] matrix = board.createConstructorMatrix();
         String message = gameState.getCurrentPlayer().getIdPlayer() + " moved to position: " + pos.toString();
 
-        notify(new MoveMessage(message , gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+        notify(new MoveMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     /**
@@ -120,22 +122,35 @@ public class Model extends Observable<GameMessage> {
      *
      * @param pos <em>Position</em> where to build
      */
-    public void performBuild(Position pos){
+    public void performBuild(Position pos) {
         Tile t = board.getTile(pos);
         board.placeBuilding(t);
 
         int[][] matrix = board.createBuildingMatrix();
         String message = gameState.getCurrentPlayer().getIdPlayer() + " built on position: " + pos.toString();
 
-        notify(new BuildMessage(message , gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+        notify(new BuildMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
-    public List<Player> getListPlayer(){
+    public List<Player> getListPlayer() {
         return gameState.getPlayerList();
     }
 
-    public PossiblePhases getCurrentPhase(){
+    public PossiblePhases getCurrentPhase() {
         return gameState.getCurrentPhase();
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+//                                              FOR TESTING PURPOSE
+//----------------------------------------------------------------------------------------------------------------------
+
+    protected Board getBoard()  {
+        return board;
+    }
+
+    protected GameState getGameState()  {
+        return gameState;
+    }
+
+    protected Constructor getCurrentConstructor()   {return  currentConstructor;}
 }
