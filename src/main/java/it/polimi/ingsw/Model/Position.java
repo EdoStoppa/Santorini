@@ -35,4 +35,8 @@ public class Position implements Cloneable{
     public String toString(){
         return (row + "," + col);
     }
+
+    public boolean equals(Position p){
+        return ((p.getRow() == row) && (p.getCol() == col));
+    }
 }
