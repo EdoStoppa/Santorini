@@ -39,7 +39,6 @@ class GameStateTest {
     void needTurnChangeTest(){
         gameState.nextPhase();
         gameState.nextPhase();
-        gameState.nextPhase();
         assertThrows(IndexOutOfBoundsException.class, () -> gameState.nextPhase(), "Should throw an exception to change turn");
     }
 
@@ -60,7 +59,7 @@ class GameStateTest {
     void changeLastPlayerTest(){
         gameState.nextTurn();
         gameState.nextTurn();
-        assertSame(gameState.getCurrentPlayer(), p1, "Should get the next Player (in this case p1)");
+        assertSame(gameState.getCurrentPlayer(), p1, "If at the end of PlayerList should return first Player in list (in this case p1)");
     }
 
     @Test

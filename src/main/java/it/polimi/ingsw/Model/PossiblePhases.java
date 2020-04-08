@@ -10,7 +10,7 @@ package it.polimi.ingsw.Model;
  */
 public enum PossiblePhases {
     CHOOSE_CONSTRUCTOR("Choose your constructor"), MOVE("Move your constructor"), BUILD("Build a construction"),
-    SPECIAL_MOVE("Thanks to your God, you can do a special move!"), SPECIAL_BUILD("Thanks to your God, you can build again!"), END_TURN("End of turn");
+    SPECIAL_MOVE("Thanks to your God, you can do a special move!"), SPECIAL_BUILD("Thanks to your God, you can build again!");
     private final String message;
 
     PossiblePhases(String message){

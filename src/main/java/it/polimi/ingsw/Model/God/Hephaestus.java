@@ -23,7 +23,6 @@ public class Hephaestus extends God {
         this.phasesList.add(PossiblePhases.MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
         this.phasesList.add(PossiblePhases.SPECIAL_BUILD);
-        this.phasesList.add(PossiblePhases.END_TURN);
 
         this.godController = new HephaestusController();
     }

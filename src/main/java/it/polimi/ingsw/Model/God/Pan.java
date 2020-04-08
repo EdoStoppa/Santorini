@@ -22,7 +22,6 @@ public class Pan extends God{
         this.phasesList.add(PossiblePhases.CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.SPECIAL_MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
-        this.phasesList.add(PossiblePhases.END_TURN);
 
         this.godController = new PanController();
     }
