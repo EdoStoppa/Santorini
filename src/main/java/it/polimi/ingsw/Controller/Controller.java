@@ -4,8 +4,11 @@ import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.*;
 import it.polimi.ingsw.Model.Model;
+import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.Observer.Observer;
+
+import java.util.List;
 
 public class Controller implements Observer<FromClientMessage> {
 
@@ -50,6 +53,7 @@ public class Controller implements Observer<FromClientMessage> {
         model.performMove(message.getPosition());
         if(model.checkWin()){
             // TRANSITION TO END GAME
+            executeWinSequence();
         }
     }
 
@@ -87,14 +91,17 @@ public class Controller implements Observer<FromClientMessage> {
     }
 
     private void prepareChooseConstructor(){
+        /*if(model.isLastStanding()){
+            executeWinSequence();
+            return;
+        }*/
+
         // WAIT FOR "deactivateConstructorIfNeeded" IMPLEMENTATION IN MODEL (NEW VERSION WITHOUT A PLAYER INPUT)
-
         // model.deactivateConstructorIfNeeded();
-
         // WAIT FOR "isLosing" IMPLEMENTATION IN MODEL (NEW VERSION WITHOUT A PLAYER INPUT)
-
         /*if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
+            executeLoseSequence();
             return;
          }*/
 
@@ -115,6 +122,19 @@ public class Controller implements Observer<FromClientMessage> {
         // model.createPossibleBuildPos();
     }
 
+    private void executeLoseSequence(){
+        /*model.destroyRemainingPhases();
+        // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
+
+        Player toDelete = model.getCurrentPlayer();
+        model.nextPhase();
+        model.removePlayer(p);
+        model.preparePhase();*/
+    }
+
+    private void executeWinSequence(){
+        // ALERT EVERYONE THAT SOMEONE HAS WON
+    }
 
     @Override
     public void update(FromClientMessage message) {
@@ -122,13 +142,23 @@ public class Controller implements Observer<FromClientMessage> {
             // DO SOMETHING WITH VIEW
             return;
         }
+
         if(message instanceof PosMessage){
-            // CHECK IF POS IS A POSSIBLE POSITION, IF NOT DO SOMETHING WITH VIEW AND RETURN
-            handleAction((PosMessage)message);
-            model.nextPhase();
-            preparePhase();
-            return;
+            List<Position> listPos = model.getTileToShow();
+            Position messagePos = ((PosMessage) message).getPosition();
+
+            for(Position p : listPos){
+                if(p.equals(messagePos)){
+                    handleAction((PosMessage)message);
+                    model.nextPhase();
+                    preparePhase();
+                    return;
+                }
+            }
+            //If the method did not return before it means that the position is wrong, so do
+            //something with view
         }
+
         if (message instanceof SpecialActionMessage){
             // UNDERSTAND WHICH SPECIAL ACTION IS AND DO SOMETHING
             return;
