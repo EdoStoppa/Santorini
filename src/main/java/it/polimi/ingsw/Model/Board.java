@@ -21,18 +21,17 @@ public class Board {
 
     /**
      * this method create a list of position where the chosen constructor can move in this turn
-     * @param CurrentConstructor
+     * @param CurrentConstructor the constructor to find the moveset
      * @return return positions of possible move
      */
-
     public ArrayList<Position> possibleMoveset(Constructor CurrentConstructor){
         ArrayList<Position>moves= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
         int curX=currentPos.getRow();
         int curY=currentPos.getCol();
-        for(int i=curX-1;i<=curX+1;i++) {
-            for(int j=curY-1;j<=curY+1;j++) {
-                if((i>=0 && i<=4) && (j>=0 && j<=4) && (currentPos!=new Position(i,j))&&(!tiles[i][j].getOccupied()) &&
+        for(int i=curX-1; i<=curX+1; i++) {
+            for(int j=curY-1; j<=curY+1; j++) {
+                if((i>=0 && i<=4) && (j>=0 && j<=4) && (!currentPos.equals(new Position(i,j)))&&(!tiles[i][j].getOccupied()) &&
                         (((getTile(CurrentConstructor.getPos()).getConstructionLevel()+1==tiles[i][j].getConstructionLevel()||
                                 getTile(CurrentConstructor.getPos()).getConstructionLevel()==tiles[i][j].getConstructionLevel() ) && canGoUp)
                                 || (!canGoUp && getTile(CurrentConstructor.getPos()).getConstructionLevel()==tiles[i][j].getConstructionLevel()))
@@ -46,7 +45,7 @@ public class Board {
 
     /**
      * this method create a list of position where the chosen constructor can build in this turn
-     * @param CurrentConstructor
+     * @param CurrentConstructor the constructor to find the moveset
      * @return return positions where player can build
      */
     public ArrayList<Position> possibleBuild(Constructor CurrentConstructor){
@@ -56,7 +55,7 @@ public class Board {
         int curY=currentPos.getCol();
         for(int i=curX-1;i<=curX+1;i++) {
             for (int j = curY - 1; j <= curY + 1; j++) {
-                if ((i >= 0 && i <= 4) && (j >= 0 && j <= 4) && (currentPos!=new Position(i,j)) && !this.tiles[i][j].getDome() && !this.tiles[i][j].getOccupied()) {
+                if ((i >= 0 && i <= 4) && (j >= 0 && j <= 4) && (!currentPos.equals(new Position(i,j))) && !this.tiles[i][j].getDome() && !this.tiles[i][j].getOccupied()) {
                    build.add(new Position(i,j));
                 }
             }
@@ -65,28 +64,29 @@ public class Board {
 
     /**
      * this method move the chosen constructor
-     * @param pos is the new position for the constructor
+     * @param tile is the new tile for the constructor
      * @param currentCon is the constructor to move
      */
-    public void placeConstructor(Tile pos, Constructor currentCon)
-    {   currentCon.setPrevPos(currentCon.getPos());
-        currentCon.setPos(pos.getPos());
-        if (currentCon.getPrevPos().getCol()!=-1) {
-            getTile(currentCon.getPrevPos()).setOccupied(false);
-            getTile(currentCon.getPos()).setOccupied(true);
-            pos.setActualConstuctor(currentCon);
-        }
-        if (currentCon.getPrevPos().getCol()!=-1) {
-            getTile(currentCon.getPrevPos()).setActualConstuctor(null);
+    public void placeConstructor(Tile tile, Constructor currentCon) {
+        Position posC = currentCon.getPos().clone();
+
+        currentCon.setPrevPos(posC);
+        currentCon.setPos(tile.getPos().clone());
+        tile.setOccupied(true);
+        tile.setActualConstuctor(currentCon);
+
+        if(posC.getCol() != -1){
+            getTile(posC).setActualConstuctor(null);
+            getTile(posC).setOccupied(false);
         }
     }
 
     /**
      * build next level of the construction
-     * @param current
+     * @param tile where increase the construction level
      */
-    public void placeBuilding(Tile current){
-        current.increaseConstructionLevel();
+    public void placeBuilding(Tile tile){
+        tile.increaseConstructionLevel();
     }
 
     public void setCanGoUp(boolean current){
@@ -112,16 +112,16 @@ public class Board {
 
     /**
      * implement Minotaur's special power
-     * @param constructorPushed
-     * @param minotaur
+     * @param constructorPushed the constructor who will be pushed
+     * @param minotaur the constructor who'll push
      */
     public void pushConstructor (Constructor constructorPushed, Constructor minotaur){
-        placeConstructor(getTile(constructorPushed.getPos()),minotaur);
-        int pushRow=(minotaur.getPos().getRow())-(minotaur.getPrevPos().getRow())+constructorPushed.getPos().getRow();
-        int colnew= minotaur.getPos().getCol();
-        int colold= minotaur.getPrevPos().getCol();
-        int pushCol=(minotaur.getPos().getCol())-(minotaur.getPrevPos().getCol())+constructorPushed.getPos().getCol();
-        placeConstructor(getTile(new Position(pushRow,pushCol)),constructorPushed);
+        Position nextPosMinotaur = constructorPushed.getPos().clone();
+        int pushRow = (constructorPushed.getPos().getRow() - minotaur.getPos().getRow()) + constructorPushed.getPos().getRow();
+        int pushCol = (constructorPushed.getPos().getCol() - minotaur.getPos().getCol()) + constructorPushed.getPos().getCol();
+
+        placeConstructor(getTile(new Position(pushRow,pushCol)), constructorPushed);
+        placeConstructor(getTile(nextPosMinotaur), minotaur);
     }
 
     public Tile getTile(Position pos)   {
@@ -133,7 +133,7 @@ public class Board {
      * a number, which represents the level of the building and the presence (or not) of the dome. The presence
      * of the dome is reported adding 4 to the integer we get from getConstructionLevel.
      *
-     * @return the matrix in which there are all informations about the level of every construction.
+     * @return the matrix in which there are all information about the level of every construction.
      */
     public int[][] createBuildingMatrix() {
         int[][] matrix = new int[5][5];
