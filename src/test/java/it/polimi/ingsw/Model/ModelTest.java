@@ -1,7 +1,9 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Model.God.Apollo;
 import it.polimi.ingsw.Model.God.Athena;
+import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
@@ -14,9 +16,20 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ModelTest {
+
+    private class Receiver implements Observer<GameMessage>  {
+        private GameMessage receivedMessage;
+
+        @Override
+        public void update(GameMessage message) {
+            this.receivedMessage = message;
+        }
+    }
     Model model;
     List<Player> list;
     Position posCurrentConstructor;
+    Receiver receiver;
+
 
     @BeforeEach
     void init() {//It creates a random board, a GameState and  before every Test
@@ -31,6 +44,8 @@ class ModelTest {
         list.add(p2);
 
         model = new Model(list);
+        receiver = new Receiver();
+        model.addObserver(receiver);
 
         int numberConstructorsP1 = 0, numberConstructorsP2 = 0;
         Random random = new Random();
@@ -143,19 +158,24 @@ class ModelTest {
 
     @Test
     void performMoveTest() {
+        String expectedMessage = new String();
+
         model.setCurrentConstructor(model.getBoard().getTile(posCurrentConstructor).getActualConstuctor());
         Position nextPosCurrentConstructor = new Position(posCurrentConstructor.getRow() + 1, posCurrentConstructor.getCol() -1);
         model.performMove(nextPosCurrentConstructor);
-        model.getBoard().createConstructorMatrix();
+        expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " moved to position: " + nextPosCurrentConstructor.toString();
         assertAll(
                 ()  ->  assertEquals(nextPosCurrentConstructor.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
                 ()  ->  assertEquals(nextPosCurrentConstructor.getCol(), model.getCurrentConstructor().getPos().getCol(), "The column should be the same")
         );
+        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(),"The player should be the same");
     }
 
     @Test
     void performBuild() {
         Random random = new Random();
+        String expectedMessage = new String();
         Position p1 = new Position(random.nextInt(4), random.nextInt(4));
         int expectedConstructionLevel = 0;
         boolean expectedDome = false;
@@ -171,8 +191,11 @@ class ModelTest {
             expectedConstructionLevel = 3;
             expectedDome = true;
         }
-        System.out.println(model.getBoard().getTile(p1).getConstructionLevel());
+        model.performBuild(p1);
+        expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " built on position: " + p1.toString();
         assertEquals(expectedConstructionLevel, model.getBoard().getTile(p1).getConstructionLevel(),"The level should be the same");
         assertEquals(expectedDome, model.getBoard().getTile(p1).getDome(),"The dome should be the same");
+        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
     }
 }
