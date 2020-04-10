@@ -560,4 +560,36 @@ class BoardTest {
             }
         }
     }
+
+    @Test
+    void searchForOccupiedTest()    {
+        Board board = new Board();
+        Random random = new Random();
+        int numOccupiedTiles = 0;
+        Position pos = new Position(random.nextInt(4), random.nextInt(4));
+        ArrayList<Position> expectedList = new ArrayList<>();
+        ArrayList<Position> actualList;
+
+        for(int i = pos.getRow() - 1; i <= pos.getRow() + 1; i++)   {
+            for(int j = pos.getCol() - 1; j <= pos.getCol() + 1; j++)   {
+                Position currentPos = new Position(i, j);
+                if(random.nextInt(1) == 1 && !pos.equals(currentPos))  {
+                    board.getTile(currentPos).setOccupied(true);
+                    expectedList.add(currentPos);
+                    numOccupiedTiles++;
+                }
+                if(numOccupiedTiles == 2)   {
+                    break;
+                }
+            }
+        }
+        actualList = board.searchForOccupied(pos);
+        assertEquals(expectedList.size(), actualList.size(), "The size of the 2 lists should be the same");
+        if(actualList.size() != 0)  {
+            for(int i = 0; i < actualList.size(); i++)  {
+                assertEquals(expectedList.get(i).getRow(), actualList.get(i).getRow(), "The number should be the same");
+                assertEquals(expectedList.get(i).getCol(), actualList.get(i).getCol(), "The number should be the same");
+            }
+        }
+    }
 }

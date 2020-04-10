@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model;
 import java.util.ArrayList;
+import java.util.List;
+
 /** This class contains the set of tiles of a game and variable canGoUp
  * is used to control Athena's God power.
  */
@@ -169,5 +171,20 @@ public class Board {
             }
         }
         return matrix;
+    }
+
+    public ArrayList<Position> searchForOccupied(Position pos)  {
+        ArrayList<Position> list = new ArrayList<>();
+        int curX = pos.getRow();
+        int curY = pos.getCol();
+
+        for(int i = curX - 1; i <= curX + 1; i++)   {
+            for(int j = curY - 1; j <= curY + 1; j++)   {
+                    if(i >= 0 && i <= 4 && j >= 0 && j <= 4 && !pos.equals(new Position(i, j)) && tiles[i][j].getOccupied())    {
+                        list.add(new Position(i, j));
+                }
+            }
+        }
+        return list;
     }
 }
