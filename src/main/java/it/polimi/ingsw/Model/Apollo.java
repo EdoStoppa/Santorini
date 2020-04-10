@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Controller.GodController.ApolloController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the god card: Apollo
@@ -26,4 +27,43 @@ public class Apollo extends God {
         this.godController = new ApolloController();
     }
 
+    public void deactivateIfNeeded(Model model){
+        Board board = model.getBoard();
+        GameState gameState = model.getGameState();
+
+        List<Position> listMove, listOcc;
+
+        for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
+            if(c.getCanMove())  {
+                int numEnemyOcc = 0;
+                listMove = board.possibleMoveset(c);
+                listOcc = board.searchForOccupied(c.getPos());
+
+                for (Position position : listOcc) {
+                    if (board.getTile(position).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
+                        numEnemyOcc += 1;
+                    }
+                }
+
+                if(listMove.size() == 0 && numEnemyOcc == 0)    {
+                    c.setCanMove(false);
+                }
+            }
+        }
+    }
+
+    public List<Position> getMoveAddList(Model model){
+        Board board = model.getBoard();
+        GameState gameState = model.getGameState();
+        List<Position> addList = new ArrayList<Position>();
+        List<Position> occList = new ArrayList<Position>();
+
+        occList = model.getBoard().searchForOccupied(model.getCurrentConstructor().getPos());
+        for (Position p : occList){
+            if(board.getTile(p).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
+                addList.add(p.clone());
+            }
+        }
+        return addList;
+    }
 }

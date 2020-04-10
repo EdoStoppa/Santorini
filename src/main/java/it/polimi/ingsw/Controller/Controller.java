@@ -17,39 +17,36 @@ public class Controller implements Observer<FromClientMessage> {
     private void handleAction(PosMessage message){
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
-            case CHOOSE_CONSTRUCTOR:
+            case CHOOSE_CONSTRUCTOR: case SPECIAL_CHOOSE_CONSTRUCTOR:
                 handleChooseConstructor(message);
                 break;
             case MOVE:
                 handleMove(message);
                 break;
             case SPECIAL_MOVE:
-                // WAIT FOR "getCurrentPlayerController" IMPLEMENTATION IN MODEL
-
-                //GodController godController = model.getCurrentPlayerController();
-                //godController.handleSpecialMove(model, message);
+                GodController moveGodController = model.getCurrentPlayerController();
+                moveGodController.handleSpecialMove(model, this, message);
                 break;
             case BUILD:
                 handleBuild(message);
                 break;
             case SPECIAL_BUILD:
-                // WAIT FOR "getCurrentPlayerController" IMPLEMENTATION IN MODEL
-
-                //GodController godController = model.getCurrentPlayerController();
-                //godController.handleSpecialBuild(model, message);
+                GodController buildGodController = model.getCurrentPlayerController();
+                buildGodController.handleSpecialBuild(model, this, message);
                 break;
             default:
                 System.out.println("You broke the game! GG WP :D");
+                break;
         }
     }
 
-    private void handleChooseConstructor(PosMessage message){
+    public void handleChooseConstructor(PosMessage message){
         // WAIT FOR "performChooseConstructor" IMPLEMENTATION IN MODEL
 
         //model.performChooseConstructor(message.getPosition());
     }
 
-    private void handleMove(PosMessage message){
+    public void handleMove(PosMessage message){
         model.performMove(message.getPosition());
         if(model.checkWin()){
             // TRANSITION TO END GAME
@@ -57,7 +54,7 @@ public class Controller implements Observer<FromClientMessage> {
         }
     }
 
-    private void handleBuild(PosMessage message){
+    public void handleBuild(PosMessage message){
         model.performBuild(message.getPosition());
     }
 
@@ -67,37 +64,35 @@ public class Controller implements Observer<FromClientMessage> {
             case CHOOSE_CONSTRUCTOR:
                 prepareChooseConstructor();
                 break;
+            case SPECIAL_CHOOSE_CONSTRUCTOR:
+                GodController chooseGodController = model.getCurrentPlayerController();
+                chooseGodController.prepareSpecialChooseConstructor(model, this);
             case MOVE:
                 prepareMove();
                 break;
             case SPECIAL_MOVE:
-                // WAIT FOR "getCurrentPlayerController" IMPLEMENTATION IN MODEL
-
-                //GodController godController = model.getCurrentPlayerController();
-                //godController.prepareSpecialMove(model);
+                GodController moveGodController = model.getCurrentPlayerController();
+                moveGodController.prepareSpecialMove(model, this);
                 break;
             case BUILD:
                 prepareBuild();
                 break;
             case SPECIAL_BUILD:
-                // WAIT FOR "getCurrentPlayerController" IMPLEMENTATION IN MODEL
-
-                //GodController godController = model.getCurrentPlayerController();
-                //godController.prepareSpecialBuild(model);
+                GodController buildGodController = model.getCurrentPlayerController();
+                buildGodController.prepareSpecialBuild(model, this);
                 break;
             default:
                 System.out.println("You broke the game! GG WP :D");
         }
     }
 
-    private void prepareChooseConstructor(){
-        /*if(model.isLastStanding()){
+    public void prepareChooseConstructor(){
+        if(model.isLastStanding()){
             executeWinSequence();
             return;
-        }*/
+        }
 
-        // WAIT FOR "deactivateConstructorIfNeeded" IMPLEMENTATION IN MODEL (NEW VERSION WITHOUT A PLAYER INPUT)
-        // model.deactivateConstructorIfNeeded();
+        model.deactivateConstructorIfNeeded();
         // WAIT FOR "isLosing" IMPLEMENTATION IN MODEL (NEW VERSION WITHOUT A PLAYER INPUT)
         /*if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
@@ -105,24 +100,22 @@ public class Controller implements Observer<FromClientMessage> {
             return;
          }*/
 
-        // WAIT FOR "createPossibleConstructorPos" IMPLEMENTATION IN MODEL
-
-        //model.createPossibleConstructorPos();
+        model.createPossibleConstructorPos();
     }
 
-    private void prepareMove(){
+    public void prepareMove(){
         // WAIT FOR "createPossibleMovePos" IMPLEMENTATION IN MODEL
 
-        // model.createPossibleMovePos();
+        // model.createPossibleMovePos(null, null);
     }
 
-    private void prepareBuild(){
+    public void prepareBuild(){
         // WAIT FOR "createPossibleBuildPos" IMPLEMENTATION IN MODEL
 
-        // model.createPossibleBuildPos();
+        // model.createPossibleBuildPos(null, null);
     }
 
-    private void executeLoseSequence(){
+    public void executeLoseSequence(){
         /*model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
 
@@ -132,7 +125,7 @@ public class Controller implements Observer<FromClientMessage> {
         model.preparePhase();*/
     }
 
-    private void executeWinSequence(){
+    public void executeWinSequence(){
         // ALERT EVERYONE THAT SOMEONE HAS WON
     }
 

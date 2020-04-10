@@ -1,12 +1,13 @@
 package it.polimi.ingsw.Controller.GodController;
 
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Model.Model;
 
 /**Prometheus' GodController
  */
-public class PrometheusController implements GodController {
+public class PrometheusController extends GodController {
 
     /**
      * Used to handle all the correct calls to the model for a special move
@@ -15,7 +16,7 @@ public class PrometheusController implements GodController {
      * @param posMessage Message containing the selected move position
      */
     @Override
-    public void handleSpecialMove(Model model, PosMessage posMessage) {
+    public void handleSpecialMove(Model model, Controller controller, PosMessage posMessage) {
 
     }
 
@@ -26,7 +27,7 @@ public class PrometheusController implements GodController {
      * @param posMessage Message containing the selected move position
      */
     @Override
-    public void handleSpecialBuild(Model model, PosMessage posMessage) {
+    public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
 
     }
 
@@ -36,7 +37,7 @@ public class PrometheusController implements GodController {
      * @param model Model of the game
      */
     @Override
-    public void prepareSpecialMove(Model model) {
+    public void prepareSpecialMove(Model model, Controller controller) {
 
     }
 
@@ -46,7 +47,7 @@ public class PrometheusController implements GodController {
      * @param model Model of the game
      */
     @Override
-    public void prepareSpecialBuild(Model model) {
+    public void prepareSpecialBuild(Model model, Controller controller) {
 
     }
 }
