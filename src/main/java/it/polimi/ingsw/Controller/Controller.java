@@ -10,6 +10,12 @@ import it.polimi.ingsw.Observer.Observer;
 
 import java.util.List;
 
+// -----------------------------------------------------------------------------------
+
+//                  ADD NOTIFY MID NEXT PHASE + CONTROLLER FROM DEMETER
+
+// -----------------------------------------------------------------------------------
+
 public class Controller implements Observer<FromClientMessage> {
 
     Model model;

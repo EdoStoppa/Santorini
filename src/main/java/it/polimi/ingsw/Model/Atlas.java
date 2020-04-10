@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.AtlasController;
+import it.polimi.ingsw.Message.BuildMessage;
+import it.polimi.ingsw.Message.GameMessage;
 
 import java.util.ArrayList;
 
@@ -23,5 +25,16 @@ public class Atlas extends God {
         this.phasesList.add(PossiblePhases.SPECIAL_BUILD);
 
         this.godController = new AtlasController();
+    }
+
+    public void forceDome(Model model, Position pos){
+        Tile t = model.getBoard().getTile(pos);
+        t.setDome(true);
+
+        int[][] matrix = model.getBoard().createBuildingMatrix();
+        String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " built a dome on position: " + pos.toString();
+
+        // WAIT FOR "forceNotify" IMPLEMENTATION IN MODEL
+        //model.forceNotify(new BuildMessage(message, model.getGameState().getCurrentPlayer(), model.getGameState().getCurrentPhase(), matrix));
     }
 }

@@ -25,4 +25,8 @@ public class Artemis extends God {
 
         this.godController = new ArtemisController();
     }
+
+    public Position getPrevPosConstructor(Model model){
+        return model.getCurrentConstructor().getPrevPos().clone();
+    }
 }

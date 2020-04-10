@@ -7,18 +7,6 @@ import it.polimi.ingsw.Model.Model;
 /**Atlas' GodController
  */
 public class AtlasController extends GodController {
-
-    /**
-     * Used to handle all the correct calls to the model for a special move
-     *
-     * @param model      Model of the game
-     * @param posMessage Message containing the selected move position
-     */
-    @Override
-    public void handleSpecialMove(Model model, Controller controller, PosMessage posMessage) {
-
-    }
-
     /**
      * Used to handle all the correct calls to the model for a special move
      *
@@ -27,17 +15,12 @@ public class AtlasController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
-
-    }
-
-    /**
-     * Used to handle all the correct calls to the model to prepare a special move phase
-     *
-     * @param model Model of the game
-     */
-    @Override
-    public void prepareSpecialMove(Model model, Controller controller) {
-
+        if(!posMessage.getMessage().equals("dome")){
+            controller.handleBuild(posMessage);
+        } else {
+            //Atlas atlas = (Atlas)model.getCurrentGod();
+            //GameMessage gameMessage = atlas.forceDome(model, posMessage.getPosition());
+        }
     }
 
     /**
@@ -47,6 +30,6 @@ public class AtlasController extends GodController {
      */
     @Override
     public void prepareSpecialBuild(Model model, Controller controller) {
-
+        controller.prepareBuild();
     }
 }
