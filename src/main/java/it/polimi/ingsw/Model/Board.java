@@ -173,6 +173,12 @@ public class Board {
         return matrix;
     }
 
+    /**
+     * This method search for every occupied <em>Tile</em> near the <em>Position</em> used as parameter.
+     *
+     * @param pos it's the <em>Position</em> from which it searches for every occupied <em>Tile</em>.
+     * @return a list with all the <em>Positions</em> of every occupied <em>Tile</em>.
+     */
     public ArrayList<Position> searchForOccupied(Position pos)  {
         ArrayList<Position> list = new ArrayList<>();
         int curX = pos.getRow();
