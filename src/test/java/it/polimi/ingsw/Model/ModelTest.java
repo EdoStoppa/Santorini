@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Model.God.Apollo;
-import it.polimi.ingsw.Model.God.Athena;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Model.God.God;
-
 import java.util.ArrayList;
 
 /**Represents the playing <em>Player</em>. After getting multiple information from the <em>Player<em> (idPlayer and playerBirthday)

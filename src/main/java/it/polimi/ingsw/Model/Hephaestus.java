@@ -1,7 +1,6 @@
-package it.polimi.ingsw.Model.God;
+package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.HephaestusController;
-import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.ArrayList;
 

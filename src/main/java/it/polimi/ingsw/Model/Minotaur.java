@@ -1,7 +1,6 @@
-package it.polimi.ingsw.Model.God;
+package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.MinotaurController;
-import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ public class Minotaur extends God {
         this.powerDescription = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to and unoccupied space at any level.";
 
         this.phasesList = new ArrayList<PossiblePhases>();
-        this.phasesList.add(PossiblePhases.CHOOSE_CONSTRUCTOR);
+        this.phasesList.add(PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.SPECIAL_MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
 

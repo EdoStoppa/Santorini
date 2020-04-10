@@ -1,7 +1,6 @@
-package it.polimi.ingsw.Model.God;
+package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.PrometheusController;
-import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,7 @@ public class Prometheus extends God {
         this.powerDescription = "Your Turn: If your Worker does not move up, it may build both before and after moving.";
 
         this.phasesList = new ArrayList<PossiblePhases>();
-        this.phasesList.add(PossiblePhases.CHOOSE_CONSTRUCTOR);
+        this.phasesList.add(PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.SPECIAL_BUILD);
         this.phasesList.add(PossiblePhases.MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
