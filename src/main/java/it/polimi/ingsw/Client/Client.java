@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -8,7 +9,7 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Client<ThreadasyncWriteToSocket> {
+public class Client {
     private String ip;
     private int port;
     private boolean active= true;
@@ -33,7 +34,8 @@ public class Client<ThreadasyncWriteToSocket> {
                     Object inputObject = socketIn.readObject();
                     if(inputObject instanceof String){
                         System.out.println((String)inputObject);
-                    } else {
+                    } else
+                    {
                         throw new  IllegalArgumentException();
                     }
                 }
