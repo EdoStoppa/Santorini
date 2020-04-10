@@ -193,6 +193,74 @@ public class Model extends Observable<GameMessage> {
         }
     }
 
+    /**
+     * This method creates an ArrayList which contains every possible move the <em>Constructor</em> can perform.
+     * It helps to control the special power of certain <em>Gods</em>
+     *
+     * @param addList   list of <em>Positions</em> that has to be added to list
+     * @param deleteList    list of <em>Positions</em> that has to be removed from list
+     * @return  an ArrayList of <em>Positions</em> where the <em>Constructor</em> can move
+     */
+    public ArrayList<Position> createPossibleMovePos(ArrayList<Position> addList, ArrayList<Position> deleteList)   {
+        ArrayList<Position> list;
+
+        list = board.possibleMoveset(currentConstructor);
+        if(addList != null) {
+            for(int i = 0; i < addList.size(); i++) {
+                boolean flag = true;
+                for (int j = 0; j < list.size() && flag; j++) {
+                    if (list.get(j).equals(addList.get(i))) {
+                        flag = false;
+                    }
+                }
+                if(flag)    {
+                    list.add(addList.get(i));
+                }
+            }
+        }
+        if(deleteList != null)  {
+            for(Position delPos : deleteList)  {
+                for(int i = 0; i < list.size(); i++)   {
+                    if(list.get(i).equals(delPos)) {
+                        list.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<Position> createPossibleBuildPos(ArrayList<Position> addList, ArrayList<Position> deleteList)  {
+        ArrayList<Position> list;
+
+        list = board.possibleBuild(currentConstructor);
+        for(int i = 0; i < addList.size(); i++) {
+            boolean flag = true;
+            for(int j = 0; j < list.size() && flag; j++)   {
+                if(list.get(j).equals(addList.get(i)))  {
+                    flag = false;
+                }
+            }
+            if(flag)    {
+                list.add(addList.get(i));
+            }
+        }
+        for(Position delPos : deleteList)   {
+            for(int i = 0; i < list.size(); i++)    {
+                if(list.get(i).equals(delPos))  {
+                    list.remove(i);
+                    break;
+                }
+            }
+        }
+        return list;
+    }
+
+    public God getCurrentGod()  {
+        return gameState.getCurrentPlayer().getGod();
+    }
+
     protected Board getBoard()  {
         return board;
     }
