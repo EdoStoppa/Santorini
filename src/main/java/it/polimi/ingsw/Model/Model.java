@@ -199,9 +199,8 @@ public class Model extends Observable<GameMessage> {
      *
      * @param addList   list of <em>Positions</em> that has to be added to list
      * @param deleteList    list of <em>Positions</em> that has to be removed from list
-     * @return  an ArrayList of <em>Positions</em> where the <em>Constructor</em> can move
      */
-    public ArrayList<Position> createPossibleMovePos(ArrayList<Position> addList, ArrayList<Position> deleteList)   {
+    public void createPossibleMovePos(ArrayList<Position> addList, ArrayList<Position> deleteList)   {
         ArrayList<Position> list;
 
         list = board.possibleMoveset(currentConstructor);
@@ -228,7 +227,9 @@ public class Model extends Observable<GameMessage> {
                 }
             }
         }
-        return list;
+        setTileToShow(list);
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " can move to any of these tiles";
+        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
     }
 
     /**
@@ -237,9 +238,8 @@ public class Model extends Observable<GameMessage> {
      *
      * @param addList   list of <em>Positions</em> that has to be added to list
      * @param deleteList    list of <em>Positions</em> that has to be removed from list
-     * @return  an ArrayList of <em>Positions</em> where the <em>Constructor</em> can build
      */
-    public ArrayList<Position> createPossibleBuildPos(ArrayList<Position> addList, ArrayList<Position> deleteList)  {
+    public void createPossibleBuildPos(ArrayList<Position> addList, ArrayList<Position> deleteList)  {
         ArrayList<Position> list;
 
         list = board.possibleBuild(currentConstructor);
@@ -262,7 +262,9 @@ public class Model extends Observable<GameMessage> {
                 }
             }
         }
-        return list;
+        setTileToShow(list);
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
+        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
     }
 
     public God getCurrentGod()  {
