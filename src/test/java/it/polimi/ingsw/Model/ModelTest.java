@@ -198,4 +198,93 @@ class ModelTest {
         assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
         assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
     }
+
+    @RepeatedTest(3)
+    void isLastStanding(RepetitionInfo repetitionInfo)   {
+        boolean expected;
+        Player p1 = new Player("First", "28/05/1998", 1);
+        Player p2 = new Player("Second", "11/07/2001", 2);
+        ArrayList<Player> list = new ArrayList<Player>();
+
+        if(repetitionInfo.getCurrentRepetition() == 1)  {//The player is the last standing.
+            list.add(p1);
+            model.getGameState().setPlayerList(list);
+            model.getGameState().setCurrentPlayer(p1);
+            expected = true;
+            assertEquals(expected, model.isLastStanding(), "The player should be the last one");
+        }
+        if(repetitionInfo.getCurrentRepetition() == 2) {//The player is not the last one, (playerList.size = 2)
+            list.add(p1);
+            list.add(p2);
+            model.getGameState().setPlayerList(list);
+            model.getGameState().setCurrentPlayer(p1);
+            expected = false;
+            assertEquals(expected, model.isLastStanding(), "The player shold not be the last one");
+        }
+        if(repetitionInfo.getCurrentRepetition() == 3)  {//The player is not the last one, playerList.size = 1
+            list.add(p2);
+            model.getGameState().setPlayerList(list);
+            model.getGameState().setCurrentPlayer(p1);
+            expected = false;
+            assertEquals(expected, model.isLastStanding(), "The player should not be the last one");
+        }
+
+    }
+
+    @RepeatedTest(2)
+    void createPossibleConstructorPosTest(RepetitionInfo repetitionInfo) {
+        List<Position> expected = new ArrayList<Position>();
+
+        if (repetitionInfo.getCurrentRepetition() == 1) {// 2 constructors can move
+            model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setCanMove(true);
+            model.getGameState().getCurrentPlayer().getAllConstructors().get(1).setCanMove(true);
+            model.createPossibleConstructorPos();
+            expected.add(model.getGameState().getCurrentPlayer().getAllConstructors().get(0).getPos());
+            expected.add(model.getGameState().getCurrentPlayer().getAllConstructors().get(1).getPos());
+            String expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " can choose between " + expected.size() + " constructors";
+            assertAll(
+                    () -> assertEquals(expected.get(0).getCol(), model.getTileToShow().get(0).getCol(), "The column should be the same"),
+                    () -> assertEquals(expected.get(0).getRow(), model.getTileToShow().get(0).getRow(), "The row should be the same"),
+                    () -> assertEquals(expected.get(1).getCol(), model.getTileToShow().get(1).getCol(), "The column should be the same"),
+                    () -> assertEquals(expected.get(1).getRow(), model.getTileToShow().get(1).getRow(), "The row should be the same"),
+                    () -> assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same"),
+                    () -> assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same")
+            );
+        }
+        if (repetitionInfo.getCurrentRepetition() == 2) {//1 constructor can move
+            model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setCanMove(true);
+            model.getGameState().getCurrentPlayer().getAllConstructors().get(1).setCanMove(false);
+            model.createPossibleConstructorPos();
+            expected.add(model.getGameState().getCurrentPlayer().getAllConstructors().get(0).getPos());
+            String expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " can choose between " + expected.size() + " constructors";
+            assertAll(
+                    () -> assertEquals(expected.get(0).getCol(), model.getTileToShow().get(0).getCol(), "The column should be the same"),
+                    () -> assertEquals(expected.get(0).getRow(), model.getTileToShow().get(0).getRow(), "The row should be the same"),
+                    () -> assertEquals(1, model.getTileToShow().size(), "There should be just one cell"),
+                    () -> assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same"),
+                    () -> assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same")
+            );
+        }
+    }
+
+    @Test
+    void deactivateConstructorIfNeededTest()   {
+        boolean expected;
+        Random random = new Random();
+        model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setPos(new Position(random.nextInt(4), random.nextInt(4)));
+        model.getGameState().getCurrentPlayer().getAllConstructors().get(1).setPos(new Position(random.nextInt(4), random.nextInt(4)));
+        model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setCanMove(true);
+        model.getGameState().getCurrentPlayer().getAllConstructors().get(1).setCanMove(true);
+        model.deactivateConstructorIfNeeded();
+        for(Constructor c : model.getGameState().getCurrentPlayer().getAllConstructors())   {
+            if(model.getBoard().possibleMoveset(c) == null) {
+                expected = false;
+            }
+            else    {
+                expected = true;
+            }
+            assertEquals(expected, c.getCanMove(), "It should be as expected");
+        }
+    }
 }
+

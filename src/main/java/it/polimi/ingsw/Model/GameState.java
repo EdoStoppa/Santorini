@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.God.God;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -95,4 +96,15 @@ public class GameState {
         this.playerList.remove(p);
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+//                                             FOR TESTING PURPOSE
+//----------------------------------------------------------------------------------------------------------------------
+
+    protected void setCurrentPlayer(Player p)   {
+        this.currentPlayer = p;
+    }
+
+    protected void setPlayerList(ArrayList<Player> list)    {
+        this.playerList = list;
+    }
 }
