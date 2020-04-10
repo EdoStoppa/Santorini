@@ -231,6 +231,14 @@ public class Model extends Observable<GameMessage> {
         return list;
     }
 
+    /**
+     * This method creates an ArrayList which contains every possible <em>Position</em> the <em>Constructor</em> can perform a build.
+     * It helps to control the special power of certain <em>Gods</em>
+     *
+     * @param addList   list of <em>Positions</em> that has to be added to list
+     * @param deleteList    list of <em>Positions</em> that has to be removed from list
+     * @return  an ArrayList of <em>Positions</em> where the <em>Constructor</em> can build
+     */
     public ArrayList<Position> createPossibleBuildPos(ArrayList<Position> addList, ArrayList<Position> deleteList)  {
         ArrayList<Position> list;
 
