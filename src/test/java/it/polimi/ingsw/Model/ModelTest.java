@@ -37,7 +37,7 @@ class ModelTest {
         p1.setGod(new Athena());
         p2 = new Player("Second", "02/01/2000", 2);
         p2.setGod(new Apollo());
-        list = new ArrayList<Player>();
+        list = new ArrayList<>();
         list.add(p1);
         list.add(p2);
 
@@ -95,15 +95,15 @@ class ModelTest {
                 Position p1 = new Position(i, j);
                 if(model.getBoard().getTile(p1).getOccupied())  {
                     if(p1.equals(pos))  {
-                        assertEquals(true, model.isOccupied(pos), "The Tile should be occupied");
+                        assertTrue(model.isOccupied(pos), "The Tile should be occupied");
                         t = true;
                         break;
                     }
                 }
             }
         }
-        if(t == false)  {
-            assertEquals(false, model.isOccupied(pos),"The Tile should not be occupied");
+        if(!t)  {
+            assertFalse(model.isOccupied(pos),"The Tile should not be occupied");
         }
     }
 
@@ -115,7 +115,7 @@ class ModelTest {
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(true);
             list.get(1).setCanMove(true);
-            assertEquals(false, model.isLosing(p), "The player is not losing");
+            assertFalse(model.isLosing(p), "The player is not losing");
         }
         if(repetitionInfo.getCurrentRepetition() == 2)  {//The player can move just 1 constructor
             Random random = new Random();
@@ -123,7 +123,7 @@ class ModelTest {
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
             list.get(1).setCanMove(true);
-            assertEquals(false, model.isLosing(p), "The player is not losing");
+            assertFalse(model.isLosing(p), "The player is not losing");
         }
         if(repetitionInfo.getCurrentRepetition() == 3)  {//The player can not move any constructor
             Random random = new Random();
@@ -131,7 +131,7 @@ class ModelTest {
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
             list.get(1).setCanMove(false);
-            assertEquals(true, model.isLosing(p), "The player is losing");
+            assertTrue(model.isLosing(p), "The player is losing");
         }
     }
 
@@ -140,23 +140,23 @@ class ModelTest {
         if(repetitionInfo.getCurrentRepetition() == 1)  {
             model.getGameState().startGame();
             assertAll(
-                    ()  ->  assertEquals(true, model.isPlayerTurn(list.get(0)), "Should be the turn of player number 1"),
-                    ()  ->  assertEquals(false, model.isPlayerTurn(list.get(1)),"Should not be the turn of player number 2")
+                    ()  ->  assertTrue(model.isPlayerTurn(list.get(0)), "Should be the turn of player number 1"),
+                    ()  ->  assertFalse(model.isPlayerTurn(list.get(1)),"Should not be the turn of player number 2")
             );
         }
         if(repetitionInfo.getCurrentRepetition() == 2)  {
             model.getGameState().startGame();
             model.getGameState().nextTurn();
             assertAll(
-                    ()  ->  assertEquals(false, model.isPlayerTurn(list.get(0)), "Should not be the turn of player number 1"),
-                    ()  ->  assertEquals(true, model.isPlayerTurn(list.get(1)),"Should be the turn of player number 2")
+                    ()  ->  assertFalse(model.isPlayerTurn(list.get(0)), "Should not be the turn of player number 1"),
+                    ()  ->  assertTrue(model.isPlayerTurn(list.get(1)),"Should be the turn of player number 2")
             );
         }
     }
 
     @Test
     void performMoveTest() {
-        String expectedMessage = new String();
+        String expectedMessage;
 
         model.setCurrentConstructor(model.getBoard().getTile(posCurrentConstructor).getActualConstuctor());
         Position nextPosCurrentConstructor = new Position(posCurrentConstructor.getRow() + 1, posCurrentConstructor.getCol() -1);
@@ -173,7 +173,7 @@ class ModelTest {
     @Test
     void performBuild() {
         Random random = new Random();
-        String expectedMessage = new String();
+        String expectedMessage;
         Position p1 = new Position(random.nextInt(4), random.nextInt(4));
         int expectedConstructionLevel = 0;
         boolean expectedDome = false;
@@ -199,39 +199,35 @@ class ModelTest {
 
     @RepeatedTest(3)
     void isLastStanding(RepetitionInfo repetitionInfo)   {
-        boolean expected;
         Player p1 = new Player("First", "28/05/1998", 1);
         Player p2 = new Player("Second", "11/07/2001", 2);
-        ArrayList<Player> list = new ArrayList<Player>();
+        ArrayList<Player> list = new ArrayList<>();
 
         if(repetitionInfo.getCurrentRepetition() == 1)  {//The player is the last standing.
             list.add(p1);
             model.getGameState().setPlayerList(list);
             model.getGameState().setCurrentPlayer(p1);
-            expected = true;
-            assertEquals(expected, model.isLastStanding(), "The player should be the last one");
+            assertTrue(model.isLastStanding(), "The player should be the last one");
         }
         if(repetitionInfo.getCurrentRepetition() == 2) {//The player is not the last one, (playerList.size = 2)
             list.add(p1);
             list.add(p2);
             model.getGameState().setPlayerList(list);
             model.getGameState().setCurrentPlayer(p1);
-            expected = false;
-            assertEquals(expected, model.isLastStanding(), "The player shold not be the last one");
+            assertFalse(model.isLastStanding(), "The player should not be the last one");
         }
         if(repetitionInfo.getCurrentRepetition() == 3)  {//The player is not the last one, playerList.size = 1
             list.add(p2);
             model.getGameState().setPlayerList(list);
             model.getGameState().setCurrentPlayer(p1);
-            expected = false;
-            assertEquals(expected, model.isLastStanding(), "The player should not be the last one");
+            assertFalse(model.isLastStanding(), "The player should not be the last one");
         }
 
     }
 
     @RepeatedTest(2)
     void createPossibleConstructorPosTest(RepetitionInfo repetitionInfo) {
-        List<Position> expected = new ArrayList<Position>();
+        List<Position> expected = new ArrayList<>();
 
         if (repetitionInfo.getCurrentRepetition() == 1) {// 2 constructors can move
             model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setCanMove(true);
@@ -267,21 +263,29 @@ class ModelTest {
 
     @Test
     void deactivateConstructorIfNeededTest()   {
-        boolean expected;
         Random random = new Random();
-        model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setPos(new Position(random.nextInt(4), random.nextInt(4)));
-        model.getGameState().getCurrentPlayer().getAllConstructors().get(1).setPos(new Position(random.nextInt(4), random.nextInt(4)));
-        model.getGameState().getCurrentPlayer().getAllConstructors().get(0).setCanMove(true);
-        model.getGameState().getCurrentPlayer().getAllConstructors().get(1).setCanMove(true);
+        Constructor c1 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
+        Constructor c2 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
+        Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
+        Position pos2 = new Position(random.nextInt(4), random.nextInt(4));
+        while(pos1.equals(pos2))    {
+            pos2 = new Position(random.nextInt(4), random.nextInt(4));
+        }
+
+        model.getGameState().getCurrentPlayer().getAllConstructors().set(0, c1);
+        model.getGameState().getCurrentPlayer().getAllConstructors().set(1, c2);
+        c1.setCanMove(true);
+        c2.setCanMove(true);
+        model.getBoard().placeConstructor(model.getBoard().getTile(pos1), c1);
+        model.getBoard().placeConstructor(model.getBoard().getTile(pos2), c2);
         model.deactivateConstructorIfNeeded();
         for(Constructor c : model.getGameState().getCurrentPlayer().getAllConstructors())   {
             if(model.getBoard().possibleMoveset(c) == null) {
-                expected = false;
+                assertFalse(c.getCanMove(), "The constructor should not move");
             }
             else    {
-                expected = true;
+                assertTrue(c.getCanMove(), "The constructor should move");
             }
-            assertEquals(expected, c.getCanMove(), "It should be as expected");
         }
     }
 }

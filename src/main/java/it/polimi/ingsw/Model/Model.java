@@ -87,10 +87,8 @@ public class Model extends Observable<GameMessage> {
         return (currentTile.getConstructionLevel() == 3);
     }
 
-    ;
-
     /**
-     * Mtehod used to check if it's the turn of the given <em>Player</em>
+     * The method is used to check if it's the turn of the given <em>Player</em>
      *
      * @param p <em>Player</em> to check
      * @return if it's his/hers turn
@@ -158,12 +156,7 @@ public class Model extends Observable<GameMessage> {
      * @return true if he is the only one that can perform a move, false if he is not.
      */
     public boolean isLastStanding() {
-        if(gameState.getPlayerList().size() == 1 && gameState.getPlayerList().get(0).equals(gameState.getCurrentPlayer()))  {
-            return true;
-        }
-        else    {
-            return false;
-        }
+        return (gameState.getPlayerList().size() == 1 && gameState.getPlayerList().get(0).equals(gameState.getCurrentPlayer()));
     }
 
     /**
@@ -171,7 +164,7 @@ public class Model extends Observable<GameMessage> {
      * current <em>Player</em> that can actually move. It notify observers by a <em>TileToShowMessage</em>.
      */
     public void createPossibleConstructorPos()  {
-        List<Position> list = new ArrayList<Position>();
+        List<Position> list = new ArrayList<>();
 
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
             if(c.getCanMove())  {
@@ -188,7 +181,7 @@ public class Model extends Observable<GameMessage> {
      * not, the <em>Constructor</em> is deactivated.
      */
     public void deactivateConstructorIfNeeded() {
-        List<Position> list = new ArrayList<Position>();
+        List<Position> list;
 
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
             if(c.getCanMove())  {
@@ -199,9 +192,6 @@ public class Model extends Observable<GameMessage> {
             }
         }
     }
-//----------------------------------------------------------------------------------------------------------------------
-//                                              FOR TESTING PURPOSE
-//----------------------------------------------------------------------------------------------------------------------
 
     protected Board getBoard()  {
         return board;
