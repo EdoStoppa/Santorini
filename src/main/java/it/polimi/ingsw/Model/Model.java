@@ -186,7 +186,7 @@ public class Model extends Observable<GameMessage> {
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
             if(c.getCanMove())  {
                 list = board.possibleMoveset(c);
-                if(list == null)    {
+                if(list.size() == 0)    {
                     c.setCanMove(false);
                 }
             }

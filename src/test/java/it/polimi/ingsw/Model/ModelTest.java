@@ -280,7 +280,7 @@ class ModelTest {
         model.getBoard().placeConstructor(model.getBoard().getTile(pos2), c2);
         model.deactivateConstructorIfNeeded();
         for(Constructor c : model.getGameState().getCurrentPlayer().getAllConstructors())   {
-            if(model.getBoard().possibleMoveset(c) == null) {
+            if(model.getBoard().possibleMoveset(c).size() == 0) {
                 assertFalse(c.getCanMove(), "The constructor should not move");
             }
             else    {
