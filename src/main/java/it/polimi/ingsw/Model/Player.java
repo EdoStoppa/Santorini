@@ -60,4 +60,11 @@ public class Player {
     public int getPlayerNumber(){
         return playerNumber;
     }
+//----------------------------------------------------------------------------------------------------------------------
+//                                              FOR TESTING PURPOSE
+//----------------------------------------------------------------------------------------------------------------------
+
+    protected void setOwnConstructors(ArrayList<Constructor> c) {
+        this.ownConstructors = c;
+    }
 }

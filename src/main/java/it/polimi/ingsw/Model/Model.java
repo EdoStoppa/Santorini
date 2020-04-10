@@ -1,10 +1,13 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.BuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.MoveMessage;
+import it.polimi.ingsw.Message.TileToShowMessage;
 import it.polimi.ingsw.Observer.Observable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Model extends Observable<GameMessage> {
@@ -140,6 +143,62 @@ public class Model extends Observable<GameMessage> {
         return gameState.getCurrentPhase();
     }
 
+    /**
+     * This method return the <em>GodController</em> of the <em>God</em> the current <em>Player</em> has.
+     *
+     * @return The <em>GodController</em> of the current player's <em>God</em>
+     */
+    public GodController getCurrentPlayerController()   {
+        return gameState.getCurrentPlayer().getGod().getGodController();
+    }
+
+    /**
+     * This method checks if the <em>Player</em> is the only one that can perform a move
+     *
+     * @return true if he is the only one that can perform a move, false if he is not.
+     */
+    public boolean isLastStanding() {
+        if(gameState.getPlayerList().size() == 1 && gameState.getPlayerList().get(0).equals(gameState.getCurrentPlayer()))  {
+            return true;
+        }
+        else    {
+            return false;
+        }
+    }
+
+    /**
+     * This method is used to create an array of <em>Position</em>, which contains every <em>Constructor</em> of the
+     * current <em>Player</em> that can actually move. It notify observers by a <em>TileToShowMessage</em>.
+     */
+    public void createPossibleConstructorPos()  {
+        List<Position> list = new ArrayList<Position>();
+
+        for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
+            if(c.getCanMove())  {
+                list.add(c.getPos().clone());
+            }
+        }
+        setTileToShow(list);
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " can choose between " + list.size() + " constructors";
+        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+    }
+
+    /**
+     * This method checks if every <em>Constructor</em> of the current <em>Player</em> can perform a move. If it can
+     * not, the <em>Constructor</em> is deactivated.
+     */
+    public void deactivateConstructorIfNeeded() {
+        List<Position> list = new ArrayList<Position>();
+
+        for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
+            if(c.getCanMove())  {
+                list = board.possibleMoveset(c);
+                if(list == null)    {
+                    c.setCanMove(false);
+                }
+            }
+        }
+    }
 //----------------------------------------------------------------------------------------------------------------------
 //                                              FOR TESTING PURPOSE
 //----------------------------------------------------------------------------------------------------------------------
