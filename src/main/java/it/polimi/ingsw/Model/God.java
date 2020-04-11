@@ -23,7 +23,7 @@ public abstract class God {
     protected GodController godController;
 
     public List<PossiblePhases> getPhasesList(){
-        return new ArrayList<PossiblePhases>(this.phasesList);
+        return this.phasesList;
     }
 
     public GodController getGodController(){

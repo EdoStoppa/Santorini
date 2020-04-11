@@ -53,21 +53,21 @@ class ModelTest {
             int x = random.nextInt(4);
             int y = random.nextInt(4);
             Position pos = new Position(x, y);
-            if(model.getBoard().getTile(pos).getActualConstuctor() == null)    {
+            if(board.getTile(pos).getActualConstuctor() == null)    {
                 if(numberConstructorsP1 < 2)    {
                     Constructor c1 = new Constructor(1);
-                    model.getBoard().getTile(pos).setActualConstuctor(c1);
+                    board.getTile(pos).setActualConstuctor(c1);
                     numberConstructorsP1++;
                 }
-                else if(numberConstructorsP2 < 2)   {
+                else   {
                     Constructor c2 = new Constructor(2);
                     if(numberConstructorsP2 == 1)   {
                         Position pos1 = new Position(3, 3);
-                        model.getBoard().getTile(pos1).setActualConstuctor(c2);
+                        board.getTile(pos1).setActualConstuctor(c2);
                         posCurrentConstructor = pos1;
                     }
                     else    {
-                        model.getBoard().getTile(pos).setActualConstuctor(c2);
+                        board.getTile(pos).setActualConstuctor(c2);
                     }
                     numberConstructorsP2++;
                 }
@@ -78,7 +78,7 @@ class ModelTest {
                 Position pos = new Position(i, j);
                 int miavar = random.nextInt(4);
                 for(int k = 0; k < miavar; k++) {
-                    model.getBoard().getTile(pos).increaseConstructionLevel();
+                    board.getTile(pos).increaseConstructionLevel();
                 }
             }
         }

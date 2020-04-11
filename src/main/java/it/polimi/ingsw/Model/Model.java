@@ -7,6 +7,7 @@ import it.polimi.ingsw.Message.MoveMessage;
 import it.polimi.ingsw.Message.TileToShowMessage;
 import it.polimi.ingsw.Observer.Observable;
 
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +97,15 @@ public class Model extends Observable<GameMessage> {
     public boolean isPlayerTurn(Player p) {
         Player currentP = gameState.getCurrentPlayer();
         return p.getIdPlayer().equals(currentP.getIdPlayer());
+    }
+
+    /**
+     * It sets currentConstructor to the actual <em>Constructor</em> in the position passed as parameter.
+     *
+     * @param pos   The <em>Position</em> where there's the constructor the player wants to choose.
+     */
+    public void performChooseConstructor(Position pos) {
+        setCurrentConstructor(board.getTile(pos).getActualConstuctor());
     }
 
     /**
@@ -200,10 +210,63 @@ public class Model extends Observable<GameMessage> {
      * @param addList   list of <em>Positions</em> that has to be added to list
      * @param deleteList    list of <em>Positions</em> that has to be removed from list
      */
-    public void createPossibleMovePos(ArrayList<Position> addList, ArrayList<Position> deleteList)   {
-        ArrayList<Position> list;
+    public void createPossibleMovePos(List<Position> addList, List<Position> deleteList)   {
+        List<Position> list;
 
         list = board.possibleMoveset(currentConstructor);
+        list = checkListsParameter(list, addList, deleteList);
+        setTileToShow(list);
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " can move to any of these tiles";
+        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+    }
+
+    /**
+     * This method creates an ArrayList which contains every possible <em>Position</em> the <em>Constructor</em> can perform a build.
+     * It helps to control the special power of certain <em>Gods</em>
+     *
+     * @param addList   list of <em>Positions</em> that has to be added to list
+     * @param deleteList    list of <em>Positions</em> that has to be removed from list
+     */
+    public void createPossibleBuildPos(List<Position> addList, List<Position> deleteList)  {
+        List<Position> list;
+
+        list = board.possibleBuild(currentConstructor);
+        list = checkListsParameter(list, addList, deleteList);
+        setTileToShow(list);
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
+        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+    }
+
+    public boolean isLosing()  {
+        return isLosing(gameState.getCurrentPlayer());
+    }
+
+    /**
+     * It destroys every phase of the current player.
+     */
+    public void destroyRemainingPhases()    {
+        List<PossiblePhases> list = getCurrentGod().getPhasesList();
+
+        for(int i = list.size() - 1; i >= 1; i--)   {
+            list.remove(i);
+        }
+    }
+
+    public God getCurrentGod()  {
+        return gameState.getCurrentPlayer().getGod();
+    }
+
+    protected Board getBoard()  {
+        return board;
+    }
+
+    protected GameState getGameState()  {
+        return gameState;
+    }
+
+    protected Constructor getCurrentConstructor()   {return  currentConstructor;}
+
+    private List<Position> checkListsParameter(List<Position> list, List<Position> addList, List<Position> deleteList)  {
         if(addList != null) {
             for(int i = 0; i < addList.size(); i++) {
                 boolean flag = true;
@@ -227,57 +290,6 @@ public class Model extends Observable<GameMessage> {
                 }
             }
         }
-        setTileToShow(list);
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " can move to any of these tiles";
-        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+        return list;
     }
-
-    /**
-     * This method creates an ArrayList which contains every possible <em>Position</em> the <em>Constructor</em> can perform a build.
-     * It helps to control the special power of certain <em>Gods</em>
-     *
-     * @param addList   list of <em>Positions</em> that has to be added to list
-     * @param deleteList    list of <em>Positions</em> that has to be removed from list
-     */
-    public void createPossibleBuildPos(ArrayList<Position> addList, ArrayList<Position> deleteList)  {
-        ArrayList<Position> list;
-
-        list = board.possibleBuild(currentConstructor);
-        for(int i = 0; i < addList.size(); i++) {
-            boolean flag = true;
-            for(int j = 0; j < list.size() && flag; j++)   {
-                if(list.get(j).equals(addList.get(i)))  {
-                    flag = false;
-                }
-            }
-            if(flag)    {
-                list.add(addList.get(i));
-            }
-        }
-        for(Position delPos : deleteList)   {
-            for(int i = 0; i < list.size(); i++)    {
-                if(list.get(i).equals(delPos))  {
-                    list.remove(i);
-                    break;
-                }
-            }
-        }
-        setTileToShow(list);
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
-        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
-    }
-
-    public God getCurrentGod()  {
-        return gameState.getCurrentPlayer().getGod();
-    }
-
-    protected Board getBoard()  {
-        return board;
-    }
-
-    protected GameState getGameState()  {
-        return gameState;
-    }
-
-    protected Constructor getCurrentConstructor()   {return  currentConstructor;}
 }
