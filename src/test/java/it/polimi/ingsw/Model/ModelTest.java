@@ -189,12 +189,15 @@ class ModelTest {
             expectedConstructionLevel = 3;
             expectedDome = true;
         }
+        model.setCurrentConstructor(model.getGameState().getCurrentPlayer().getAllConstructors().get(0));
         model.performBuild(p1);
         expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " built on position: " + p1.toString();
         assertEquals(expectedConstructionLevel, model.getBoard().getTile(p1).getConstructionLevel(),"The level should be the same");
         assertEquals(expectedDome, model.getBoard().getTile(p1).getDome(),"The dome should be the same");
         assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
         assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+        assertEquals(p1.getRow(), model.getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
+        assertEquals(p1.getCol(), model.getCurrentConstructor().getLastBuildPos().getCol(),"The column should be the same");
     }
 
     @RepeatedTest(3)
