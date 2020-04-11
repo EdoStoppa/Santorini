@@ -7,7 +7,6 @@ import it.polimi.ingsw.Message.MoveMessage;
 import it.polimi.ingsw.Message.TileToShowMessage;
 import it.polimi.ingsw.Observer.Observable;
 
-import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,10 +246,7 @@ public class Model extends Observable<GameMessage> {
      */
     public void destroyRemainingPhases()    {
         List<PossiblePhases> list = getCurrentGod().getPhasesList();
-
-        for(int i = list.size() - 1; i >= 1; i--)   {
-            list.remove(i);
-        }
+        list.subList(1, list.size() -1).clear();
     }
 
     public God getCurrentGod()  {
@@ -269,15 +265,15 @@ public class Model extends Observable<GameMessage> {
 
     private List<Position> checkListsParameter(List<Position> list, List<Position> addList, List<Position> deleteList)  {
         if(addList != null) {
-            for(int i = 0; i < addList.size(); i++) {
+            for(Position position : addList) {
                 boolean flag = true;
-                for (int j = 0; j < list.size() && flag; j++) {
-                    if (list.get(j).equals(addList.get(i))) {
+                for(int j = 0; j < list.size() && flag; j++) {
+                    if (list.get(j).equals(position)) {
                         flag = false;
                     }
                 }
-                if(flag)    {
-                    list.add(addList.get(i));
+                if(flag) {
+                    list.add(position);
                 }
             }
         }
