@@ -18,6 +18,10 @@ public class Constructor {
      */
     private Position prevPosConstructor;
 
+    /**Represents the last <em>Position</em> where the <em>Constructor</em> built something
+     */
+    private Position lastBuildPos;
+
 
     /**Creates a <em>Constructor</em> in a "dummy" <em>Position</em> (-1,-1) that obviously does not
      * exist on the <em>Board</em>, but during the start phase of the game will be changed to
@@ -30,6 +34,7 @@ public class Constructor {
         this.playerNumber = playerNumber;
         this.posConstructor = new Position(-1, -1);
         this.prevPosConstructor = new Position(-1, -1);
+        this.lastBuildPos = new Position(-1, -1);
     }
 
 
@@ -61,5 +66,11 @@ public class Constructor {
         this.prevPosConstructor = old;
     }
 
+    public Position getLastBuildPos(){
+        return this.lastBuildPos;
+    }
 
+    public void setLastBuildPos(Position p){
+        this.lastBuildPos = p;
+    }
 }

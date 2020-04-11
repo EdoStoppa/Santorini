@@ -24,14 +24,13 @@ public class ApolloController extends GodController {
             return;
         }
 
-        //Apollo apollo = (Apollo)model.getCurrentGod();
-        //apollo.deactivateIfNeeded(model);
-        // WAIT FOR "isLosing" IMPLEMENTATION IN MODEL (NEW VERSION WITHOUT A PLAYER INPUT)
-        /*if(model.isLosing()){
+        Apollo apollo = (Apollo)model.getCurrentGod();
+        apollo.deactivateIfNeeded(model);
+        if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
             controller.executeLoseSequence();
             return;
-         }*/
+         }
         model.createPossibleConstructorPos();
     }
 
@@ -42,10 +41,9 @@ public class ApolloController extends GodController {
      */
     @Override
     public void prepareSpecialMove(Model model, Controller controller) {
-        //Apollo apollo = (Apollo)model.getCurrentGod();
-
-        //List<Position> addList = apollo.getMoveAddList(model);
-        //model.createPossibleMovePos(addList, null);
+        Apollo apollo = (Apollo)model.getCurrentGod();
+        List<Position> addList = apollo.getMoveAddList(model);
+        model.createPossibleMovePos(addList, null);
     }
 
     /**Used to handle all the correct calls to the model for a special move
@@ -58,7 +56,7 @@ public class ApolloController extends GodController {
         Position p = posMessage.getPosition();
 
         if(model.isOccupied(p)){
-            //model.performSwap(p);
+            // model.performSwap(p);
         } else {
             model.performMove(p);
         }

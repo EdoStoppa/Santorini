@@ -4,6 +4,7 @@ import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.*;
 import it.polimi.ingsw.Model.Model;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.Observer.Observer;
@@ -47,9 +48,7 @@ public class Controller implements Observer<FromClientMessage> {
     }
 
     public void handleChooseConstructor(PosMessage message){
-        // WAIT FOR "performChooseConstructor" IMPLEMENTATION IN MODEL
-
-        //model.performChooseConstructor(message.getPosition());
+        model.performChooseConstructor(message.getPosition());
     }
 
     public void handleMove(PosMessage message){
@@ -99,36 +98,30 @@ public class Controller implements Observer<FromClientMessage> {
         }
 
         model.deactivateConstructorIfNeeded();
-        // WAIT FOR "isLosing" IMPLEMENTATION IN MODEL (NEW VERSION WITHOUT A PLAYER INPUT)
-        /*if(model.isLosing()){
+        if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
             executeLoseSequence();
             return;
-         }*/
-
+         }
         model.createPossibleConstructorPos();
     }
 
     public void prepareMove(){
-        // WAIT FOR "createPossibleMovePos" IMPLEMENTATION IN MODEL
-
-        // model.createPossibleMovePos(null, null);
+        model.createPossibleMovePos(null, null);
     }
 
     public void prepareBuild(){
-        // WAIT FOR "createPossibleBuildPos" IMPLEMENTATION IN MODEL
-
-        // model.createPossibleBuildPos(null, null);
+        model.createPossibleBuildPos(null, null);
     }
 
     public void executeLoseSequence(){
-        /*model.destroyRemainingPhases();
+        model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
 
-        Player toDelete = model.getCurrentPlayer();
+        //Player toDelete = model.getCurrentPlayer();
         model.nextPhase();
-        model.removePlayer(p);
-        model.preparePhase();*/
+        //model.removePlayer(toDelete);
+        preparePhase();
     }
 
     public void executeWinSequence(){

@@ -12,8 +12,8 @@ public class AthenaController extends GodController {
      */
     @Override
     public void prepareSpecialChooseConstructor(Model model, Controller controller){
-        //Athena athena = (Athena)model.getCurrentGod();
-        //athena.changeGoUp(model, true);
+        Athena athena = (Athena)model.getCurrentGod();
+        athena.changeCanGoUp(model, true);
 
         controller.prepareChooseConstructor();
     }
@@ -27,10 +27,10 @@ public class AthenaController extends GodController {
     public void handleSpecialMove(Model model, Controller controller, PosMessage posMessage){
         controller.handleMove(posMessage);
 
-        //Athena athena = (Athena)model.getCurrentGod();
-        /*if(athena.shouldActivatePower(model)){
+        Athena athena = (Athena)model.getCurrentGod();
+        if(athena.shouldActivatePower(model)){
             athena.changeCanGoUp(model, false);
-        }*/
+        }
     }
 
     /**Used to handle all the correct calls to the model to prepare a special move phase

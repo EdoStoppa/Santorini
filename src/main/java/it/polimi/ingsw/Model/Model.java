@@ -136,6 +136,7 @@ public class Model extends Observable<GameMessage> {
     public void performBuild(Position pos) {
         Tile t = board.getTile(pos);
         board.placeBuilding(t);
+        currentConstructor.setLastBuildPos(pos.clone());
 
         int[][] matrix = board.createBuildingMatrix();
         String message = gameState.getCurrentPlayer().getIdPlayer() + " built on position: " + pos.toString();

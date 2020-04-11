@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller.GodController;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.PosMessage;
+import it.polimi.ingsw.Model.Artemis;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Position;
 
@@ -31,9 +32,9 @@ public class ArtemisController extends GodController {
     @Override
     public void prepareSpecialMove(Model model, Controller controller) {
         List<Position> deleteList = new ArrayList<>();
-        //Artemis artemis = (Artemis)model.getCurrentGod();
-        //deleteList.add(artemis.getPrevPosConstructor(model));
-        // model.createPossibleMovePos(null, deleteList);
+        Artemis artemis = (Artemis)model.getCurrentGod();
+        deleteList.add(artemis.getPrevPosConstructor(model));
+        model.createPossibleMovePos(null, deleteList);
     }
 
 }
