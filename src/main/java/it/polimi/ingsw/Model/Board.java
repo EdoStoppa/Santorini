@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 import java.util.ArrayList;
-import java.util.List;
+
 
 /** This class contains the set of tiles of a game and variable canGoUp
  * is used to control Athena's God power.

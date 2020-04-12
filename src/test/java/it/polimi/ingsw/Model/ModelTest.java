@@ -291,5 +291,31 @@ class ModelTest {
             }
         }
     }
+
+    @Test
+    void createPossibleMovePosTest()    {
+        Random random = new Random();
+        List<Position> addlist = new ArrayList<>();
+        List<Position> deleteList = new ArrayList<>();
+        List<Position> expectedList = new ArrayList<>();
+        model.setCurrentConstructor(model.getGameState().getCurrentPlayer().getAllConstructors().get(0));
+        expectedList = model.getBoard().possibleMoveset(model.getCurrentConstructor());
+        for(int i = 0; i < 2; i++)  {
+            Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
+            Position pos2 = new Position(random.nextInt(4), random.nextInt(4));
+            addlist.add(pos1);
+            deleteList.add(pos2);
+            expectedList.add(pos1);
+            expectedList.remove(pos2);
+        }
+        model.createPossibleMovePos(addlist, deleteList);
+        assertEquals(expectedList.size(), model.getTileToShow().size(), "The 2 lists should have the same size");
+        for(int i = 0; i < expectedList.size(); i++)    {
+            assertEquals(expectedList.get(i), model.getTileToShow().get(i));
+        }
+        String expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
+        assertEquals(expectedMessage, receiver.receivedMessage, "The 2 messages should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+    }
 }
 

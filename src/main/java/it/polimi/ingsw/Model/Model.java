@@ -263,6 +263,14 @@ public class Model extends Observable<GameMessage> {
 
     protected Constructor getCurrentConstructor()   {return  currentConstructor;}
 
+    /**
+     * Helper method, it checks every parameter that will be add in the tileToShowList;
+     *
+     * @param list list of <em>Positions</em> where the <em>Player</em> perform a move/build
+     * @param addList   other <em>Positions</em> where the <em>Player</em> can move/build
+     * @param deleteList    other <em>Positions</em> where the <em>Player</em> can't move
+     * @return  final list of <em>Positions</em> where the <em>Player</em> can perform a move/build
+     */
     private List<Position> checkListsParameter(List<Position> list, List<Position> addList, List<Position> deleteList)  {
         if(addList != null) {
             for(Position position : addList) {
