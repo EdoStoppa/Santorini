@@ -189,6 +189,7 @@ class ModelTest {
             expectedConstructionLevel = 3;
             expectedDome = true;
         }
+        model.setCurrentConstructor(new Constructor(1));
         model.performBuild(p1);
         expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " built on position: " + p1.toString();
         assertEquals(expectedConstructionLevel, model.getBoard().getTile(p1).getConstructionLevel(),"The level should be the same");

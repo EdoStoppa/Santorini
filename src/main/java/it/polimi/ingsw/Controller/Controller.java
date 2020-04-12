@@ -4,7 +4,6 @@ import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.*;
 import it.polimi.ingsw.Model.Model;
-import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.Observer.Observer;
@@ -20,6 +19,10 @@ import java.util.List;
 public class Controller implements Observer<FromClientMessage> {
 
     Model model;
+
+    public Controller(Model model){
+        this.model = model;
+    }
 
     private void handleAction(PosMessage message){
         PossiblePhases phase = model.getCurrentPhase();
@@ -118,9 +121,9 @@ public class Controller implements Observer<FromClientMessage> {
         model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
 
-        //Player toDelete = model.getCurrentPlayer();
+        //String toDeleteId = model.getCurrentPlayerId();
         model.nextPhase();
-        //model.removePlayer(toDelete);
+        //model.removePlayer(toDeleteId);
         preparePhase();
     }
 

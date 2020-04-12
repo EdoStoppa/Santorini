@@ -33,16 +33,21 @@ public class Board {
         int curY=currentPos.getCol();
         for(int i=curX-1; i<=curX+1; i++) {
             for(int j=curY-1; j<=curY+1; j++) {
-                if((i>=0 && i<=4) && (j>=0 && j<=4) && (!currentPos.equals(new Position(i,j)))&&(!tiles[i][j].getOccupied()) &&
-                        (((getTile(CurrentConstructor.getPos()).getConstructionLevel()+1==tiles[i][j].getConstructionLevel()||
-                                getTile(CurrentConstructor.getPos()).getConstructionLevel()==tiles[i][j].getConstructionLevel() ) && canGoUp)
-                                || (!canGoUp && getTile(CurrentConstructor.getPos()).getConstructionLevel()==tiles[i][j].getConstructionLevel()))
-                        && !tiles[i][j].getDome()) {
+                if( isAcceptablePos(i, j, currentPos) ){
+                    int constructorHeight = getTile(CurrentConstructor.getPos()).getConstructionLevel();
+                    int tileHeight = tiles[i][j].getConstructionLevel();
+
+                    if((canGoUp && ((constructorHeight + 1 >= tileHeight)) || (!canGoUp && constructorHeight == tileHeight)) && !tiles[i][j].getDome()) {
                         moves.add(new Position(i, j));
                     }
+                }
              }
          }
         return moves;
+    }
+
+    private boolean isAcceptablePos(int i, int j, Position currentPos){
+        return ((i>=0 && i<=4) && (j>=0 && j<=4) && !currentPos.equals(new Position(i,j)) && !tiles[i][j].getOccupied());
     }
 
     /**
@@ -53,11 +58,11 @@ public class Board {
     public ArrayList<Position> possibleBuild(Constructor CurrentConstructor){
         ArrayList<Position> build= new ArrayList<>();
         Position currentPos=CurrentConstructor.getPos();
-        int curX=currentPos.getRow();
-        int curY=currentPos.getCol();
+        int curX = currentPos.getRow();
+        int curY = currentPos.getCol();
         for(int i=curX-1;i<=curX+1;i++) {
             for (int j = curY - 1; j <= curY + 1; j++) {
-                if ((i >= 0 && i <= 4) && (j >= 0 && j <= 4) && (!currentPos.equals(new Position(i,j))) && !this.tiles[i][j].getDome() && !this.tiles[i][j].getOccupied()) {
+                if (isAcceptablePos(i, j, currentPos) && !this.tiles[i][j].getDome()) {
                    build.add(new Position(i,j));
                 }
             }
