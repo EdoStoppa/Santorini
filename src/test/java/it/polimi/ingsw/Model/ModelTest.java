@@ -189,15 +189,13 @@ class ModelTest {
             expectedConstructionLevel = 3;
             expectedDome = true;
         }
-        model.setCurrentConstructor(model.getGameState().getCurrentPlayer().getAllConstructors().get(0));
+        model.setCurrentConstructor(new Constructor(1));
         model.performBuild(p1);
         expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " built on position: " + p1.toString();
         assertEquals(expectedConstructionLevel, model.getBoard().getTile(p1).getConstructionLevel(),"The level should be the same");
         assertEquals(expectedDome, model.getBoard().getTile(p1).getDome(),"The dome should be the same");
         assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
         assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
-        assertEquals(p1.getRow(), model.getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
-        assertEquals(p1.getCol(), model.getCurrentConstructor().getLastBuildPos().getCol(),"The column should be the same");
     }
 
     @RepeatedTest(3)
@@ -290,32 +288,6 @@ class ModelTest {
                 assertTrue(c.getCanMove(), "The constructor should move");
             }
         }
-    }
-
-    @Test
-    void createPossibleMovePosTest()    {
-        Random random = new Random();
-        List<Position> addlist = new ArrayList<>();
-        List<Position> deleteList = new ArrayList<>();
-        List<Position> expectedList = new ArrayList<>();
-        model.setCurrentConstructor(model.getGameState().getCurrentPlayer().getAllConstructors().get(0));
-        expectedList = model.getBoard().possibleMoveset(model.getCurrentConstructor());
-        for(int i = 0; i < 2; i++)  {
-            Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
-            Position pos2 = new Position(random.nextInt(4), random.nextInt(4));
-            addlist.add(pos1);
-            deleteList.add(pos2);
-            expectedList.add(pos1);
-            expectedList.remove(pos2);
-        }
-        model.createPossibleMovePos(addlist, deleteList);
-        assertEquals(expectedList.size(), model.getTileToShow().size(), "The 2 lists should have the same size");
-        for(int i = 0; i < expectedList.size(); i++)    {
-            assertEquals(expectedList.get(i), model.getTileToShow().get(i));
-        }
-        String expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
-        assertEquals(expectedMessage, receiver.receivedMessage, "The 2 messages should be the same");
-        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
     }
 }
 
