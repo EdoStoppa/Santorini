@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.HephaestusController;
+import it.polimi.ingsw.Message.TileToShowMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the god card: Hephaestus
@@ -24,5 +26,24 @@ public class Hephaestus extends God {
         this.phasesList.add(PossiblePhases.SPECIAL_BUILD);
 
         this.godController = new HephaestusController();
+    }
+
+    public Position getLastBuildPos(Model model){
+        return model.getCurrentConstructor().getLastBuildPos().clone();
+    }
+
+    public boolean isMaxedOrDome(Model model, Position pos){
+        Tile t = model.getBoard().getTile(pos);
+        return (t.getDome() || t.getConstructionLevel() == 3);
+    }
+
+    public void createPossibleSpecialBuild(Model model){
+        Position lastBuildPos = model.getCurrentConstructor().getLastBuildPos().clone();
+        List<Position> list = new ArrayList<Position>();
+
+        list.add(lastBuildPos);
+
+        // WAIT FOR "forceNotify" IMPLEMENTATION IN MODEL
+        // model.forceNotify(new TileToShowMessage("Something", model.getGameState().getCurrentPlayer(), model.getGameState().getCurrentPhase(), list));
     }
 }
