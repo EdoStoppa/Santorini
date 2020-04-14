@@ -21,7 +21,9 @@ public class ArtemisController extends GodController {
      */
     @Override
     public void handleSpecialMove(Model model, Controller controller, PosMessage posMessage) {
-        controller.handleMove(posMessage);
+        if(posMessage.getPosition()!= null){
+            controller.handleMove(posMessage);
+        }
     }
 
     /**
@@ -33,7 +35,9 @@ public class ArtemisController extends GodController {
     public void prepareSpecialMove(Model model, Controller controller) {
         List<Position> deleteList = new ArrayList<>();
         Artemis artemis = (Artemis)model.getCurrentGod();
+
         deleteList.add(artemis.getPrevPosConstructor(model));
+
         model.createPossibleMovePos(null, deleteList);
     }
 

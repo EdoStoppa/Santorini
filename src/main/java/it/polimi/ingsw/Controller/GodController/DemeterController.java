@@ -2,7 +2,12 @@ package it.polimi.ingsw.Controller.GodController;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.PosMessage;
+import it.polimi.ingsw.Model.Demeter;
 import it.polimi.ingsw.Model.Model;
+import it.polimi.ingsw.Model.Position;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**Demeter's GodController
  */
@@ -15,7 +20,9 @@ public class DemeterController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
-        controller.handleBuild(posMessage);
+        if(posMessage.getPosition() != null){
+            controller.handleBuild(posMessage);
+        }
     }
 
     /**
@@ -25,6 +32,11 @@ public class DemeterController extends GodController {
      */
     @Override
     public void prepareSpecialBuild(Model model, Controller controller) {
-        // DAMN I NEED TO ADD LAST BUILD IN CONSTRUCTOR AND MODIFY ALL RELATED THINGS
+        List<Position> delList = new ArrayList<Position>();
+        Demeter demeter = (Demeter)model.getCurrentGod();
+
+        delList.add(demeter.getLastBuild(model));
+
+        model.createPossibleBuildPos(null, delList);
     }
 }

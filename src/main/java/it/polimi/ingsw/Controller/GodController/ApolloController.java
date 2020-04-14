@@ -57,8 +57,12 @@ public class ApolloController extends GodController {
 
         if(model.isOccupied(p)){
             // model.performSwap(p);
+            // if(model.checkWin()){
+                // TRANSITION TO END GAME
+                // controller.executeWinSequence();
+            // }
         } else {
-            model.performMove(p);
+            controller.handleMove(posMessage);
         }
     };
 

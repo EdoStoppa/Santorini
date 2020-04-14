@@ -25,4 +25,8 @@ public class Demeter extends God {
 
         this.godController = new DemeterController();
     }
+
+    public Position getLastBuild(Model model){
+        return model.getCurrentConstructor().getLastBuildPos().clone();
+    }
 }

@@ -24,7 +24,7 @@ public class Controller implements Observer<FromClientMessage> {
         this.model = model;
     }
 
-    private void handleAction(PosMessage message){
+    public void handleAction(PosMessage message){
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR: case SPECIAL_CHOOSE_CONSTRUCTOR:
@@ -66,7 +66,7 @@ public class Controller implements Observer<FromClientMessage> {
         model.performBuild(message.getPosition());
     }
 
-    private void preparePhase(){
+    public void preparePhase(){
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
