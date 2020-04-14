@@ -27,27 +27,29 @@ public class Apollo extends God {
         this.godController = new ApolloController();
     }
 
-    public void deactivateIfNeeded(Model model){
+    public void changeActiveConstructors(Model model){
         Board board = model.getBoard();
         GameState gameState = model.getGameState();
 
         List<Position> listMove, listOcc;
 
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
-            if(c.getCanMove())  {
-                int numEnemyOcc = 0;
-                listMove = board.possibleMoveset(c);
-                listOcc = board.searchForOccupied(c.getPos());
+            int numEnemyOcc = 0;
+            listMove = board.possibleMoveset(c);
+            listOcc = board.searchForOccupied(c.getPos());
 
-                for (Position position : listOcc) {
-                    if (board.getTile(position).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
+            for (Position position : listOcc) {
+                if (board.getTile(position).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
+                    if(board.getTile(c.getPos()).getConstructionLevel()+1 >= board.getTile(position).getConstructionLevel()){
                         numEnemyOcc += 1;
                     }
                 }
+            }
 
-                if(listMove.size() == 0 && numEnemyOcc == 0)    {
-                    c.setCanMove(false);
-                }
+            if(listMove.size() == 0 && numEnemyOcc == 0)    {
+                c.setCanMove(false);
+            } else {
+                c.setCanMove(true);
             }
         }
     }
@@ -61,8 +63,14 @@ public class Apollo extends God {
         occList = model.getBoard().searchForOccupied(model.getCurrentConstructor().getPos());
         for (Position p : occList){
             if(board.getTile(p).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
-                addList.add(p.clone());
+                if(board.getTile(model.getCurrentConstructor().getPos()).getConstructionLevel()+1 >= board.getTile(p).getConstructionLevel()){
+                    addList.add(p.clone());
+                }
             }
+        }
+        
+        if(addList.size() ==  0){
+            return null;
         }
         return addList;
     }

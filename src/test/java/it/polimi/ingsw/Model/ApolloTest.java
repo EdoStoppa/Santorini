@@ -23,7 +23,7 @@ class ApolloTest {
         model.getBoard().placeConstructor(model.getBoard().getTile(pos2), pList.get(0).getAllConstructors().get(1));
 
         Apollo ap = (Apollo)pList.get(0).getGod();
-        ap.deactivateIfNeeded(model);
+        ap.changeActiveConstructors(model);
 
         //Useless, but you never know...
         assertEquals(2, howManyConstructorRemain(model.getBoard()), "Should remain only 2 constructors");
@@ -51,7 +51,7 @@ class ApolloTest {
         setMaxLevel(model.getBoard(), new Position(1,0));
 
         Apollo ap = (Apollo)pList.get(0).getGod();
-        ap.deactivateIfNeeded(model);
+        ap.changeActiveConstructors(model);
 
         //Useless, but you never know...
         assertEquals(2, howManyConstructorRemain(model.getBoard()), "Should remain only 2 constructors");
@@ -89,7 +89,7 @@ class ApolloTest {
         model.getBoard().placeConstructor(model.getBoard().getTile(new Position(4,4)), pList.get(1).getAllConstructors().get(1));
 
         Apollo ap = (Apollo)pList.get(0).getGod();
-        ap.deactivateIfNeeded(model);
+        ap.changeActiveConstructors(model);
 
         assertFalse(pList.get(0).getAllConstructors().get(0).getCanMove(), "The constructor should be inactive");
         assertTrue(pList.get(0).getAllConstructors().get(1).getCanMove(), "The constructor should be active");
@@ -113,7 +113,7 @@ class ApolloTest {
         setMaxLevel(model.getBoard(), new Position(1,0));
 
         Apollo ap = (Apollo)pList.get(0).getGod();
-        ap.deactivateIfNeeded(model);
+        ap.changeActiveConstructors(model);
 
         assertFalse(pList.get(0).getAllConstructors().get(0).getCanMove(), "The constructor should be inactive");
 
@@ -136,7 +136,7 @@ class ApolloTest {
         model.getBoard().placeConstructor(model.getBoard().getTile(new Position(0,1)), pList.get(1).getAllConstructors().get(1));
 
         Apollo ap = (Apollo)pList.get(0).getGod();
-        ap.deactivateIfNeeded(model);
+        ap.changeActiveConstructors(model);
 
         assertTrue(pList.get(0).getAllConstructors().get(0).getCanMove(), "The constructor should be active");
     }
@@ -156,7 +156,7 @@ class ApolloTest {
         Apollo ap = (Apollo)pList.get(0).getGod();
         List<Position> list = ap.getMoveAddList(model);
 
-        assertEquals(0, list.size(), "Should be empty");
+        assertNull(list, "Should be null because no pos available");
     }
 
     @Test

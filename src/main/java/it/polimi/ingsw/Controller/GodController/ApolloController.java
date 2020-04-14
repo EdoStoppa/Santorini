@@ -25,7 +25,7 @@ public class ApolloController extends GodController {
         }
 
         Apollo apollo = (Apollo)model.getCurrentGod();
-        apollo.deactivateIfNeeded(model);
+        apollo.changeActiveConstructors(model);
         if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
             controller.executeLoseSequence();

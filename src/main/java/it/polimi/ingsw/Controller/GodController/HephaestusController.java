@@ -21,7 +21,7 @@ public class HephaestusController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
-
+        controller.handleBuild(posMessage);
     }
 
     /**
@@ -34,7 +34,7 @@ public class HephaestusController extends GodController {
         Hephaestus hephaestus = (Hephaestus)model.getCurrentGod();
         Position lastBuildPos = hephaestus.getLastBuildPos(model);
 
-        if(hephaestus.isMaxedOrDome(model, lastBuildPos)){
+        if(hephaestus.cantDoAnother(model, lastBuildPos)){
             // Tell the player he can't do another build
 
             // Now we have to change phase and prepare the nextPhase

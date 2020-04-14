@@ -32,7 +32,7 @@ public class Hephaestus extends God {
         return model.getCurrentConstructor().getLastBuildPos().clone();
     }
 
-    public boolean isMaxedOrDome(Model model, Position pos){
+    public boolean cantDoAnother(Model model, Position pos){
         Tile t = model.getBoard().getTile(pos);
         return (t.getDome() || t.getConstructionLevel() == 3);
     }
