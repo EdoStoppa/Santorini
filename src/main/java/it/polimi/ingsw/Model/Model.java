@@ -246,7 +246,7 @@ public class Model extends Observable<GameMessage> {
      */
     public void destroyRemainingPhases()    {
         List<PossiblePhases> list = getCurrentGod().getPhasesList();
-        list.subList(1, list.size() -1).clear();
+        list.subList(1, list.size()).clear();
     }
 
     public God getCurrentGod()  {
