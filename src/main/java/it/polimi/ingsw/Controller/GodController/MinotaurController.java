@@ -13,6 +13,16 @@ import java.util.List;
 /**Minotaur's GodController
  */
 public class MinotaurController extends GodController {
+    /**Used to handle all the correct calls to the model for a special choose constructor
+     *
+     * @param model Model of the game
+     * @param posMessage Message containing the selected move position
+     */
+    @Override
+    public void handleSpecialChooseConstructor(Model model, Controller controller, PosMessage posMessage){
+        controller.handleChooseConstructor(posMessage);
+    }
+
     /**
      * Used to handle all the correct calls to the model to prepare a special choose constructor phase
      *
@@ -36,18 +46,6 @@ public class MinotaurController extends GodController {
     }
 
     /**
-     * Used to handle all the correct calls to the model to prepare a special move phase
-     *
-     * @param model Model of the game
-     */
-    @Override
-    public void prepareSpecialMove(Model model, Controller controller) {
-        Minotaur minotaur = (Minotaur) model.getCurrentGod();
-        List<Position> addList = minotaur.getMoveAddList(model);
-        model.createPossibleMovePos(addList, null);
-    }
-
-    /**
      * Used to handle all the correct calls to the model for a special move
      *
      * @param model      Model of the game
@@ -67,5 +65,17 @@ public class MinotaurController extends GodController {
             controller.handleMove(posMessage);
         }
 
+    }
+
+    /**
+     * Used to handle all the correct calls to the model to prepare a special move phase
+     *
+     * @param model Model of the game
+     */
+    @Override
+    public void prepareSpecialMove(Model model, Controller controller) {
+        Minotaur minotaur = (Minotaur) model.getCurrentGod();
+        List<Position> addList = minotaur.getMoveAddList(model);
+        model.createPossibleMovePos(addList, null);
     }
 }

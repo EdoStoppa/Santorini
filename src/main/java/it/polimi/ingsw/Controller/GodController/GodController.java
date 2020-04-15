@@ -7,6 +7,12 @@ import it.polimi.ingsw.Model.Model;
 /**Interface used to implement a Strategy Pattern regarding the special effect of the God card
  */
 public abstract class GodController {
+    /**Used to handle all the correct calls to the model for a special choose constructor
+     *
+     * @param model Model of the game
+     * @param posMessage Message containing the selected move position
+     */
+    public void handleSpecialChooseConstructor(Model model, Controller controller, PosMessage posMessage){}
 
     /**Used to handle all the correct calls to the model for a special move
      *

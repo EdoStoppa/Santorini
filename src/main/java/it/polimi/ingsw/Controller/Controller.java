@@ -27,8 +27,11 @@ public class Controller implements Observer<FromClientMessage> {
     public void handleAction(PosMessage message){
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
-            case CHOOSE_CONSTRUCTOR: case SPECIAL_CHOOSE_CONSTRUCTOR:
+            case CHOOSE_CONSTRUCTOR:
                 handleChooseConstructor(message);
+            case SPECIAL_CHOOSE_CONSTRUCTOR:
+                GodController chooseGodController = model.getCurrentPlayerController();
+                chooseGodController.handleSpecialChooseConstructor(model, this, message);
                 break;
             case MOVE:
                 handleMove(message);

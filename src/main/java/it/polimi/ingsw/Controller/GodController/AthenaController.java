@@ -6,6 +6,16 @@ import it.polimi.ingsw.Model.Athena;
 import it.polimi.ingsw.Model.Model;
 
 public class AthenaController extends GodController {
+    /**Used to handle all the correct calls to the model for a special choose constructor
+     *
+     * @param model Model of the game
+     * @param posMessage Message containing the selected move position
+     */
+    @Override
+    public void handleSpecialChooseConstructor(Model model, Controller controller, PosMessage posMessage){
+        controller.handleChooseConstructor(posMessage);
+    }
+
     /**Used to handle all the correct calls to the model to prepare a special choose constructor phase
      *
      * @param model Model of the game
