@@ -10,15 +10,14 @@ import java.util.List;
  * Represents the god card: Hephaestus
  */
 public class Hephaestus extends God {
+    protected final static String godName = "Hephaestus";
+    protected final static String godSubtitle = "God of Blacksmiths";
+    protected final static String powerDescription = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
+
     /**
-     * It creates the card Hephaestus, set all the specific data (as godName. godSubtitle and powerDescription)
-     * the correct sequence of phases and in the end assign he correct GodController
+     * It creates the card Hephaestus, set the correct sequence of phases and assign the correct GodController
      */
     public Hephaestus(){
-        this.godName = "Hephaestus";
-        this.godSubtitle = "God of Blacksmiths";
-        this.powerDescription = "Your Build: Your Worker may build one additional block (not dome) on top of your first block.";
-
         this.phasesList = new ArrayList<PossiblePhases>();
         this.phasesList.add(PossiblePhases.CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.MOVE);
@@ -26,6 +25,18 @@ public class Hephaestus extends God {
         this.phasesList.add(PossiblePhases.SPECIAL_BUILD);
 
         this.godController = new HephaestusController();
+    }
+
+    protected static String getGodName(){
+        return (godName);
+    }
+
+    protected static String getGodSubtitle(){
+        return (godSubtitle);
+    }
+
+    protected static String getGodPower(){
+        return (powerDescription);
     }
 
     public Position getLastBuildPos(Model model){

@@ -94,6 +94,10 @@ public class GameState {
         this.playerList.remove(p);
     }
 
+    protected void setCurrentPhase(PossiblePhases phase){
+        this.currentPhase = phase;
+    }
+
 //----------------------------------------------------------------------------------------------------------------------
 //                                             FOR TESTING PURPOSE
 //----------------------------------------------------------------------------------------------------------------------

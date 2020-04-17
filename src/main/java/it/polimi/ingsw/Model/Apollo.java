@@ -9,22 +9,32 @@ import java.util.List;
  * Represents the god card: Apollo
  */
 public class Apollo extends God {
+    protected final static String godName = "Apollo";
+    protected final static String godSubtitle = "God of Music";
+    protected final static String powerDescription = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
 
     /**
-     * It creates the card Apollo, set all the specific data (as godName. godSubtitle and powerDescription)
-     * the correct sequence of phases and in the end assign he correct GodController
+     * It creates the card Apollo, set the correct sequence of phases and assign the correct GodController
      */
     public Apollo(){
-        this.godName = "Apollo";
-        this.godSubtitle = "God of Music";
-        this.powerDescription = "Your Move: Your Worker may move into an opponent Worker's space by forcing their Worker to the space yours just vacated.";
-
         this.phasesList = new ArrayList<PossiblePhases>();
         this.phasesList.add(PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.SPECIAL_MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
 
         this.godController = new ApolloController();
+    }
+
+    protected static String getGodName(){
+        return (godName);
+    }
+
+    protected static String getGodSubtitle(){
+        return (godSubtitle);
+    }
+
+    protected static String getGodPower(){
+        return (powerDescription);
     }
 
     public void changeActiveConstructors(Model model){

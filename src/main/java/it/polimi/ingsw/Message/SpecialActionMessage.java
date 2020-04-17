@@ -1,17 +1,33 @@
 package it.polimi.ingsw.Message;
 
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Position;
+import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.View.View;
 
-public class SpecialActionMessage extends FromClientMessage {
-    private final Object obj;
+import java.util.List;
 
-    public SpecialActionMessage(String message, Player player, View view, Object obj) {
-        super(message, player, view);
-        this.obj = obj;
+public class SpecialActionMessage extends GameMessage {
+    private final List<Position> tileToShow;
+    private final List<Position> specialTile;
+    private final PossiblePhases phase;
+
+    public SpecialActionMessage(String message, Player player, PossiblePhases phase, List<Position> tileToShow, List<Position> specialTile) {
+        super(message, player);
+
+        this.phase = phase;
+        this.tileToShow = tileToShow;
+        this.specialTile = specialTile;
     }
 
-    public Object getObj(){
-        return this.obj;
+    public PossiblePhases getPhase(){
+        return this.phase;
     }
+    public List<Position> getTileToShow(){
+        return this.tileToShow;
+    }
+    public List<Position> getSpecialTile(){
+        return this.specialTile;
+    }
+
 }

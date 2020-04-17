@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.*;
+import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
@@ -12,7 +13,7 @@ import java.util.List;
 
 // -----------------------------------------------------------------------------------
 
-//                  ADD NOTIFY MID NEXT PHASE + CONTROLLER FROM DEMETER
+//                  ADD NOTIFY MID NEXT PHASE
 
 // -----------------------------------------------------------------------------------
 
@@ -103,7 +104,7 @@ public class Controller implements Observer<FromClientMessage> {
             return;
         }
 
-        model.deactivateConstructorIfNeeded();
+        model.changeActiveConstructors();
         if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
             executeLoseSequence();
@@ -142,6 +143,9 @@ public class Controller implements Observer<FromClientMessage> {
         }
 
         if(message instanceof PosMessage){
+
+            // All the check below could be eliminated if everything is checked by Clients
+            // The only things left will be handle, nextPhase and preparePhase
             List<Position> listPos = model.getTileToShow();
             Position messagePos = ((PosMessage) message).getPosition();
 
@@ -153,13 +157,6 @@ public class Controller implements Observer<FromClientMessage> {
                     return;
                 }
             }
-            //If the method did not return before it means that the position is wrong, so do
-            //something with view
-        }
-
-        if (message instanceof SpecialActionMessage){
-            // UNDERSTAND WHICH SPECIAL ACTION IS AND DO SOMETHING
-            return;
         }
 
         System.out.println("Something went wrong, GameMessage should be a FromClientMessage... :(");

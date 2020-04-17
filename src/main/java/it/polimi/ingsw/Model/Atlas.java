@@ -10,21 +10,32 @@ import java.util.ArrayList;
  * Represents the god card: Atlas
  */
 public class Atlas extends God {
+    protected final static String godName = "Atlas";
+    protected final static String godSubtitle = "Titan shouldering the Heavens";
+    protected final static String powerDescription = "Your Build: Your Worker may build a dome at any level.";
+
     /**
-     * It creates the card Atlas, set all the specific data (as godName. godSubtitle and powerDescription)
-     * the correct sequence of phases and in the end assign he correct GodController
+     * It creates the card Atlas, set the correct sequence of phases and assign the correct GodController
      */
     public Atlas(){
-        this.godName = "Atlas";
-        this.godSubtitle = "Titan shouldering the Heavens";
-        this.powerDescription = "Your Build: Your Worker may build a dome at any level.";
-
         this.phasesList = new ArrayList<PossiblePhases>();
         this.phasesList.add(PossiblePhases.CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.MOVE);
         this.phasesList.add(PossiblePhases.SPECIAL_BUILD);
 
         this.godController = new AtlasController();
+    }
+
+    protected static String getGodName(){
+        return (godName);
+    }
+
+    protected static String getGodSubtitle(){
+        return (godSubtitle);
+    }
+
+    protected static String getGodPower(){
+        return (powerDescription);
     }
 
     public void forceDome(Model model, Position pos){
