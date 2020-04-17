@@ -39,7 +39,7 @@ public class PrometheusController extends GodController {
             return;
         }
 
-        model.deactivateConstructorIfNeeded();
+        model.changeActiveConstructors();
         if(model.isLosing()){
             // TRANSITION TO LOSE SEQUENCE
             controller.executeLoseSequence();
