@@ -25,7 +25,6 @@ class ModelTest {
     }
     Model model;
     List<Player> list;
-    Position posCurrentConstructor;
     Receiver receiver;
 
 
@@ -302,8 +301,8 @@ class ModelTest {
         for(int i = 0; i < 2; i++)  {
             flag = true;
             Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
-            for(int j = 0; j < expectedList.size(); j++)    {
-                if(pos1.equals(expectedList.get(j)))    {
+            for(Position p : expectedList)    {
+                if(pos1.equals(p))    {
                     flag = false;
                     break;
                 }
@@ -316,8 +315,8 @@ class ModelTest {
                     addList.add(pos1);
                 }
                 else    {
-                    for(int j = 0; j < addList.size(); j++) {
-                        if(pos1.equals(addList.get(j))) {
+                    for(Position p : addList) {
+                        if(pos1.equals(p)) {
                             flag = false;
                             break;
                         }
@@ -364,8 +363,8 @@ class ModelTest {
         for(int i = 0; i < 2; i++)  {
             flag = true;
             Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
-            for(int j = 0; j < expectedList.size(); j++)    {
-                if(pos1.equals(expectedList.get(j)))    {
+            for(Position p1 : expectedList)    {
+                if(pos1.equals(p1))    {
                     flag = false;
                     break;
                 }
@@ -378,8 +377,8 @@ class ModelTest {
                     addList.add(pos1);
                 }
                 else    {
-                    for(int j = 0; j < addList.size(); j++) {
-                        if(pos1.equals(addList.get(j))) {
+                    for(Position p2 : addList) {
+                        if(pos1.equals(p2)) {
                             flag = false;
                             break;
                         }
