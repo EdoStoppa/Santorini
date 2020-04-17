@@ -69,7 +69,9 @@ public class Model extends Observable<GameMessage> {
      */
     public boolean isLosing(Player p) {
         List<Constructor> constructorList = p.getAllConstructors();
+        System.out.println(p.getAllConstructors().size());
         for (Constructor c : constructorList) {
+            System.out.println(c.getCanMove());
             if (c.getCanMove()) {
                 return false;
             }
@@ -182,7 +184,6 @@ public class Model extends Observable<GameMessage> {
             }
         }
         Tile t2 = board.getTile(pushedPos);
-
         board.placeConstructor(t1, currentConstructor);
         board.placeConstructor(t2, pushedConstructor);
 
@@ -262,7 +263,7 @@ public class Model extends Observable<GameMessage> {
      * This method checks if every <em>Constructor</em> of the current <em>Player</em> can perform a move. If it can
      * not, the <em>Constructor</em> is deactivated.
      */
-    public void deactivateConstructorIfNeeded() {
+    public void changeActiveConstructors() {
         List<Position> list;
 
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
@@ -346,10 +347,12 @@ public class Model extends Observable<GameMessage> {
             }
         }
         constructorList = playerR.getAllConstructors();
-        for(Constructor c : constructorList)   {
-            board.getTile(c.getPos()).setActualConstuctor(null);
-            c.setPos(new Position(-1, -1));
+        for(int i = 0; i < constructorList.size(); i++)   {
+            board.getTile(constructorList.get(i).getPos()).setActualConstuctor(null);
+            board.getTile(constructorList.get(i).getPos()).setOccupied(false);
+            constructorList.get(i).setPos(new Position(-1, -1));
         }
+        constructorList.clear();
         playerList = gameState.getPlayerList();
         for(int i = 0; i < playerList.size(); i++)   {
             if(playerId.equals(playerList.get(i).getIdPlayer())) {
@@ -357,9 +360,9 @@ public class Model extends Observable<GameMessage> {
                 break;
             }
         }
-
+        int[][] matrix = board.createConstructorMatrix();
         String message = playerId + " player is removed from the game";
-        notify(new GameMessage(message, playerR));
+        notify(new MoveMessage(message, playerR, getCurrentPhase(), matrix));
     }
 
     protected Board getBoard()  {

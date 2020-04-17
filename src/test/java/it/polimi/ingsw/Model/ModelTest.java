@@ -45,33 +45,32 @@ class ModelTest {
         model.addObserver(receiver);
 
         int numberConstructorsP1 = 0, numberConstructorsP2 = 0;
+        Constructor c = null;
         Random random = new Random();
         Board board = model.getBoard();
-
-        while(numberConstructorsP1 < 2 || numberConstructorsP2 < 2) {//It creates 2 constructors for each player and it places them in random positions
-            int x = random.nextInt(4);
-            int y = random.nextInt(4);
-            Position pos = new Position(x, y);
-            if(board.getTile(pos).getActualConstuctor() == null)    {
+        model.getGameState().setCurrentPlayer(p2);
+        while(numberConstructorsP1 < 2 || numberConstructorsP2 < 2) {//It creates 2 constructors for each player and it places them in random position
+            Position pos = new Position(random.nextInt(4), random.nextInt(4));
+            if(!board.getTile(pos).getOccupied())    {
                 if(numberConstructorsP1 < 2)    {
-                    p1.getAllConstructors().get(numberConstructorsP1).setPos(pos);
+                    c = p1.getAllConstructors().get(numberConstructorsP1);
                     numberConstructorsP1++;
-
+                    board.placeConstructor(board.getTile(pos), c);
                 }
                 else   {
+                    c = p2.getAllConstructors().get(numberConstructorsP2);
                     if(numberConstructorsP2 == 1)   {
                         Position pos1 = new Position(3, 3);
-                        p2.getAllConstructors().get(numberConstructorsP2).setPos(pos1);
-                        model.setCurrentConstructor(p2.getAllConstructors().get(1));
+                        model.setCurrentConstructor(c);
+                        board.placeConstructor(board.getTile(pos1), c);
                     }
                     else    {
-                        p2.getAllConstructors().get(numberConstructorsP2).setPos(pos);
+                        board.placeConstructor(board.getTile(pos), c);
                     }
                     numberConstructorsP2++;
                 }
             }
         }
-        model.getGameState().setCurrentPlayer(p2);
         for (int i = 0; i < 5; i++) { //creates a random board without Atlas as God
             for (int j = 0; j < 5; j++) {
                 Position pos = new Position(i, j);
@@ -83,7 +82,7 @@ class ModelTest {
         }
     }
 
-    @Test
+    @RepeatedTest(100)
     void isOccupiedTest()   {
         boolean t = false;
         Random random = new Random();
@@ -130,6 +129,8 @@ class ModelTest {
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
             list.get(1).setCanMove(false);
+            System.out.println(p.getAllConstructors().get(0).getCanMove());
+            System.out.println(p.getAllConstructors().get(1).getCanMove());
             assertTrue(model.isLosing(p), "The player is losing");
         }
     }
@@ -153,12 +154,18 @@ class ModelTest {
         }
     }
 
-    @Test
+    @RepeatedTest(1000)
     void performMoveTest() {
         String expectedMessage;
+        Position nextPosCurrentConstructor;
 
         Position posCurrentConstructor = model.getCurrentConstructor().getPos();
-        Position nextPosCurrentConstructor = new Position(posCurrentConstructor.getRow() + 1, posCurrentConstructor.getCol() -1);
+        if(posCurrentConstructor.getCol() != 0)  {
+            nextPosCurrentConstructor = new Position(posCurrentConstructor.getRow() + 1, posCurrentConstructor.getCol() - 1);
+        }
+        else    {
+            nextPosCurrentConstructor = new Position(posCurrentConstructor.getRow() + 1, posCurrentConstructor.getCol() + 1);
+        }
         model.performMove(nextPosCurrentConstructor);
         expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " moved to position: " + nextPosCurrentConstructor.toString();
         assertAll(
@@ -169,7 +176,181 @@ class ModelTest {
         assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(),"The player should be the same");
     }
 
-    @Test
+    @RepeatedTest(1000)
+    void performSwapTest()  {
+        String expectedMessage;
+        int i;
+        Position pos1 = model.getCurrentConstructor().getPos();
+        Position pos2 = new Position(pos1.getRow() + 1, pos1.getCol() + 1);
+        if(!model.getBoard().getTile(pos2).getOccupied())    {
+            Player p1 = null;
+            for(i = 0; i < model.getGameState().getPlayerList().size(); i++)    {
+                if(!model.getGameState().getPlayerList().get(i).equals(model.getGameState().getCurrentPlayer())){
+                    p1 = model.getGameState().getPlayerList().get(i);
+                    break;
+                }
+            }
+            Constructor swappedConstructor = p1.getAllConstructors().get(0);
+            model.getBoard().placeConstructor(model.getBoard().getTile(pos2), swappedConstructor);
+            model.performSwap(pos2);
+            expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " player swapped his constructor with the one " +
+                    "of the " + p1.getIdPlayer() + " player";
+            assertAll(
+                    ()  -> assertEquals(pos2.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
+                    ()  -> assertEquals(pos2.getCol(), model.getCurrentConstructor().getPos().getCol(), "The col should be the same"),
+                    ()  -> assertEquals(pos1.getRow(), swappedConstructor.getPos().getRow(), "The row should be the same"),
+                    ()  -> assertEquals(pos1.getCol(), swappedConstructor.getPos().getCol(), "The col should be the same")
+            );
+            assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+            assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+        }
+    }
+
+    @RepeatedTest(1000)
+    void performPushTest(RepetitionInfo repetitionInfo)  {
+        String expectedMessage;
+        int i;
+        Random random = new Random();
+        Position pos1 = model.getCurrentConstructor().getPos();
+        Position pos2;
+
+        if(repetitionInfo.getCurrentRepetition() % 2 == 0) {//same row
+            if (pos1.getRow() == 0) {
+                pos2 = new Position(pos1.getRow() + 1 + random.nextInt(3), pos1.getCol());
+            } else if (pos1.getRow() == 1) {
+                pos2 = new Position(pos1.getRow() + 1 + random.nextInt(2), pos1.getCol());
+            } else if (pos1.getRow() == 2) {
+                pos2 = new Position(pos1.getRow() + 1 + random.nextInt(1), pos1.getCol());
+            } else if (pos1.getRow() == 3) {
+                pos2 = new Position(pos1.getRow() + 1, pos1.getCol());
+            } else {
+                pos2 = new Position(pos1.getRow() - 1 - random.nextInt(-3), pos1.getCol());
+            }
+            if (!model.getBoard().getTile(pos2).getOccupied()) {
+                Position precPos2 = new Position(pos2.getRow() - 1, pos2.getCol());
+                if (pos1.getRow() < pos2.getRow()) {
+                    if (!model.getBoard().getTile(precPos2).getOccupied() || precPos2.equals(pos1)) {
+                        Player p1 = null;
+                        for (i = 0; i < model.getGameState().getPlayerList().size(); i++) {
+                            if (!model.getGameState().getPlayerList().get(i).equals(model.getGameState().getCurrentPlayer())) {
+                                p1 = model.getGameState().getPlayerList().get(i);
+                                break;
+                            }
+                        }
+                        Constructor pushedConstructor = p1.getAllConstructors().get(0);
+                        model.getBoard().placeConstructor(model.getBoard().getTile(pos2), pushedConstructor);
+                        model.performPush(pos2);
+                        expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " player pushed his constructor with the one " +
+                                "of the " + p1.getIdPlayer() + " player";
+                        assertAll(
+                                () -> assertEquals(pos2.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
+                                () -> assertEquals(pos2.getCol(), model.getCurrentConstructor().getPos().getCol(), "The col should be the same"),
+                                () -> assertEquals(precPos2.getRow(), pushedConstructor.getPos().getRow(), "The row should be the same"),
+                                () -> assertEquals(precPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
+                        );
+                        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                    }
+                }
+                else {
+                    Position succPos2 = new Position(pos2.getRow() + 1, pos2.getCol());
+                    if (!model.getBoard().getTile(succPos2).getOccupied() || succPos2.equals(pos1)) {
+                        Player p1 = null;
+                        for (i = 0; i < model.getGameState().getPlayerList().size(); i++) {
+                            if (!model.getGameState().getPlayerList().get(i).equals(model.getGameState().getCurrentPlayer())) {
+                                p1 = model.getGameState().getPlayerList().get(i);
+                                break;
+                            }
+                        }
+                        Constructor pushedConstructor = p1.getAllConstructors().get(0);
+                        model.getBoard().placeConstructor(model.getBoard().getTile(pos2), pushedConstructor);
+                        model.performPush(pos2);
+                        expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " player pushed his constructor with the one " +
+                                "of the " + p1.getIdPlayer() + " player";
+                        assertAll(
+                                () -> assertEquals(pos2.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
+                                () -> assertEquals(pos2.getCol(), model.getCurrentConstructor().getPos().getCol(), "The col should be the same"),
+                                () -> assertEquals(succPos2.getRow(), pushedConstructor.getPos().getRow(), "The row should be the same"),
+                                () -> assertEquals(succPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
+                        );
+                        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                    }
+                }
+            }
+        }
+        else    {
+            if(pos1.getCol() == 0)  {
+                pos2 = new Position(pos1.getRow(), pos1.getCol() + 1 + random.nextInt(3));
+            }
+            else if(pos1.getCol() == 1) {
+                pos2 = new Position(pos1.getRow(), pos1.getCol() + 1 + random.nextInt(2));
+            }
+            else if(pos1.getCol() == 2) {
+                pos2 = new Position(pos1.getRow(), pos1.getCol() + 1 + random.nextInt(1));
+            }
+            else if(pos1.getCol() == 3) {
+                pos2 = new Position(pos1.getRow(), pos1.getCol() + 1);
+            }
+            else    {
+                pos2 = new Position(pos1.getRow(), pos1.getCol() - 1 - random.nextInt(-3));
+            }
+            if(!model.getBoard().getTile(pos2).getOccupied())    {
+                Position precPos2 = new Position(pos2.getRow(), pos2.getCol() - 1);
+                if(pos1.getCol() < pos2.getCol())   {
+                    if(!model.getBoard().getTile(precPos2).getOccupied() || precPos2.equals(pos1))  {
+                        Player p1 = null;
+                        for(i = 0; i < model.getGameState().getPlayerList().size(); i++)    {
+                            if(!model.getGameState().getPlayerList().get(i).equals(model.getGameState().getCurrentPlayer())){
+                                p1 = model.getGameState().getPlayerList().get(i);
+                                break;
+                            }
+                        }
+                        Constructor pushedConstructor = p1.getAllConstructors().get(0);
+                        model.getBoard().placeConstructor(model.getBoard().getTile(pos2), pushedConstructor);
+                        model.performPush(pos2);
+                        expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " player pushed his constructor with the one " +
+                                "of the " + p1.getIdPlayer() + " player";
+                        assertAll(
+                                ()  -> assertEquals(pos2.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
+                                ()  -> assertEquals(pos2.getCol(), model.getCurrentConstructor().getPos().getCol(), "The col should be the same"),
+                                ()  -> assertEquals(precPos2.getRow(), pushedConstructor.getPos().getRow(), "The row should be the same"),
+                                ()  -> assertEquals(precPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
+                        );
+                        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                    }
+                }
+                else {
+                    Position succPos2 = new Position(pos2.getRow(), pos2.getCol() + 1);
+                    if (!model.getBoard().getTile(succPos2).getOccupied() || succPos2.equals(pos1)) {
+                        Player p1 = null;
+                        for (i = 0; i < model.getGameState().getPlayerList().size(); i++) {
+                            if (!model.getGameState().getPlayerList().get(i).equals(model.getGameState().getCurrentPlayer())) {
+                                p1 = model.getGameState().getPlayerList().get(i);
+                                break;
+                            }
+                        }
+                        Constructor pushedConstructor = p1.getAllConstructors().get(0);
+                        model.getBoard().placeConstructor(model.getBoard().getTile(pos2), pushedConstructor);
+                        model.performPush(pos2);
+                        expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " player pushed his constructor with the one " +
+                                "of the " + p1.getIdPlayer() + " player";
+                        assertAll(
+                                () -> assertEquals(pos2.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
+                                () -> assertEquals(pos2.getCol(), model.getCurrentConstructor().getPos().getCol(), "The col should be the same"),
+                                () -> assertEquals(succPos2.getRow(), pushedConstructor.getPos().getRow(), "The row should be the same"),
+                                () -> assertEquals(succPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
+                        );
+                        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                    }
+                }
+            }
+        }
+    }
+
+    @RepeatedTest(1000)
     void performBuild() {
         Random random = new Random();
         String expectedMessage;
@@ -261,8 +442,8 @@ class ModelTest {
         }
     }
 
-    @Test
-    void deactivateConstructorIfNeededTest()   {
+    @RepeatedTest(1000)
+    void changeActiveConstructorsTest()   {
         Random random = new Random();
         Constructor c1 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
         Constructor c2 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
@@ -278,7 +459,7 @@ class ModelTest {
         c2.setCanMove(true);
         model.getBoard().placeConstructor(model.getBoard().getTile(pos1), c1);
         model.getBoard().placeConstructor(model.getBoard().getTile(pos2), c2);
-        model.deactivateConstructorIfNeeded();
+        model.changeActiveConstructors();
         for(Constructor c : model.getGameState().getCurrentPlayer().getAllConstructors())   {
             if(model.getBoard().possibleMoveset(c).size() == 0) {
                 assertFalse(c.getCanMove(), "The constructor should not move");
@@ -289,7 +470,7 @@ class ModelTest {
         }
     }
 
-    @Test
+    @RepeatedTest(1000)
     void createPossibleMovePos()    {
         Random random = new Random();
         List<Position> expectedList;
@@ -330,14 +511,14 @@ class ModelTest {
                 }
             }
         }
-        for(int j = 0; j < 2; j++)    {
+        for(int j = 0; j < expectedList.size() && j < 2; j++)    {
             Position pos2 = expectedList.get(j);
             deleteList.add(pos2);
         }
         for(int i = 0; i < 2; i++)  {
             expectedList.add(addList.get(i));
         }
-        for(int i = 0; i < 2 ; i++) {
+        for(int i = 0; i < deleteList.size() ; i++) {
             expectedList.remove(deleteList.get(i));
         }
         model.createPossibleMovePos(addList, deleteList);
@@ -351,7 +532,7 @@ class ModelTest {
         }
     }
 
-    @Test
+    @RepeatedTest(1000)
     void createPossibleBuildPosTest()   {
         Random random = new Random();
         List<Position> expectedList;
@@ -418,6 +599,41 @@ class ModelTest {
         model.destroyRemainingPhases();
         assertEquals(1, model.getCurrentGod().getPhasesList().size(), "The size of the list should be 1");
         assertEquals(PossiblePhases.CHOOSE_CONSTRUCTOR.toString(), model.getCurrentGod().getPhasesList().get(0).toString(), "Should be the CHOOSE_CONSTRUCTOR phase");
+    }
+
+    @RepeatedTest(1000)
+    void removePlayerTest(RepetitionInfo repetitionInfo)    {
+        String idPlayerToRemove, expectedMessage;
+        int expectedNumOfPlayingPlayers = 1;
+        Player playerR = null;
+        if(repetitionInfo.getCurrentRepetition() % 2 == 0)  {
+            idPlayerToRemove = "First";
+            expectedMessage = idPlayerToRemove + " player is removed from the game";
+            for(Player p : model.getGameState().getPlayerList())    {
+                if(p.getIdPlayer().equals(idPlayerToRemove))    {
+                    playerR = p;
+                    break;
+                }
+            }
+            model.removePlayer(idPlayerToRemove);
+            assertEquals(0, playerR.getAllConstructors().size(), "The player should not have any constructors active");
+            assertEquals(expectedNumOfPlayingPlayers, model.getGameState().getPlayerList().size(), "There should be just 1 player");
+            assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+        }
+        else    {
+            idPlayerToRemove = "Second";
+            expectedMessage = idPlayerToRemove + " player is removed from the game";
+            for(Player p : model.getGameState().getPlayerList())    {
+                if(p.getIdPlayer().equals(idPlayerToRemove))    {
+                    playerR = p;
+                    break;
+                }
+            }
+            model.removePlayer(idPlayerToRemove);
+            assertEquals(0, playerR.getAllConstructors().size(), "The player should not have any constructors active");
+            assertEquals(expectedNumOfPlayingPlayers, model.getGameState().getPlayerList().size(), "There should be just 1 player");
+            assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
+        }
     }
 }
 
