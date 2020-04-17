@@ -126,6 +126,78 @@ public class Model extends Observable<GameMessage> {
     }
 
     /**
+     * This method performs the special movement of the <em>God</em> Apollo: he can swap his <em>Constructor</em>
+     * with one of the enemy player, but only if the enemy <em>Constructor</em> is 1 <em>Tile</em> away from him.
+     *
+     * @param pos   the <em>Position</em> of the enemy <em>Constructor</em>
+     */
+    public void performSwap(Position pos)   {
+        int i;
+        Tile t1 = board.getTile(pos);
+        Position currPos = currentConstructor.getPos().clone();
+        Tile t2 = board.getTile(currPos);
+        Constructor swappedConstructor = board.getTile(pos).getActualConstuctor();
+
+        board.placeConstructor(t1, currentConstructor);
+        board.placeConstructor(t2, swappedConstructor);
+
+        int[][] matrix = board.createConstructorMatrix();
+        for(i = 0; i < gameState.getPlayerList().size(); i++)   {
+            if(swappedConstructor.getPlayerNumber() == gameState.getPlayerList().get(i).getPlayerNumber()) {
+                break;
+            }
+        }
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " player swapped his constructor with the one " +
+                "of the " + gameState.getPlayerList().get(i).getIdPlayer() + " player";
+        notify(new MoveMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+    }
+
+    /**
+     * This method performs the special movement of the <em>God</em> Minotaur: he can move his <em>Constructor</em>
+     * to the position of the enemy player one, but only if the enemy <em>Constructor</em> is in the same
+     * row/column that he is.
+     *
+     * @param pos   the <em>Position</em> of the enemy <em>Constructor</em>
+     */
+    public  void performPush(Position pos)  {
+        int i;
+        Tile t1 = board.getTile(pos);
+        Position currPos = currentConstructor.getPos().clone();
+        Constructor pushedConstructor = t1.getActualConstuctor();
+        Position pushedPos;
+        if(pos.getCol() == currPos.getCol())    {
+            if(pos.getRow() > currPos.getRow()) {
+                pushedPos = new Position(pos.getRow() - 1, pos.getCol());
+            }
+            else    {
+                pushedPos = new Position(pos.getRow() + 1, pos.getCol());
+            }
+        }
+        else    {
+            if(pos.getCol() > currPos.getCol()) {
+                pushedPos = new Position(pos.getRow(), pos.getCol() - 1);
+            }
+            else    {
+                pushedPos = new Position(pos.getRow(), pos.getCol() + 1);
+            }
+        }
+        Tile t2 = board.getTile(pushedPos);
+
+        board.placeConstructor(t1, currentConstructor);
+        board.placeConstructor(t2, pushedConstructor);
+
+        int[][] matrix = board.createConstructorMatrix();
+        for(i = 0; i < gameState.getPlayerList().size(); i++)   {
+            if(pushedConstructor.getPlayerNumber() == gameState.getPlayerList().get(i).getPlayerNumber()) {
+                break;
+            }
+        }
+        String message = gameState.getCurrentPlayer().getIdPlayer() + " player pushed his constructor with the one " +
+                "of the " + gameState.getPlayerList().get(i).getIdPlayer() + " player";
+        notify(new MoveMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+    }
+
+    /**
      * Method used to build on the <em>Tile</em> in the <em>Position</em> that's passed as input.
      * After raising the level of the building, the method create a new BuildingMatrix and send (through a notify())
      * a new BuildMessage to every <em>Observer</em>
@@ -194,11 +266,13 @@ public class Model extends Observable<GameMessage> {
         List<Position> list;
 
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
-            if(c.getCanMove())  {
-                list = board.possibleMoveset(c);
-                if(list.size() == 0)    {
-                    c.setCanMove(false);
-                }
+
+            list = board.possibleMoveset(c);
+            if(list.size() == 0)    {
+                c.setCanMove(false);
+            }
+            else    {
+                c.setCanMove(true);
             }
         }
     }
@@ -251,6 +325,41 @@ public class Model extends Observable<GameMessage> {
 
     public God getCurrentGod()  {
         return gameState.getCurrentPlayer().getGod();
+    }
+
+    public void forceNotify(GameMessage message)    {
+        notify(message);
+    }
+
+    /**
+     * This method removes a <em>Player</em> from the game
+     *
+     * @param playerId  id of the <em>Player</em> we want to remove
+     */
+    public void removePlayer(String playerId)   {
+        Player playerR = null;
+        List<Player> playerList;
+        List<Constructor> constructorList;
+        for(int i = 0; i < gameState.getPlayerList().size(); i++)   {
+            if(gameState.getPlayerList().get(i).getIdPlayer().equals(playerId)) {
+                playerR = gameState.getPlayerList().get(i);
+            }
+        }
+        constructorList = playerR.getAllConstructors();
+        for(Constructor c : constructorList)   {
+            board.getTile(c.getPos()).setActualConstuctor(null);
+            c.setPos(new Position(-1, -1));
+        }
+        playerList = gameState.getPlayerList();
+        for(int i = 0; i < playerList.size(); i++)   {
+            if(playerId.equals(playerList.get(i).getIdPlayer())) {
+                playerList.remove(i);
+                break;
+            }
+        }
+
+        String message = playerId + " player is removed from the game";
+        notify(new GameMessage(message, playerR));
     }
 
     protected Board getBoard()  {
