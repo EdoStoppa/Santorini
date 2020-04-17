@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Controller.GodController.ArtemisController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the god card: Artemis
@@ -39,5 +40,11 @@ public class Artemis extends God {
 
     public Position getPrevPosConstructor(Model model){
         return model.getCurrentConstructor().getPrevPos().clone();
+    }
+
+    public boolean cantDoAnother(Model model, List<Position> delList){
+        List<Position> possibleMove = model.getBoard().possibleMoveset(model.getCurrentConstructor());
+
+        return (possibleMove.size() == 1 && possibleMove.get(0).equals(delList.get(0)));
     }
 }

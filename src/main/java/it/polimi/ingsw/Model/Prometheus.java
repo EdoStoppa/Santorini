@@ -71,19 +71,23 @@ public class Prometheus extends God {
         return wrongPos;
     }
 
-    private int numberSameOrDownLevel(Model model, Constructor c){
+    public List<Position> sameOrDownLevel(Model model, Constructor c){
         List<Position> standardPos = model.getBoard().possibleMoveset(c);
         Tile currentT = model.getBoard().getTile(c.getPos());
 
-        int num = 0;
+        List<Position> num = new ArrayList<>();
 
         for(Position p : standardPos){
             if((currentT.getConstructionLevel() >= model.getBoard().getTile(p).getConstructionLevel())){
-                num += 1;
+                num.add(p.clone());
             }
         }
 
         return num;
+    }
+
+    public List<Position> sameOrDownLevelCurrent(Model model){
+        return sameOrDownLevel(model, model.getCurrentConstructor());
     }
 
     public void createPossibleConstructorPos(Model model){
@@ -98,7 +102,7 @@ public class Prometheus extends God {
         }
 
         for(Constructor c : constList)  {
-            int num = numberSameOrDownLevel(model, c);
+            int num = sameOrDownLevel(model, c).size();
 
             if(num == 0)  {
                 noPowerPos.add(c.getPos().clone());
@@ -123,7 +127,7 @@ public class Prometheus extends God {
     }
 
     public void setCorrectPhase(Model model){
-        //model.getGameState().setCurrentPhase(phasesList.get(1));
+        model.getGameState().setCurrentPhase(phasesList.get(1));
     }
 
 }

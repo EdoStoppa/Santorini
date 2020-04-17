@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller.GodController;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.PosMessage;
+import it.polimi.ingsw.Model.Hephaestus;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.Prometheus;
@@ -73,7 +74,6 @@ public class PrometheusController extends GodController {
         List<Position> wrongPos = prometheus.getWrongPos(model);
 
         model.createPossibleMovePos(null, wrongPos);
-
     }
 
     /**
@@ -84,7 +84,13 @@ public class PrometheusController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
+        // if it is a null pos it means that the player ended the phase without building, so nothing happens
+        if(posMessage.getPosition() != null){
+            controller.handleBuild(posMessage);
 
+            Prometheus p = (Prometheus)model.getCurrentGod();
+            p.setCanGoUp(false);
+        }
     }
 
     /**
@@ -94,6 +100,14 @@ public class PrometheusController extends GodController {
      */
     @Override
     public void prepareSpecialBuild(Model model, Controller controller) {
-        
+        Prometheus prometheus = (Prometheus)model.getCurrentGod();
+
+        List<Position> sameOrDownList = prometheus.sameOrDownLevelCurrent(model);
+
+        if(sameOrDownList.size() == 1){
+            model.createPossibleBuildPos(null, sameOrDownList);
+        } else {
+            controller.prepareBuild();
+        }
     }
 }

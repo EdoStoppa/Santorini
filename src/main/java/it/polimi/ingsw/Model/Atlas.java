@@ -45,7 +45,6 @@ public class Atlas extends God {
         int[][] matrix = model.getBoard().createBuildingMatrix();
         String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " built a dome on position: " + pos.toString();
 
-        // WAIT FOR "forceNotify" IMPLEMENTATION IN MODEL
-        //model.forceNotify(new BuildMessage(message, model.getGameState().getCurrentPlayer(), model.getGameState().getCurrentPhase(), matrix));
+        model.forceNotify(new BuildMessage(message, model.getGameState().getCurrentPlayer(), model.getGameState().getCurrentPhase(), matrix));
     }
 }
