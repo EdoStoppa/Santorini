@@ -49,6 +49,9 @@ public class AthenaController extends GodController {
      */
     @Override
     public void prepareSpecialMove(Model model, Controller controller){
+        Athena athena = (Athena)model.getCurrentGod();
+        athena.changeCanGoUp(model, true);
+
         controller.prepareMove();
     }
 }

@@ -60,6 +60,9 @@ public class PrometheusController extends GodController {
     @Override
     public void handleSpecialMove(Model model, Controller controller, PosMessage posMessage) {
         controller.handleMove(posMessage);
+
+        Prometheus p = (Prometheus)model.getCurrentGod();
+        p.setCanGoUp(true);
     }
 
     /**

@@ -60,7 +60,7 @@ public class Minotaur extends God {
                         Position futurePos = calculatePushedPos(model.getCurrentConstructor().getPos(), position);
                         // if the future position where the enemy constructor will be pushed make sense
                         if(isGood(futurePos)){
-                            // only if the tile is not already occupied or has a dome
+                            // only if the future tile is not already occupied or has a dome
                             if(!board.getTile(futurePos).getOccupied() && !board.getTile(futurePos).getDome()){
                                 numEnemyOK += 1;
                             }
@@ -95,7 +95,7 @@ public class Minotaur extends God {
                     //if the future position is a real position
                     if(isGood(futurePos)){
                         // if the future tile is not occupied/has a dome
-                        if(!model.getBoard().getTile(futurePos).getDome() && model.getBoard().getTile(futurePos).getOccupied()){
+                        if(!model.getBoard().getTile(futurePos).getDome() && !model.getBoard().getTile(futurePos).getOccupied()){
                             addList.add(p.clone());
                         }
                     }
@@ -109,14 +109,14 @@ public class Minotaur extends God {
         return addList;
     }
 
-    private Position calculatePushedPos(Position current, Position other){
+    protected Position calculatePushedPos(Position current, Position other){
         int row = (other.getRow() - current.getRow()) + other.getRow();
         int col = (other.getCol() - current.getCol()) + other.getCol();
 
         return new Position(row, col);
     }
 
-    private boolean isGood(Position pos){
+    protected boolean isGood(Position pos){
         return (0 <= pos.getCol() && pos.getCol() <= 4) && (0 <= pos.getRow() && pos.getRow() <= 4);
     }
 }
