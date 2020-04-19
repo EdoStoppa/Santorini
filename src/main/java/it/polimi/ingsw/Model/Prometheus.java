@@ -75,15 +75,16 @@ public class Prometheus extends God {
         List<Position> standardPos = model.getBoard().possibleMoveset(c);
         Tile currentT = model.getBoard().getTile(c.getPos());
 
-        List<Position> num = new ArrayList<>();
+        List<Position> list = new ArrayList<>();
 
         for(Position p : standardPos){
-            if((currentT.getConstructionLevel() >= model.getBoard().getTile(p).getConstructionLevel())){
-                num.add(p.clone());
+            Tile nextT = model.getBoard().getTile(p);
+            if((currentT.getConstructionLevel() >= nextT.getConstructionLevel()) && !nextT.getDome()){
+                list.add(p.clone());
             }
         }
 
-        return num;
+        return list;
     }
 
     public List<Position> sameOrDownLevelCurrent(Model model){
@@ -120,7 +121,6 @@ public class Prometheus extends God {
         } else {
             message = new TileToShowMessage("standard", model.getGameState().getCurrentPlayer(), model.getCurrentPhase(), normalPos);
         }
-
 
         model.forceNotify(message);
 

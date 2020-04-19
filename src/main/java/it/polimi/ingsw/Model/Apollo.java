@@ -49,7 +49,7 @@ public class Apollo extends God {
             listOcc = board.searchForOccupied(c.getPos());
 
             for (Position position : listOcc) {
-                if (board.getTile(position).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
+                if (board.getTile(position).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
                     if(board.getTile(c.getPos()).getConstructionLevel()+1 >= board.getTile(position).getConstructionLevel()){
                         numEnemyOcc += 1;
                     }
@@ -72,7 +72,7 @@ public class Apollo extends God {
 
         occList = model.getBoard().searchForOccupied(model.getCurrentConstructor().getPos());
         for (Position p : occList){
-            if(board.getTile(p).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
+            if(board.getTile(p).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
                 if(board.getTile(model.getCurrentConstructor().getPos()).getConstructionLevel()+1 >= board.getTile(p).getConstructionLevel()){
                     addList.add(p.clone());
                 }

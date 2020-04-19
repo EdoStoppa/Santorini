@@ -54,7 +54,7 @@ public class Minotaur extends God {
             // for every occupied position
             for (Position position : listOcc) {
                 //if it isn't occupied by the current player
-                if (board.getTile(position).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
+                if (board.getTile(position).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
                     // if the player can actually move on this tile
                     if(board.getTile(c.getPos()).getConstructionLevel()+1 >= board.getTile(position).getConstructionLevel()){
                         Position futurePos = calculatePushedPos(model.getCurrentConstructor().getPos(), position);
@@ -88,7 +88,7 @@ public class Minotaur extends God {
         occList = model.getBoard().searchForOccupied(model.getCurrentConstructor().getPos());
         for (Position p : occList){
             // if is occupied by an enemy constructor
-            if(board.getTile(p).getActualConstuctor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
+            if(board.getTile(p).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
                 // if is a possible standard move
                 if(board.getTile(model.getCurrentConstructor().getPos()).getConstructionLevel()+1 >= board.getTile(p).getConstructionLevel()){
                     Position futurePos = calculatePushedPos(model.getCurrentConstructor().getPos(), p);

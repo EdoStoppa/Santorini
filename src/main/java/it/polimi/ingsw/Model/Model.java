@@ -106,7 +106,7 @@ public class Model extends Observable<GameMessage> {
      * @param pos   The <em>Position</em> where there's the constructor the player wants to choose.
      */
     public void performChooseConstructor(Position pos) {
-        setCurrentConstructor(board.getTile(pos).getActualConstuctor());
+        setCurrentConstructor(board.getTile(pos).getActualConstructor());
     }
 
     /**
@@ -138,7 +138,7 @@ public class Model extends Observable<GameMessage> {
         Tile t1 = board.getTile(pos);
         Position currPos = currentConstructor.getPos().clone();
         Tile t2 = board.getTile(currPos);
-        Constructor swappedConstructor = board.getTile(pos).getActualConstuctor();
+        Constructor swappedConstructor = board.getTile(pos).getActualConstructor();
 
         board.placeConstructor(t1, currentConstructor);
         board.placeConstructor(t2, swappedConstructor);
@@ -165,7 +165,7 @@ public class Model extends Observable<GameMessage> {
         int i;
         Tile t1 = board.getTile(pos);
         Position currPos = currentConstructor.getPos().clone();
-        Constructor pushedConstructor = t1.getActualConstuctor();
+        Constructor pushedConstructor = t1.getActualConstructor();
         Position pushedPos;
         if(pos.getCol() == currPos.getCol())    {
             if(pos.getRow() > currPos.getRow()) {
@@ -348,7 +348,7 @@ public class Model extends Observable<GameMessage> {
         }
         constructorList = playerR.getAllConstructors();
         for(int i = 0; i < constructorList.size(); i++)   {
-            board.getTile(constructorList.get(i).getPos()).setActualConstuctor(null);
+            board.getTile(constructorList.get(i).getPos()).setActualConstructor(null);
             board.getTile(constructorList.get(i).getPos()).setOccupied(false);
             constructorList.get(i).setPos(new Position(-1, -1));
         }

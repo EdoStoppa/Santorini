@@ -72,11 +72,11 @@ public class Tile {
         return this.dome;
     }
 
-    public Constructor getActualConstuctor() {
+    public Constructor getActualConstructor() {
         return actualConstructor;
     }
 
-    public void setActualConstuctor(Constructor c) {
+    public void setActualConstructor(Constructor c) {
         this.actualConstructor = c;
         this.setOccupied(true);
     }

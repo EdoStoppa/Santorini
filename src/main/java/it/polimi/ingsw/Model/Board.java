@@ -37,7 +37,7 @@ public class Board {
                     int constructorHeight = getTile(CurrentConstructor.getPos()).getConstructionLevel();
                     int tileHeight = tiles[i][j].getConstructionLevel();
 
-                    if((canGoUp && ((constructorHeight + 1 >= tileHeight)) || (!canGoUp && constructorHeight == tileHeight)) && !tiles[i][j].getDome()) {
+                    if(((canGoUp && (constructorHeight + 1 >= tileHeight)) || (!canGoUp && constructorHeight == tileHeight)) && !tiles[i][j].getDome()) {
                         moves.add(new Position(i, j));
                     }
                 }
@@ -80,10 +80,10 @@ public class Board {
         currentCon.setPrevPos(posC);
         currentCon.setPos(tile.getPos().clone());
         tile.setOccupied(true);
-        tile.setActualConstuctor(currentCon);
+        tile.setActualConstructor(currentCon);
 
         if(posC.getCol() != -1){
-            getTile(posC).setActualConstuctor(null);
+            getTile(posC).setActualConstructor(null);
             getTile(posC).setOccupied(false);
         }
     }
@@ -113,7 +113,7 @@ public class Board {
         placeConstructor(getTile(player2.getPos()),player1);
         player2.setPos(player1.getPrevPos());
         player2.setPrevPos(player1.getPos());
-        getTile(player2.getPos()).setActualConstuctor(player2);
+        getTile(player2.getPos()).setActualConstructor(player2);
         getTile(player2.getPos()).setOccupied(true);
     }
 
@@ -167,8 +167,8 @@ public class Board {
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
                 Position pos = new Position(i, j);
-                if(getTile(pos).getActualConstuctor() != null)    {
-                    matrix[i][j] = getTile(pos).getActualConstuctor().getPlayerNumber();
+                if(getTile(pos).getActualConstructor() != null)    {
+                    matrix[i][j] = getTile(pos).getActualConstructor().getPlayerNumber();
                 }
                 else    {
                     matrix[i][j] = 0;

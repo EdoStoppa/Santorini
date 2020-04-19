@@ -289,7 +289,7 @@ class BoardTest {
         assertEquals(3, currentConstructor.getPos().getRow());
         assertEquals(2, currentConstructor.getPos().getCol());
 
-        assertEquals(currentConstructor, tile.getActualConstuctor());
+        assertEquals(currentConstructor, tile.getActualConstructor());
     }
 
     /**
@@ -310,14 +310,14 @@ class BoardTest {
         assertEquals(1, currentConstructor.getPos().getRow());
         assertEquals(1, currentConstructor.getPos().getCol());
 
-        assertEquals(currentConstructor, tile.getActualConstuctor());
+        assertEquals(currentConstructor, tile.getActualConstructor());
 
         assertFalse(board.getTile(currentConstructor.getPrevPos()).getOccupied());
 
         assertEquals(0, currentConstructor.getPrevPos().getCol());
         assertEquals(0, currentConstructor.getPrevPos().getRow());
 
-        assertNull(board.getTile(currentConstructor.getPrevPos()).getActualConstuctor());
+        assertNull(board.getTile(currentConstructor.getPrevPos()).getActualConstructor());
     }
 
     /**
@@ -365,8 +365,8 @@ class BoardTest {
         assertEquals(2, player2.getPos().getRow());
         assertEquals(2, player2.getPos().getCol());
 
-        assertEquals(player1, board.getTile(player1.getPos()).getActualConstuctor());
-        assertEquals(player2, board.getTile(player2.getPos()).getActualConstuctor());
+        assertEquals(player1, board.getTile(player1.getPos()).getActualConstructor());
+        assertEquals(player2, board.getTile(player2.getPos()).getActualConstructor());
 
         assertTrue(board.getTile(pos1).getOccupied());
         assertTrue(board.getTile(pos2).getOccupied());
@@ -538,16 +538,16 @@ class BoardTest {
             int x = random.nextInt(4);
             int y = random.nextInt(4);
             Position pos = new Position(x, y);
-            if(board.getTile(pos).getActualConstuctor() == null)    {
+            if(board.getTile(pos).getActualConstructor() == null)    {
                 if(numberConstructorsP1 < 2)    {
                     Constructor c1 = new Constructor(1);
-                    board.getTile(pos).setActualConstuctor(c1);
+                    board.getTile(pos).setActualConstructor(c1);
                     expected[x][y] = 1;
                     numberConstructorsP1++;
                 }
                 else if(numberConstructorsP2 < 2)   {
                     Constructor c2 = new Constructor(2);
-                    board.getTile(pos).setActualConstuctor(c2);
+                    board.getTile(pos).setActualConstructor(c2);
                     expected[x][y] = 2;
                     numberConstructorsP2++;
                 }
