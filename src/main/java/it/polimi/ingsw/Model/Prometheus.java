@@ -114,6 +114,8 @@ public class Prometheus extends God {
             }
         }
 
+        model.setTileToShow(normalPos);
+
         GameMessage message;
 
         if(noPowerPos.size() > 0){

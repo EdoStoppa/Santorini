@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.SpecialActionMessage;
+import it.polimi.ingsw.Message.TileToShowMessage;
+import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -8,6 +12,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PrometheusTest {
+    private class Receiver implements Observer<GameMessage> {
+        private GameMessage message;
+
+        public GameMessage getMessage(){
+            return message;
+        }
+
+        @Override
+        public void update(GameMessage message) {
+            this.message = message;
+        }
+    }
 
     @Test
     void getWrongPosStandard(){
@@ -129,7 +145,116 @@ class PrometheusTest {
         assertEquals(0, prometheus.sameOrDownLevel(model, pList.get(0).getAllConstructors().get(0)).size(), "Should be empty (same level but with dome)");
     }
 
+    @Test
+    void create(){
+        List<Player> pList = createPlayer(new Prometheus(), new Athena());
+        Model model = new Model(pList);
+        Receiver r = new Receiver();
+        model.addObserver(r);
+        Prometheus prometheus = (Prometheus) model.getCurrentGod();
 
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.performMove(new Position(1,1));
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(1));
+        model.performMove(new Position(2,2));
+
+        prometheus.createPossibleConstructorPos(model);
+
+        assertEquals(2, model.getTileToShow().size(), "Should be both of the constructors' positions");
+
+        assertTrue(r.getMessage() instanceof TileToShowMessage, "This should be a normal message");
+    }
+
+    @Test
+    void createOneAndOne(){
+        List<Player> pList = createPlayer(new Prometheus(), new Athena());
+        Model model = new Model(pList);
+        Receiver r = new Receiver();
+        model.addObserver(r);
+        Prometheus prometheus = (Prometheus) model.getCurrentGod();
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(!(i == 1 && j == 1)){
+                    setLevel(model.getBoard(), new Position(i,j), 1);
+                }
+            }
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.performMove(new Position(1,1));
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(1));
+        model.performMove(new Position(3,3));
+
+        prometheus.createPossibleConstructorPos(model);
+
+        assertEquals(2, model.getTileToShow().size(), "Should be both of the constructors' positions");
+
+        assertTrue(r.getMessage() instanceof SpecialActionMessage, "This should be a special action message");
+
+        SpecialActionMessage message = (SpecialActionMessage)r.getMessage();
+        assertEquals(1, message.getSpecialTile().size(), "Should be only one tile (1,1)");
+    }
+
+    @Test
+    void oneIsFreeAndCanBuild(){
+        List<Player> pList = createPlayer(new Prometheus(), new Athena());
+        Model model = new Model(pList);
+        Receiver r = new Receiver();
+        model.addObserver(r);
+        Prometheus prometheus = (Prometheus) model.getCurrentGod();
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(!(i == 1 && j == 1) && !(i == 1 && j == 2)){
+                    setLevel(model.getBoard(), new Position(i,j), 1);
+                }
+            }
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.performMove(new Position(1,1));
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(1));
+        model.performMove(new Position(3,3));
+
+        prometheus.createPossibleConstructorPos(model);
+
+        assertEquals(2, model.getTileToShow().size(), "Should be both of the constructors' positions");
+
+        assertTrue(r.getMessage() instanceof TileToShowMessage, "This should be a normal message");
+    }
+
+    @Test
+    void oneFreeButNoBuild(){
+        List<Player> pList = createPlayer(new Prometheus(), new Athena());
+        Model model = new Model(pList);
+        Receiver r = new Receiver();
+        model.addObserver(r);
+        Prometheus prometheus = (Prometheus) model.getCurrentGod();
+
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(!(i == 1 && j == 1) && !(i == 1 && j == 2)){
+                    setLevel(model.getBoard(), new Position(i,j), 4);
+                }
+            }
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.performMove(new Position(1,1));
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(1));
+        model.performMove(new Position(3,3));
+
+        prometheus.createPossibleConstructorPos(model);
+
+        assertEquals(2, model.getTileToShow().size(), "Should be both of the constructors' positions");
+
+        assertTrue(r.getMessage() instanceof SpecialActionMessage, "This should be a special message");
+    }
 
     private List<Player> createPlayer(God p1God, God p2God){
         Player p1 = new Player("uno", "1/01/2000", 1);
