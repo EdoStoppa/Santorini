@@ -143,20 +143,10 @@ public class Controller implements Observer<FromClientMessage> {
         }
 
         if(message instanceof PosMessage){
-
-            // All the check below could be eliminated if everything is checked by Clients
-            // The only things left will be handle, nextPhase and preparePhase
-            List<Position> listPos = model.getTileToShow();
-            Position messagePos = ((PosMessage) message).getPosition();
-
-            for(Position p : listPos){
-                if(p.equals(messagePos)){
-                    handleAction((PosMessage)message);
-                    model.nextPhase();
-                    preparePhase();
-                    return;
-                }
-            }
+            handleAction((PosMessage)message);
+            model.nextPhase();
+            preparePhase();
+            return;
         }
 
         System.out.println("Something went wrong, GameMessage should be a FromClientMessage... :(");
