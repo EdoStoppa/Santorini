@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class Player {
 
     private String idPlayer;
-    private String playerBirthday;
     /**List containing the 2 <em>Constructors</em> assigned to each <em>Player</em>
      */
     private ArrayList<Constructor> ownConstructors;
@@ -23,12 +22,10 @@ public class Player {
      * the 2 <em>Constructors</em>
      *
      * @param id id chosen by the Player
-     * @param day birthday of the Player
      * @param numP number assigned by the server
      */
-    public Player(String id, String day, int numP){
+    public Player(String id, int numP){
         this.idPlayer = id;
-        this.playerBirthday = day;
         this.ownConstructors = new ArrayList<Constructor>();
         ownConstructors.add(new Constructor(numP));
         ownConstructors.add(new Constructor(numP));
@@ -51,10 +48,6 @@ public class Player {
 
     public String getIdPlayer(){
         return idPlayer;
-    }
-
-    public String getPlayerBirthday(){
-        return playerBirthday;
     }
 
     public int getPlayerNumber(){

@@ -57,8 +57,8 @@ class HephaestusTest {
     }
 
     private List<Player> createPlayer(God p1God, God p2God){
-        Player p1 = new Player("uno", "1/01/2000", 1);
-        Player p2 = new Player("due", "1/01/2000", 2);
+        Player p1 = new Player("uno", 1);
+        Player p2 = new Player("due", 2);
 
         p1.setGod(p1God);
         p2.setGod(p2God);

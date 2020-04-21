@@ -15,10 +15,10 @@ class GameStateTest {
 
     @BeforeEach
     void init(){
-        p1 = new Player("First", "01/01/2000", 1);
+        p1 = new Player("First", 1);
         p1.setGod(new Athena());
 
-        p2 = new Player("Second", "02/01/2000", 2);
+        p2 = new Player("Second", 2);
         p2.setGod(new Atlas());
 
         list = new ArrayList<Player>();

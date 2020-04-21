@@ -11,7 +11,7 @@ class AthenaTest {
 
     @Test
     void shouldActivatePowerSameHeight(){
-        Player p1 = new Player("uno", "01/01/2000", 1);
+        Player p1 = new Player("uno", 1);
         p1.setGod(new Athena());
 
         List<Player> list = new ArrayList<Player>();
@@ -36,7 +36,7 @@ class AthenaTest {
 
     @Test
     void shouldActivatePowerGoingUp(){
-        Player p1 = new Player("uno", "01/01/2000", 1);
+        Player p1 = new Player("uno", 1);
         p1.setGod(new Athena());
 
         List<Player> list = new ArrayList<Player>();
@@ -57,7 +57,7 @@ class AthenaTest {
 
     @Test
     void shouldActivePowerGoingDown(){
-        Player p1 = new Player("uno", "01/01/2000", 1);
+        Player p1 = new Player("uno", 1);
         p1.setGod(new Athena());
 
         List<Player> list = new ArrayList<Player>();

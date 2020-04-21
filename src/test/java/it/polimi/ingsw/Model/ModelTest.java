@@ -32,9 +32,9 @@ class ModelTest {
     void init() {//It creates a random board, a GameState and  before every Test
         Player p1, p2;
 
-        p1 = new Player("First", "01/01/2000", 1);
+        p1 = new Player("First", 1);
         p1.setGod(new Athena());
-        p2 = new Player("Second", "02/01/2000", 2);
+        p2 = new Player("Second", 2);
         p2.setGod(new Apollo());
         list = new ArrayList<>();
         list.add(p1);
@@ -380,8 +380,8 @@ class ModelTest {
 
     @RepeatedTest(3)
     void isLastStanding(RepetitionInfo repetitionInfo)   {
-        Player p1 = new Player("First", "28/05/1998", 1);
-        Player p2 = new Player("Second", "11/07/2001", 2);
+        Player p1 = new Player("First", 1);
+        Player p2 = new Player("Second", 2);
         ArrayList<Player> list = new ArrayList<>();
 
         if(repetitionInfo.getCurrentRepetition() == 1)  {//The player is the last standing.
