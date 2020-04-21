@@ -17,7 +17,7 @@ import java.util.List;
 
 // -----------------------------------------------------------------------------------
 
-public class Controller implements Observer<FromClientMessage> {
+public class Controller implements Observer<PosMessage> {
 
     Model model;
 
@@ -136,19 +136,14 @@ public class Controller implements Observer<FromClientMessage> {
     }
 
     @Override
-    public void update(FromClientMessage message) {
+    public void update(PosMessage message) {
         if(!model.isPlayerTurn(message.getPlayer())){
             // DO SOMETHING WITH VIEW
             return;
         }
 
-        if(message instanceof PosMessage){
-            handleAction((PosMessage)message);
-            model.nextPhase();
-            preparePhase();
-            return;
-        }
-
-        System.out.println("Something went wrong, GameMessage should be a FromClientMessage... :(");
+        handleAction((PosMessage)message);
+        model.nextPhase();
+        preparePhase();
     }
 }
