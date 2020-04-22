@@ -7,11 +7,11 @@ import it.polimi.ingsw.View.View;
 public class PosMessage {
     private final String code;
     private String message;
-    private final Player player;
+    private final String player;
     private final View view;
     private final Position position;
 
-    public PosMessage(String code, Player player, View view, Position position) {
+    public PosMessage(String code, String player, View view, Position position) {
         this.code = code;
         this.player = player;
         this.view = view;
@@ -25,7 +25,7 @@ public class PosMessage {
         this.message = s;
     }
 
-    public Player getPlayer() {
+    public String getIdPlayer() {
         return this.player;
     }
 

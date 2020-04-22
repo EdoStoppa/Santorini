@@ -95,9 +95,9 @@ public class Model extends Observable<GameMessage> {
      * @param p <em>Player</em> to check
      * @return if it's his/hers turn
      */
-    public boolean isPlayerTurn(Player p) {
+    public boolean isPlayerTurn(String p) {
         Player currentP = gameState.getCurrentPlayer();
-        return p.getIdPlayer().equals(currentP.getIdPlayer());
+        return p.equals(currentP.getIdPlayer());
     }
 
     /**
@@ -124,7 +124,7 @@ public class Model extends Observable<GameMessage> {
         int[][] matrix = board.createConstructorMatrix();
         String message = gameState.getCurrentPlayer().getIdPlayer() + " moved to position: " + pos.toString();
 
-        notify(new MoveMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+        notify(new MoveMessage(message, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     /**
@@ -149,9 +149,8 @@ public class Model extends Observable<GameMessage> {
                 break;
             }
         }
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " player swapped his constructor with the one " +
-                "of the " + gameState.getPlayerList().get(i).getIdPlayer() + " player";
-        notify(new MoveMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+        String code = "swapped";
+        notify(new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     /**
@@ -193,9 +192,8 @@ public class Model extends Observable<GameMessage> {
                 break;
             }
         }
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " player pushed his constructor with the one " +
-                "of the " + gameState.getPlayerList().get(i).getIdPlayer() + " player";
-        notify(new MoveMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+        String code = "pushed";
+        notify(new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     /**
@@ -211,9 +209,9 @@ public class Model extends Observable<GameMessage> {
         currentConstructor.setLastBuildPos(pos.clone());
 
         int[][] matrix = board.createBuildingMatrix();
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " built on position: " + pos.toString();
+        String code = "forcedDome";
 
-        notify(new BuildMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), matrix));
+        notify(new BuildMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     public List<Player> getListPlayer() {
@@ -255,8 +253,8 @@ public class Model extends Observable<GameMessage> {
             }
         }
         setTileToShow(list);
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " can choose between " + list.size() + " constructors";
-        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+        String code = "standard";
+        notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
     /**
@@ -286,8 +284,8 @@ public class Model extends Observable<GameMessage> {
         list = board.possibleMoveset(currentConstructor);
         list = checkListsParameter(list, addList, deleteList);
         setTileToShow(list);
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " can move to any of these tiles";
-        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+        String code = "standard";
+        notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
     /**
@@ -303,8 +301,8 @@ public class Model extends Observable<GameMessage> {
         list = board.possibleBuild(currentConstructor);
         list = checkListsParameter(list, addList, deleteList);
         setTileToShow(list);
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
-        notify(new TileToShowMessage(message, gameState.getCurrentPlayer(), gameState.getCurrentPhase(), list));
+        String code = "standard";
+        notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
     public boolean isLosing()  {
@@ -356,8 +354,8 @@ public class Model extends Observable<GameMessage> {
             }
         }
         int[][] matrix = board.createConstructorMatrix();
-        String message = playerId + " player is removed from the game";
-        notify(new MoveMessage(message, playerR, getCurrentPhase(), matrix));
+        String message = "removedPlayer";
+        notify(new MoveMessage(message, playerR.getIdPlayer(), getCurrentPhase(), matrix));
     }
 
     protected Board getBoard()  {

@@ -6,12 +6,12 @@ import it.polimi.ingsw.Model.PossiblePhases;
 public abstract class GameMessage {
     private final String code;
     private String message;
-    private final Player player;
+    private final String idPlayer;
     private final PossiblePhases currentPhase;
 
-    public GameMessage(String code, Player player, PossiblePhases phase) {
+    public GameMessage(String code, String player, PossiblePhases phase) {
         this.code = code;
-        this.player = player;
+        this.idPlayer = player;
         this.currentPhase = phase;
     }
 
@@ -27,8 +27,10 @@ public abstract class GameMessage {
         this.message = s;
     }
 
-    public Player getPlayer() {
-        return this.player;
+    public abstract void autoSetMessage(boolean isMyTurn, boolean isCLI);
+
+    public String getIdPlayer() {
+        return this.idPlayer;
     }
 
     public String getCode(){

@@ -140,16 +140,16 @@ class ModelTest {
         if(repetitionInfo.getCurrentRepetition() == 1)  {
             model.getGameState().startGame();
             assertAll(
-                    ()  ->  assertTrue(model.isPlayerTurn(list.get(0)), "Should be the turn of player number 1"),
-                    ()  ->  assertFalse(model.isPlayerTurn(list.get(1)),"Should not be the turn of player number 2")
+                    ()  ->  assertTrue(model.isPlayerTurn(list.get(0).getIdPlayer()), "Should be the turn of player number 1"),
+                    ()  ->  assertFalse(model.isPlayerTurn(list.get(1).getIdPlayer()),"Should not be the turn of player number 2")
             );
         }
         if(repetitionInfo.getCurrentRepetition() == 2)  {
             model.getGameState().startGame();
             model.getGameState().nextTurn();
             assertAll(
-                    ()  ->  assertFalse(model.isPlayerTurn(list.get(0)), "Should not be the turn of player number 1"),
-                    ()  ->  assertTrue(model.isPlayerTurn(list.get(1)),"Should be the turn of player number 2")
+                    ()  ->  assertFalse(model.isPlayerTurn(list.get(0).getIdPlayer()), "Should not be the turn of player number 1"),
+                    ()  ->  assertTrue(model.isPlayerTurn(list.get(1).getIdPlayer()),"Should be the turn of player number 2")
             );
         }
     }
@@ -172,8 +172,7 @@ class ModelTest {
                 ()  ->  assertEquals(nextPosCurrentConstructor.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
                 ()  ->  assertEquals(nextPosCurrentConstructor.getCol(), model.getCurrentConstructor().getPos().getCol(), "The column should be the same")
         );
-        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(),"The player should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(),"The player should be the same");
     }
 
     @RepeatedTest(1000)
@@ -201,8 +200,7 @@ class ModelTest {
                     ()  -> assertEquals(pos1.getRow(), swappedConstructor.getPos().getRow(), "The row should be the same"),
                     ()  -> assertEquals(pos1.getCol(), swappedConstructor.getPos().getCol(), "The col should be the same")
             );
-            assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-            assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+            assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
         }
     }
 
@@ -248,8 +246,7 @@ class ModelTest {
                                 () -> assertEquals(precPos2.getRow(), pushedConstructor.getPos().getRow(), "The row should be the same"),
                                 () -> assertEquals(precPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
                         );
-                        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
                     }
                 }
                 else {
@@ -274,7 +271,7 @@ class ModelTest {
                                 () -> assertEquals(succPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
                         );
                         assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
                     }
                 }
             }
@@ -317,8 +314,7 @@ class ModelTest {
                                 ()  -> assertEquals(precPos2.getRow(), pushedConstructor.getPos().getRow(), "The row should be the same"),
                                 ()  -> assertEquals(precPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
                         );
-                        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
                     }
                 }
                 else {
@@ -343,7 +339,7 @@ class ModelTest {
                                 () -> assertEquals(succPos2.getCol(), pushedConstructor.getPos().getCol(), "The col should be the same")
                         );
                         assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-                        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+                        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
                     }
                 }
             }
@@ -374,8 +370,7 @@ class ModelTest {
         expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " built on position: " + p1.toString();
         assertEquals(expectedConstructionLevel, model.getBoard().getTile(p1).getConstructionLevel(),"The level should be the same");
         assertEquals(expectedDome, model.getBoard().getTile(p1).getDome(),"The dome should be the same");
-        assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
-        assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
     }
 
     @RepeatedTest(3)
@@ -422,8 +417,7 @@ class ModelTest {
                     () -> assertEquals(expected.get(0).getRow(), model.getTileToShow().get(0).getRow(), "The row should be the same"),
                     () -> assertEquals(expected.get(1).getCol(), model.getTileToShow().get(1).getCol(), "The column should be the same"),
                     () -> assertEquals(expected.get(1).getRow(), model.getTileToShow().get(1).getRow(), "The row should be the same"),
-                    () -> assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same"),
-                    () -> assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same")
+                    () -> assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same")
             );
         }
         if (repetitionInfo.getCurrentRepetition() == 2) {//1 constructor can move
@@ -436,8 +430,7 @@ class ModelTest {
                     () -> assertEquals(expected.get(0).getCol(), model.getTileToShow().get(0).getCol(), "The column should be the same"),
                     () -> assertEquals(expected.get(0).getRow(), model.getTileToShow().get(0).getRow(), "The row should be the same"),
                     () -> assertEquals(1, model.getTileToShow().size(), "There should be just one cell"),
-                    () -> assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same"),
-                    () -> assertEquals(model.getGameState().getCurrentPlayer(), receiver.receivedMessage.getPlayer(), "The player should be the same")
+                    () -> assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same")
             );
         }
     }
@@ -524,8 +517,7 @@ class ModelTest {
         model.createPossibleMovePos(addList, deleteList);
         String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " can move to any of these tiles";
         assertEquals(expectedList.size(), model.getTileToShow().size(), "The size should be the same");
-        assertEquals(message, receiver.receivedMessage.getMessage(), "the message should be the same");
-        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getPlayer().getIdPlayer(), "The idPlayer should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The idPlayer should be the same");
         for(int i = 0; i < model.getTileToShow().size(); i++)   {
             assertEquals(expectedList.get(i).getRow(), model.getTileToShow().get(i).getRow(),"The row should be the same");
             assertEquals(expectedList.get(i).getCol(), model.getTileToShow().get(i).getCol(), "The col should be the same");
@@ -586,8 +578,7 @@ class ModelTest {
         model.createPossibleBuildPos(addList, deleteList);
         String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
         assertEquals(expectedList.size(), model.getTileToShow().size(), "The size should be the same");
-        assertEquals(message, receiver.receivedMessage.getMessage(), "the message should be the same");
-        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getPlayer().getIdPlayer(), "The idPlayer should be the same");
+        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The idPlayer should be the same");
         for(int i = 0; i < model.getTileToShow().size(); i++)   {
             assertEquals(expectedList.get(i).getRow(), model.getTileToShow().get(i).getRow(),"The row should be the same");
             assertEquals(expectedList.get(i).getCol(), model.getTileToShow().get(i).getCol(), "The col should be the same");
@@ -618,7 +609,6 @@ class ModelTest {
             model.removePlayer(idPlayerToRemove);
             assertEquals(0, playerR.getAllConstructors().size(), "The player should not have any constructors active");
             assertEquals(expectedNumOfPlayingPlayers, model.getGameState().getPlayerList().size(), "There should be just 1 player");
-            assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
         }
         else    {
             idPlayerToRemove = "Second";
@@ -632,7 +622,6 @@ class ModelTest {
             model.removePlayer(idPlayerToRemove);
             assertEquals(0, playerR.getAllConstructors().size(), "The player should not have any constructors active");
             assertEquals(expectedNumOfPlayingPlayers, model.getGameState().getPlayerList().size(), "There should be just 1 player");
-            assertEquals(expectedMessage, receiver.receivedMessage.getMessage(), "The message should be the same");
         }
     }
 }

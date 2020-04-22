@@ -54,6 +54,6 @@ public class Hephaestus extends God {
 
         list.add(lastBuildPos);
 
-        model.forceNotify(new TileToShowMessage("canEnd", model.getGameState().getCurrentPlayer(), model.getGameState().getCurrentPhase(), list));
+        model.forceNotify(new TileToShowMessage("canEnd", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
     }
 }

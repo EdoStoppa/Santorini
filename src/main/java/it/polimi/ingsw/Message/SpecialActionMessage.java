@@ -11,7 +11,7 @@ public class SpecialActionMessage extends GameMessage {
     private final List<Position> tileToShow;
     private final List<Position> specialTile;
 
-    public SpecialActionMessage(String code, Player player, PossiblePhases phase, List<Position> tileToShow, List<Position> specialTile) {
+    public SpecialActionMessage(String code, String player, PossiblePhases phase, List<Position> tileToShow, List<Position> specialTile) {
         super(code, player, phase);
 
         this.tileToShow = tileToShow;
@@ -25,4 +25,8 @@ public class SpecialActionMessage extends GameMessage {
         return this.specialTile;
     }
 
+    @Override
+    public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+
+    }
 }

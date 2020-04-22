@@ -9,12 +9,17 @@ import java.util.List;
 public class TileToShowMessage extends GameMessage {
     private final List<Position> tileToShow;
 
-    public TileToShowMessage(String code, Player player, PossiblePhases phase, List<Position> list) {
+    public TileToShowMessage(String code, String player, PossiblePhases phase, List<Position> list) {
         super(code, player, phase);
         this.tileToShow = list;
     }
 
     public List<Position> getTileToShow() {
         return this.tileToShow;
+    }
+
+    @Override
+    public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+
     }
 }

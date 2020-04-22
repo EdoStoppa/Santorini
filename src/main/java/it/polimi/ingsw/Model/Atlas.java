@@ -43,8 +43,8 @@ public class Atlas extends God {
         t.setDome(true);
 
         int[][] matrix = model.getBoard().createBuildingMatrix();
-        String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " built a dome on position: " + pos.toString();
+        String code = "standard";
 
-        model.forceNotify(new BuildMessage(message, model.getGameState().getCurrentPlayer(), model.getGameState().getCurrentPhase(), matrix));
+        model.forceNotify(new BuildMessage(code, model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), matrix));
     }
 }

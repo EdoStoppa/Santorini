@@ -119,9 +119,9 @@ public class Prometheus extends God {
         GameMessage message;
 
         if(noPowerPos.size() > 0){
-             message = new SpecialActionMessage("noPower", model.getGameState().getCurrentPlayer(), model.getCurrentPhase(), normalPos, noPowerPos);
+             message = new SpecialActionMessage("noPower", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), normalPos, noPowerPos);
         } else {
-            message = new TileToShowMessage("standard", model.getGameState().getCurrentPlayer(), model.getCurrentPhase(), normalPos);
+            message = new TileToShowMessage("standard", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), normalPos);
         }
 
         model.forceNotify(message);

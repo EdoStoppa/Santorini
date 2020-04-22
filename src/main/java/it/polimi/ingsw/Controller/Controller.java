@@ -137,7 +137,7 @@ public class Controller implements Observer<PosMessage> {
 
     @Override
     public void update(PosMessage message) {
-        if(!model.isPlayerTurn(message.getPlayer())){
+        if(!model.isPlayerTurn(message.getIdPlayer())){
             // DO SOMETHING WITH VIEW
             return;
         }
