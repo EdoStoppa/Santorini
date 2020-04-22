@@ -518,8 +518,8 @@ class ModelTest {
         for(int i = 0; i < 2; i++)  {
             expectedList.add(addList.get(i));
         }
-        for(int i = 0; i < deleteList.size() ; i++) {
-            expectedList.remove(deleteList.get(i));
+        for(Position p : deleteList) {
+            expectedList.remove(p);
         }
         model.createPossibleMovePos(addList, deleteList);
         String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " can move to any of these tiles";
@@ -636,4 +636,3 @@ class ModelTest {
         }
     }
 }
-

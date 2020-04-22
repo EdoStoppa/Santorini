@@ -269,12 +269,7 @@ public class Model extends Observable<GameMessage> {
         for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
 
             list = board.possibleMoveset(c);
-            if(list.size() == 0)    {
-                c.setCanMove(false);
-            }
-            else    {
-                c.setCanMove(true);
-            }
+            c.setCanMove(list.size() != 0);
         }
     }
 
@@ -347,10 +342,10 @@ public class Model extends Observable<GameMessage> {
             }
         }
         constructorList = playerR.getAllConstructors();
-        for(int i = 0; i < constructorList.size(); i++)   {
-            board.getTile(constructorList.get(i).getPos()).setActualConstructor(null);
-            board.getTile(constructorList.get(i).getPos()).setOccupied(false);
-            constructorList.get(i).setPos(new Position(-1, -1));
+        for(Constructor c : constructorList)   {
+            board.getTile(c.getPos()).setActualConstructor(null);
+            board.getTile(c.getPos()).setOccupied(false);
+            c.setPos(new Position(-1, -1));
         }
         constructorList.clear();
         playerList = gameState.getPlayerList();
