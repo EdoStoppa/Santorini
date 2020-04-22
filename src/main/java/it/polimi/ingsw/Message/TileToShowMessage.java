@@ -20,6 +20,24 @@ public class TileToShowMessage extends GameMessage {
 
     @Override
     public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+        String text;
 
+        if(isMyTurn){
+            switch(getCode()){
+                case "standard":
+                case "checkDome":
+                case "noPower":
+                    text = getPhase().toString(true);
+                case "canEnd":
+                    text = getPhase().toString(true) + (isCLI? HelpMessage.endWithCLI : HelpMessage.endWithGUI);
+                default:
+                    text = "You broke the game!!! (Code in tileToShow is unknown...)";
+            }
+
+        } else {
+            text = getIdPlayer() + getPhase().toString(false);
+        }
+
+        setMessage(text);
     }
 }

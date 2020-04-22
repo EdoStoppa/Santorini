@@ -76,7 +76,7 @@ public class PrometheusController extends GodController {
 
         List<Position> wrongPos = prometheus.getWrongPos(model);
 
-        model.createPossibleMovePos(null, wrongPos);
+        prometheus.createPossibleMovePos(model, wrongPos);
     }
 
     /**
@@ -108,7 +108,7 @@ public class PrometheusController extends GodController {
         List<Position> sameOrDownList = prometheus.sameOrDownLevelCurrent(model);
 
         if(sameOrDownList.size() == 1){
-            model.createPossibleBuildPos(null, sameOrDownList);
+            prometheus.createPossibleBuildPos(model, sameOrDownList);
         } else {
             controller.prepareBuild();
         }

@@ -39,7 +39,6 @@ public class ArtemisController extends GodController {
         deleteList.add(artemis.getPrevPosConstructor(model));
 
         if(artemis.cantDoAnother(model, deleteList)){
-            // Tell the player he can't do another build
 
             // Now we have to change phase and prepare the nextPhase
             model.nextPhase();

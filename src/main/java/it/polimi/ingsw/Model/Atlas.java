@@ -3,8 +3,10 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Controller.GodController.AtlasController;
 import it.polimi.ingsw.Message.BuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.TileToShowMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the god card: Atlas
@@ -43,8 +45,18 @@ public class Atlas extends God {
         t.setDome(true);
 
         int[][] matrix = model.getBoard().createBuildingMatrix();
-        String code = "standard";
+        String code = "forcedDome";
 
         model.forceNotify(new BuildMessage(code, model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), matrix));
+    }
+
+    public void prepareBuild(Model model){
+        List<Position> list;
+
+        list = model.getBoard().possibleBuild(model.getCurrentConstructor());
+        model.setTileToShow(list);
+
+        TileToShowMessage message = new TileToShowMessage("checkDome", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), list);
+        model.forceNotify(message);
     }
 }

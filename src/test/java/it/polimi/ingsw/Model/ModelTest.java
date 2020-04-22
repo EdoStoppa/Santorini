@@ -192,13 +192,13 @@ class ModelTest {
             Constructor swappedConstructor = p1.getAllConstructors().get(0);
             model.getBoard().placeConstructor(model.getBoard().getTile(pos2), swappedConstructor);
             model.performSwap(pos2);
-            expectedMessage = model.getGameState().getCurrentPlayer().getIdPlayer() + " player swapped his constructor with the one " +
-                    "of the " + p1.getIdPlayer() + " player";
             assertAll(
                     ()  -> assertEquals(pos2.getRow(), model.getCurrentConstructor().getPos().getRow(), "The row should be the same"),
                     ()  -> assertEquals(pos2.getCol(), model.getCurrentConstructor().getPos().getCol(), "The col should be the same"),
                     ()  -> assertEquals(pos1.getRow(), swappedConstructor.getPos().getRow(), "The row should be the same"),
-                    ()  -> assertEquals(pos1.getCol(), swappedConstructor.getPos().getCol(), "The col should be the same")
+                    ()  -> assertEquals(pos1.getCol(), swappedConstructor.getPos().getCol(), "The col should be the same"),
+                    ()  -> assertTrue(model.getBoard().getTile(pos1).getOccupied(), "Position 1 should be occupied"),
+                    ()  -> assertTrue(model.getBoard().getTile(pos2).getOccupied(), "Position 2 should be occupied")
             );
             assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The player should be the same");
         }
@@ -589,7 +589,7 @@ class ModelTest {
     void destroyRemainingPhasesTest()   {
         model.destroyRemainingPhases();
         assertEquals(1, model.getCurrentGod().getPhasesList().size(), "The size of the list should be 1");
-        assertEquals(PossiblePhases.CHOOSE_CONSTRUCTOR.toString(), model.getCurrentGod().getPhasesList().get(0).toString(), "Should be the CHOOSE_CONSTRUCTOR phase");
+        assertEquals(PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR, model.getCurrentGod().getPhasesList().get(0), "Should be the SPECIAL_CHOOSE_CONSTRUCTOR phase");
     }
 
     @RepeatedTest(1000)

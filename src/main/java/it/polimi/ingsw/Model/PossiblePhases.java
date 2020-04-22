@@ -9,17 +9,24 @@ package it.polimi.ingsw.Model;
  * </p>
  */
 public enum PossiblePhases {
-    CHOOSE_CONSTRUCTOR("Choose your constructor"), MOVE("Move your constructor"), BUILD("Build a construction"),
-    SPECIAL_CHOOSE_CONSTRUCTOR("Choose your constructor"), SPECIAL_MOVE("Thanks to your God, you can do a special move!"),
-    SPECIAL_BUILD("Thanks to your God, you can build again!");
-    private final String message;
+    CHOOSE_CONSTRUCTOR("Choose which constructor you'll use among the highlighted ones", " is choosing which constructor to use"),
+    MOVE("Choose where to move among the highlighted tiles", " is choosing where to move"),
+    BUILD("Choose where to build among the highlighted tiles", " is choosing where to build"),
+    SPECIAL_CHOOSE_CONSTRUCTOR("Choose your constructor", " is choosing which constructor to use"),
+    SPECIAL_MOVE("Choose where to move among the highlighted tiles", " is choosing where to move"),
+    SPECIAL_BUILD("Choose where to build among the highlighted tiles", " is choosing where to build");
+    private final String message1;
+    private final String message2;
 
-    PossiblePhases(String message){
-        this.message = message;
+    PossiblePhases(String message1, String message2){
+        this.message1 = message1;
+        this.message2 = message2;
     }
 
-    @Override
-    public String toString() {
-        return message;
+    public String toString(boolean current) {
+        if(current)
+            return message1;
+        else
+            return message2;
     }
 }

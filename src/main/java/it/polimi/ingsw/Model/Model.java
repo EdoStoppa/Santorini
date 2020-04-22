@@ -122,9 +122,9 @@ public class Model extends Observable<GameMessage> {
         board.placeConstructor(t, currentConstructor);
 
         int[][] matrix = board.createConstructorMatrix();
-        String message = gameState.getCurrentPlayer().getIdPlayer() + " moved to position: " + pos.toString();
+        String code = "standard";
 
-        notify(new MoveMessage(message, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
+        notify(new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     /**
@@ -134,23 +134,15 @@ public class Model extends Observable<GameMessage> {
      * @param pos   the <em>Position</em> of the enemy <em>Constructor</em>
      */
     public void performSwap(Position pos)   {
-        int i;
-        Tile t1 = board.getTile(pos);
-        Position currPos = currentConstructor.getPos().clone();
-        Tile t2 = board.getTile(currPos);
         Constructor swappedConstructor = board.getTile(pos).getActualConstructor();
-
-        board.placeConstructor(t1, currentConstructor);
-        board.placeConstructor(t2, swappedConstructor);
+        board.swapConstructors(currentConstructor, swappedConstructor);
 
         int[][] matrix = board.createConstructorMatrix();
-        for(i = 0; i < gameState.getPlayerList().size(); i++)   {
-            if(swappedConstructor.getPlayerNumber() == gameState.getPlayerList().get(i).getPlayerNumber()) {
-                break;
-            }
-        }
-        String code = "swapped";
-        notify(new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
+
+        String code = "swap";
+        MoveMessage message = new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+        message.setMessage(swappedConstructor.getPos().toString());
+        notify(message);
     }
 
     /**
@@ -161,39 +153,16 @@ public class Model extends Observable<GameMessage> {
      * @param pos   the <em>Position</em> of the enemy <em>Constructor</em>
      */
     public  void performPush(Position pos)  {
-        int i;
-        Tile t1 = board.getTile(pos);
-        Position currPos = currentConstructor.getPos().clone();
-        Constructor pushedConstructor = t1.getActualConstructor();
-        Position pushedPos;
-        if(pos.getCol() == currPos.getCol())    {
-            if(pos.getRow() > currPos.getRow()) {
-                pushedPos = new Position(pos.getRow() - 1, pos.getCol());
-            }
-            else    {
-                pushedPos = new Position(pos.getRow() + 1, pos.getCol());
-            }
-        }
-        else    {
-            if(pos.getCol() > currPos.getCol()) {
-                pushedPos = new Position(pos.getRow(), pos.getCol() - 1);
-            }
-            else    {
-                pushedPos = new Position(pos.getRow(), pos.getCol() + 1);
-            }
-        }
-        Tile t2 = board.getTile(pushedPos);
-        board.placeConstructor(t1, currentConstructor);
-        board.placeConstructor(t2, pushedConstructor);
+        Constructor pushedConstructor = board.getTile(pos).getActualConstructor();
+
+        board.pushConstructor(pushedConstructor, currentConstructor);
 
         int[][] matrix = board.createConstructorMatrix();
-        for(i = 0; i < gameState.getPlayerList().size(); i++)   {
-            if(pushedConstructor.getPlayerNumber() == gameState.getPlayerList().get(i).getPlayerNumber()) {
-                break;
-            }
-        }
-        String code = "pushed";
-        notify(new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
+
+        String code = "push";
+        MoveMessage message = new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+        message.setMessage(pushedConstructor.getPos().toString());
+        notify(message);
     }
 
     /**
@@ -209,7 +178,7 @@ public class Model extends Observable<GameMessage> {
         currentConstructor.setLastBuildPos(pos.clone());
 
         int[][] matrix = board.createBuildingMatrix();
-        String code = "forcedDome";
+        String code = "standard";
 
         notify(new BuildMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
@@ -284,7 +253,13 @@ public class Model extends Observable<GameMessage> {
         list = board.possibleMoveset(currentConstructor);
         list = checkListsParameter(list, addList, deleteList);
         setTileToShow(list);
-        String code = "standard";
+        String code;
+
+        if(deleteList == null){
+            code = "standard";
+        } else {
+            code = "canEnd";
+        }
         notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
@@ -301,7 +276,13 @@ public class Model extends Observable<GameMessage> {
         list = board.possibleBuild(currentConstructor);
         list = checkListsParameter(list, addList, deleteList);
         setTileToShow(list);
-        String code = "standard";
+
+        String code;
+        if(deleteList == null){
+            code = "standard";
+        } else {
+            code = "canEnd";
+        }
         notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
@@ -354,8 +335,8 @@ public class Model extends Observable<GameMessage> {
             }
         }
         int[][] matrix = board.createConstructorMatrix();
-        String message = "removedPlayer";
-        notify(new MoveMessage(message, playerR.getIdPlayer(), getCurrentPhase(), matrix));
+        String code = "removedPlayer";
+        notify(new MoveMessage(code, playerR.getIdPlayer(), getCurrentPhase(), matrix));
     }
 
     protected Board getBoard()  {

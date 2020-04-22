@@ -128,6 +128,46 @@ public class Prometheus extends God {
 
     }
 
+    public void createPossibleMovePos(Model model, List<Position> wrongList){
+        List<Position> list;
+
+        list = model.getBoard().possibleMoveset(model.getCurrentConstructor());
+
+        if(wrongList != null){
+            for(Position delPos : wrongList)  {
+                for(int i = 0; i < list.size(); i++)   {
+                    if(list.get(i).equals(delPos)) {
+                        list.remove(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        model.setTileToShow(list);
+
+        model.forceNotify(new TileToShowMessage("standard", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
+    }
+
+    public void createPossibleBuildPos(Model model, List<Position> wrongList){
+        List<Position> list;
+
+        list = model.getBoard().possibleBuild(model.getCurrentConstructor());
+
+        for(Position delPos : wrongList)  {
+            for(int i = 0; i < list.size(); i++)   {
+                if(list.get(i).equals(delPos)) {
+                    list.remove(i);
+                    break;
+                }
+            }
+        }
+
+        model.setTileToShow(list);
+
+        model.forceNotify(new TileToShowMessage("standard", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
+    }
+
     public void setCorrectPhase(Model model){
         model.getGameState().setCurrentPhase(phasesList.get(1));
     }

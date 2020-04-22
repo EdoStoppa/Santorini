@@ -32,6 +32,7 @@ public class AtlasController extends GodController {
      */
     @Override
     public void prepareSpecialBuild(Model model, Controller controller) {
-        controller.prepareBuild();
+        Atlas atlas = (Atlas)model.getCurrentGod();
+        atlas.prepareBuild(model);
     }
 }

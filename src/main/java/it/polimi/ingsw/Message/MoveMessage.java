@@ -19,16 +19,23 @@ public class MoveMessage extends GameMessage {
         String text;
 
         if(isMyTurn){
+            if(getCode().equals("removedPlayer"))
+                text = "Ypu lose... :(";
+            else
+                text = HelpMessage.endedPhase;
+        } else {
             switch(getCode()){
                 case "standard":
-                    text = TextMessage.moveCurrent;
-                case "canEnd":
-                    text = TextMessage.moveCurrent + TextMessage.canEnd + (isCLI? TextMessage.withCLI : TextMessage.withGUI);
+                    text = getIdPlayer() + " moved to " + getMessage();
+                case "swap":
+                    text = getIdPlayer() + " swapped with constructor on position: " + getMessage();
+                case "push":
+                    text = getIdPlayer() + " pushed constructor on position: " + getMessage();
+                case "removedPlayer":
+                    text = getIdPlayer() + " lost";
                 default:
-                    text = "You broke the Game (the message code was wrong, how did you do it?)";
+                    text = "You broke the game!!! (Code in MoveMessage is unknown...)";
             }
-        } else {
-            text = getIdPlayer() + TextMessage.moveOther;
         }
 
         setMessage(text);
