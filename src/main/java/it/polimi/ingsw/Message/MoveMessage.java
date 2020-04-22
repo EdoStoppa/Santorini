@@ -20,7 +20,7 @@ public class MoveMessage extends GameMessage {
 
         if(isMyTurn){
             if(getCode().equals("removedPlayer"))
-                text = "Ypu lose... :(";
+                text = "You lose... :(";
             else
                 text = HelpMessage.endedPhase;
         } else {

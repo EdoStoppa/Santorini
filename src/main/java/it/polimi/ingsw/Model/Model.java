@@ -179,8 +179,9 @@ public class Model extends Observable<GameMessage> {
 
         int[][] matrix = board.createBuildingMatrix();
         String code = "standard";
-
-        notify(new BuildMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
+        BuildMessage message = new BuildMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+        message.setMessage(pos.toString());
+        notify(message);
     }
 
     public List<Player> getListPlayer() {

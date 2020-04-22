@@ -46,8 +46,9 @@ public class Atlas extends God {
 
         int[][] matrix = model.getBoard().createBuildingMatrix();
         String code = "forcedDome";
-
-        model.forceNotify(new BuildMessage(code, model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), matrix));
+        BuildMessage message = new BuildMessage(code, model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), matrix);
+        message.setMessage(pos.toString());
+        model.forceNotify(message);
     }
 
     public void prepareBuild(Model model){
