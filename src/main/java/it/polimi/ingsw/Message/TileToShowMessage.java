@@ -7,18 +7,11 @@ import it.polimi.ingsw.Model.PossiblePhases;
 import java.util.List;
 
 public class TileToShowMessage extends GameMessage {
-    private final PossiblePhases currentPhase;
     private final List<Position> tileToShow;
 
-    public TileToShowMessage(String message, Player player, PossiblePhases phase, List<Position> list) {
-        super(message, player);
-        this.currentPhase = phase;
+    public TileToShowMessage(String code, Player player, PossiblePhases phase, List<Position> list) {
+        super(code, player, phase);
         this.tileToShow = list;
-    }
-
-
-    public PossiblePhases getCurrentPhase() {
-        return this.currentPhase;
     }
 
     public List<Position> getTileToShow() {
