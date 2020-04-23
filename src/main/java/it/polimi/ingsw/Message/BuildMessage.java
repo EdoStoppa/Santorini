@@ -16,6 +16,21 @@ public class BuildMessage extends GameMessage {
 
     @Override
     public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+        String text;
 
+        if(isMyTurn){
+            text = HelpMessage.endedPhase;
+        } else {
+            switch(getCode()){
+                case "standard":
+                    text = getIdPlayer() + " built on position " + getMessage();
+                case "forcedDome":
+                    text = getIdPlayer() + " built a dome on position " + getMessage();
+                default:
+                    text = "You broke the game!!! (Code in BuildMessage is unknown...)";
+            }
+        }
+
+        setMessage(text);
     }
 }

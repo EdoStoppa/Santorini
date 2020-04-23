@@ -27,6 +27,14 @@ public class SpecialActionMessage extends GameMessage {
 
     @Override
     public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+        String text;
 
+        if(isMyTurn){
+            text = text = getPhase().toString(true) + (isCLI? HelpMessage.endWithCLI : HelpMessage.endWithGUI);
+        } else {
+            text = getIdPlayer() + getPhase().toString(false);
+        }
+
+        setMessage(text);
     }
 }
