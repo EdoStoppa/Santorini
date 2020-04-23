@@ -147,9 +147,9 @@ public class Controller implements Observer<PosMessage> {
         model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
 
-        // String toDeleteId = model.getCurrentPlayerId();
+        String toDeleteId = model.getCurrentPlayerId();
         model.nextPhase();
-        //model.removePlayer(toDeleteId);
+        model.removePlayer(toDeleteId);
         preparePhase();
     }
 

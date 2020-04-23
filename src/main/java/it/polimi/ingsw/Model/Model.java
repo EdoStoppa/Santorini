@@ -307,6 +307,10 @@ public class Model extends Observable<GameMessage> {
         notify(message);
     }
 
+    public String getCurrentPlayerId(){
+        return gameState.getCurrentPlayer().getIdPlayer();
+    }
+
     /**
      * This method removes a <em>Player</em> from the game
      *
