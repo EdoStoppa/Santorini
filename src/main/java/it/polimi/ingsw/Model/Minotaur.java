@@ -37,6 +37,16 @@ public class Minotaur extends God {
         return (powerDescription);
     }
 
+    /**
+     * Special version of changeActiveConstructors
+     * <p>
+     *     This method will deactivate a constructor only if there aren't any standard
+     *     moves left and there aren't any enemy's constructors to push nearby
+     *     (and obviously it'll activate the constructor if there's at least one move available)
+     * </p>
+     *
+     * @param model the <em>Model</em> of the game
+     */
     public void changeActiveConstructors(Model model){
         Board board = model.getBoard();
         GameState gameState = model.getGameState();
@@ -69,15 +79,19 @@ public class Minotaur extends God {
                 }
             }
 
-            // if the constructor has no standard move and no special move possible, deactivate it
-            if(listMove.size() == 0 && numEnemyOK == 0)    {
-                c.setCanMove(false);
-            } else {
-                c.setCanMove(true);
-            }
+            //if there is at least one standard move or at least one position where the enemy's constructor
+            //can be pushed, change setCanMove to true
+            c.setCanMove(listMove.size() != 0 || numEnemyOK != 0);
         }
     }
 
+    /**
+     * Method used to get the list of special <em>Positions</em> for Minotaur
+     * The positions are the one occupied by an enemy that can be pushed
+     *
+     * @param model the <em>Model</em> of the game
+     * @return the list of special <em>Positions</em>
+     */
     public List<Position> getMoveAddList(Model model){
         Board board = model.getBoard();
         GameState gameState = model.getGameState();
@@ -109,6 +123,14 @@ public class Minotaur extends God {
         return addList;
     }
 
+    /**
+     * Helper method used to calculate the <em>Position</em> where the constructor will be pushed
+     *
+     * @param current <em>Position</em> of the currentConstructor
+     * @param other <em>Position</em> of the enemy constructor
+     *
+     * @return the <em>Position</em> where the currentConstructor will be pushed
+     */
     protected Position calculatePushedPos(Position current, Position other){
         int row = (other.getRow() - current.getRow()) + other.getRow();
         int col = (other.getCol() - current.getCol()) + other.getCol();
@@ -116,6 +138,13 @@ public class Minotaur extends God {
         return new Position(row, col);
     }
 
+    /**
+     * Method used to check if the given <em>Position</em> exists
+     *
+     * @param pos <em>Position</em> to check
+     *
+     * @return if the <em>Position</em> is a good one, return true
+     */
     protected boolean isGood(Position pos){
         return (0 <= pos.getCol() && pos.getCol() <= 4) && (0 <= pos.getRow() && pos.getRow() <= 4);
     }

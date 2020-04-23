@@ -40,6 +40,13 @@ public class Atlas extends God {
         return (powerDescription);
     }
 
+    /**
+     * Method used to force the construction of a dome given where to build.
+     * Then it will send a <em>BuildMessage</em> using a special code: "forcedDome"
+     *
+     * @param model the <em>Model</em> of the game
+     * @param pos the position where to build the dome
+     */
     public void forceDome(Model model, Position pos){
         Tile t = model.getBoard().getTile(pos);
         t.setDome(true);
@@ -51,6 +58,12 @@ public class Atlas extends God {
         model.forceNotify(message);
     }
 
+    /**
+     * Method used to create and set the tiles where could be constructed somthing.
+     * After doing this, creates a <em>TileToShowMessage</em> with a special code: "checkDome"
+     *
+     * @param model
+     */
     public void prepareBuild(Model model){
         List<Position> list;
 

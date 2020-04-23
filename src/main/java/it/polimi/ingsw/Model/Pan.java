@@ -36,6 +36,12 @@ public class Pan extends God{
         return (powerDescription);
     }
 
+    /**
+     * Method used to check the special win condition for Pan
+     *
+     * @param model the <em>Model</em> of the game
+     * @return if the currentConstructor went down by 2 or more level, return true
+     */
     public boolean checkWin(Model model){
         Constructor c = (model.getCurrentConstructor());
         Tile currentT = model.getBoard().getTile(c.getPos());

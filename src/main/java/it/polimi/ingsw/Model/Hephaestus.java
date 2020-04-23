@@ -43,11 +43,26 @@ public class Hephaestus extends God {
         return model.getCurrentConstructor().getLastBuildPos().clone();
     }
 
+    /**
+     * Method that tells if the <em>Player</em> can't do another move
+     *
+     * @param model the <em>Model</em> of the game
+     * @param pos <em>Tile</em>'s <em>Position</em> which will be checked
+     *
+     * @return if the <em>Tile</em>> has a dome or is at level 3, return true
+     */
     public boolean cantDoAnother(Model model, Position pos){
         Tile t = model.getBoard().getTile(pos);
         return (t.getDome() || t.getConstructionLevel() == 3);
     }
 
+    /**
+     * Method used to do a Special Build.
+     * The only possible <em>Position</em> to build will be the lastBuildPos, so it is used to create a
+     * special <em>TileToShowMessage</em> with the code: "canEnd"
+     *
+     * @param model the <em>Model</em> of the game
+     */
     public void createPossibleSpecialBuild(Model model){
         Position lastBuildPos = model.getCurrentConstructor().getLastBuildPos().clone();
         List<Position> list = new ArrayList<Position>();

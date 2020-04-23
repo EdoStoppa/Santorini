@@ -37,6 +37,16 @@ public class Apollo extends God {
         return (powerDescription);
     }
 
+    /**
+     * Special version of changeActiveConstructors
+     * <p>
+     *     This method will deactivate a constructor only if there aren't any standard
+     *     moves left and there aren't any tiles occupied by an enemy near the constructor
+     *     (and obviously it'll activate the constructor if there's at least one move available)
+     * </p>
+     *
+     * @param model the <em>Model</em> of the game
+     */
     public void changeActiveConstructors(Model model){
         Board board = model.getBoard();
         GameState gameState = model.getGameState();
@@ -56,14 +66,19 @@ public class Apollo extends God {
                 }
             }
 
-            if(listMove.size() == 0 && numEnemyOcc == 0)    {
-                c.setCanMove(false);
-            } else {
-                c.setCanMove(true);
-            }
+            //if there is at least one standard move or at least one enemy's occupied position
+            //setCanMove to true
+            c.setCanMove(listMove.size() != 0 || numEnemyOcc != 0);
+
         }
     }
 
+    /**
+     * Creates the list of special <em>Positions</em> which will be added to the possible moves
+     *
+     * @param model the <em>Model</em> of the game
+     * @return list of special Position
+     */
     public List<Position> getMoveAddList(Model model){
         Board board = model.getBoard();
         GameState gameState = model.getGameState();

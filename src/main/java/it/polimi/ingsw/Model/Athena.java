@@ -36,6 +36,12 @@ public class Athena extends God {
         return (powerDescription);
     }
 
+    /**
+     * Method used to check after a move if Athena's power should be activated
+     *
+     * @param model the <em>Model</em> of the game
+     * @return true if the power should be activated
+     */
     public boolean shouldActivatePower(Model model){
         Position prev = model.getCurrentConstructor().getPrevPos();
         Position curr = model.getCurrentConstructor().getPos();
@@ -46,6 +52,12 @@ public class Athena extends God {
         return (currT.getConstructionLevel() > prevT.getConstructionLevel());
     }
 
+    /**
+     * Method used to activate/deactivate Athena's power
+     *
+     * @param model the <em>Model</em> of the game
+     * @param b the value <em>Model</em>'s attriute canGoUp should be set
+     */
     public void changeCanGoUp(Model model, boolean b){
         model.getBoard().setCanGoUp(b);
     }

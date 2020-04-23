@@ -42,6 +42,14 @@ public class Artemis extends God {
         return model.getCurrentConstructor().getPrevPos().clone();
     }
 
+    /**
+     * Method that tells if the <em>Player</em> can't do another move
+     *
+     * @param model the <em>Model</em> of the game
+     * @param delList list of Position which won't be considered valid
+     *
+     * @return if the <em>Player</em> has only one move, and it isn't a valid one, return true
+     */
     public boolean cantDoAnother(Model model, List<Position> delList){
         List<Position> possibleMove = model.getBoard().possibleMoveset(model.getCurrentConstructor());
 
