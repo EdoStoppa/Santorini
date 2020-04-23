@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Message;
 
-import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Model.PossiblePhases;
 
 public abstract class GameMessage {
@@ -27,8 +27,6 @@ public abstract class GameMessage {
         this.message = s;
     }
 
-    public abstract void autoSetMessage(boolean isMyTurn, boolean isCLI);
-
     public String getIdPlayer() {
         return this.idPlayer;
     }
@@ -36,4 +34,8 @@ public abstract class GameMessage {
     public String getCode(){
         return this.code;
     }
+
+    public abstract void autoSetMessage(boolean isMyTurn, boolean isCLI);
+
+    public abstract void update(PlaySpace playSpace, boolean isMyTurn);
 }

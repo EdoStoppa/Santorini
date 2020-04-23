@@ -25,6 +25,16 @@ public class Controller implements Observer<PosMessage> {
         this.model = model;
     }
 
+    /**
+     * This method is used to direct (depending on the current phase) to the correct
+     * sub-method to manage correctly the next action
+     *<p>
+     *     If the phase is a special one, the method calls the appropriate <em>GodController</em>
+     *     and launch the special method
+     *</p>
+     *
+     * @param message the message arrived from a view
+     */
     public void handleAction(PosMessage message){
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
@@ -70,6 +80,14 @@ public class Controller implements Observer<PosMessage> {
         model.performBuild(message.getPosition());
     }
 
+    /**
+     * This method is used to direct (depending on the current phase) to the correct
+     * sub-method to manage correctly the preparation of the next phase
+     *<p>
+     *     If the phase is a special one, the method calls the appropriate <em>GodController</em>
+     *     and launch the special method
+     *</p>
+     */
     public void preparePhase(){
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
@@ -121,6 +139,10 @@ public class Controller implements Observer<PosMessage> {
         model.createPossibleBuildPos(null, null);
     }
 
+    /**
+     * This method launches the lose sequence, where the current player is removed after the change
+     * of turn
+     */
     public void executeLoseSequence(){
         model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
@@ -131,10 +153,19 @@ public class Controller implements Observer<PosMessage> {
         preparePhase();
     }
 
+    /**
+     * This method launches the win sequence, where is declared a winner and the game simply end
+     */
     public void executeWinSequence(){
         // ALERT EVERYONE THAT SOMEONE HAS WON
     }
 
+    /**
+     * When a new message arrives the method check if it's from the current player, if not
+     * simply discard the message, if it's the player turn instead launch the correct sequence of action
+     *
+     * @param message the message arrived from a view
+     */
     @Override
     public void update(PosMessage message) {
         if(!model.isPlayerTurn(message.getIdPlayer())){

@@ -5,10 +5,11 @@ import it.polimi.ingsw.Model.Position;
 import java.util.List;
 
 public class PlaySpace {
-    private boolean checkDome;
-    private boolean checkIfSure;
     private int[][] buildingMatrix;
     private int[][] constructorMatrix;
+
+    private boolean checkDome;
+    private boolean checkIfSure;
     private List<Position> tileToShow;
     private List<Position> tileToCheck;
 
@@ -68,5 +69,12 @@ public class PlaySpace {
 
     public void setTileToCheck(List<Position> tileToCheck) {
         this.tileToCheck = tileToCheck;
+    }
+
+    public void reset(){
+        this.checkDome = false;
+        this.checkIfSure = false;
+        this.tileToShow = null;
+        this.tileToCheck = null;
     }
 }
