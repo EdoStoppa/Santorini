@@ -9,32 +9,20 @@ import java.util.List;
  * Represents the god card: Minotaur
  */
 public class Minotaur extends God {
-    protected final static String godName = "Minotaur";
-    protected final static String godSubtitle = "Bull-headed Monster";
-    protected final static String powerDescription = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to and unoccupied space at any level.";
-
     /**
      * It creates the card Minotaur, set the correct sequence of phases and assign the correct GodController
      */
     public Minotaur(){
+        this.godName = "Minotaur";
+        this.godSubtitle = "Bull-headed Monster";
+        this.powerDescription = "Your Move: Your Worker may move into an opponent Worker's space, if their Worker can be forced one space straight backwards to and unoccupied space at any level.";
+
         this.phasesList = new ArrayList<PossiblePhases>();
         this.phasesList.add(PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR);
         this.phasesList.add(PossiblePhases.SPECIAL_MOVE);
         this.phasesList.add(PossiblePhases.BUILD);
 
         this.godController = new MinotaurController();
-    }
-
-    protected static String getGodName(){
-        return (godName);
-    }
-
-    protected static String getGodSubtitle(){
-        return (godSubtitle);
-    }
-
-    protected static String getGodPower(){
-        return (powerDescription);
     }
 
     /**
