@@ -356,7 +356,7 @@ public class Model extends Observable<GameMessage> {
         return gameState;
     }
 
-    protected Constructor getCurrentConstructor()   {return  currentConstructor;}
+    public Constructor getCurrentConstructor()   {return  currentConstructor;}
 
     /**
      * Helper method, it checks every parameter that will be add in the tileToShowList;
