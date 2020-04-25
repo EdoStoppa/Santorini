@@ -1,10 +1,16 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.GodController;
-import it.polimi.ingsw.Message.BuildMessage;
+import it.polimi.ingsw.Message.BuildMessages.BuildMessage;
+import it.polimi.ingsw.Message.BuildMessages.StandardBuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.MoveMessage;
-import it.polimi.ingsw.Message.TileToShowMessage;
+import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
+import it.polimi.ingsw.Message.MoveMessages.PushMessage;
+import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
+import it.polimi.ingsw.Message.MoveMessages.StandardMoveMessage;
+import it.polimi.ingsw.Message.MoveMessages.SwapMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.util.ArrayList;
@@ -122,9 +128,8 @@ public class Model extends Observable<GameMessage> {
         board.placeConstructor(t, currentConstructor);
 
         int[][] matrix = board.createConstructorMatrix();
-        String code = "standard";
 
-        notify(new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
+        notify(new StandardMoveMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
     }
 
     /**
@@ -139,8 +144,7 @@ public class Model extends Observable<GameMessage> {
 
         int[][] matrix = board.createConstructorMatrix();
 
-        String code = "swap";
-        MoveMessage message = new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+        MoveMessage message = new SwapMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
         message.setMessage(swappedConstructor.getPos().toString());
         notify(message);
     }
@@ -159,8 +163,7 @@ public class Model extends Observable<GameMessage> {
 
         int[][] matrix = board.createConstructorMatrix();
 
-        String code = "push";
-        MoveMessage message = new MoveMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+        MoveMessage message = new PushMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
         message.setMessage(pushedConstructor.getPos().toString());
         notify(message);
     }
@@ -178,8 +181,8 @@ public class Model extends Observable<GameMessage> {
         currentConstructor.setLastBuildPos(pos.clone());
 
         int[][] matrix = board.createBuildingMatrix();
-        String code = "standard";
-        BuildMessage message = new BuildMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+
+        BuildMessage message = new StandardBuildMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
         message.setMessage(pos.toString());
         notify(message);
     }
@@ -223,8 +226,8 @@ public class Model extends Observable<GameMessage> {
             }
         }
         setTileToShow(list);
-        String code = "standard";
-        notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
+
+        notify(new StandardTileMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
     /**
@@ -254,14 +257,12 @@ public class Model extends Observable<GameMessage> {
         list = board.possibleMoveset(currentConstructor);
         list = checkListsParameter(list, addList, deleteList);
         setTileToShow(list);
-        String code;
 
         if(deleteList == null){
-            code = "standard";
+            notify(new StandardTileMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
         } else {
-            code = "canEnd";
+            notify(new CanEndTileMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
         }
-        notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
     }
 
     /**
@@ -278,13 +279,12 @@ public class Model extends Observable<GameMessage> {
         list = checkListsParameter(list, addList, deleteList);
         setTileToShow(list);
 
-        String code;
         if(deleteList == null){
-            code = "standard";
+            notify(new StandardTileMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
         } else {
-            code = "canEnd";
+            notify(new CanEndTileMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
         }
-        notify(new TileToShowMessage(code, gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
+
     }
 
     public boolean isLosing()  {
@@ -344,8 +344,8 @@ public class Model extends Observable<GameMessage> {
             }
         }
         int[][] matrix = board.createConstructorMatrix();
-        String code = "removedPlayer";
-        notify(new MoveMessage(code, playerR.getIdPlayer(), getCurrentPhase(), matrix));
+
+        notify(new RemovedPlayerMessage(playerR.getIdPlayer(), getCurrentPhase(), matrix));
     }
 
     protected Board getBoard()  {

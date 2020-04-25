@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.HephaestusController;
-import it.polimi.ingsw.Message.TileToShowMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +70,6 @@ public class Hephaestus extends God {
         list.add(lastBuildPos);
         model.setTileToShow(list);
 
-        model.forceNotify(new TileToShowMessage("canEnd", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
+        model.forceNotify(new CanEndTileMessage(model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
     }
 }
