@@ -107,10 +107,7 @@ public class PrometheusController extends GodController {
 
         List<Position> sameOrDownList = prometheus.sameOrDownLevelCurrent(model);
 
-        if(sameOrDownList.size() == 1){
-            prometheus.createPossibleBuildPos(model, sameOrDownList);
-        } else {
-            controller.prepareBuild();
-        }
+        // CHECK IF THIS WORKS; IT SHOULD ALWAYS OUTPUT A MESSAGE WITH CODE: "canEnd"
+        model.createPossibleBuildPos(null, sameOrDownList);
     }
 }

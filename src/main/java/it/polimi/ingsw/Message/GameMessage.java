@@ -4,13 +4,11 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Model.PossiblePhases;
 
 public abstract class GameMessage {
-    private final String code;
     private String message;
     private final String idPlayer;
     private final PossiblePhases currentPhase;
 
-    public GameMessage(String code, String player, PossiblePhases phase) {
-        this.code = code;
+    public GameMessage(String player, PossiblePhases phase) {
         this.idPlayer = player;
         this.currentPhase = phase;
     }
@@ -31,11 +29,7 @@ public abstract class GameMessage {
         return this.idPlayer;
     }
 
-    public String getCode(){
-        return this.code;
-    }
-
     public abstract void autoSetMessage(boolean isMyTurn, boolean isCLI);
 
-    public abstract void update(PlaySpace playSpace, boolean isMyTurn);
+    public abstract void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn);
 }

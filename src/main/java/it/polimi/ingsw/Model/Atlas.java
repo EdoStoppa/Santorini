@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.AtlasController;
-import it.polimi.ingsw.Message.BuildMessage;
-import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.TileToShowMessage;
+import it.polimi.ingsw.Message.BuildMessages.BuildMessage;
+import it.polimi.ingsw.Message.BuildMessages.ForcedDomeMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.CheckDomeMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +53,8 @@ public class Atlas extends God {
         t.setDome(true);
 
         int[][] matrix = model.getBoard().createBuildingMatrix();
-        String code = "forcedDome";
-        BuildMessage message = new BuildMessage(code, model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), matrix);
+
+        BuildMessage message = new ForcedDomeMessage(model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), matrix);
         message.setMessage(pos.toString());
         model.forceNotify(message);
     }
@@ -70,7 +71,7 @@ public class Atlas extends God {
         list = model.getBoard().possibleBuild(model.getCurrentConstructor());
         model.setTileToShow(list);
 
-        TileToShowMessage message = new TileToShowMessage("checkDome", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), list);
+        TileToShowMessage message = new CheckDomeMessage(model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), list);
         model.forceNotify(message);
     }
 }

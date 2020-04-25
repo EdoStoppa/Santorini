@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.SpecialActionMessage;
-import it.polimi.ingsw.Message.TileToShowMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.MoreTileToCheckMessage;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.Test;
 
@@ -192,10 +192,10 @@ class PrometheusTest {
 
         assertEquals(2, model.getTileToShow().size(), "Should be both of the constructors' positions");
 
-        assertTrue(r.getMessage() instanceof SpecialActionMessage, "This should be a special action message");
+        assertTrue(r.getMessage() instanceof MoreTileToCheckMessage, "This should be a special action message");
 
-        SpecialActionMessage message = (SpecialActionMessage)r.getMessage();
-        assertEquals(1, message.getSpecialTile().size(), "Should be only one tile (1,1)");
+        MoreTileToCheckMessage message = (MoreTileToCheckMessage) r.getMessage();
+        assertEquals(1, message.getSpecialList().size(), "Should be only one tile (1,1)");
     }
 
     @Test
@@ -253,7 +253,7 @@ class PrometheusTest {
 
         assertEquals(2, model.getTileToShow().size(), "Should be both of the constructors' positions");
 
-        assertTrue(r.getMessage() instanceof SpecialActionMessage, "This should be a special message");
+        assertTrue(r.getMessage() instanceof MoreTileToCheckMessage, "This should be a special message");
     }
 
     private List<Player> createPlayer(God p1God, God p2God){

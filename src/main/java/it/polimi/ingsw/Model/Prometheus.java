@@ -2,10 +2,9 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Controller.GodController.PrometheusController;
 import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.SpecialActionMessage;
-import it.polimi.ingsw.Message.TileToShowMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.MoreTileToCheckMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +52,14 @@ public class Prometheus extends God {
         this.canGoUp = b;
     }
 
+    /**
+     * Method used to get all the <em>Positions</em> that will need to be eliminated
+     * from the normal moveset (only if due to his own power Prometheus can't go up)
+     *
+     * @param model the <em>Model</em> of the game
+     *
+     * @return  the list of wrong Position to eliminate (or null if there aren't any)
+     */
     public List<Position> getWrongPos(Model model){
         List<Position> standardPos = model.getBoard().possibleMoveset(model.getCurrentConstructor());
         Tile currentT = model.getBoard().getTile(model.getCurrentConstructor().getPos());
@@ -71,6 +78,15 @@ public class Prometheus extends God {
         return wrongPos;
     }
 
+    /**
+     * Given a <em>Constructor</em> the method returns the list of tile's <em>Positions</em>
+     * which are at the same level (or below) of the tile where is the Constructor
+     *
+     * @param model the <em>Model</em> of the game
+     * @param c the <em>Constructor</em> to check
+     *
+     * @return the list (even with 0 elements) of <em>Positions</em>
+     */
     public List<Position> sameOrDownLevel(Model model, Constructor c){
         List<Position> standardPos = model.getBoard().possibleMoveset(c);
         Tile currentT = model.getBoard().getTile(c.getPos());
@@ -87,10 +103,25 @@ public class Prometheus extends God {
         return list;
     }
 
+    /**
+     * Modified version of the standard sameOrDownLevel using the currentConstructor
+     *
+     * @param model the <em>Model</em> of the game
+     *
+     * @return  a list of <em>Positions</em>
+     */
     public List<Position> sameOrDownLevelCurrent(Model model){
         return sameOrDownLevel(model, model.getCurrentConstructor());
     }
 
+    /**
+     * The method creates all the possible ConstructorPosition, then check if there are some of these
+     * that can't be chosen if the player want to use his god power.
+     * If at the end there are no noPowerPos (= no Power Positions) the method forces a notify using a TileToShowMessage
+     * with a standard code, otherwise forces a notify using a SpecialActionMessage with the code "noPower"
+     *
+     * @param model the <em>Model</em> of the game
+     */
     public void createPossibleConstructorPos(Model model){
         List<Constructor> constList = model.getGameState().getCurrentPlayer().getAllConstructors();
         List<Position> normalPos = new ArrayList<>();
@@ -119,15 +150,22 @@ public class Prometheus extends God {
         GameMessage message;
 
         if(noPowerPos.size() > 0){
-             message = new SpecialActionMessage("noPower", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), normalPos, noPowerPos);
+             message = new MoreTileToCheckMessage(model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), normalPos, noPowerPos);
         } else {
-            message = new TileToShowMessage("standard", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), normalPos);
+            message = new StandardTileMessage(model.getGameState().getCurrentPlayer().getIdPlayer(), model.getCurrentPhase(), normalPos);
         }
 
         model.forceNotify(message);
 
     }
 
+    /**
+     * Creates a standard PossibleMovePos list, then delete every position in the wrongList from the
+     * main list, then set the list as the TileToShow and end with sending a notify with code: "standard"
+     *
+     * @param model the <em>Model</em> of the list
+     * @param wrongList the list of wrong <em>Positions</em>
+     */
     public void createPossibleMovePos(Model model, List<Position> wrongList){
         List<Position> list;
 
@@ -146,26 +184,7 @@ public class Prometheus extends God {
 
         model.setTileToShow(list);
 
-        model.forceNotify(new TileToShowMessage("standard", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
-    }
-
-    public void createPossibleBuildPos(Model model, List<Position> wrongList){
-        List<Position> list;
-
-        list = model.getBoard().possibleBuild(model.getCurrentConstructor());
-
-        for(Position delPos : wrongList)  {
-            for(int i = 0; i < list.size(); i++)   {
-                if(list.get(i).equals(delPos)) {
-                    list.remove(i);
-                    break;
-                }
-            }
-        }
-
-        model.setTileToShow(list);
-
-        model.forceNotify(new TileToShowMessage("standard", model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
+        model.forceNotify(new StandardTileMessage(model.getGameState().getCurrentPlayer().getIdPlayer(), model.getGameState().getCurrentPhase(), list));
     }
 
     public void setCorrectPhase(Model model){
