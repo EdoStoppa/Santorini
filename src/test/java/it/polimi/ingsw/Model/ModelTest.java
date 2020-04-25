@@ -205,7 +205,7 @@ class ModelTest {
     }
 
     @RepeatedTest(1000)
-    void performPushTest(RepetitionInfo repetitionInfo)  {
+    void performPushTest()  {
         String expectedMessage;
         int i;
         Random random = new Random();

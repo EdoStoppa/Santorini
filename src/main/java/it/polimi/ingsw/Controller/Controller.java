@@ -19,23 +19,23 @@ import java.util.List;
 
 public class Controller implements Observer<PosMessage> {
 
-    Model model;
+    private Model model;
 
-    public Controller(Model model){
+    public Controller(Model model) {
         this.model = model;
     }
 
     /**
      * This method is used to direct (depending on the current phase) to the correct
      * sub-method to manage correctly the next action
-     *<p>
-     *     If the phase is a special one, the method calls the appropriate <em>GodController</em>
-     *     and launch the special method
-     *</p>
+     * <p>
+     * If the phase is a special one, the method calls the appropriate <em>GodController</em>
+     * and launch the special method
+     * </p>
      *
      * @param message the message arrived from a view
      */
-    public void handleAction(PosMessage message){
+    public void handleAction(PosMessage message) {
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
@@ -64,31 +64,31 @@ public class Controller implements Observer<PosMessage> {
         }
     }
 
-    public void handleChooseConstructor(PosMessage message){
+    public void handleChooseConstructor(PosMessage message) {
         model.performChooseConstructor(message.getPosition());
     }
 
-    public void handleMove(PosMessage message){
+    public void handleMove(PosMessage message) {
         model.performMove(message.getPosition());
-        if(model.checkWin()){
+        if (model.checkWin()) {
             // TRANSITION TO END GAME
             executeWinSequence();
         }
     }
 
-    public void handleBuild(PosMessage message){
+    public void handleBuild(PosMessage message) {
         model.performBuild(message.getPosition());
     }
 
     /**
      * This method is used to direct (depending on the current phase) to the correct
      * sub-method to manage correctly the preparation of the next phase
-     *<p>
-     *     If the phase is a special one, the method calls the appropriate <em>GodController</em>
-     *     and launch the special method
-     *</p>
+     * <p>
+     * If the phase is a special one, the method calls the appropriate <em>GodController</em>
+     * and launch the special method
+     * </p>
      */
-    public void preparePhase(){
+    public void preparePhase() {
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
@@ -116,26 +116,26 @@ public class Controller implements Observer<PosMessage> {
         }
     }
 
-    public void prepareChooseConstructor(){
-        if(model.isLastStanding()){
+    public void prepareChooseConstructor() {
+        if (model.isLastStanding()) {
             executeWinSequence();
             return;
         }
 
         model.changeActiveConstructors();
-        if(model.isLosing()){
+        if (model.isLosing()) {
             // TRANSITION TO LOSE SEQUENCE
             executeLoseSequence();
             return;
-         }
+        }
         model.createPossibleConstructorPos();
     }
 
-    public void prepareMove(){
+    public void prepareMove() {
         model.createPossibleMovePos(null, null);
     }
 
-    public void prepareBuild(){
+    public void prepareBuild() {
         model.createPossibleBuildPos(null, null);
     }
 
@@ -143,7 +143,7 @@ public class Controller implements Observer<PosMessage> {
      * This method launches the lose sequence, where the current player is removed after the change
      * of turn
      */
-    public void executeLoseSequence(){
+    public void executeLoseSequence() {
         model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
 
@@ -156,7 +156,7 @@ public class Controller implements Observer<PosMessage> {
     /**
      * This method launches the win sequence, where is declared a winner and the game simply end
      */
-    public void executeWinSequence(){
+    public void executeWinSequence() {
         // ALERT EVERYONE THAT SOMEONE HAS WON
     }
 
@@ -168,13 +168,25 @@ public class Controller implements Observer<PosMessage> {
      */
     @Override
     public void update(PosMessage message) {
-        if(!model.isPlayerTurn(message.getIdPlayer())){
+        if (!model.isPlayerTurn(message.getIdPlayer())) {
             // DO SOMETHING WITH VIEW
             return;
         }
 
-        handleAction((PosMessage)message);
+        handleAction((PosMessage) message);
         model.nextPhase();
         preparePhase();
     }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+                                            FOR TESTING PURPOSE
+------------------------------------------------------------------------------------------------------------------------
+ */
+
+    protected Model getModel()  {
+        return this.model;
+    }
+
 }
+
