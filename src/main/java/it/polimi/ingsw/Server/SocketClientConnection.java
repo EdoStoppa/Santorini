@@ -1,11 +1,15 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Model.Apollo;
+import it.polimi.ingsw.Model.Pan;
 import it.polimi.ingsw.Observer.Observable;
+import it.polimi.ingsw.Model.God;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -105,10 +109,15 @@ public class SocketClientConnection extends Observable<String> implements Client
     @Override
     public ArrayList<Integer> ChooseGod(int player){
         ArrayList<Integer> pickGod=new ArrayList<>();
-        Integer i=0, pick=0;
+        Integer i, pick=0, count;
         try{
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend("chose god from this list:\n");
+            for (i=0;i<God.getAllGodPower().size();i++){
+                count=i+1;
+                this.asyncSend(count+")"+ God.getAllGodName().get(i)+ God.getAllGodSubtitle().get(i) +God.getAllGodPower().get(i)+ "\n");
+            }
+            i=0;
             while (i<player){
                 pick=in.nextInt();
                 pickGod.add(pick);
@@ -125,7 +134,10 @@ public class SocketClientConnection extends Observable<String> implements Client
         int pick;
         try{
             Scanner in= new Scanner(socket.getInputStream());
-            opponent.asyncSend("choose your god:"+ pickPool.get(0)+"or"+ pickPool.get(1));
+            opponent.asyncSend("choose your god:\n"+
+                    pickPool.get(0)+")"+God.getAllGodName().get(pickPool.get(0)-1)+God.getAllGodSubtitle().get(pickPool.get(0)-1)+ God.getAllGodPower().get(pickPool.get(0)-1)+
+                    "\n or \n" +
+                    pickPool.get(1)+")"+God.getAllGodName().get(pickPool.get(1)-1)+God.getAllGodSubtitle().get(pickPool.get(1)-1)+ God.getAllGodPower().get(pickPool.get(1)-1));
             pick=in.nextInt();
             if(pick==pickPool.get(0)) {
                 pickPool.remove(0);
@@ -143,7 +155,12 @@ public class SocketClientConnection extends Observable<String> implements Client
         int pick1,pick2;
         try{
             Scanner in= new Scanner(socket.getInputStream());
-            opponent1.asyncSend("choose your god:"+ pickPool.get(0)+"or"+ pickPool.get(1)+"or"+pickPool.get(2));
+            opponent1.asyncSend("choose your god:\n"+
+                    pickPool.get(0)+")"+God.getAllGodName().get(pickPool.get(0)-1)+God.getAllGodSubtitle().get(pickPool.get(0)-1)+ God.getAllGodPower().get(pickPool.get(0)-1)+
+                    "\n or \n" +
+                    pickPool.get(1)+")"+God.getAllGodName().get(pickPool.get(1)-1)+God.getAllGodSubtitle().get(pickPool.get(1)-1)+ God.getAllGodPower().get(pickPool.get(1)-1)+
+                    "\n or \n" +
+                    pickPool.get(2)+")"+God.getAllGodName().get(pickPool.get(2)-1)+God.getAllGodSubtitle().get(pickPool.get(2)-1)+ God.getAllGodPower().get(pickPool.get(2)-1));
             pick1=in.nextInt();
             if(pick1==pickPool.get(0)) {
                 pickPool.remove(0);
@@ -152,7 +169,10 @@ public class SocketClientConnection extends Observable<String> implements Client
             }else {
                 pickPool.remove(2);
             }
-            opponent2.asyncSend("choose your god"+pickPool.get(0)+"or"+pickPool.get(1));
+            opponent2.asyncSend("choose your god:\n"+
+                    pickPool.get(0)+")"+God.getAllGodName().get(pickPool.get(0)-1)+God.getAllGodSubtitle().get(pickPool.get(0)-1)+ God.getAllGodPower().get(pickPool.get(0)-1)+
+                            "\n or \n" +
+                            pickPool.get(1)+")"+God.getAllGodName().get(pickPool.get(1)-1)+God.getAllGodSubtitle().get(pickPool.get(1)-1)+ God.getAllGodPower().get(pickPool.get(1)-1));
             pick2=in.nextInt();
             if(pick2==pickPool.get(0)){
                 pickPool.remove(0);
@@ -167,7 +187,20 @@ public class SocketClientConnection extends Observable<String> implements Client
         return pickPool;
     }
 
-
-
+    @Override
+    public String enterNewName( Map <String, ClientConnection> NameOpponent) {
+        String name = null;
+        try {Scanner in= new Scanner(socket.getInputStream());
+            this.asyncSend("this name is already. Enter a new one");
+            name= in.nextLine();
+            while (NameOpponent.containsKey(name)){
+                this.asyncSend("this name is already. Enter a new one");
+                name= in.nextLine();
+            }
+        }catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+        return name;
+    }
 
 }

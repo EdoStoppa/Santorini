@@ -4,6 +4,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Observer.Observer;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public interface ClientConnection{
 
@@ -12,6 +13,8 @@ public interface ClientConnection{
     void addObserver(Observer<String> observer);
 
     void asyncSend(Object message);
+
+    String enterNewName(Map <String, ClientConnection> NameOpponent);
 
     ArrayList<Integer> ChooseGod(int player);
 

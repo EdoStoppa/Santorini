@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Player;
@@ -42,23 +41,36 @@ public class Server {
     public synchronized void lobby2P(ClientConnection c,String name){
         ArrayList<Integer> ChosenGodPool;
         ArrayList<Integer> ChosenGod;
+        ArrayList<Player> PlayerList = new ArrayList<>();
+        if (waitingConnection2P.containsKey(name)){
+            c.enterNewName(waitingConnection2P);
+        }
         waitingConnection2P.put(name,c);
         if (waitingConnection2P.size() == 2){
             List<String> keys= new ArrayList<>(waitingConnection2P.keySet());
             ClientConnection c1= waitingConnection2P.get(keys.get(0));
             ClientConnection c2= waitingConnection2P.get(keys.get(1));
+            Player player1= new Player(keys.get(0),1);
+            Player player2= new Player(keys.get(1),2);
             Random random= new Random();
             int ChoseGodLike= random.nextInt(2)+1;
             if (ChoseGodLike==1){
                 ChosenGodPool=c1.ChooseGod(2);
                 ChosenGod=c1.PickGod(c2,ChosenGodPool);
             } else {
-                ChosenGodPool=c2.ChooseGod(2);
-                ChosenGod=c2.PickGod(c1,ChosenGodPool);
+                ChosenGodPool = c2.ChooseGod(2);
+                ChosenGod = c2.PickGod(c1, ChosenGodPool);
             }
-
-            //create player, view model e controller
-            //add observer alle view
+            View player1View= new View();
+            View player2View= new View();
+            PlayerList.add(player1);
+            PlayerList.add(player2);
+            Model model= new Model(PlayerList);
+            Controller controller= new Controller(model);
+            model.addObserver(player1View);
+            model.addObserver(player2View);
+            player1View.addObserver(controller);
+            player2View.addObserver(controller);
             playingConnection2P.put(c1,c2);
             playingConnection2P.put(c2,c1);
             waitingConnection2P.clear();
@@ -70,6 +82,10 @@ public class Server {
     public synchronized void lobby3P(ClientConnection c,String name){
         ArrayList<Integer> ChosenGodPool;
         ArrayList<Integer> ChosenGod;
+        ArrayList<Player> PlayerList = new ArrayList<>();
+        if (waitingConnection3P.containsKey(name)){
+            c.enterNewName(waitingConnection3P);
+        }
         waitingConnection3P.put(name,c);
         if(waitingConnection3P.size()==3){
             List<String> keys= new ArrayList<>(waitingConnection3P.keySet());
@@ -88,8 +104,23 @@ public class Server {
                 ChosenGodPool=c3.ChooseGod(3);
                 ChosenGod= c3.PickGod3P(c1,c2,ChosenGodPool);
             }
-            //create player, view model e controller
-            //add observer alle view
+            Player player1= new Player(keys.get(0),1);
+            Player player2= new Player(keys.get(1),2);
+            Player player3= new Player(keys.get(2),3);
+            View player1View= new View();
+            View player2View= new View();
+            View player3View = new View();
+            PlayerList.add(player1);
+            PlayerList.add(player2);
+            PlayerList.add(player3);
+            Model model= new Model(PlayerList);
+            Controller controller= new Controller(model);
+            model.addObserver(player1View);
+            model.addObserver(player2View);
+            model.addObserver(player3View);
+            player1View.addObserver(controller);
+            player2View.addObserver(controller);
+            player3View.addObserver(controller);
             playingConnection3P.put(c1,c2);
             playingConnection3P.put(c1,c3);
             playingConnection3P.put(c2,c1);
@@ -109,8 +140,8 @@ public class Server {
         while (true){
             try {
                 Socket newSocket =serverSocket.accept();
-                SocketClientConnection socketConnetion = new SocketClientConnection(newSocket,this);
-                executor.submit(socketConnetion);
+                SocketClientConnection socketConnection = new SocketClientConnection(newSocket,this);
+                executor.submit(socketConnection);
             }catch (IOException e){
                 System.out.println("Connection Error!");
             }

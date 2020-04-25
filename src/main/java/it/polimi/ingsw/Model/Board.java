@@ -20,7 +20,6 @@ public class Board {
 
     }
 
-
     /**
      * this method create a list of position where the chosen constructor can move in this turn
      * @param CurrentConstructor the constructor to find the moveset
