@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.View;
@@ -38,6 +39,28 @@ public class Server {
         }
     }
 
+    public synchronized void deregisterConnection3P(ClientConnection c){
+        ClientConnection opponent1=playingConnection3P.get(c);
+        ClientConnection opponent2=playingConnection3P.get(opponent1);
+        if(opponent1!=null){
+            opponent1.closeConnection();
+        }
+        if (opponent2!=null){
+            opponent2.closeConnection();
+        }
+        playingConnection3P.remove(c);
+        playingConnection3P.remove(opponent1);
+        playingConnection3P.remove(opponent2);
+        Iterator<String> iterator=waitingConnection3P.keySet().iterator();
+        while (iterator.hasNext()){
+            if (waitingConnection3P.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+    }
+
+
     public synchronized void lobby2P(ClientConnection c,String name){
         ArrayList<Integer> ChosenGodPool;
         ArrayList<Integer> ChosenGod;
@@ -57,9 +80,13 @@ public class Server {
             if (ChoseGodLike==1){
                 ChosenGodPool=c1.ChooseGod(2);
                 ChosenGod=c1.PickGod(c2,ChosenGodPool);
+                player1.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
+                player2.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
             } else {
                 ChosenGodPool = c2.ChooseGod(2);
                 ChosenGod = c2.PickGod(c1, ChosenGodPool);
+                player1.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
+                player2.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
             }
             View player1View= new View();
             View player2View= new View();
@@ -92,21 +119,30 @@ public class Server {
             ClientConnection c1= waitingConnection3P.get(keys.get(0));
             ClientConnection c2= waitingConnection3P.get(keys.get(1));
             ClientConnection c3=waitingConnection3P.get(keys.get(2));
+            Player player1= new Player(keys.get(0),1);
+            Player player2= new Player(keys.get(1),2);
+            Player player3= new Player(keys.get(2),3);
             Random random= new Random();
             int ChoseGodLike= random.nextInt(3)+1;
             if (ChoseGodLike ==1){
                 ChosenGodPool=c1.ChooseGod(3);
                 ChosenGod=c1.PickGod3P(c2,c3,ChosenGodPool);
+                player1.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
+                player2.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
+                player3.setGod(God.getAllGod().get(ChosenGod.get(2)-1));
             }else if(ChoseGodLike==2){
                 ChosenGodPool=c2.ChooseGod(3);
                 ChosenGod= c2.PickGod3P(c3,c1,ChosenGodPool);
+                player1.setGod(God.getAllGod().get(ChosenGod.get(2)-1));
+                player2.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
+                player3.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
             }else {
                 ChosenGodPool=c3.ChooseGod(3);
                 ChosenGod= c3.PickGod3P(c1,c2,ChosenGodPool);
+                player1.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
+                player2.setGod(God.getAllGod().get(ChosenGod.get(2)-1));
+                player3.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
             }
-            Player player1= new Player(keys.get(0),1);
-            Player player2= new Player(keys.get(1),2);
-            Player player3= new Player(keys.get(2),3);
             View player1View= new View();
             View player2View= new View();
             View player3View = new View();
@@ -122,11 +158,8 @@ public class Server {
             player2View.addObserver(controller);
             player3View.addObserver(controller);
             playingConnection3P.put(c1,c2);
-            playingConnection3P.put(c1,c3);
-            playingConnection3P.put(c2,c1);
             playingConnection3P.put(c2,c3);
             playingConnection3P.put(c3,c1);
-            playingConnection3P.put(c3,c2);
             waitingConnection3P.clear();
             //first message to player view
         }
