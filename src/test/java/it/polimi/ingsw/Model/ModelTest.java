@@ -50,7 +50,7 @@ class ModelTest {
         Board board = model.getBoard();
         model.getGameState().setCurrentPlayer(p2);
         while(numberConstructorsP1 < 2 || numberConstructorsP2 < 2) {//It creates 2 constructors for each player and it places them in random position
-            Position pos = new Position(random.nextInt(4), random.nextInt(4));
+            Position pos = new Position(random.nextInt(5), random.nextInt(5));
             if(!board.getTile(pos).getOccupied())    {
                 if(numberConstructorsP1 < 2)    {
                     c = p1.getAllConstructors().get(numberConstructorsP1);
@@ -74,7 +74,7 @@ class ModelTest {
         for (int i = 0; i < 5; i++) { //creates a random board without Atlas as God
             for (int j = 0; j < 5; j++) {
                 Position pos = new Position(i, j);
-                int miavar = random.nextInt(4);
+                int miavar = random.nextInt(5);
                 for(int k = 0; k < miavar; k++) {
                     board.getTile(pos).increaseConstructionLevel();
                 }
@@ -86,7 +86,8 @@ class ModelTest {
     void isOccupiedTest()   {
         boolean t = false;
         Random random = new Random();
-        Position pos = new Position(random.nextInt(4), random.nextInt(4));
+        Position pos = new Position(random.nextInt(5), random.nextInt(5));
+
 
         for(int i = 0; i < 5; i++)  {
             for(int j = 0; j < 5; j++)  {
@@ -107,8 +108,9 @@ class ModelTest {
 
     @RepeatedTest(3)
     void isLosingTest(RepetitionInfo repetitionInfo) {
+        Random random = new Random();
+
         if(repetitionInfo.getCurrentRepetition() == 1)  {//The player can move 2 constructors
-            Random random = new Random();
             Player p = model.getListPlayer().get(random.nextInt(1));//It chooses a random player
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(true);
@@ -116,7 +118,6 @@ class ModelTest {
             assertFalse(model.isLosing(p), "The player is not losing");
         }
         if(repetitionInfo.getCurrentRepetition() == 2)  {//The player can move just 1 constructor
-            Random random = new Random();
             Player p = model.getListPlayer().get(random.nextInt(1));//It chooses a random player
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
@@ -124,7 +125,6 @@ class ModelTest {
             assertFalse(model.isLosing(p), "The player is not losing");
         }
         if(repetitionInfo.getCurrentRepetition() == 3)  {//The player can not move any constructor
-            Random random = new Random();
             Player p = model.getListPlayer().get(random.nextInt(1));//It chooses a random player
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
@@ -212,7 +212,8 @@ class ModelTest {
         Position pos1 = model.getCurrentConstructor().getPos();
         System.out.println(pos1.toString());
         Position pos2 = null;
-        int r = random.nextInt(7);
+        int r = random.nextInt(8);
+        System.out.println(r);
         if(r == 0)    {
             pos2 = new Position(pos1.getRow() - 1, pos1.getCol() - 1);
         }
@@ -268,12 +269,12 @@ class ModelTest {
     void performBuild() {
         Random random = new Random();
         String expectedMessage;
-        Position p1 = new Position(random.nextInt(4), random.nextInt(4));
+        Position p1 = new Position(random.nextInt(5), random.nextInt(5));
         int expectedConstructionLevel = 0;
         boolean expectedDome = false;
 
         while(model.getBoard().getTile(p1).getDome())  {
-            p1 = new Position(random.nextInt(4), random.nextInt(4));
+            p1 = new Position(random.nextInt(5), random.nextInt(5));
         }
         if(model.getBoard().getTile(p1).getConstructionLevel() < 3)    {
             expectedConstructionLevel = model.getBoard().getTile(p1).getConstructionLevel() + 1;
@@ -358,10 +359,10 @@ class ModelTest {
         Random random = new Random();
         Constructor c1 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
         Constructor c2 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
-        Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
-        Position pos2 = new Position(random.nextInt(4), random.nextInt(4));
+        Position pos1 = new Position(random.nextInt(5), random.nextInt(5));
+        Position pos2 = new Position(random.nextInt(5), random.nextInt(5));
         while(pos1.equals(pos2))    {
-            pos2 = new Position(random.nextInt(4), random.nextInt(4));
+            pos2 = new Position(random.nextInt(5), random.nextInt(5));
         }
 
         model.getGameState().getCurrentPlayer().getAllConstructors().set(0, c1);
@@ -392,7 +393,7 @@ class ModelTest {
         expectedList = model.getBoard().possibleMoveset(model.getCurrentConstructor());
         for(int i = 0; i < 2; i++)  {
             flag = true;
-            Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
+            Position pos1 = new Position(random.nextInt(5), random.nextInt(5));
             for(Position p : expectedList)    {
                 if(pos1.equals(p))    {
                     flag = false;
@@ -442,7 +443,7 @@ class ModelTest {
         }
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(10000)
     void createPossibleBuildPosTest()   {
         Random random = new Random();
         List<Position> expectedList;
@@ -451,55 +452,61 @@ class ModelTest {
         boolean flag;
 
         expectedList = model.getBoard().possibleBuild(model.getCurrentConstructor());
-        for(int i = 0; i < 2; i++)  {
-            flag = true;
-            Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
-            for(Position p1 : expectedList)    {
-                if(pos1.equals(p1))    {
-                    flag = false;
-                    break;
+        if(expectedList.size() > 0) {
+            for(int i = 0; i < 2; i++)  {
+                flag = true;
+                Position pos1 = new Position(random.nextInt(5), random.nextInt(5));
+                for(Position p1 : expectedList)    {
+                    if(pos1.equals(p1))    {
+                        flag = false;
+                        break;
+                    }
                 }
-            }
-            if(!flag)    {
-                i--;
-            }
-            else    {
-                if(addList.size() == 0) {
-                    addList.add(pos1);
+                if(!flag)    {
+                    i--;
                 }
                 else    {
-                    for(Position p2 : addList) {
-                        if(pos1.equals(p2)) {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if(!flag)   {
-                        i--;
+                    if(addList.size() == 0) {
+                        addList.add(pos1);
                     }
                     else    {
-                        addList.add(pos1);
+                        for(Position p2 : addList) {
+                            if(pos1.equals(p2)) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if(!flag)   {
+                            i--;
+                        }
+                        else    {
+                            addList.add(pos1);
+                        }
                     }
                 }
             }
-        }
-        for(int j = 0; j < 2; j++)    {
-            Position pos2 = expectedList.get(j);
-            deleteList.add(pos2);
-        }
-        for(int i = 0; i < 2; i++)  {
-            expectedList.add(addList.get(i));
-        }
-        for(int i = 0; i < 2 ; i++) {
-            expectedList.remove(deleteList.get(i));
-        }
-        model.createPossibleBuildPos(addList, deleteList);
-        String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
-        assertEquals(expectedList.size(), model.getTileToShow().size(), "The size should be the same");
-        assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The idPlayer should be the same");
-        for(int i = 0; i < model.getTileToShow().size(); i++)   {
-            assertEquals(expectedList.get(i).getRow(), model.getTileToShow().get(i).getRow(),"The row should be the same");
-            assertEquals(expectedList.get(i).getCol(), model.getTileToShow().get(i).getCol(), "The col should be the same");
+            int bound = 2;
+            if(expectedList.size() == 1)    {
+                bound = 1;
+            }
+            for(int j = 0; j < bound; j++)    {
+                Position pos2 = expectedList.get(j);
+                deleteList.add(pos2);
+            }
+            for(int i = 0; i < 2; i++)  {
+                expectedList.add(addList.get(i));
+            }
+            for(int i = 0; i < bound ; i++) {
+                expectedList.remove(deleteList.get(i));
+            }
+            model.createPossibleBuildPos(addList, deleteList);
+            String message = model.getGameState().getCurrentPlayer().getIdPlayer() + " can build on any of these tiles";
+            assertEquals(expectedList.size(), model.getTileToShow().size(), "The size should be the same");
+            assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(), "The idPlayer should be the same");
+            for(int i = 0; i < model.getTileToShow().size(); i++)   {
+                assertEquals(expectedList.get(i).getRow(), model.getTileToShow().get(i).getRow(),"The row should be the same");
+                assertEquals(expectedList.get(i).getCol(), model.getTileToShow().get(i).getCol(), "The col should be the same");
+            }
         }
     }
 
