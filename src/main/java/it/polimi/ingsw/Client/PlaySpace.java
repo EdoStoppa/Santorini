@@ -23,6 +23,13 @@ public class PlaySpace {
 
         this.buildingMatrix = new int[5][5];
         this.constructorMatrix = new int[5][5];
+
+        /*for(int i=0; i<5; i++){
+            for(int j=0; j<5; j++){
+                this.buildingMatrix[i][j] = 0;
+                this.buildingMatrix[i][j] = 0;
+            }
+        }*/
     }
 
     public int[][] getBuildingMatrix() {
@@ -81,9 +88,11 @@ public class PlaySpace {
     }
 
     public boolean printTileToShow(int i, int j){
-        for (int k=0;k<this.tileToShow.size();k++){
-            if (this.tileToShow.get(k).getRow()==i && this.tileToShow.get(k).getCol()==j){
-                return true;
+        if(this.tileToShow != null){
+            for (int k=0;k<this.tileToShow.size();k++){
+                if (this.tileToShow.get(k).getRow()==i && this.tileToShow.get(k).getCol()==j){
+                    return true;
+                }
             }
         }
         return false;
@@ -120,11 +129,11 @@ public class PlaySpace {
                         }
                         break;
                     case 0:
-                        if (this.printTileToShow(i, j) && buildingMatrix[i][j] != 4) {
+                        if (this.printTileToShow(i, j) && buildingMatrix[i][j] < 4) {
                             line += (Color.CYAN_BACKGROUND_BRIGHT + " " + Color.ANSI_BLACK + buildingMatrix[i][j] + Color.CYAN_BACKGROUND_BRIGHT + " ");
-                        } else if (buildingMatrix[i][j] != 0 && buildingMatrix[i][j] != 4) {
+                        } else if (buildingMatrix[i][j] != 0 && buildingMatrix[i][j] < 4) {
                             line += (Color.RESET + " " + buildingMatrix[i][j] + " ");
-                        } else if (this.printTileToShow(i, j) && buildingMatrix[i][j] == 4) {
+                        } else if (this.printTileToShow(i, j) && buildingMatrix[i][j] >= 4) {
                             line += (Color.ANSI_BLUE + " D ");
                         } else {
                             line += (Color.RESET + "   ");
@@ -137,6 +146,6 @@ public class PlaySpace {
             line+=(Color.RESET+VERT);
             System.out.println(line);
         }
-        System.out.println("  \\u255A\"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+\"\\u255D");
+        System.out.println("  \u255A"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ + "\u255D");
     }
 }
