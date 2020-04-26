@@ -6,10 +6,7 @@ import it.polimi.ingsw.Model.God;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 public class SocketClientConnection extends Observable<String> implements ClientConnection,Runnable {
 
@@ -109,22 +106,24 @@ public class SocketClientConnection extends Observable<String> implements Client
         thread.start();
     }
 
+
     @Override
-    public ArrayList<Integer> ChooseGod(int player){
-        ArrayList<Integer> pickGod=new ArrayList<>();
+    public ArrayList<God> ChooseGod(int player){
+        ArrayList<God> pickGod=new ArrayList<>();
+        List<God> allGod=God.getAllGod();
         Integer i, pick=0, count;
         try{
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend("chose god from this list:\n");
             for (i=0;i<God.getAllGod().size();i++){
                 count=i+1;
-                this.asyncSend(count+") "+God.getAllGod().get(i).getGodName()+" "+God.getAllGod().get(i).getGodSubtitle()+
-                        "\n"+God.getAllGod().get(i).getGodPower()+"\n\n");
+                this.asyncSend(count+") "+allGod.get(i).getGodName()+" "+allGod.get(i).getGodSubtitle()+
+                        "\n"+allGod.get(i).getGodPower()+"\n\n");
             }
             i=0;
             while (i<player){
                 pick=in.nextInt();
-                pickGod.add(pick);
+                pickGod.add(allGod.get(pick));
                 i++;
             }
         }catch (IOException e){
@@ -134,21 +133,23 @@ public class SocketClientConnection extends Observable<String> implements Client
     }
 
     @Override
-    public ArrayList<Integer> PickGod(ClientConnection opponent,ArrayList<Integer> pickPool){
+    public ArrayList<God> PickGod(ClientConnection opponent,ArrayList<God> pickPool){
         int pick;
+        ArrayList<God> PlayerChoice= new ArrayList<>();
         try{
             Scanner in= new Scanner(socket.getInputStream());
-            opponent.asyncSend("choose your god:\n"+
-                    pickPool.get(0)+ ") "+ God.getAllGod().get(pickPool.get(0)-1).getGodName()+
-                    " "+ God.getAllGod().get(pickPool.get(0)-1).getGodSubtitle()+ "\n"+
-                    God.getAllGod().get(pickPool.get(0)-1).getGodPower()+"\n\n or\n\n"+
-                    pickPool.get(1)+ ") "+ God.getAllGod().get(pickPool.get(1)-1).getGodName()+
-                            " "+ God.getAllGod().get(pickPool.get(1)-1).getGodSubtitle()+ "\n"+
-                            God.getAllGod().get(pickPool.get(1)-1).getGodPower());
+            opponent.asyncSend("choose your god:\n 0)"+
+                    pickPool.get(0).getGodName()+"  "+ pickPool.get(0)+"\n"+ pickPool.get(0).getGodPower()+
+                    "\n\n or \n\n 1)"+pickPool.get(1).getGodName()+pickPool.get(1).getGodSubtitle()+
+                            "\n"+pickPool.get(1).getGodPower());
+
             pick=in.nextInt();
-            if(pick==pickPool.get(0)) {
-                pickPool.remove(0);
-                pickPool.add(pick);
+            if(pick==0) {
+                PlayerChoice.add(pickPool.get(1));
+                PlayerChoice.add(pickPool.get(0));
+            }else{
+                PlayerChoice.add(pickPool.get(0));
+                PlayerChoice.add(pickPool.get(1));
             }
 
         }catch (IOException e){
@@ -158,43 +159,27 @@ public class SocketClientConnection extends Observable<String> implements Client
     }
 
     @Override
-    public ArrayList<Integer> PickGod3P(ClientConnection opponent1,ClientConnection opponent2, ArrayList<Integer> pickPool){
-        int pick1,pick2;
+    public ArrayList<God> PickGod3P(ClientConnection opponent1,ClientConnection opponent2, ArrayList<God> pickPool){
+        int pick;
+        ArrayList<God> PlayerChoice= new ArrayList<>();
         try{
             Scanner in= new Scanner(socket.getInputStream());
-            opponent1.asyncSend("choose your god:\n"+
-                    pickPool.get(0)+ ") "+ God.getAllGod().get(pickPool.get(0)-1).getGodName()+
-                    " "+ God.getAllGod().get(pickPool.get(0)-1).getGodSubtitle()+ "\n"+
-                    God.getAllGod().get(pickPool.get(0)-1).getGodPower() + "\n\n or \n\n"+
-                    pickPool.get(1)+ ") "+ God.getAllGod().get(pickPool.get(1)-1).getGodName()+
-                            " "+ God.getAllGod().get(pickPool.get(1)-1).getGodSubtitle()+ "\n"+
-                            God.getAllGod().get(pickPool.get(1)-1).getGodPower() + "\n\n or \n\n"+
-                    pickPool.get(2)+ ") "+ God.getAllGod().get(pickPool.get(2)-1).getGodName()+
-                            " "+ God.getAllGod().get(pickPool.get(2)-1).getGodSubtitle()+ "\n"+
-                            God.getAllGod().get(pickPool.get(2)-1).getGodPower());
-            pick1=in.nextInt();
-            if(pick1==pickPool.get(0)) {
-                pickPool.remove(0);
-            } else if(pick1==pickPool.get(1)){
-                pickPool.remove(1);
-            }else {
-                pickPool.remove(2);
-            }
+            opponent1.asyncSend("choose your god:\n0)"+
+                    pickPool.get(0).getGodName()+"\n"+pickPool.get(0).getGodSubtitle()+"\n"+pickPool.get(0).getGodPower()+
+                    "\n\n or \n\n1)"+ pickPool.get(1).getGodName()+"\n"+pickPool.get(1).getGodSubtitle()+"\n"+pickPool.get(1).getGodPower()+
+                    "\n\n or \n\n2)"+pickPool.get(2).getGodName()+"\n"+pickPool.get(2).getGodSubtitle()+"\n"+pickPool.get(2).getGodPower());
+
+            pick=in.nextInt();
+            PlayerChoice.add(pickPool.get(pick));
+            pickPool.remove(pick);
             opponent2.asyncSend("choose your god:\n"+
-                            pickPool.get(0)+ ") "+ God.getAllGod().get(pickPool.get(0)-1).getGodName()+
-                    " "+ God.getAllGod().get(pickPool.get(0)-1).getGodSubtitle()+ "\n"+
-                    God.getAllGod().get(pickPool.get(0)-1).getGodPower()+"\n\n or\n\n"+
-                    pickPool.get(1)+ ") "+ God.getAllGod().get(pickPool.get(1)-1).getGodName()+
-                    " "+ God.getAllGod().get(pickPool.get(1)-1).getGodSubtitle()+ "\n"+
-                    God.getAllGod().get(pickPool.get(1)-1).getGodPower());
-            pick2=in.nextInt();
-            if(pick2==pickPool.get(0)){
-                pickPool.remove(0);
-            }else{
-                pickPool.remove(1);
-            }
-            pickPool.add(pick1);
-            pickPool.add(pick2);
+                            pickPool.get(0).getGodName()+"\n"+pickPool.get(0).getGodSubtitle()+"\n"+pickPool.get(0).getGodPower()+
+                            "\n\n or \n\n1)"+ pickPool.get(1).getGodName()+"\n"+pickPool.get(1).getGodSubtitle()+"\n"+pickPool.get(1).getGodPower());
+            pick=in.nextInt();
+            PlayerChoice.add(pickPool.get(pick));
+            pickPool.remove(pick);
+            PlayerChoice.add(pickPool.get(0));
+
         }catch (IOException e){
             System.err.println(e.getMessage());
         }

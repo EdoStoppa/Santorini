@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Server;
 
 
+import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Observer.Observer;
 
 import java.util.ArrayList;
@@ -16,9 +17,9 @@ public interface ClientConnection{
 
     String enterNewName(Map <String, ClientConnection> NameOpponent);
 
-    ArrayList<Integer> ChooseGod(int player);
+    ArrayList<God> ChooseGod(int player);
 
-    ArrayList<Integer> PickGod(ClientConnection opponent,ArrayList<Integer> pickPool);
+    ArrayList<God> PickGod(ClientConnection opponent,ArrayList<God> pickPool);
 
-    ArrayList<Integer>PickGod3P(ClientConnection opponent1, ClientConnection opponent2, ArrayList<Integer> pickPool);
+    ArrayList<God>PickGod3P(ClientConnection opponent1, ClientConnection opponent2, ArrayList<God> pickPool);
 }

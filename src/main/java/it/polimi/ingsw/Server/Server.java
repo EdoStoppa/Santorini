@@ -62,9 +62,9 @@ public class Server {
 
 
     public synchronized void lobby2P(ClientConnection c,String name){
-        ArrayList<Integer> ChosenGodPool;
-        ArrayList<Integer> ChosenGod;
-        ArrayList<Player> PlayerList = new ArrayList<>();
+        ArrayList<God> ChosenGodPool;
+        ArrayList<God> ChosenGod;
+        List<Player> PlayerList = new ArrayList<>();
         if (waitingConnection2P.containsKey(name)){
             c.enterNewName(waitingConnection2P);
         }
@@ -76,17 +76,17 @@ public class Server {
             Player player1= new Player(keys.get(0),1);
             Player player2= new Player(keys.get(1),2);
             Random random= new Random();
-            int ChoseGodLike= random.nextInt(2)+1;
-            if (ChoseGodLike==1){
+            int ChoseGodLike= random.nextInt(2);
+            if (ChoseGodLike==0){
                 ChosenGodPool=c1.ChooseGod(2);
                 ChosenGod=c1.PickGod(c2,ChosenGodPool);
-                player1.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
-                player2.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
+                player1.setGod(ChosenGod.get(0));
+                player2.setGod(ChosenGod.get(1));
             } else {
-                ChosenGodPool = c2.ChooseGod(2);
+                ChosenGodPool = c2.ChooseGod(1);
                 ChosenGod = c2.PickGod(c1, ChosenGodPool);
-                player1.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
-                player2.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
+                player1.setGod(ChosenGod.get(1));
+                player2.setGod(ChosenGod.get(0));
             }
             View player1View= new View();
             View player2View= new View();
@@ -107,8 +107,8 @@ public class Server {
     }
 
     public synchronized void lobby3P(ClientConnection c,String name){
-        ArrayList<Integer> ChosenGodPool;
-        ArrayList<Integer> ChosenGod;
+        ArrayList<God> ChosenGodPool;
+        ArrayList<God> ChosenGod;
         ArrayList<Player> PlayerList = new ArrayList<>();
         if (waitingConnection3P.containsKey(name)){
             c.enterNewName(waitingConnection3P);
@@ -123,25 +123,25 @@ public class Server {
             Player player2= new Player(keys.get(1),2);
             Player player3= new Player(keys.get(2),3);
             Random random= new Random();
-            int ChoseGodLike= random.nextInt(3)+1;
+            int ChoseGodLike= random.nextInt(3);
             if (ChoseGodLike ==1){
                 ChosenGodPool=c1.ChooseGod(3);
                 ChosenGod=c1.PickGod3P(c2,c3,ChosenGodPool);
-                player1.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
-                player2.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
-                player3.setGod(God.getAllGod().get(ChosenGod.get(2)-1));
+                player1.setGod(ChosenGod.get(2));
+                player2.setGod(ChosenGod.get(0));
+                player3.setGod(ChosenGod.get(1));
             }else if(ChoseGodLike==2){
                 ChosenGodPool=c2.ChooseGod(3);
                 ChosenGod= c2.PickGod3P(c3,c1,ChosenGodPool);
-                player1.setGod(God.getAllGod().get(ChosenGod.get(2)-1));
-                player2.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
-                player3.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
+                player1.setGod(ChosenGod.get(1));
+                player2.setGod(ChosenGod.get(2));
+                player3.setGod(ChosenGod.get(0));
             }else {
                 ChosenGodPool=c3.ChooseGod(3);
                 ChosenGod= c3.PickGod3P(c1,c2,ChosenGodPool);
-                player1.setGod(God.getAllGod().get(ChosenGod.get(1)-1));
-                player2.setGod(God.getAllGod().get(ChosenGod.get(2)-1));
-                player3.setGod(God.getAllGod().get(ChosenGod.get(0)-1));
+                player1.setGod(ChosenGod.get(0));
+                player2.setGod(ChosenGod.get(1));
+                player3.setGod(ChosenGod.get(2));
             }
             View player1View= new View();
             View player2View= new View();
