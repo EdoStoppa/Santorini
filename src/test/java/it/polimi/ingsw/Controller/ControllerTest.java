@@ -38,10 +38,10 @@ class ControllerTest {
         controller = new Controller(model);
         model.addObserver(r);
         for(Player p : pList)   {
-            Position pos1 = new Position(random.nextInt(4), random.nextInt(4));
-            Position pos2 = new Position(random.nextInt(4), random.nextInt(4));
+            Position pos1 = new Position(random.nextInt(5), random.nextInt(5));
+            Position pos2 = new Position(random.nextInt(5), random.nextInt(5));
             while(pos1.equals(pos2))    {
-                pos2 = new Position(random.nextInt(4), random.nextInt(4));
+                pos2 = new Position(random.nextInt(5), random.nextInt(5));
             }
             Constructor c = p.getAllConstructors().get(0);
             model.setCurrentConstructor(c);
@@ -153,10 +153,10 @@ class ControllerTest {
                     break;
                 }
             }
-            Position pos = new Position(random.nextInt(4), random.nextInt(4));
+            Position pos = new Position(random.nextInt(5), random.nextInt(5));
             Tile t = new Tile(pos);
             while(t.getOccupied())  {
-                pos = new Position(random.nextInt(4), random.nextInt(4));
+                pos = new Position(random.nextInt(5), random.nextInt(5));
                 t = new Tile(pos);
             }
             PosMessage message = new PosMessage("Boh", player.getIdPlayer(), view, pos);
