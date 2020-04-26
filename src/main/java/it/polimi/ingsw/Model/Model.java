@@ -75,9 +75,7 @@ public class Model extends Observable<GameMessage> {
      */
     public boolean isLosing(Player p) {
         List<Constructor> constructorList = p.getAllConstructors();
-        System.out.println(p.getAllConstructors().size());
         for (Constructor c : constructorList) {
-            System.out.println(c.getCanMove());
             if (c.getCanMove()) {
                 return false;
             }
