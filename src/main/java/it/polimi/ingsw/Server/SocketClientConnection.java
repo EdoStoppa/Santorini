@@ -25,6 +25,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         return active;
     }
 
+
     private synchronized void send(Object message){
         try {
             out.reset();
@@ -90,6 +91,10 @@ public class SocketClientConnection extends Observable<String> implements Client
         active=false;
     }
 
+    /**
+     * send of the message only to the client selected
+     * @param message message to send
+     */
     @Override
     public void asyncSend(final Object message) {
         Thread thread = new Thread() {
@@ -106,7 +111,11 @@ public class SocketClientConnection extends Observable<String> implements Client
         thread.start();
     }
 
-
+    /**
+     * the GodlikePlayer choose the God for this game
+     * @param player number of player of the game
+     * @return list of god chosen
+     */
     @Override
     public ArrayList<God> ChooseGod(int player){
         ArrayList<God> pickGod=new ArrayList<>();
@@ -132,6 +141,12 @@ public class SocketClientConnection extends Observable<String> implements Client
         return pickGod;
     }
 
+    /**
+     * every plaver chose their god in a 2 player game
+     * @param opponent ClientConnection of the other player
+     * @param pickPool list of god choose in function ChooseGod
+     * @return an ordered list that associates each god with its player
+     */
     @Override
     public ArrayList<God> PickGod(ClientConnection opponent,ArrayList<God> pickPool){
         int pick;
@@ -158,6 +173,13 @@ public class SocketClientConnection extends Observable<String> implements Client
         return pickPool;
     }
 
+    /**
+     * every plaver chose their god in a 3 player game
+     * @param opponent1 ClientConnection of the player who chooses first
+     * @param opponent2 ClientConnection of the player who chooses second
+     * @param pickPool list of god choose in function ChooseGod
+     * @return an ordered list that associates each god with its player
+     */
     @Override
     public ArrayList<God> PickGod3P(ClientConnection opponent1,ClientConnection opponent2, ArrayList<God> pickPool){
         int pick;
@@ -186,6 +208,11 @@ public class SocketClientConnection extends Observable<String> implements Client
         return pickPool;
     }
 
+    /**
+     * check that the name has already been chosen
+     * @param NameOpponent map that contains all the name used in the server
+     * @return a name not used in the server
+     */
     @Override
     public String enterNewName( Map <String, ClientConnection> NameOpponent) {
         String name = null;

@@ -24,6 +24,11 @@ public class Server {
     private Map<ClientConnection,ClientConnection> playingConnection2P = new HashMap<>();
     private Map<ClientConnection,ClientConnection> playingConnection3P = new HashMap<>();
 
+    /**
+     * when the game is and this function close the connection and deregister ClientConnetion
+     * from the hashmap playingconnetion2P
+     * @param c is the connection that have to close
+     */
     public synchronized void deregisterConnection2P(ClientConnection c){
         ClientConnection opponent=playingConnection2P.get(c);
         if (opponent!= null){
@@ -39,6 +44,11 @@ public class Server {
         }
     }
 
+    /**
+     * when the game is ending and this function close the connection and deregister ClientConnection
+     * from the hashmap playingConnection3P
+     * @param c is the connection that have to close
+     */
     public synchronized void deregisterConnection3P(ClientConnection c){
         ClientConnection opponent1=playingConnection3P.get(c);
         ClientConnection opponent2=playingConnection3P.get(opponent1);
@@ -60,7 +70,11 @@ public class Server {
 
     }
 
-
+    /**
+     * add a name to the list waitingconnection2p and is the size of this list is 2 start a game
+     * @param c clientconnection of the player
+     * @param name is the name choose from the player
+     */
     public synchronized void lobby2P(ClientConnection c,String name){
         ArrayList<God> ChosenGodPool;
         ArrayList<God> ChosenGod;
@@ -105,7 +119,11 @@ public class Server {
         }
 
     }
-
+    /**
+     * add a name to the list waitingconnection3P and is the size of this list is 3 start a game
+     * @param c clientconnection of the player
+     * @param name is the name choose from the player
+     */
     public synchronized void lobby3P(ClientConnection c,String name){
         ArrayList<God> ChosenGodPool;
         ArrayList<God> ChosenGod;

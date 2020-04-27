@@ -24,12 +24,6 @@ public class PlaySpace {
         this.buildingMatrix = new int[5][5];
         this.constructorMatrix = new int[5][5];
 
-        /*for(int i=0; i<5; i++){
-            for(int j=0; j<5; j++){
-                this.buildingMatrix[i][j] = 0;
-                this.buildingMatrix[i][j] = 0;
-            }
-        }*/
     }
 
     public int[][] getBuildingMatrix() {
@@ -87,6 +81,12 @@ public class PlaySpace {
         this.tileToCheck = null;
     }
 
+    /**
+     * this funtion control if the position is contain in TileToShow
+     * @param i row of the position to check
+     * @param j column pf the position to check
+     * @return true is the position is contain in TileToShow
+     */
     public boolean printTileToShow(int i, int j){
         if(this.tileToShow != null){
             for (int k=0;k<this.tileToShow.size();k++){
@@ -98,6 +98,9 @@ public class PlaySpace {
         return false;
     }
 
+    /**
+     * print of board with construction and constructor during the game
+     */
     public void printPlaySpace(){
         System.out.println("    0   1   2   3   4");
         System.out.println("  \u2554"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+"\u2557");
@@ -133,7 +136,7 @@ public class PlaySpace {
                             line += (Color.CYAN_BACKGROUND_BRIGHT + " " + Color.ANSI_BLACK + buildingMatrix[i][j] + Color.CYAN_BACKGROUND_BRIGHT + " ");
                         } else if (buildingMatrix[i][j] != 0 && buildingMatrix[i][j] < 4) {
                             line += (Color.RESET + " " + buildingMatrix[i][j] + " ");
-                        } else if (this.printTileToShow(i, j) && buildingMatrix[i][j] >= 4) {
+                        } else if (buildingMatrix[i][j] >= 4) {
                             line += (Color.ANSI_BLUE + " D ");
                         } else {
                             line += (Color.RESET + "   ");
