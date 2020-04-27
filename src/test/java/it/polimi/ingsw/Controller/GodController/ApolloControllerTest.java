@@ -2,11 +2,14 @@ package it.polimi.ingsw.Controller.GodController;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
+import it.polimi.ingsw.Message.MoveMessages.StandardMoveMessage;
+import it.polimi.ingsw.Message.MoveMessages.SwapMessage;
+import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -141,9 +144,8 @@ class ApolloControllerTest {
     }
 
     // -----------------            prepareSpecialMove TESTS            -----------------
-    // TO DO: TESTS ON isLastStanding == true OR isLosing == true FOR PREPARE SPECIAL CHOOSE CONSTRUCTOR
     @Test
-    void standardSpecialMove(){
+    void standardPrepareSpecialMove(){
         List<Position> posList = new ArrayList<>();
         posList.add(new Position(1,2));
         posList.add(new Position(2,0));
@@ -218,6 +220,70 @@ class ApolloControllerTest {
 
     }
 
+    // -----------------             handleSpecialMove TESTS             -----------------
+    // TO DO: TESTS ON checkWin() == true
+    @Test
+    void standardSpecialMove(){
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(1,2));
+        posList.add(new Position(2,0));
+        posList.add(new Position(3,2));
+        posList.add(new Position(3,4));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+
+        PosMessage message = new PosMessage("shish", "uno", null, new Position(1,3));
+        ApolloController apController = (ApolloController) model.getCurrentGod().getGodController();
+        apController.handleSpecialMove(model, controller, message);
+
+        assertTrue(r.receivedMessage instanceof MoveMessage, "This should be a move message");
+        assertTrue(r.receivedMessage instanceof StandardMoveMessage, "This should be a standard move message");
+
+        StandardMoveMessage m = (StandardMoveMessage) r.receivedMessage;
+        assertEquals(1, m.getConstructorMatrix()[1][3], "(1,3) Should be occupied by a Player 1 constructor");
+    }
+
+    @Test
+    void trySwap(){
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,0));
+        posList.add(new Position(0,1));
+        posList.add(new Position(1,0));
+        posList.add(new Position(1,1));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+
+        PosMessage message = new PosMessage("shish", "uno", null, new Position(1,0));
+        ApolloController apController = (ApolloController) model.getCurrentGod().getGodController();
+        apController.handleSpecialMove(model, controller, message);
+
+        assertTrue(r.receivedMessage instanceof MoveMessage, "This should be a move message");
+        assertTrue(r.receivedMessage instanceof SwapMessage, "This should be a swap move message");
+
+        SwapMessage m = (SwapMessage) r.receivedMessage;
+        assertEquals(1, m.getConstructorMatrix()[1][0], "(1,0) Should be occupied by a Player 1 constructor");
+        assertEquals(2, m.getConstructorMatrix()[0][0], "(0,0) Should be occupied by a Player 2 constructor");
+    }
 
     // Helper methods
     private List<Player> createPlayer(God p1God, God p2God) {
