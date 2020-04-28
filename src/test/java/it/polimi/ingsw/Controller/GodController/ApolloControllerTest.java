@@ -285,7 +285,7 @@ class ApolloControllerTest {
         assertEquals(2, m.getConstructorMatrix()[0][0], "(0,0) Should be occupied by a Player 2 constructor");
     }
 
-    // Helper methods
+    // ----------------           Helper methods           ----------------
     private List<Player> createPlayer(God p1God, God p2God) {
         Player p1 = new Player("uno", 1);
         Player p2 = new Player("due", 2);

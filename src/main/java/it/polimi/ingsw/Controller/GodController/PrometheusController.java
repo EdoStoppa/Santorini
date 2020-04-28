@@ -20,12 +20,14 @@ public class PrometheusController extends GodController {
      */
     @Override
     public void handleSpecialChooseConstructor(Model model, Controller controller, PosMessage posMessage){
-        controller.handleChooseConstructor(posMessage);
+        if(posMessage.getPosition() != null){
+            controller.handleChooseConstructor(posMessage);
+        }
 
-        // if(chosen position cannot perform special build (this is seen from posMessage)){
-        //      Prometheus prometheus = model.getCurrentGod()
-        //      prometheus.setCorrectPhase(model);
-        // }
+        if(posMessage.getMessage().equals("skipPhase")){
+              Prometheus prometheus = (Prometheus)model.getCurrentGod();
+              prometheus.setCorrectPhase(model);
+         }
     }
 
     /**

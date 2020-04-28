@@ -43,6 +43,7 @@ public class ArtemisController extends GodController {
             // Now we have to change phase and prepare the nextPhase
             model.nextPhase();
             controller.preparePhase();
+            return;
         }
 
         model.createPossibleMovePos(null, deleteList);

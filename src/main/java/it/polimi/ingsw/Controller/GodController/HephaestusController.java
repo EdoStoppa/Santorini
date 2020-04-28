@@ -21,7 +21,9 @@ public class HephaestusController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
-        controller.handleBuild(posMessage);
+        if(posMessage.getPosition() != null){
+            controller.handleBuild(posMessage);
+        }
     }
 
     /**
