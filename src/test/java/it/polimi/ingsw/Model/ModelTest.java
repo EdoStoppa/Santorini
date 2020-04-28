@@ -111,21 +111,21 @@ class ModelTest {
         Random random = new Random();
 
         if(repetitionInfo.getCurrentRepetition() == 1)  {//The player can move 2 constructors
-            Player p = model.getListPlayer().get(random.nextInt(1));//It chooses a random player
+            Player p = model.getListPlayer().get(random.nextInt(2));//It chooses a random player
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(true);
             list.get(1).setCanMove(true);
             assertFalse(model.isLosing(p), "The player is not losing");
         }
         if(repetitionInfo.getCurrentRepetition() == 2)  {//The player can move just 1 constructor
-            Player p = model.getListPlayer().get(random.nextInt(1));//It chooses a random player
+            Player p = model.getListPlayer().get(random.nextInt(2));//It chooses a random player
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
             list.get(1).setCanMove(true);
             assertFalse(model.isLosing(p), "The player is not losing");
         }
         if(repetitionInfo.getCurrentRepetition() == 3)  {//The player can not move any constructor
-            Player p = model.getListPlayer().get(random.nextInt(1));//It chooses a random player
+            Player p = model.getListPlayer().get(random.nextInt(2));//It chooses a random player
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
             list.get(1).setCanMove(false);
@@ -266,7 +266,7 @@ class ModelTest {
 
 
     @RepeatedTest(1000)
-    void performBuild() {
+    void performBuildTest() {
         Random random = new Random();
         String expectedMessage;
         Position p1 = new Position(random.nextInt(5), random.nextInt(5));
@@ -293,7 +293,7 @@ class ModelTest {
     }
 
     @RepeatedTest(3)
-    void isLastStanding(RepetitionInfo repetitionInfo)   {
+    void isLastStandingTest(RepetitionInfo repetitionInfo)   {
         Player p1 = new Player("First", 1);
         Player p2 = new Player("Second", 2);
         ArrayList<Player> list = new ArrayList<>();

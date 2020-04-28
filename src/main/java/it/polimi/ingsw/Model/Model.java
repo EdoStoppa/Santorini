@@ -346,6 +346,12 @@ public class Model extends Observable<GameMessage> {
         notify(new RemovedPlayerMessage(playerR.getIdPlayer(), getCurrentPhase(), matrix));
     }
 
+    public int[][] getConstructorMatrix()   {
+        int[][] matrix;
+        matrix = board.createConstructorMatrix();
+        return matrix;
+    }
+
     protected Board getBoard()  {
         return board;
     }
@@ -355,6 +361,10 @@ public class Model extends Observable<GameMessage> {
     }
 
     public Constructor getCurrentConstructor()   {return  currentConstructor;}
+
+    public Tile getTile(Position pos)   {
+        return board.getTile(pos);
+    }
 
     /**
      * Helper method, it checks every parameter that will be add in the tileToShowList;
