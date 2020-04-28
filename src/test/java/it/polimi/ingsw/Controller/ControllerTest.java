@@ -82,11 +82,12 @@ class ControllerTest {
                 }
             }
         }
+        model.changeActiveConstructors();
         model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
         model.startGame();
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(1000)
     void preparePhaseBasicTest(RepetitionInfo repetitionInfo)    {//Artemis as God
         List<Position> list = new ArrayList<>();
         Player player = null;
@@ -167,7 +168,7 @@ class ControllerTest {
         }
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(1000)
     void handleActionTest(RepetitionInfo repetitionInfo)    {
         Random random = new Random();
         int miavar = random.nextInt(3);
@@ -268,7 +269,7 @@ class ControllerTest {
         }
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(1000)
     void updateTest()  {
         Position pos;
         Random random = new Random();
