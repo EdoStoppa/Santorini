@@ -146,6 +146,7 @@ public class Controller implements Observer<PosMessage> {
     public void executeLoseSequence() {
         model.destroyRemainingPhases();
         // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
+        System.out.println("Lose");
 
         String toDeleteId = model.getCurrentPlayerId();
         model.nextPhase();
@@ -158,6 +159,7 @@ public class Controller implements Observer<PosMessage> {
      */
     public void executeWinSequence() {
         // ALERT EVERYONE THAT SOMEONE HAS WON
+        System.out.println("Win");
     }
 
     /**

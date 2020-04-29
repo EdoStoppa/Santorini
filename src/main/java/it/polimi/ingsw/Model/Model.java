@@ -346,12 +346,6 @@ public class Model extends Observable<GameMessage> {
         notify(new RemovedPlayerMessage(playerR.getIdPlayer(), getCurrentPhase(), matrix));
     }
 
-    public int[][] getConstructorMatrix()   {
-        int[][] matrix;
-        matrix = board.createConstructorMatrix();
-        return matrix;
-    }
-
     protected Board getBoard()  {
         return board;
     }
