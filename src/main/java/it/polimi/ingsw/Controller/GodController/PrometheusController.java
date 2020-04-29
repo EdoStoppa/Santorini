@@ -24,7 +24,7 @@ public class PrometheusController extends GodController {
             controller.handleChooseConstructor(posMessage);
         }
 
-        if(posMessage.getMessage().equals("skipPhase")){
+        if(posMessage.getCode().equals("skipPhase")){
               Prometheus prometheus = (Prometheus)model.getCurrentGod();
               prometheus.setCorrectPhase(model);
          }

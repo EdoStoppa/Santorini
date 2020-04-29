@@ -81,6 +81,42 @@ class ArtemisControllerTest {
         }
     }
 
+    @Test
+    void jumpToNextPhase(){
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,1));
+        posList.add(new Position(4,4));
+        posList.add(new Position(1,0));
+        posList.add(new Position(1,1));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+        model.nextPhase();
+        model.nextPhase();
+        model.performMove(new Position(0,0));
+
+        ArtemisController artemisController = (ArtemisController) model.getCurrentGod().getGodController();
+        artemisController.prepareSpecialMove(model, controller);
+
+        assertTrue(r.receivedMessage instanceof StandardTileMessage, "This should be a CanEnd tile message");
+
+        StandardTileMessage message = (StandardTileMessage)r.receivedMessage;
+        List<Position> toShow = message.getTileToShow();
+
+        assertEquals(PossiblePhases.BUILD, message.getPhase(), "Should be a Build phase");
+        assertEquals(1, toShow.size(), "Should only be one tile");
+        assertEquals("0,1", toShow.get(0).toString(), "Should be at position 0,1, but is at " + toShow.get(0).toString());
+    }
+
     // ----------------           Helper methods           ----------------
     private List<Player> createPlayer(God p1God, God p2God) {
         Player p1 = new Player("uno", 1);

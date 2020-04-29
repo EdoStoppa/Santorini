@@ -8,16 +8,12 @@ public class PlaySpace {
     private int[][] buildingMatrix;
     private int[][] constructorMatrix;
 
-    private boolean checkDome;
-    private boolean checkIfSure;
     private List<Position> tileToShow;
     private List<Position> tileToCheck;
     String ORIZ ="\u2550";
     String VERT= "\u2551";
 
     public PlaySpace(){
-        this.checkDome = false;
-        this.checkIfSure = false;
         this.tileToShow = null;
         this.tileToCheck = null;
 
@@ -42,22 +38,6 @@ public class PlaySpace {
         this.constructorMatrix = constructorMatrix;
     }
 
-    public boolean isCheckDome() {
-        return checkDome;
-    }
-
-    public void setCheckDome(boolean checkDome) {
-        this.checkDome = checkDome;
-    }
-
-    public boolean isCheckIfSure() {
-        return checkIfSure;
-    }
-
-    public void setCheckIfSure(boolean checkIfSure) {
-        this.checkIfSure = checkIfSure;
-    }
-
     public List<Position> getTileToShow() {
         return tileToShow;
     }
@@ -75,8 +55,6 @@ public class PlaySpace {
     }
 
     public void reset(){
-        this.checkDome = false;
-        this.checkIfSure = false;
         this.tileToShow = null;
         this.tileToCheck = null;
     }

@@ -33,7 +33,7 @@ public class Pan extends God{
     public boolean checkWin(Model model){
         Constructor c = (model.getCurrentConstructor());
         Tile currentT = model.getBoard().getTile(c.getPos());
-        Tile prevT = model.getBoard().getTile(c.getPos());
+        Tile prevT = model.getBoard().getTile(c.getPrevPos());
 
         return ((prevT.getConstructionLevel() - currentT.getConstructionLevel()) >= 2);
     }

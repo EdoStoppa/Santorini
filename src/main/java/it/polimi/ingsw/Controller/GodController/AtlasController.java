@@ -17,7 +17,7 @@ public class AtlasController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
-        if(!posMessage.getMessage().equals("dome")){
+        if(!posMessage.getCode().equals("dome")){
             controller.handleBuild(posMessage);
         } else {
             Atlas atlas = (Atlas)model.getCurrentGod();
