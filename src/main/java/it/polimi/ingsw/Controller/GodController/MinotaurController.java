@@ -56,7 +56,7 @@ public class MinotaurController extends GodController {
         Position p = posMessage.getPosition();
 
         if(model.isOccupied(p)){
-            model.performSwap(p);
+            model.performPush(p);
             if(model.checkWin()){
                 // TRANSITION TO END GAME
                 controller.executeWinSequence();

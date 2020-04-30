@@ -20,9 +20,11 @@ import java.util.List;
 public class Controller implements Observer<PosMessage> {
 
     private Model model;
+    private boolean shouldContinue;
 
     public Controller(Model model) {
         this.model = model;
+        this.shouldContinue = true;
     }
 
     /**
@@ -159,6 +161,7 @@ public class Controller implements Observer<PosMessage> {
      */
     public void executeWinSequence() {
         // ALERT EVERYONE THAT SOMEONE HAS WON
+        shouldContinue = false;
         System.out.println("Win");
     }
 
@@ -176,8 +179,10 @@ public class Controller implements Observer<PosMessage> {
         }
 
         handleAction((PosMessage) message);
-        model.nextPhase();
-        preparePhase();
+        if(shouldContinue){
+            model.nextPhase();
+            preparePhase();
+        }
     }
 
 /*
