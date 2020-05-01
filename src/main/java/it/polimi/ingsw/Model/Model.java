@@ -346,6 +346,10 @@ public class Model extends Observable<GameMessage> {
         notify(new RemovedPlayerMessage(playerR.getIdPlayer(), getCurrentPhase(), matrix));
     }
 
+    public boolean getCanGoUp() {
+        return board.getCanGoUp();
+    }
+
     protected Board getBoard()  {
         return board;
     }

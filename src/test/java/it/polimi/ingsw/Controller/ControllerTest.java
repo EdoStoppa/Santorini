@@ -302,16 +302,18 @@ class ControllerTest {
             if(list.size() > 0) {
                 message = new PosMessage("standard", player.getIdPlayer(), view, list.get(0));
                 s.forceNotify(message);
-                assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be CanEndTile");
-                controller.getModel().createPossibleMovePos(null, null);
-                list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                if(list.size() == 1 && list.get(0).equals(controller.getModel().getCurrentConstructor().getPrevPos()))   {
-                    possiblePhases = possiblePhases.BUILD;
-                }
-                else    {
-                    possiblePhases = possiblePhases.SPECIAL_MOVE;
-                }
-                assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_MOVE");
+               if(!controller.getModel().checkWin())    {
+                   assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be CanEndTile");
+                   controller.getModel().createPossibleMovePos(null, null);
+                   list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                   if(list.size() == 1 && list.get(0).equals(controller.getModel().getCurrentConstructor().getPrevPos()))   {
+                       possiblePhases = possiblePhases.BUILD;
+                   }
+                   else    {
+                       possiblePhases = possiblePhases.SPECIAL_MOVE;
+                   }
+                   assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_MOVE");
+               }
             }
         }
         if(miavar == 3) {//BUILD
