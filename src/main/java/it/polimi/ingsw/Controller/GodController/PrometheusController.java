@@ -20,14 +20,12 @@ public class PrometheusController extends GodController {
      */
     @Override
     public void handleSpecialChooseConstructor(Model model, Controller controller, PosMessage posMessage){
-        if(posMessage.getPosition() != null){
-            controller.handleChooseConstructor(posMessage);
-        }
-
         if(posMessage.getCode().equals("skipPhase")){
-              Prometheus prometheus = (Prometheus)model.getCurrentGod();
-              prometheus.setCorrectPhase(model);
+            Prometheus prometheus = (Prometheus)model.getCurrentGod();
+            prometheus.setCorrectPhase(model);
          }
+
+        controller.handleChooseConstructor(posMessage);
     }
 
     /**
@@ -89,7 +87,7 @@ public class PrometheusController extends GodController {
      */
     @Override
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage) {
-        // if it is a null pos it means that the player ended the phase without building, so nothing happens
+        // if it's a null pos it means that the player ended the phase without building, so nothing happens
         if(posMessage.getPosition() != null){
             controller.handleBuild(posMessage);
 
@@ -106,8 +104,11 @@ public class PrometheusController extends GodController {
     @Override
     public void prepareSpecialBuild(Model model, Controller controller) {
         Prometheus prometheus = (Prometheus)model.getCurrentGod();
-
         List<Position> sameOrDownList = prometheus.sameOrDownLevelCurrent(model);
+
+        //if there are more than 1 pos, it means that no pos should be removed
+        if(sameOrDownList.size() > 1)
+            sameOrDownList.clear();
 
         // CHECK IF THIS WORKS; IT SHOULD ALWAYS OUTPUT A MESSAGE WITH CODE: "canEnd"
         model.createPossibleBuildPos(null, sameOrDownList);
