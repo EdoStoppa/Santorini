@@ -48,7 +48,7 @@ public class Atlas extends God {
     }
 
     /**
-     * Method used to create and set the tiles where could be constructed somthing.
+     * Method used to create and set the tiles where could be constructed something.
      * After doing this, creates a <em>TileToShowMessage</em> with a special code: "checkDome"
      *
      * @param model

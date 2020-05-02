@@ -360,8 +360,16 @@ public class Model extends Observable<GameMessage> {
 
     public Constructor getCurrentConstructor()   {return  currentConstructor;}
 
-    public Tile getTile(Position pos)   {
-        return board.getTile(pos);
+    public boolean getDome(Position pos)   {
+        return board.getTile(pos).getDome();
+    }
+
+    public boolean getOccupied(Position pos)    {
+        return board.getTile(pos).getOccupied();
+    }
+
+    public int getConstructionLevel(Position pos)   {
+        return board.getTile(pos).getConstructionLevel();
     }
 
     /**

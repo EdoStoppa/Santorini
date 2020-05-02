@@ -54,16 +54,12 @@ class ControllerTest {
         s.addObserver(controller);
         for(Player p : pList)   {
             Position pos1 = new Position(random.nextInt(5), random.nextInt(5));
-            t = controller.getModel().getTile(pos1);
-            while(t.getOccupied())  {
+            while(model.getOccupied(pos1))  {
                 pos1 = new Position(random.nextInt(5), random.nextInt(5));
-                t = controller.getModel().getTile(pos1);
             }
             Position pos2 = new Position(random.nextInt(5), random.nextInt(5));
-            t = controller.getModel().getTile(pos2);
-            while(t.getOccupied())    {
+            while(model.getOccupied(pos2))    {
                 pos2 = new Position(random.nextInt(5), random.nextInt(5));
-                t = controller.getModel().getTile(pos2);
             }
             Constructor c = p.getAllConstructors().get(0);
             model.setCurrentConstructor(c);
@@ -237,8 +233,7 @@ class ControllerTest {
                 }
             }
             Position pos = new Position(row, col);
-            Tile t = controller.getModel().getTile(pos);
-            while(t.getOccupied())  {
+            while(controller.getModel().getOccupied(pos))  {
                 if(currConsPos.getRow() < 3)    {
                     row = currConsPos.getRow() + random.nextInt(2);
                     if(currConsPos.getCol() < 3)    {
@@ -258,10 +253,9 @@ class ControllerTest {
                     }
                 }
                 pos = new Position(row, col);
-                t = controller.getModel().getTile(pos);
             }
             PosMessage message = new PosMessage("Boh", player.getIdPlayer(), view, pos);
-            if(!(t.getConstructionLevel() == 3 && t.getDome())) {
+            if(!(controller.getModel().getConstructionLevel(pos) == 3 && controller.getModel().getDome(pos))) {
                 controller.handleBuild(message);
                 assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
                 assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getLastBuildPos().getCol(), "The col should be the same");
