@@ -31,7 +31,6 @@ class AtlasControllerTest {
     List<Player> pList;
     Controller controller;
     Receiver r = new Receiver();
-    View view = new View();
 
     @BeforeEach
     void init(){
@@ -61,7 +60,7 @@ class AtlasControllerTest {
         model.startGame();
         Position pos = new Position(1, 2);
         if(repetitionInfo.getCurrentRepetition() == 1)  {
-            PosMessage message = new PosMessage("dome", model.getCurrentPlayerId(), view, pos);
+            PosMessage message = new PosMessage("dome", model.getCurrentPlayerId(), null, pos);
 
             AtlasController atlasController = (AtlasController) model.getCurrentGod().getGodController();
             atlasController.handleSpecialBuild(model, controller,message);
@@ -70,7 +69,7 @@ class AtlasControllerTest {
             assertTrue(model.getDome(pos));
         }
         else    {
-            PosMessage message = new PosMessage("boh", model.getCurrentPlayerId(), view, pos);
+            PosMessage message = new PosMessage("boh", model.getCurrentPlayerId(), null, pos);
 
             AtlasController atlasController = (AtlasController) model.getCurrentGod().getGodController();
             atlasController.handleSpecialBuild(model, controller,message);

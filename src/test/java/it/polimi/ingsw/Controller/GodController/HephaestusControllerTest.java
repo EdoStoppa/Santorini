@@ -30,7 +30,6 @@ class HephaestusControllerTest {
     List<Player> pList;
     Controller controller;
     Receiver r = new Receiver();
-    View view = new View();
 
     @BeforeEach
     void init(){
@@ -102,7 +101,7 @@ class HephaestusControllerTest {
 
             assertTrue(toShow.size() == 1, "There should be 1 position available");
 
-            PosMessage posMessage = new PosMessage("boh", model.getCurrentPlayerId(), view, specBuildPos);
+            PosMessage posMessage = new PosMessage("boh", model.getCurrentPlayerId(), null, specBuildPos);
             hephaestusController.handleSpecialBuild(model, controller, posMessage);
 
             assertEquals(2, model.getConstructionLevel(specBuildPos));

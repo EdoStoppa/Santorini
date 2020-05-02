@@ -9,11 +9,13 @@ import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -169,7 +171,6 @@ class ControllerTest {
         Random random = new Random();
         int miavar = random.nextInt(3);
         Player player = null;
-        View view = new View();
         if(miavar == 0)  {
             for(Player p : controller.getModel().getListPlayer())   {
                 if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
@@ -177,7 +178,7 @@ class ControllerTest {
                     break;
                 }
             }
-            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), view, player.getAllConstructors().get(1).getPos());
+            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, player.getAllConstructors().get(1).getPos());
             controller.handleChooseConstructor(message);
             assertEquals(player.getAllConstructors().get(1).getPos().getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(),"The row should be the same");
             assertEquals(player.getAllConstructors().get(1).getPos().getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(),"The col should be the same");
@@ -196,7 +197,7 @@ class ControllerTest {
                 pos = new Position(random.nextInt(5), random.nextInt(5));
                 t = new Tile(pos);
             }
-            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), view, pos);
+            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
             controller.handleMove(message);
             assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(), "The row should be the same");
             assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col should be the same");
@@ -254,7 +255,7 @@ class ControllerTest {
                 }
                 pos = new Position(row, col);
             }
-            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), view, pos);
+            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
             if(!(controller.getModel().getConstructionLevel(pos) == 3 && controller.getModel().getDome(pos))) {
                 controller.handleBuild(message);
                 assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
@@ -269,7 +270,6 @@ class ControllerTest {
         Random random = new Random();
         int miavar = random.nextInt(3);
         Tile t;
-        View view = new View();
         PossiblePhases possiblePhases = null;
         PosMessage message;
         List<Position> list;
@@ -282,7 +282,7 @@ class ControllerTest {
         }
         if(miavar == 0)  {//CHOOSE_CONSTRUCTOR
             pos = player.getAllConstructors().get(1).getPos();
-            message = new PosMessage("standard", player.getIdPlayer(), view, pos);
+            message = new PosMessage("standard", player.getIdPlayer(), null, pos);
             s.forceNotify(message);
             possiblePhases = PossiblePhases.MOVE;
             assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_CHOOSE_CONSTRUCTOR");
@@ -294,7 +294,7 @@ class ControllerTest {
             controller.getModel().createPossibleMovePos(null, null);
             list = ((StandardTileMessage) r.receivedMessage).getTileToShow();
             if(list.size() > 0) {
-                message = new PosMessage("standard", player.getIdPlayer(), view, list.get(0));
+                message = new PosMessage("standard", player.getIdPlayer(), null, list.get(0));
                 s.forceNotify(message);
                if(!controller.getModel().checkWin())    {
                    assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be CanEndTile");
@@ -317,7 +317,7 @@ class ControllerTest {
             controller.getModel().createPossibleBuildPos(null, null);
             list = ((StandardTileMessage) r.receivedMessage).getTileToShow();
             if (list.size() > 0) {
-                message = new PosMessage("standard", player.getIdPlayer(), view, list.get(0));
+                message = new PosMessage("standard", player.getIdPlayer(), null, list.get(0));
                 s.forceNotify(message);
                 assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be a TileToShow");
                 possiblePhases = PossiblePhases.CHOOSE_CONSTRUCTOR;

@@ -32,7 +32,6 @@ class DemeterControllerTest {
     List<Player> pList;
     Controller controller;
     Receiver r = new Receiver();
-    View view = new View();
 
     @BeforeEach
     void init(){
@@ -107,7 +106,7 @@ class DemeterControllerTest {
             specBuildPos = null;
         }
 
-        posMessage = new PosMessage("Boh", model.getCurrentPlayerId(), view, specBuildPos);
+        posMessage = new PosMessage("Boh", model.getCurrentPlayerId(), null, specBuildPos);
         demeterController.handleSpecialBuild(model, controller, posMessage);
 
         if(repetitionInfo.getCurrentRepetition() == 1)  {

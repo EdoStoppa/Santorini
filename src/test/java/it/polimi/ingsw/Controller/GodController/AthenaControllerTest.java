@@ -32,7 +32,6 @@ class AthenaControllerTest {
     List<Player> pList;
     Controller controller;
     Receiver r = new Receiver();
-    View view = new View();
 
     @BeforeEach
     void init(){
@@ -80,7 +79,7 @@ class AthenaControllerTest {
             model.nextPhase();
 
             AthenaController athenaController = (AthenaController) model.getCurrentGod().getGodController();
-            PosMessage message = new PosMessage("special", model.getCurrentPlayerId(), view, constructionPos.get(0));
+            PosMessage message = new PosMessage("special", model.getCurrentPlayerId(), null, constructionPos.get(0));
             athenaController.handleSpecialMove(model, controller, message);
 
             assertFalse(model.getCanGoUp(), "The next player can't go up");
@@ -127,7 +126,7 @@ class AthenaControllerTest {
             model.nextPhase();
 
             AthenaController athenaController = (AthenaController) model.getCurrentGod().getGodController();
-            PosMessage message = new PosMessage("special", model.getCurrentPlayerId(), view, constructionPos.get(0));
+            PosMessage message = new PosMessage("special", model.getCurrentPlayerId(), null, constructionPos.get(0));
             athenaController.handleSpecialMove(model, controller, message);
 
             assertFalse(model.getCanGoUp(), "The next player can't go up");
