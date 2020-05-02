@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Message.ChosenGodMessage;
+import it.polimi.ingsw.Message.OrderGameMessage;
 import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Player;
@@ -76,9 +78,10 @@ public class Server {
      * @param name is the name choose from the player
      */
     public synchronized void lobby2P(ClientConnection c,String name){
-        ArrayList<God> ChosenGodPool;
-        ArrayList<God> ChosenGod;
-        List<Player> PlayerList = new ArrayList<>();
+        ArrayList<Integer> ChosenGodPool;
+        ArrayList<God>ChosenGod= new ArrayList<>();
+        List<God> AllGod=God.getAllGod();
+        ArrayList<Player> PlayerList = new ArrayList<>();
         if (waitingConnection2P.containsKey(name)){
             c.enterNewName(waitingConnection2P);
         }
@@ -93,19 +96,36 @@ public class Server {
             int ChoseGodLike= random.nextInt(2);
             if (ChoseGodLike==0){
                 ChosenGodPool=c1.ChooseGod(2);
-                ChosenGod=c1.PickGod(c2,ChosenGodPool);
-                player1.setGod(ChosenGod.get(0));
-                player2.setGod(ChosenGod.get(1));
-            } else {
-                ChosenGodPool = c2.ChooseGod(1);
-                ChosenGod = c2.PickGod(c1, ChosenGodPool);
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(0)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(1)));
+                God GodChosen=c2.PickGod(new ChosenGodMessage(ChosenGod));
+                player2.setGod(GodChosen);
+                if (GodChosen.getGodName().equals(ChosenGod.get(0).getGodName()))
                 player1.setGod(ChosenGod.get(1));
-                player2.setGod(ChosenGod.get(0));
+                else {
+                    player1.setGod(ChosenGod.get(0));
+                }
+            } else {
+                ChosenGodPool = c2.ChooseGod(2);
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(0)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(1)));
+                God GodChosen=c1.PickGod(new ChosenGodMessage(ChosenGod));
+                player1.setGod(GodChosen);
+                if (GodChosen.getGodName().equals(ChosenGod.get(0).getGodName()))
+                    player2.setGod(ChosenGod.get(1));
+                else {
+                    player2.setGod(ChosenGod.get(0));
+                }
             }
-            View player1View= new View();
-            View player2View= new View();
             PlayerList.add(player1);
             PlayerList.add(player2);
+            if (ChoseGodLike==0){
+                PlayerList=c1.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+            }else {
+                PlayerList=c2.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+            }
+            View player1View= new View(player1.getIdPlayer(),true,c1);
+            View player2View= new View(player2.getIdPlayer(),true,c2);
             Model model= new Model(PlayerList);
             Controller controller= new Controller(model);
             model.addObserver(player1View);
@@ -125,8 +145,9 @@ public class Server {
      * @param name is the name choose from the player
      */
     public synchronized void lobby3P(ClientConnection c,String name){
-        ArrayList<God> ChosenGodPool;
-        ArrayList<God> ChosenGod;
+        ArrayList<Integer> ChosenGodPool;
+        ArrayList<God>ChosenGod= new ArrayList<>();
+        List<God> AllGod=God.getAllGod();
         ArrayList<Player> PlayerList = new ArrayList<>();
         if (waitingConnection3P.containsKey(name)){
             c.enterNewName(waitingConnection3P);
@@ -142,31 +163,80 @@ public class Server {
             Player player3= new Player(keys.get(2),3);
             Random random= new Random();
             int ChoseGodLike= random.nextInt(3);
-            if (ChoseGodLike ==1){
+            if (ChoseGodLike ==0){
                 ChosenGodPool=c1.ChooseGod(3);
-                ChosenGod=c1.PickGod3P(c2,c3,ChosenGodPool);
-                player1.setGod(ChosenGod.get(2));
-                player2.setGod(ChosenGod.get(0));
-                player3.setGod(ChosenGod.get(1));
-            }else if(ChoseGodLike==2){
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(0)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(1)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(2)));
+                God GodChosen=c2.PickGod(new ChosenGodMessage(ChosenGod));
+                player2.setGod(GodChosen);
+                for (int i=0;i<ChosenGod.size();i++)
+                {
+                    if (GodChosen.equals(ChosenGod.get(i))){
+                        ChosenGod.remove(i);
+                    }
+                }
+                GodChosen=c3.PickGod(new ChosenGodMessage(ChosenGod));
+                player3.setGod(GodChosen);
+                if (GodChosen.equals(ChosenGod.get(0))){
+                    player1.setGod(ChosenGod.get(1));
+                }else {
+                    player1.setGod(ChosenGod.get(0));
+                }
+            }else if(ChoseGodLike==1){
                 ChosenGodPool=c2.ChooseGod(3);
-                ChosenGod= c2.PickGod3P(c3,c1,ChosenGodPool);
-                player1.setGod(ChosenGod.get(1));
-                player2.setGod(ChosenGod.get(2));
-                player3.setGod(ChosenGod.get(0));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(0)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(1)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(2)));
+                God GodChosen=c3.PickGod(new ChosenGodMessage(ChosenGod));
+                player3.setGod(GodChosen);
+                for (int i=0;i<ChosenGod.size();i++)
+                {
+                    if (GodChosen.equals(ChosenGod.get(i))){
+                        ChosenGod.remove(i);
+                    }
+                }
+                GodChosen=c1.PickGod(new ChosenGodMessage(ChosenGod));
+                player1.setGod(GodChosen);
+                if (GodChosen.equals(ChosenGod.get(0))){
+                    player2.setGod(ChosenGod.get(1));
+                }else {
+                    player2.setGod(ChosenGod.get(0));
+                }
             }else {
-                ChosenGodPool=c3.ChooseGod(3);
-                ChosenGod= c3.PickGod3P(c1,c2,ChosenGodPool);
-                player1.setGod(ChosenGod.get(0));
-                player2.setGod(ChosenGod.get(1));
-                player3.setGod(ChosenGod.get(2));
+                ChosenGodPool=c1.ChooseGod(3);
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(0)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(1)));
+                ChosenGod.add(AllGod.get(ChosenGodPool.get(2)));
+                God GodChosen=c3.PickGod(new ChosenGodMessage(ChosenGod));
+                player3.setGod(GodChosen);
+                for (int i=0;i<ChosenGod.size();i++)
+                {
+                    if (GodChosen.equals(ChosenGod.get(i))){
+                        ChosenGod.remove(i);
+                    }
+                }
+                GodChosen=c1.PickGod(new ChosenGodMessage(ChosenGod));
+                player1.setGod(GodChosen);
+                if (GodChosen.equals(ChosenGod.get(0))){
+                    player2.setGod(ChosenGod.get(1));
+                }else {
+                    player2.setGod(ChosenGod.get(0));
+                }
             }
-            View player1View= new View();
-            View player2View= new View();
-            View player3View = new View();
+            View player1View= new View(player1.getIdPlayer(),true,c1);
+            View player2View= new View(player2.getIdPlayer(),true,c2);
+            View player3View = new View(player3.getIdPlayer(),true,c3);
             PlayerList.add(player1);
             PlayerList.add(player2);
             PlayerList.add(player3);
+            if (ChoseGodLike==0){
+                PlayerList=c1.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+            }else if (ChoseGodLike==1){
+                PlayerList=c2.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+            } else {
+                PlayerList=c3.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+            }
             Model model= new Model(PlayerList);
             Controller controller= new Controller(model);
             model.addObserver(player1View);

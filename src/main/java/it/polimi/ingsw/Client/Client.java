@@ -2,6 +2,11 @@ package it.polimi.ingsw.Client;
 
 
 
+import it.polimi.ingsw.Message.ChosenGodMessage;
+import it.polimi.ingsw.Message.OrderGameMessage;
+import it.polimi.ingsw.Message.PickGodMessage;
+import it.polimi.ingsw.Message.PickGodMessage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
@@ -34,7 +39,25 @@ public class Client {
                     Object inputObject = socketIn.readObject();
                     if(inputObject instanceof String){
                         System.out.println((String)inputObject);
-                    } else
+                    } else if (inputObject instanceof PickGodMessage){
+                        System.out.println("choose god for your game format of input [1,2]");
+                        for(int i=0;i<((PickGodMessage) inputObject).getSize();i++)
+                        System.out.println(i+") "+((PickGodMessage) inputObject).GetGod(i).getGodName()+"  "+
+                        ((PickGodMessage) inputObject).GetGod(i).getGodSubtitle()+"\n"+
+                        ((PickGodMessage) inputObject).GetGod(i).getGodPower()+"\n\n");
+                    } else if (inputObject instanceof ChosenGodMessage){
+                        System.out.println("choose your god and enter name of god [apollo]");
+                        for(int i=0;i<((ChosenGodMessage) inputObject).getSize();i++){
+                            System.out.println(i+") "+((PickGodMessage) inputObject).GetGod(i).getGodName()+"  "+
+                                    ((PickGodMessage) inputObject).GetGod(i).getGodSubtitle()+"\n"+
+                                    ((PickGodMessage) inputObject).GetGod(i).getGodPower()+"\n\n");
+                        }
+                    }else if (inputObject instanceof OrderGameMessage){
+                        System.out.println("choose the player who starts the game");
+                        for (int i=0;i<((OrderGameMessage) inputObject).getSize();i++){
+                            System.out.println(((OrderGameMessage) inputObject).getPlayerlist().get(i));
+                        }
+                    }
                     {
                         throw new  IllegalArgumentException();
                     }

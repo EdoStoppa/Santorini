@@ -1,7 +1,10 @@
 package it.polimi.ingsw.Server;
 
 
+import it.polimi.ingsw.Message.ChosenGodMessage;
+import it.polimi.ingsw.Message.OrderGameMessage;
 import it.polimi.ingsw.Model.God;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observer;
 
 import java.util.ArrayList;
@@ -17,9 +20,9 @@ public interface ClientConnection{
 
     String enterNewName(Map <String, ClientConnection> NameOpponent);
 
-    ArrayList<God> ChooseGod(int player);
+    ArrayList<Integer> ChooseGod(int player);
 
-    ArrayList<God> PickGod(ClientConnection opponent,ArrayList<God> pickPool);
+    God PickGod(ChosenGodMessage chosenGodMessage);
 
-    ArrayList<God>PickGod3P(ClientConnection opponent1, ClientConnection opponent2, ArrayList<God> pickPool);
+    ArrayList<Player> ChooseFirstPlayer(OrderGameMessage orderGameMessage);
 }

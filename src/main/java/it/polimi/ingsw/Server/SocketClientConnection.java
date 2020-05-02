@@ -1,7 +1,13 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Message.ChosenGodMessage;
+import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.OrderGameMessage;
+import it.polimi.ingsw.Message.PickGodMessage;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Model.God;
+import it.polimi.ingsw.View.View;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -117,95 +123,41 @@ public class SocketClientConnection extends Observable<String> implements Client
      * @return list of god chosen
      */
     @Override
-    public ArrayList<God> ChooseGod(int player){
-        ArrayList<God> pickGod=new ArrayList<>();
-        List<God> allGod=God.getAllGod();
-        Integer i, pick=0, count;
+    public ArrayList<Integer> ChooseGod(int player){
+        ArrayList<Integer> pickGod=new ArrayList<>();
+        Integer i=0;
+        String pickPool;
         try{
             Scanner in= new Scanner(socket.getInputStream());
-            this.asyncSend("chose god from this list:\n");
-            for (i=0;i<God.getAllGod().size();i++){
-                count=i+1;
-                this.asyncSend(count+") "+allGod.get(i).getGodName()+" "+allGod.get(i).getGodSubtitle()+
-                        "\n"+allGod.get(i).getGodPower()+"\n\n");
-            }
-            i=0;
+            this.asyncSend(new PickGodMessage());
+            pickPool=in.nextLine();
+            String[] pick= pickPool.split(",");
             while (i<player){
-                pick=in.nextInt();
-                pickGod.add(allGod.get(pick));
-                i++;
+                pickGod.add(Integer.parseInt(pick[i]));
             }
+
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
         return pickGod;
     }
 
-    /**
-     * every plaver chose their god in a 2 player game
-     * @param opponent ClientConnection of the other player
-     * @param pickPool list of god choose in function ChooseGod
-     * @return an ordered list that associates each god with its player
-     */
+
     @Override
-    public ArrayList<God> PickGod(ClientConnection opponent,ArrayList<God> pickPool){
-        int pick;
-        ArrayList<God> PlayerChoice= new ArrayList<>();
+    public God PickGod(ChosenGodMessage chosenGodMessage){
+        int pick=0;
         try{
             Scanner in= new Scanner(socket.getInputStream());
-            opponent.asyncSend("choose your god:\n 0)"+
-                    pickPool.get(0).getGodName()+"  "+ pickPool.get(0)+"\n"+ pickPool.get(0).getGodPower()+
-                    "\n\n or \n\n 1)"+pickPool.get(1).getGodName()+pickPool.get(1).getGodSubtitle()+
-                            "\n"+pickPool.get(1).getGodPower());
-
+            this.asyncSend(chosenGodMessage);
             pick=in.nextInt();
-            if(pick==0) {
-                PlayerChoice.add(pickPool.get(1));
-                PlayerChoice.add(pickPool.get(0));
-            }else{
-                PlayerChoice.add(pickPool.get(0));
-                PlayerChoice.add(pickPool.get(1));
+            while (pick>=chosenGodMessage.getSize()){
+             this.asyncSend("please enter a correct god's number");
+                pick=in.nextInt();
             }
-
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
-        return pickPool;
-    }
-
-    /**
-     * every plaver chose their god in a 3 player game
-     * @param opponent1 ClientConnection of the player who chooses first
-     * @param opponent2 ClientConnection of the player who chooses second
-     * @param pickPool list of god choose in function ChooseGod
-     * @return an ordered list that associates each god with its player
-     */
-    @Override
-    public ArrayList<God> PickGod3P(ClientConnection opponent1,ClientConnection opponent2, ArrayList<God> pickPool){
-        int pick;
-        ArrayList<God> PlayerChoice= new ArrayList<>();
-        try{
-            Scanner in= new Scanner(socket.getInputStream());
-            opponent1.asyncSend("choose your god:\n0)"+
-                    pickPool.get(0).getGodName()+"\n"+pickPool.get(0).getGodSubtitle()+"\n"+pickPool.get(0).getGodPower()+
-                    "\n\n or \n\n1)"+ pickPool.get(1).getGodName()+"\n"+pickPool.get(1).getGodSubtitle()+"\n"+pickPool.get(1).getGodPower()+
-                    "\n\n or \n\n2)"+pickPool.get(2).getGodName()+"\n"+pickPool.get(2).getGodSubtitle()+"\n"+pickPool.get(2).getGodPower());
-
-            pick=in.nextInt();
-            PlayerChoice.add(pickPool.get(pick));
-            pickPool.remove(pick);
-            opponent2.asyncSend("choose your god:\n"+
-                            pickPool.get(0).getGodName()+"\n"+pickPool.get(0).getGodSubtitle()+"\n"+pickPool.get(0).getGodPower()+
-                            "\n\n or \n\n1)"+ pickPool.get(1).getGodName()+"\n"+pickPool.get(1).getGodSubtitle()+"\n"+pickPool.get(1).getGodPower());
-            pick=in.nextInt();
-            PlayerChoice.add(pickPool.get(pick));
-            pickPool.remove(pick);
-            PlayerChoice.add(pickPool.get(0));
-
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-        }
-        return pickPool;
+        return chosenGodMessage.getChosenGod().get(pick);
     }
 
     /**
@@ -227,6 +179,40 @@ public class SocketClientConnection extends Observable<String> implements Client
             System.err.println(e.getMessage());
         }
         return name;
+    }
+
+    @Override
+    public ArrayList<Player> ChooseFirstPlayer(OrderGameMessage orderGameMessage){
+        String firstPlayer="";
+        Boolean check= true;
+        ArrayList<Player> players= orderGameMessage.getPlayerlist();
+        Player notFirst;
+        try {
+            Scanner in= new Scanner(socket.getInputStream());
+            this.asyncSend(orderGameMessage);
+            firstPlayer=in.nextLine();
+            while(check){
+                for (int i=0;i<orderGameMessage.getSize();i++){
+                    if (firstPlayer.equals(orderGameMessage.getPlayerlist().get(i))){
+                       check= false;
+                    }
+                    }
+                if (check=true){
+                    asyncSend("enter a correct name player");
+                    firstPlayer=in.nextLine();
+                }
+            }
+            while (firstPlayer.equals(players.get(0))){
+                notFirst=players.get(0);
+                players.remove(0);
+                players.add(notFirst);
+            }
+
+        }catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+
+    return players;
     }
 
 }
