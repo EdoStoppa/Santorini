@@ -17,10 +17,12 @@ public class Client {
     private String ip;
     private int port;
     private boolean active= true;
+    protected PlaySpace playSpace;
 
     public Client(String ip, int port){
         this.ip=ip;
         this.port=port;
+        this.playSpace = new PlaySpace();
     }
 
     public synchronized boolean isActive(){

@@ -1,16 +1,18 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
 import it.polimi.ingsw.Client.PlaySpace;
-import it.polimi.ingsw.Controller.MiniController.StandardMiniController;
+import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.List;
 
-public class StandardTileMessage extends TileToShowMessage {
-    public StandardTileMessage(String player, PossiblePhases phase, List<Position> list) {
+public class ServerMoveMessage extends TileToShowMessage{
+    private final int[][] matrix;
+
+    public ServerMoveMessage(String player, PossiblePhases phase, List<Position> list, int[][] matrix) {
         super(player, phase, list);
-        miniController = new StandardMiniController();
+        this.matrix = matrix;
     }
 
     @Override
@@ -18,9 +20,9 @@ public class StandardTileMessage extends TileToShowMessage {
         String text;
 
         if(isMyTurn){
-            text = getPhase().toString(true);
+            text = getPhase().toString(true) + getMessage();
         } else {
-            text = getIdPlayer() + getPhase().toString(false);
+            text = getIdPlayer() + getPhase().toString(false) + getMessage();
         }
 
         setMessage(text);

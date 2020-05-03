@@ -4,13 +4,12 @@ import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Message.BuildMessages.BuildMessage;
 import it.polimi.ingsw.Message.BuildMessages.StandardBuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
-import it.polimi.ingsw.Message.MoveMessages.PushMessage;
-import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
-import it.polimi.ingsw.Message.MoveMessages.StandardMoveMessage;
-import it.polimi.ingsw.Message.MoveMessages.SwapMessage;
+import it.polimi.ingsw.Message.MoveMessages.*;
+import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.util.ArrayList;
@@ -104,6 +103,17 @@ public class Model extends Observable<GameMessage> {
         return p.equals(currentP.getIdPlayer());
     }
 
+    public void serverMove(Constructor c, Position p, String idPlayer){
+        Tile t = board.getTile(p);
+        board.placeConstructor(t, c);
+
+        int[][] matrix = board.createConstructorMatrix();
+
+        TileToShowMessage message = new ServerMoveMessage(idPlayer, PossiblePhases.INIT,null, matrix);
+        message.setMessage(p.toString());
+        notify(message);
+    }
+
     /**
      * It sets currentConstructor to the actual <em>Constructor</em> in the position passed as parameter.
      *
@@ -127,7 +137,9 @@ public class Model extends Observable<GameMessage> {
 
         int[][] matrix = board.createConstructorMatrix();
 
-        notify(new StandardMoveMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix));
+        MoveMessage message = new StandardMoveMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), matrix);
+        message.setMessage(pos.toString());
+        notify(message);
     }
 
     /**
