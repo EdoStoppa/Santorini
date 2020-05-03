@@ -5,9 +5,8 @@ import it.polimi.ingsw.Message.BuildMessages.BuildMessage;
 import it.polimi.ingsw.Message.BuildMessages.StandardBuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.MoveMessages.*;
-import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
-import it.polimi.ingsw.Message.TileToShowMessages.ServerMoveMessage;
+import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Observer.Observable;
@@ -109,7 +108,7 @@ public class Model extends Observable<GameMessage> {
 
         int[][] matrix = board.createConstructorMatrix();
 
-        TileToShowMessage message = new ServerMoveMessage(idPlayer, PossiblePhases.INIT,null, matrix);
+        MoveMessage message = new ServerMoveMessage(idPlayer, PossiblePhases.INIT, matrix);
         message.setMessage(p.toString());
         notify(message);
     }

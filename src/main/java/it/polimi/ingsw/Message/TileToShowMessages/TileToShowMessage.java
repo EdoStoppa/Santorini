@@ -22,7 +22,7 @@ public abstract class TileToShowMessage extends GameMessage {
         return this.tileToShow;
     }
 
-    public void setMiniController(MiniController mc){
-        this.miniController = mc;
+    public MiniController getMiniController(){
+        return this.miniController;
     }
 }

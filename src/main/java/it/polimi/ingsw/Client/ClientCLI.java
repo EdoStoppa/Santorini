@@ -26,6 +26,8 @@ public class ClientCLI extends Client{
                         if(this.miniController.checkPos(inputLine, playSpace)){
                             socketOut.println(this.miniController.getMessage(inputLine));
                             socketOut.flush();
+                            playSpace.reset();
+                            miniController = null;
                         } else {
                             System.out.println("Sorry, your choice is invalid. Please try again");
                         }
