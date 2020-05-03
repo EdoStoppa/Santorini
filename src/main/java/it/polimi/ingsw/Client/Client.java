@@ -5,7 +5,6 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Message.ChosenGodMessage;
 import it.polimi.ingsw.Message.OrderGameMessage;
 import it.polimi.ingsw.Message.PickGodMessage;
-import it.polimi.ingsw.Message.PickGodMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -172,7 +172,7 @@ public class Server {
                 player2.setGod(GodChosen);
                 for (int i=0;i<ChosenGod.size();i++)
                 {
-                    if (GodChosen.equals(ChosenGod.get(i))){
+                    if (GodChosen.getGodName().equals(ChosenGod.get(i).getGodName())){
                         ChosenGod.remove(i);
                     }
                 }
@@ -192,7 +192,7 @@ public class Server {
                 player3.setGod(GodChosen);
                 for (int i=0;i<ChosenGod.size();i++)
                 {
-                    if (GodChosen.equals(ChosenGod.get(i))){
+                    if (GodChosen.getGodName().equals(ChosenGod.get(i).getGodName())){
                         ChosenGod.remove(i);
                     }
                 }
@@ -204,24 +204,24 @@ public class Server {
                     player2.setGod(ChosenGod.get(0));
                 }
             }else {
-                ChosenGodPool=c1.ChooseGod(3);
+                ChosenGodPool=c3.ChooseGod(3);
                 ChosenGod.add(AllGod.get(ChosenGodPool.get(0)));
                 ChosenGod.add(AllGod.get(ChosenGodPool.get(1)));
                 ChosenGod.add(AllGod.get(ChosenGodPool.get(2)));
-                God GodChosen=c3.PickGod(new ChosenGodMessage(ChosenGod));
-                player3.setGod(GodChosen);
+                God GodChosen=c1.PickGod(new ChosenGodMessage(ChosenGod));
+                player1.setGod(GodChosen);
                 for (int i=0;i<ChosenGod.size();i++)
                 {
-                    if (GodChosen.equals(ChosenGod.get(i))){
+                    if (GodChosen.getGodName().equals(ChosenGod.get(i).getGodName())){
                         ChosenGod.remove(i);
                     }
                 }
-                GodChosen=c1.PickGod(new ChosenGodMessage(ChosenGod));
-                player1.setGod(GodChosen);
+                GodChosen=c2.PickGod(new ChosenGodMessage(ChosenGod));
+                player2.setGod(GodChosen);
                 if (GodChosen.equals(ChosenGod.get(0))){
-                    player2.setGod(ChosenGod.get(1));
+                    player3.setGod(ChosenGod.get(1));
                 }else {
-                    player2.setGod(ChosenGod.get(0));
+                    player3.setGod(ChosenGod.get(0));
                 }
             }
             View player1View= new View(player1.getIdPlayer(),true,c1);

@@ -3,11 +3,10 @@ package it.polimi.ingsw.Message;
 import it.polimi.ingsw.Model.God;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class ChosenGodMessage {
-    ArrayList<God> ChosenGod= new ArrayList<>();
+    ArrayList<God> ChosenGod;
     Integer size;
 
     public ChosenGodMessage(ArrayList<God> ChosenGod){

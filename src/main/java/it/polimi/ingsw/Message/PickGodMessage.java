@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Message;
 
-import it.polimi.ingsw.Model.Apollo;
 import it.polimi.ingsw.Model.God;
 
 import java.util.List;

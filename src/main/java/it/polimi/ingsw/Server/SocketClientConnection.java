@@ -22,6 +22,7 @@ public class SocketClientConnection extends Observable<String> implements Client
     private Server server;
     private boolean active=true;
 
+
     public SocketClientConnection(Socket socket,Server server){
         this.server=server;
         this.socket=socket;
@@ -59,16 +60,17 @@ public class SocketClientConnection extends Observable<String> implements Client
     @Override
     public void run() {
         Scanner in;
-        String name;
+        String name="";
         Integer gameMode=0;
-        try {
-            in = new Scanner(socket.getInputStream());
+        String read;
+        try {in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send("welcome!\n 2 or 3 player mode");
             gameMode=in.nextInt();
             send(" Enter your name:");
-            String read = in.nextLine();
-            name = read;
+            while(name.equals("")){
+                name = in.nextLine();
+            }
             if (gameMode == 2) {
                 server.lobby2P(this, name);
             } else {
@@ -127,8 +129,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         ArrayList<Integer> pickGod=new ArrayList<>();
         Integer i=0;
         String pickPool;
-        try{
-            Scanner in= new Scanner(socket.getInputStream());
+        try{Scanner in = new Scanner(socket.getInputStream());
             this.asyncSend(new PickGodMessage());
             pickPool=in.nextLine();
             String[] pick= pickPool.split(",");
@@ -150,7 +151,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(chosenGodMessage);
             pick=in.nextInt();
-            while (pick>=chosenGodMessage.getSize()){
+            while (pick>chosenGodMessage.getSize()){
              this.asyncSend("please enter a correct god's number");
                 pick=in.nextInt();
             }
@@ -190,7 +191,9 @@ public class SocketClientConnection extends Observable<String> implements Client
         try {
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(orderGameMessage);
-            firstPlayer=in.nextLine();
+            while(firstPlayer.equals("")) {
+                firstPlayer = in.nextLine();
+            }
             while(check){
                 for (int i=0;i<orderGameMessage.getSize();i++){
                     if (firstPlayer.equals(orderGameMessage.getPlayerlist().get(i))){
@@ -199,7 +202,10 @@ public class SocketClientConnection extends Observable<String> implements Client
                     }
                 if (check=true){
                     asyncSend("enter a correct name player");
-                    firstPlayer=in.nextLine();
+                    firstPlayer="";
+                    while (firstPlayer.equals("")) {
+                        firstPlayer = in.nextLine();
+                    }
                 }
             }
             while (firstPlayer.equals(players.get(0))){
