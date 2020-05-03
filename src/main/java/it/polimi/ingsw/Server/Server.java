@@ -1,11 +1,12 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Message.ChosenGodMessage;
-import it.polimi.ingsw.Message.OrderGameMessage;
+import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.View.View;
 
 import java.io.IOException;
@@ -82,12 +83,14 @@ public class Server {
         ArrayList<God>ChosenGod= new ArrayList<>();
         List<God> AllGod=God.getAllGod();
         ArrayList<Player> PlayerList = new ArrayList<>();
+        String FirstPlayer;
+        Position firstConstructor;
         if (waitingConnection2P.containsKey(name)){
             c.enterNewName(waitingConnection2P);
         }
         waitingConnection2P.put(name,c);
         if (waitingConnection2P.size() == 2){
-            List<String> keys= new ArrayList<>(waitingConnection2P.keySet());
+            ArrayList<String> keys= new ArrayList<>(waitingConnection2P.keySet());
             ClientConnection c1= waitingConnection2P.get(keys.get(0));
             ClientConnection c2= waitingConnection2P.get(keys.get(1));
             Player player1= new Player(keys.get(0),1);
@@ -120,9 +123,14 @@ public class Server {
             PlayerList.add(player1);
             PlayerList.add(player2);
             if (ChoseGodLike==0){
-                PlayerList=c1.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+                FirstPlayer=c1.ChooseFirstPlayer(new OrderGameMessage(keys));
             }else {
-                PlayerList=c2.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+                FirstPlayer=c2.ChooseFirstPlayer(new OrderGameMessage(keys));
+            }
+            while(!FirstPlayer.equals(PlayerList.get(0).getIdPlayer())){
+               Player notFirst=PlayerList.get(0);
+               PlayerList.remove(0);
+               PlayerList.add(notFirst);
             }
             View player1View= new View(player1.getIdPlayer(),true,c1);
             View player2View= new View(player2.getIdPlayer(),true,c2);
@@ -135,6 +143,26 @@ public class Server {
             playingConnection2P.put(c1,c2);
             playingConnection2P.put(c2,c1);
             waitingConnection2P.clear();
+            if (PlayerList.get(0).equals(player1)){
+                firstConstructor=c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(0),firstConstructor,player1.getIdPlayer());
+                firstConstructor=c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(1),firstConstructor,player1.getIdPlayer());
+                firstConstructor=c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(0),firstConstructor,player2.getIdPlayer());
+                firstConstructor=c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(1),firstConstructor,player2.getIdPlayer());}
+            else {
+                firstConstructor=c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(0),firstConstructor,player2.getIdPlayer());
+                firstConstructor=c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(1),firstConstructor,player2.getIdPlayer());
+                firstConstructor=c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(0),firstConstructor,player1.getIdPlayer());
+                firstConstructor=c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(1),firstConstructor,player1.getIdPlayer());
+                firstConstructor=c2.FirstPlaceConstructor();
+            }
             //first message to player view
         }
 
@@ -149,12 +177,14 @@ public class Server {
         ArrayList<God>ChosenGod= new ArrayList<>();
         List<God> AllGod=God.getAllGod();
         ArrayList<Player> PlayerList = new ArrayList<>();
+        String FirstPlayer;
+        Position firstConstructor;
         if (waitingConnection3P.containsKey(name)){
             c.enterNewName(waitingConnection3P);
         }
         waitingConnection3P.put(name,c);
         if(waitingConnection3P.size()==3){
-            List<String> keys= new ArrayList<>(waitingConnection3P.keySet());
+            ArrayList<String> keys= new ArrayList<>(waitingConnection3P.keySet());
             ClientConnection c1= waitingConnection3P.get(keys.get(0));
             ClientConnection c2= waitingConnection3P.get(keys.get(1));
             ClientConnection c3=waitingConnection3P.get(keys.get(2));
@@ -231,11 +261,16 @@ public class Server {
             PlayerList.add(player2);
             PlayerList.add(player3);
             if (ChoseGodLike==0){
-                PlayerList=c1.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+                FirstPlayer=c1.ChooseFirstPlayer(new OrderGameMessage(keys));
             }else if (ChoseGodLike==1){
-                PlayerList=c2.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+                FirstPlayer=c2.ChooseFirstPlayer(new OrderGameMessage(keys));
             } else {
-                PlayerList=c3.ChooseFirstPlayer(new OrderGameMessage(PlayerList));
+                FirstPlayer=c3.ChooseFirstPlayer(new OrderGameMessage(keys));
+            }
+            while(!FirstPlayer.equals(PlayerList.get(0).getIdPlayer())){
+                Player notFirst=PlayerList.get(0);
+                PlayerList.remove(0);
+                PlayerList.add(notFirst);
             }
             Model model= new Model(PlayerList);
             Controller controller= new Controller(model);
@@ -249,6 +284,46 @@ public class Server {
             playingConnection3P.put(c2,c3);
             playingConnection3P.put(c3,c1);
             waitingConnection3P.clear();
+            if (PlayerList.get(0).equals(player1)){
+              firstConstructor=c1.FirstPlaceConstructor();
+              model.serverMove(player1.getAllConstructors().get(0),firstConstructor,player1.getIdPlayer());
+                firstConstructor=c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(1),firstConstructor,player1.getIdPlayer());
+                firstConstructor=c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(0),firstConstructor,player2.getIdPlayer());
+                firstConstructor=c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(1),firstConstructor,player2.getIdPlayer());
+                firstConstructor=c3.FirstPlaceConstructor();
+                model.serverMove(player3.getAllConstructors().get(0),firstConstructor,player3.getIdPlayer());
+                firstConstructor=c3.FirstPlaceConstructor();
+                model.serverMove(player3.getAllConstructors().get(1),firstConstructor,player3.getIdPlayer());
+            }else if (PlayerList.get(0).equals(player2)) {
+                firstConstructor = c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(0), firstConstructor, player2.getIdPlayer());
+                firstConstructor = c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(1), firstConstructor, player2.getIdPlayer());
+                firstConstructor = c3.FirstPlaceConstructor();
+                model.serverMove(player3.getAllConstructors().get(0), firstConstructor, player3.getIdPlayer());
+                firstConstructor = c3.FirstPlaceConstructor();
+                model.serverMove(player3.getAllConstructors().get(1), firstConstructor, player3.getIdPlayer());
+                firstConstructor = c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(0), firstConstructor, player1.getIdPlayer());
+                firstConstructor = c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(1), firstConstructor, player1.getIdPlayer());
+            }else {
+                firstConstructor = c3.FirstPlaceConstructor();
+                model.serverMove(player3.getAllConstructors().get(0), firstConstructor, player3.getIdPlayer());
+                firstConstructor = c3.FirstPlaceConstructor();
+                model.serverMove(player3.getAllConstructors().get(1), firstConstructor, player3.getIdPlayer());
+                firstConstructor = c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(0), firstConstructor, player1.getIdPlayer());
+                firstConstructor = c1.FirstPlaceConstructor();
+                model.serverMove(player1.getAllConstructors().get(1), firstConstructor, player1.getIdPlayer());
+                firstConstructor = c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(0), firstConstructor, player2.getIdPlayer());
+                firstConstructor = c2.FirstPlaceConstructor();
+                model.serverMove(player2.getAllConstructors().get(1), firstConstructor, player2.getIdPlayer());
+            }
             //first message to player view
         }
     }

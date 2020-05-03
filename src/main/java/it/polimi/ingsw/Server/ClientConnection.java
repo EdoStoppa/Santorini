@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Server;
 
 
-import it.polimi.ingsw.Message.ChosenGodMessage;
-import it.polimi.ingsw.Message.OrderGameMessage;
+import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Model.God;
-import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Observer.Observer;
 
 import java.util.ArrayList;
@@ -24,5 +24,7 @@ public interface ClientConnection{
 
     God PickGod(ChosenGodMessage chosenGodMessage);
 
-    ArrayList<Player> ChooseFirstPlayer(OrderGameMessage orderGameMessage);
+    String ChooseFirstPlayer(OrderGameMessage orderGameMessage);
+
+    Position FirstPlaceConstructor();
 }

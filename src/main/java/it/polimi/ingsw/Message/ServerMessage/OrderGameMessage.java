@@ -1,19 +1,19 @@
-package it.polimi.ingsw.Message;
+package it.polimi.ingsw.Message.ServerMessage;
 
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
 
-public class OrderGameMessage {
-    ArrayList<Player> Playerlist;
+public class OrderGameMessage extends ServerMessage{
+    ArrayList<String> Playerlist;
     int size;
 
-    public OrderGameMessage(ArrayList<Player> Players){
+    public OrderGameMessage(ArrayList<String> Players){
         this.Playerlist=Players;
         this.size=Playerlist.size();
     }
 
-    public ArrayList<Player> getPlayerlist() {
+    public ArrayList<String> getPlayerlist() {
         return Playerlist;
     }
 

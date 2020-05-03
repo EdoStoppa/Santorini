@@ -1,11 +1,11 @@
-package it.polimi.ingsw.Message;
+package it.polimi.ingsw.Message.ServerMessage;
 
 import it.polimi.ingsw.Model.God;
 
 import java.util.ArrayList;
 
 
-public class ChosenGodMessage {
+public class ChosenGodMessage extends ServerMessage {
     ArrayList<God> ChosenGod;
     Integer size;
 

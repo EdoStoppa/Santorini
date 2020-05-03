@@ -1,13 +1,14 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Message.ChosenGodMessage;
 import it.polimi.ingsw.Message.HelpMessage;
-import it.polimi.ingsw.Message.OrderGameMessage;
-import it.polimi.ingsw.Message.PickGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Model.God;
-import it.polimi.ingsw.View.View;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -183,10 +184,10 @@ public class SocketClientConnection extends Observable<String> implements Client
     }
 
     @Override
-    public ArrayList<Player> ChooseFirstPlayer(OrderGameMessage orderGameMessage){
+    public String ChooseFirstPlayer(OrderGameMessage orderGameMessage){
         String firstPlayer="";
         Boolean check= true;
-        ArrayList<Player> players= orderGameMessage.getPlayerlist();
+        ArrayList<String> players= orderGameMessage.getPlayerlist();
         Player notFirst;
         try {
             Scanner in= new Scanner(socket.getInputStream());
@@ -208,17 +209,28 @@ public class SocketClientConnection extends Observable<String> implements Client
                     }
                 }
             }
-            while (firstPlayer.equals(players.get(0))){
-                notFirst=players.get(0);
-                players.remove(0);
-                players.add(notFirst);
-            }
 
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
 
-    return players;
+    return firstPlayer;
+    }
+
+    @Override
+    public Position FirstPlaceConstructor(){
+        String Pos="";
+        String[] coordinates= new String[2];
+        try {Scanner in= new Scanner(socket.getInputStream());
+        this.asyncSend(new PlaceFirstConstructorMessage());
+        while(Pos.equals("")){
+            Pos=in.nextLine();
+        }
+        coordinates=Pos.split(",");
+        }catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+    return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }
 
 }

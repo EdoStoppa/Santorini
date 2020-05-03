@@ -1,10 +1,10 @@
-package it.polimi.ingsw.Message;
+package it.polimi.ingsw.Message.ServerMessage;
 
 import it.polimi.ingsw.Model.God;
 
 import java.util.List;
 
-public class PickGodMessage {
+public class PickGodMessage extends ServerMessage {
     List<God> AllGod = God.getAllGod();
     int size= AllGod.size();
 
