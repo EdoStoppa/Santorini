@@ -20,16 +20,19 @@ public class ClientCLI extends Client{
     public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
         Thread t=new Thread(() -> {
             try{
+                StringBuilder sBuilder = new StringBuilder();
                 while (isActive()){
                     String inputLine = stdin.nextLine();
                     if(this.miniController != null){
-                        if(this.miniController.checkPos(inputLine, playSpace)){
+                        sBuilder.delete(0, 100);
+                        sBuilder.append("Sorry, your choice is invalid. Please try again");
+                        if(this.miniController.checkPos(inputLine, playSpace, sBuilder)){
                             socketOut.println(this.miniController.getMessage(inputLine));
                             socketOut.flush();
                             playSpace.reset();
                             miniController = null;
                         } else {
-                            System.out.println("Sorry, your choice is invalid. Please try again");
+                            System.out.println(sBuilder);
                         }
                     } else {
                         System.out.println("Now you can't make a move. Please wait");

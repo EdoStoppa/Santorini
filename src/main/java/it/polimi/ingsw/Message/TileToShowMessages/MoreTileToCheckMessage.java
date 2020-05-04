@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
 import it.polimi.ingsw.Client.PlaySpace;
+import it.polimi.ingsw.Controller.MiniController.MoreCheckMiniController;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
@@ -13,6 +14,7 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
     public MoreTileToCheckMessage(String player, PossiblePhases phase, List<Position> list, List<Position> specialList) {
         super(player, phase, list);
         this.specialList = specialList;
+        this.miniController = new MoreCheckMiniController();
     }
 
     public List<Position> getSpecialList() {

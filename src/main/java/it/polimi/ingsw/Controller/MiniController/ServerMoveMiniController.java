@@ -4,8 +4,11 @@ import it.polimi.ingsw.Client.PlaySpace;
 
 public class ServerMoveMiniController implements MiniController{
     @Override
-    public boolean checkPos(String input, PlaySpace playSpace) {
+    public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
+            if(input.length() != 3)
+                return false;
+
             String[] rowAndCol = input.split(",");
             int row = Integer.parseInt(rowAndCol[0]);
             int col = Integer.parseInt(rowAndCol[1]);
@@ -24,6 +27,6 @@ public class ServerMoveMiniController implements MiniController{
 
     @Override
     public String getMessage(String input) {
-        return null;
+        return input;
     }
 }

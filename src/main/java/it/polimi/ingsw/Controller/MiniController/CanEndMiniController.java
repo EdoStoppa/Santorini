@@ -2,12 +2,16 @@ package it.polimi.ingsw.Controller.MiniController;
 
 import it.polimi.ingsw.Client.PlaySpace;
 
-public class StandardMiniController implements MiniController{
+public class CanEndMiniController implements MiniController{
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
             if(input.length() != 3)
                 return false;
+
+            if(input.toLowerCase().equals("end")){
+                return true;
+            }
 
             String[] rowAndCol = input.split(",");
             int row = Integer.parseInt(rowAndCol[0]);
@@ -25,6 +29,9 @@ public class StandardMiniController implements MiniController{
 
     @Override
     public String getMessage(String input) {
-        return "standard "+input;
+        if(input.toLowerCase().equals("end"))
+            return input.toLowerCase() + " -1,-1";
+
+        return "standard " + input;
     }
 }

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Controller.MiniController;
 
 import it.polimi.ingsw.Client.PlaySpace;
+import it.polimi.ingsw.Message.HelpMessage;
 
-public class StandardMiniController implements MiniController{
+import java.util.Scanner;
+
+public class CheckDomeMiniController implements MiniController{
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
@@ -25,6 +28,19 @@ public class StandardMiniController implements MiniController{
 
     @Override
     public String getMessage(String input) {
-        return "standard "+input;
+        Scanner in = new Scanner(System.in);
+        System.out.println("Instead of a normal construction, do you want to place a dome? "+ HelpMessage.yesOrNo);
+        while(true){
+            String answer = in.nextLine();
+            answer = answer.toLowerCase();
+            if(answer.equals("y"))
+                return "dome " + input;
+
+            if(answer.equals("n"))
+                return "standard " + input;
+
+            System.out.println("Your choice in invalid, please type only "+ HelpMessage.yesOrNo);
+        }
+
     }
 }
