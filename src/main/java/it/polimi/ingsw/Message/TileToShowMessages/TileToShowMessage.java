@@ -18,6 +18,19 @@ public abstract class TileToShowMessage extends GameMessage {
         this.tileToShow = list;
     }
 
+    @Override
+    public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+        String text;
+
+        if(isMyTurn){
+            text = getPhase().toString(true);
+        } else {
+            text = getIdPlayer() + getPhase().toString(false);
+        }
+
+        setMessage(text);
+    }
+
     public List<Position> getTileToShow() {
         return this.tileToShow;
     }

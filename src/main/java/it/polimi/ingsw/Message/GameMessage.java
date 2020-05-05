@@ -3,7 +3,9 @@ package it.polimi.ingsw.Message;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Model.PossiblePhases;
 
-public abstract class GameMessage {
+import java.io.Serializable;
+
+public abstract class GameMessage implements Serializable {
     private String message;
     private final String idPlayer;
     private final PossiblePhases currentPhase;

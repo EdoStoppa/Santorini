@@ -14,19 +14,6 @@ public class StandardTileMessage extends TileToShowMessage {
     }
 
     @Override
-    public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
-        String text;
-
-        if(isMyTurn){
-            text = getPhase().toString(true);
-        } else {
-            text = getIdPlayer() + getPhase().toString(false);
-        }
-
-        setMessage(text);
-    }
-
-    @Override
     public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
 
     }
