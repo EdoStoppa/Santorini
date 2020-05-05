@@ -8,15 +8,14 @@ import it.polimi.ingsw.Message.MoveMessages.*;
 import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
 import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
-import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Model extends Observable<GameMessage> {
-    private GameState gameState;
-    private Board board;
+    private final GameState gameState;
+    private final Board board;
     private List<Position> tileToShow;
     private Constructor currentConstructor;
 
