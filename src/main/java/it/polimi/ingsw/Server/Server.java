@@ -161,7 +161,6 @@ public class Server {
                 model.serverMove(player1.getAllConstructors().get(0),firstConstructor,player1.getIdPlayer());
                 firstConstructor=c1.FirstPlaceConstructor();
                 model.serverMove(player1.getAllConstructors().get(1),firstConstructor,player1.getIdPlayer());
-                firstConstructor=c2.FirstPlaceConstructor();
             }
             //first message to player view
         }

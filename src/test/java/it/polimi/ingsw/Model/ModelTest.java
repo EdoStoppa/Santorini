@@ -175,7 +175,7 @@ class ModelTest {
         assertEquals(model.getGameState().getCurrentPlayer().getIdPlayer(), receiver.receivedMessage.getIdPlayer(),"The player should be the same");
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void performSwapTest()  {
         String expectedMessage;
         int i;
@@ -204,7 +204,7 @@ class ModelTest {
         }
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void performPushTest()  {
         String expectedMessage;
         int i;
@@ -265,7 +265,7 @@ class ModelTest {
     }
 
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void performBuildTest() {
         Random random = new Random();
         String expectedMessage;
@@ -354,7 +354,7 @@ class ModelTest {
         }
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void changeActiveConstructorsTest()   {
         Random random = new Random();
         Constructor c1 = new Constructor(model.getGameState().getCurrentPlayer().getPlayerNumber());
@@ -382,7 +382,7 @@ class ModelTest {
         }
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void createPossibleMovePos()    {
         Random random = new Random();
         List<Position> expectedList;
@@ -443,7 +443,7 @@ class ModelTest {
         }
     }
 
-    @RepeatedTest(10000)
+    @RepeatedTest(100)
     void createPossibleBuildPosTest()   {
         Random random = new Random();
         List<Position> expectedList;
@@ -517,7 +517,7 @@ class ModelTest {
         assertEquals(PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR, model.getCurrentGod().getPhasesList().get(0), "Should be the SPECIAL_CHOOSE_CONSTRUCTOR phase");
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(100)
     void removePlayerTest(RepetitionInfo repetitionInfo)    {
         String idPlayerToRemove, expectedMessage;
         int expectedNumOfPlayingPlayers = 1;

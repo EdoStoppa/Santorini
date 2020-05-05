@@ -10,8 +10,7 @@ public class PlaySpace {
 
     private List<Position> tileToShow;
     private List<Position> tileToCheck;
-    String ORIZ ="\u2550";
-    String VERT= "\u2551";
+
 
     public PlaySpace(){
         this.tileToShow = null;
@@ -80,53 +79,78 @@ public class PlaySpace {
      * print of board with construction and constructor during the game
      */
     public void printPlaySpace(){
-        System.out.println("    0   1   2   3   4");
-        System.out.println("  \u2554"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+"\u2557");
-        for (int i=0;i<5;i++){
+        String ORIZ = "\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550";
+        String VERT= "\u2551";
+        String ORIZ2= "\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550"+"\u2550";
+        System.out.println("       0         1         2         3         4");
+        System.out.println("  \u2554"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ2+"\u2557");
+
+        int k = 0;
+        for (int i=0;i<15;i++){
             String line="";
-            line+=i+" ";
-            line+=VERT;
-            for (int j=0;j<5;j++){
-                switch (constructorMatrix[i][j]) {
-                    case 1:
-                        if (this.printTileToShow(i, j)) {
-                            line += (Color.CYAN_BACKGROUND_BRIGHT + " " + Color.ANSI_RED + buildingMatrix[i][j] + Color.CYAN_BACKGROUND_BRIGHT + " ");
-                        } else {
-                            line += (Color.ANSI_RED + " " + buildingMatrix[i][j] + " ");
-                        }
-                        break;
-                    case 2:
-                        if (this.printTileToShow(i, j)) {
-                            line += (Color.CYAN_BACKGROUND_BRIGHT + " " + Color.ANSI_YELLOW + buildingMatrix[i][j] + Color.CYAN_BACKGROUND_BRIGHT + " ");
-                        } else {
-                            line += (Color.ANSI_YELLOW + " " + buildingMatrix[i][j] + " ");
-                        }
-                        break;
-                    case 3:
-                        if (this.printTileToShow(i, j)) {
-                            line += (Color.CYAN_BACKGROUND_BRIGHT + " " + Color.ANSI_PURPLE + buildingMatrix[i][j] + Color.CYAN_BACKGROUND_BRIGHT + " ");
-                        } else {
-                            line += (Color.ANSI_PURPLE + " " + buildingMatrix[i][j] + " ");
-                        }
-                        break;
-                    case 0:
-                        if (this.printTileToShow(i, j) && buildingMatrix[i][j] < 4) {
-                            line += (Color.CYAN_BACKGROUND_BRIGHT + " " + Color.ANSI_BLACK + buildingMatrix[i][j] + Color.CYAN_BACKGROUND_BRIGHT + " ");
-                        } else if (buildingMatrix[i][j] != 0 && buildingMatrix[i][j] < 4) {
-                            line += (Color.RESET + " " + buildingMatrix[i][j] + " ");
-                        } else if (buildingMatrix[i][j] >= 4) {
-                            line += (Color.ANSI_BLUE + " D ");
-                        } else {
-                            line += (Color.RESET + "   ");
-                        }
+            if((i+2)%3 == 0){
+                line+=k+" ";
+                line+=VERT;
+                for (int j=0;j<5;j++){
+                    switch (constructorMatrix[k][j]) {
+                        case 1:
+                            if (this.printTileToShow(k, j)) {
+                                line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + Color.ANSI_RED+ buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
+                            } else {
+                                line += (Color.ANSI_RED + "    " + buildingMatrix[k][j] + "    ");
+                            }
+                            break;
+                        case 2:
+                            if (this.printTileToShow(k, j)) {
+                                line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + Color.ANSI_YELLOW+ buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
+                            } else {
+                                line += (Color.ANSI_YELLOW + "    " + buildingMatrix[k][j] + "    ");
+                            }
+                            break;
+                        case 3:
+                            if (this.printTileToShow(k, j)) {
+                                line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + Color.ANSI_PURPLE+ buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
+                            } else {
+                                line += (Color.ANSI_PURPLE + "    " + buildingMatrix[k][j] + "    ");
+                            }
+                            break;
+                        case 0:
+                            if (this.printTileToShow(k, j) && buildingMatrix[k][j] < 4) {
+                                line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
+                            } else if (buildingMatrix[k][j] != 0 && buildingMatrix[k][j] < 4) {
+                                line += (Color.RESET + "    " + buildingMatrix[k][j] + "    ");
+                            } else if (buildingMatrix[k][j] >= 4) {
+                                line += (Color.ANSI_BLUE + "    D    ");
+                            } else {
+                                line += (Color.RESET + "         ");
+                            }
+                    }
+                    if (j!=4){
+                        line+=(Color.RESET+"|");
+                    } else {
+                        line+=(Color.RESET+VERT);
+                    }
                 }
-                if (j!=4){
-                    line+=(Color.RESET+"|");
+                k++;
+            } else {
+                line += "  "+VERT;
+                for(int l=0; l< 5; l++){
+                    if(printTileToShow(i/3,l)){
+                        line += Color.CYAN_BACKGROUND_BRIGHT + "         ";
+                    } else {
+                        line += "         ";
+                    }
+
+                    if(l!=4){
+                        line += Color.RESET + "|";
+                    } else {
+                        line += Color.RESET + VERT;
+                    }
+
                 }
             }
-            line+=(Color.RESET+VERT);
             System.out.println(line);
         }
-        System.out.println("  \u255A"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ + "\u255D");
+        System.out.println("  \u255A"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ2 + "\u255D");
     }
 }
