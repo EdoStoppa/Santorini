@@ -50,7 +50,9 @@ public class Apollo extends God {
             for (Position position : listOcc) {
                 if (board.getTile(position).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
                     if(board.getTile(c.getPos()).getConstructionLevel()+1 >= board.getTile(position).getConstructionLevel()){
-                        numEnemyOcc += 1;
+                        Tile occTile = model.getBoard().getTile(position);
+                        if(model.getBoard().possibleBuild(occTile.getActualConstructor()).size() >= 1)
+                            numEnemyOcc += 1;
                     }
                 }
             }

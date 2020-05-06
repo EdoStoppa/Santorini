@@ -35,8 +35,17 @@ public class DemeterController extends GodController {
         List<Position> delList = new ArrayList<Position>();
         Demeter demeter = (Demeter)model.getCurrentGod();
 
-        delList.add(demeter.getLastBuild(model));
+        /*if(demeter.canBuildAgain(model)){
+            delList.add(demeter.getLastBuild(model));
+            model.createPossibleBuildPos(null, delList);
+        } else {
+            // Now we have to change phase and prepare the nextPhase
+            model.nextPhase();
+            controller.preparePhase();
+        }*/
 
+        delList.add(demeter.getLastBuild(model));
         model.createPossibleBuildPos(null, delList);
+
     }
 }

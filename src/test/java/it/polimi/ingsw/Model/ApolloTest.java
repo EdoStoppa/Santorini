@@ -92,7 +92,7 @@ class ApolloTest {
         ap.changeActiveConstructors(model);
 
         assertFalse(pList.get(0).getAllConstructors().get(0).getCanMove(), "The constructor should be inactive");
-        assertTrue(pList.get(0).getAllConstructors().get(1).getCanMove(), "The constructor should be active");
+        assertFalse(pList.get(0).getAllConstructors().get(1).getCanMove(), "The constructor should be inactive, because it can swap but can't build after that");
 
     }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Controller.GodController.DemeterController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the god card: Demeter
@@ -27,5 +28,16 @@ public class Demeter extends God {
 
     public Position getLastBuild(Model model){
         return model.getCurrentConstructor().getLastBuildPos().clone();
+    }
+
+    public boolean canBuildAgain(Model model){
+        List<Position> buildList = model.getBoard().possibleBuild(model.getCurrentConstructor());
+
+        //if she can't build anymore -> next turn
+        if(buildList.size()==0)
+            return false;
+
+        //if she has 2 build positions or has 1 but it's different than the lastBuildPos, it means that she can build again
+        return buildList.size() > 1 || !buildList.get(0).equals(model.getCurrentConstructor().getLastBuildPos());
     }
 }

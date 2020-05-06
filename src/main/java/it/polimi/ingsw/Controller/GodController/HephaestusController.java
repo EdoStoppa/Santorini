@@ -37,8 +37,6 @@ public class HephaestusController extends GodController {
         Position lastBuildPos = hephaestus.getLastBuildPos(model);
 
         if(hephaestus.cantDoAnother(model, lastBuildPos)){
-            // Tell the player he can't do another build
-
             // Now we have to change phase and prepare the nextPhase
             model.nextPhase();
             controller.preparePhase();
