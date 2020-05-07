@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Controller.GodController.GodController;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * It's an abstract class because every god card is extremely different in its initialization
  */
 
-public abstract class God {
+public abstract class God implements Serializable {
     protected String godName;
     protected String godSubtitle;
     protected String powerDescription;

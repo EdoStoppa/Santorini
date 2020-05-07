@@ -4,9 +4,11 @@ import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Model.Model;
 
+import java.io.Serializable;
+
 /**Interface used to implement a Strategy Pattern regarding the special effect of the God card
  */
-public abstract class GodController {
+public abstract class GodController implements Serializable {
     /**Used to handle all the correct calls to the model for a special choose constructor
      *
      * @param model Model of the game

@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MoreCheckMiniController implements MiniController{
+    List<Position> toCheck;
+
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
+            toCheck = playSpace.getTileToCheck();
             if(input.length() != 3)
                 return false;
 
@@ -20,7 +23,7 @@ public class MoreCheckMiniController implements MiniController{
 
             if(0<=row && row<=4 && 0<=col && col<=4){
                 if(playSpace.printTileToShow(row, col)){
-                    if(moreCheck(new Position(row, col), playSpace.getTileToCheck())){
+                    if(moreCheck(new Position(row, col), toCheck)){
                         Scanner in = new Scanner(System.in);
                         System.out.println("If you choose this constructor you won't be able to use your special power, do you want to continue? "+ HelpMessage.yesOrNo);
                         while(true){
@@ -55,6 +58,11 @@ public class MoreCheckMiniController implements MiniController{
 
     @Override
     public String getMessage(String input) {
+        String[] p = input.split(",");
+
+        if(moreCheck(new Position(Integer.parseInt(p[0]), Integer.parseInt(p[1])), toCheck))
+            return "skipPhase " + input;
+
         return "standard " + input;
     }
 
