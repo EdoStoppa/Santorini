@@ -6,7 +6,8 @@ import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.io.Serializable;
 
-public abstract class MoveMessage extends GameMessage{
+public abstract class MoveMessage extends GameMessage implements Serializable{
+    private static final long serialVersionUID = 1L;
     private final int[][] constructorMatrix;
 
     public MoveMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {

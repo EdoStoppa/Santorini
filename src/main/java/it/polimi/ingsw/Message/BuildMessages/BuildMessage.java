@@ -6,7 +6,8 @@ import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.io.Serializable;
 
-public abstract class BuildMessage extends GameMessage{
+public abstract class BuildMessage extends GameMessage implements Serializable{
+    private static final long serialVersionUID = 1L;
     private final int[][] buildingMatrix;
 
     public BuildMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {

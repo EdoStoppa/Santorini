@@ -10,7 +10,8 @@ import it.polimi.ingsw.Model.PossiblePhases;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class TileToShowMessage extends GameMessage{
+public abstract class TileToShowMessage extends GameMessage implements Serializable{
+    private static final long serialVersionUID = 1L;
     private final List<Position> tileToShow;
     protected MiniController miniController;
 
