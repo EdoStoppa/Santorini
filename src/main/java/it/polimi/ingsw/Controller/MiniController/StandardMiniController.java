@@ -2,7 +2,10 @@ package it.polimi.ingsw.Controller.MiniController;
 
 import it.polimi.ingsw.Client.PlaySpace;
 
-public class StandardMiniController implements MiniController{
+import java.io.Serializable;
+
+public class StandardMiniController implements MiniController, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{

@@ -9,6 +9,7 @@ import java.io.Serializable;
 /**Interface used to implement a Strategy Pattern regarding the special effect of the God card
  */
 public abstract class GodController implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**Used to handle all the correct calls to the model for a special choose constructor
      *
      * @param model Model of the game

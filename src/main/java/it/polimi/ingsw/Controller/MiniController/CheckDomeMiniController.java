@@ -3,9 +3,11 @@ package it.polimi.ingsw.Controller.MiniController;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class CheckDomeMiniController implements MiniController{
+public class CheckDomeMiniController implements MiniController, Serializable {
+    private static final long serialVersionUID = 1L;
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{

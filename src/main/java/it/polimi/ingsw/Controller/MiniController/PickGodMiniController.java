@@ -2,7 +2,10 @@ package it.polimi.ingsw.Controller.MiniController;
 
 import it.polimi.ingsw.Client.PlaySpace;
 
-public class PickGodMiniController implements MiniController{
+import java.io.Serializable;
+
+public class PickGodMiniController implements MiniController, Serializable {
+    private static final long serialVersionUID = 1L;
     int numGod;
     int numPlayer;
     public PickGodMiniController(int numGod, int numPlayer){

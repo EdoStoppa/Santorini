@@ -7,9 +7,10 @@ import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class TileToShowMessage extends GameMessage {
+public abstract class TileToShowMessage extends GameMessage{
     private final List<Position> tileToShow;
     protected MiniController miniController;
 

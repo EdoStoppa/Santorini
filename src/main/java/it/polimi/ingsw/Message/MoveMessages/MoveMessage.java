@@ -4,7 +4,9 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
-public abstract class MoveMessage extends GameMessage {
+import java.io.Serializable;
+
+public abstract class MoveMessage extends GameMessage{
     private final int[][] constructorMatrix;
 
     public MoveMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {

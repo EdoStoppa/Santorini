@@ -2,9 +2,11 @@ package it.polimi.ingsw.Controller.MiniController;
 
 import it.polimi.ingsw.Client.PlaySpace;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class OrderMiniController implements MiniController{
+public class OrderMiniController implements MiniController, Serializable {
+    private static final long serialVersionUID = 1L;
     List<String> pList;
     public OrderMiniController(List<String> pList){
         this.pList = pList;

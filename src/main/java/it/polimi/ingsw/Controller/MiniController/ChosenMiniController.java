@@ -2,7 +2,10 @@ package it.polimi.ingsw.Controller.MiniController;
 
 import it.polimi.ingsw.Client.PlaySpace;
 
-public class ChosenMiniController implements MiniController{
+import java.io.Serializable;
+
+public class ChosenMiniController implements MiniController, Serializable {
+    private static final long serialVersionUID = 1L;
     int size;
     public ChosenMiniController(int i){
         this.size = i;

@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.PossiblePhases;
 import java.io.Serializable;
 
 public abstract class GameMessage implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String message;
     private final String idPlayer;
     private final PossiblePhases currentPhase;

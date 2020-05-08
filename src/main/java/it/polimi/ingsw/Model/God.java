@@ -11,7 +11,8 @@ import java.util.List;
  * It's an abstract class because every god card is extremely different in its initialization
  */
 
-public abstract class God implements Serializable {
+public abstract class God implements Serializable{
+    private static final long serialVersionUID = 1L;
     protected String godName;
     protected String godSubtitle;
     protected String powerDescription;

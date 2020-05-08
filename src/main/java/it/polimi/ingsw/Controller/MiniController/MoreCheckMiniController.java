@@ -4,10 +4,12 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 
-public class MoreCheckMiniController implements MiniController{
+public class MoreCheckMiniController implements MiniController, Serializable {
+    private static final long serialVersionUID = 1L;
     List<Position> toCheck;
 
     @Override
