@@ -1,21 +1,16 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.MoveMessages.StandardMoveMessage;
 import it.polimi.ingsw.Message.PosMessage;
-import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Server.SocketClientConnection;
-import it.polimi.ingsw.View.View;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -49,7 +44,6 @@ class ControllerTest {
         List<Player> pList = createPlayer(new Artemis(), new Atlas());
         Model model = new Model(pList);
         controller = new Controller(model);
-        Tile t;
         r = new Receiver();
         s = new Sender();
         model.addObserver(r);
@@ -167,7 +161,7 @@ class ControllerTest {
     }
 
     @RepeatedTest(1000)
-    void handleActionTest(RepetitionInfo repetitionInfo)    {
+    void handleActionTest()    {
         Random random = new Random();
         int miavar = random.nextInt(3);
         Player player = null;
@@ -269,7 +263,6 @@ class ControllerTest {
         Position pos;
         Random random = new Random();
         int miavar = random.nextInt(3);
-        Tile t;
         PossiblePhases possiblePhases = null;
         PosMessage message;
         List<Position> list;

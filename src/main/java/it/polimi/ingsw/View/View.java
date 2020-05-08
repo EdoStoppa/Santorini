@@ -9,6 +9,19 @@ import it.polimi.ingsw.Server.ClientConnection;
 
 
 public class View extends Observable<PosMessage>  implements Observer<GameMessage> {
+
+    private class MessageReceiver implements Observer<String> {
+        @Override
+        public void update(String input) {
+            System.out.println("Received: " + input);
+            try {
+                ParseClientInput(input);
+            } catch (IllegalArgumentException e) {
+                clientConnection.asyncSend("Error!");
+            }
+        }
+    }
+
     private String idPlayer;
     private final Boolean isCli;
     private ClientConnection clientConnection;
@@ -17,6 +30,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
         this.idPlayer = id;
         this.isCli = CLI;
         this.clientConnection = clientConnection;
+        this.clientConnection.addObserver(new MessageReceiver());
     }
 
     public String getIdPlayer() {
@@ -30,8 +44,14 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
     public void ParseClientInput(String ClientMessage) {
         String[] cod = ClientMessage.split(" ");
         String[] pos = cod[1].split(",");
-        PosMessage clientInput = new PosMessage(cod[0], this.idPlayer, this, new Position(Integer.parseInt(pos[0]), Integer.parseInt(pos[1])));
-        notify(clientInput);
+        if(cod[0].equals("end"))   {
+            PosMessage clientInput = new PosMessage(cod[0],this.idPlayer, this, null);
+            notify(clientInput);
+        }
+        else    {
+            PosMessage clientInput = new PosMessage(cod[0], this.idPlayer, this, new Position(Integer.parseInt(pos[0]), Integer.parseInt(pos[1])));
+            notify(clientInput);
+        }
     }
 
 

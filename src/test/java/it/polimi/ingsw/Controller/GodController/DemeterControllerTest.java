@@ -65,7 +65,9 @@ class DemeterControllerTest {
         PosMessage posMessage;
         Position buildPos = new Position(2, 4);
         Position specBuildPos;
+        PossiblePhases possiblePhases;
         int i;
+
         if(repetitionInfo.getCurrentRepetition() == 1)  {
             constructionPos.add(new Position(4, 3));
             constructionPos.add(new Position(3, 3));
@@ -87,34 +89,27 @@ class DemeterControllerTest {
         model.nextPhase();
 
         demeterController.prepareSpecialBuild(model, controller);
-        assertTrue(r.receivedMessage instanceof CanEndTileMessage, "The message should be a CanEndTileMessage");
 
-        message = (CanEndTileMessage) r.receivedMessage;
-        toShow = message.getTileToShow();
+        if(repetitionInfo.getCurrentRepetition() == 2)  {
+            assertTrue(r.receivedMessage instanceof CanEndTileMessage, "The message should be a CanEndTileMessage");
 
-        if(repetitionInfo.getCurrentRepetition() == 1)  {
-            assertTrue(toShow.size() == 0, "The size should be 0");
-        }
-        else    {
+            message = (CanEndTileMessage) r.receivedMessage;
+            toShow = message.getTileToShow();
+
             assertTrue(toShow.size() == 3, "The size should be 3");
-        }
 
-        if(toShow.size() > 0)   {
             specBuildPos = toShow.get(0);
-        }
-        else    {
-            specBuildPos = null;
-        }
+            posMessage = new PosMessage("Boh", model.getCurrentPlayerId(), null, specBuildPos);
 
-        posMessage = new PosMessage("Boh", model.getCurrentPlayerId(), null, specBuildPos);
-        demeterController.handleSpecialBuild(model, controller, posMessage);
+            demeterController.handleSpecialBuild(model, controller, posMessage);
 
-        if(repetitionInfo.getCurrentRepetition() == 1)  {
-            assertNull(specBuildPos, "The position should be null");
-        }
-        else    {
             assertNotNull(specBuildPos, "The position should not be null");
             assertEquals(1, model.getConstructionLevel(specBuildPos), "The level should be 1");
+        }
+        else    {
+            possiblePhases = PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR;
+            assertTrue(possiblePhases.equals(model.getCurrentPhase()), "The phase should be the same");
+            assertEquals("due", model.getCurrentPlayerId(), "The current player should be the 2nd");
         }
     }
 
