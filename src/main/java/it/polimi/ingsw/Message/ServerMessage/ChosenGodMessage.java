@@ -7,18 +7,20 @@ import java.util.ArrayList;
 
 public class ChosenGodMessage extends ServerMessage {
     ArrayList<God> ChosenGod;
-    Integer size;
+    int size;
 
     public ChosenGodMessage(ArrayList<God> ChosenGod){
         this.ChosenGod=ChosenGod;
-        this.size=ChosenGod.size();
+        size=ChosenGod.size();
+            }
+
+    public God getChosenGod(int i) {
+
+        return ChosenGod.get(i);
     }
 
-    public ArrayList<God> getChosenGod() {
-        return ChosenGod;
-    }
-
-    public Integer getSize() {
+    public int getSize(){
         return size;
     }
+
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Observer.Observer;
@@ -20,11 +21,13 @@ public interface ClientConnection{
 
     String enterNewName(Map <String, ClientConnection> NameOpponent);
 
-    ArrayList<Integer> ChooseGod(int player);
+    ArrayList<God> ChooseGod(int player,PickGodMessage pickGodMessage);
 
     God PickGod(ChosenGodMessage chosenGodMessage);
 
     String ChooseFirstPlayer(OrderGameMessage orderGameMessage);
 
     Position FirstPlaceConstructor();
+
+    void EndCreation();
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
@@ -22,6 +21,8 @@ public class SocketClientConnection extends Observable<String> implements Client
     private ObjectOutputStream out;
     private Server server;
     private boolean active=true;
+    private boolean creation=true;
+
 
 
     public SocketClientConnection(Socket socket,Server server){
@@ -31,6 +32,15 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     private synchronized boolean isActive(){
         return active;
+    }
+
+    @Override
+    public void EndCreation() {
+        this.creation=false;
+    }
+
+    public synchronized boolean isCreation(){
+        return creation;
     }
 
 
@@ -61,21 +71,30 @@ public class SocketClientConnection extends Observable<String> implements Client
     @Override
     public void run() {
         Scanner in;
-        String name="";
-        Integer gameMode=0;
+        String name;
+        String gameMode = null;
         String read;
+
         try {in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send("welcome!\n 2 or 3 player mode");
-            gameMode=in.nextInt();
-            send(" Enter your name:");
-            while(name.equals("")){
-                name = in.nextLine();
+            read=in.nextLine();
+            gameMode=read;
+            while(Integer.parseInt(gameMode)!=2 && Integer.parseInt(gameMode)!=3 ) {
+                send("please enter a correct number of player");
+                read=in.nextLine();
+                gameMode=read;
             }
-            if (gameMode == 2) {
-                server.lobby2P(this, name);
+            send(" Enter your name:");
+            name = in.nextLine();
+            if (Integer.parseInt(gameMode) == 2) {
+                System.out.println("facciamo partire la lobby");
+                server.lobby2P(this,name);
             } else {
                 server.lobby3P(this, name);
+            }
+            while (isCreation()){
+
             }
             while (isActive()) {
                 read = in.nextLine();
@@ -85,7 +104,8 @@ public class SocketClientConnection extends Observable<String> implements Client
         }catch (IOException | NoSuchElementException e){
             System.err.println("Error!" + e.getMessage());
         }finally {
-            close(gameMode);
+            assert gameMode != null;
+            close(Integer.parseInt(gameMode));
         }
     }
 
@@ -106,38 +126,36 @@ public class SocketClientConnection extends Observable<String> implements Client
      */
     @Override
     public void asyncSend(final Object message) {
-        Thread thread = new Thread() {
-            public void run() {
-                try {
-                    out.reset();
-                    out.writeObject(message);
-                    out.flush();
-                } catch (IOException e) {
-                    System.err.println(e.getMessage());
-                }
+        Thread thread = new Thread(() -> {
+            try {
+                out.reset();
+                out.writeObject(message);
+                out.flush();
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
             }
-        };
+        });
         thread.start();
     }
-
     /**
      * the GodlikePlayer choose the God for this game
      * @param player number of player of the game
      * @return list of god chosen
      */
     @Override
-    public ArrayList<Integer> ChooseGod(int player){
-        ArrayList<Integer> pickGod=new ArrayList<>();
-        Integer i=0;
-        String pickPool;
+    public ArrayList<God> ChooseGod(int player,PickGodMessage pickGodMessage){
+        ArrayList<God> pickGod=new ArrayList<>();
+        int i=0;
         try{Scanner in = new Scanner(socket.getInputStream());
             this.asyncSend(new PickGodMessage());
-            pickPool=in.nextLine();
+            System.out.println("sto prendendo i numeri");
+            String pickPool=in.nextLine();
             String[] pick= pickPool.split(",");
+            System.out.println("sto prendendo i numeri");
             while (i<player){
-                pickGod.add(Integer.parseInt(pick[i]));
+                pickGod.add(pickGodMessage.GetGod(Integer.parseInt(pick[i])));
+                i++;
             }
-
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
@@ -147,19 +165,20 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     @Override
     public God PickGod(ChosenGodMessage chosenGodMessage){
-        int pick=0;
+        String pick=null;
         try{
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(chosenGodMessage);
-            pick=in.nextInt();
-            while (pick>chosenGodMessage.getSize()){
-             this.asyncSend("please enter a correct god's number");
-                pick=in.nextInt();
+            pick=in.nextLine();
+            while (Integer.parseInt(pick)>chosenGodMessage.getSize()){
+                this.asyncSend("please enter a correct god's number");
+                pick=in.nextLine();
             }
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
-        return chosenGodMessage.getChosenGod().get(pick);
+        assert pick != null;
+        return chosenGodMessage.getChosenGod(Integer.parseInt(pick));
     }
 
     /**
@@ -185,28 +204,22 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     @Override
     public String ChooseFirstPlayer(OrderGameMessage orderGameMessage){
-        String firstPlayer="";
-        Boolean check= true;
-        ArrayList<String> players= orderGameMessage.getPlayerlist();
-        Player notFirst;
+        String firstPlayer=null;
+        boolean check= true;
         try {
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(orderGameMessage);
-            while(firstPlayer.equals("")) {
-                firstPlayer = in.nextLine();
-            }
+            firstPlayer = in.nextLine();
             while(check){
-                for (int i=0;i<orderGameMessage.getSize();i++){
-                    if (firstPlayer.equals(orderGameMessage.getPlayerlist().get(i))){
-                       check= false;
+                for (int i=0;i<orderGameMessage.getPlayerlist().size();i++){
+                    if (firstPlayer.equals(orderGameMessage.getPlayerlist().get(i))) {
+                        check = false;
+                        break;
                     }
-                    }
-                if (check=true){
+                }
+                if (check){
                     asyncSend("enter a correct name player");
-                    firstPlayer="";
-                    while (firstPlayer.equals("")) {
-                        firstPlayer = in.nextLine();
-                    }
+                    firstPlayer = in.nextLine();
                 }
             }
 
@@ -214,7 +227,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             System.err.println(e.getMessage());
         }
 
-    return firstPlayer;
+        return firstPlayer;
     }
 
     @Override
@@ -222,15 +235,15 @@ public class SocketClientConnection extends Observable<String> implements Client
         String Pos="";
         String[] coordinates= new String[2];
         try {Scanner in= new Scanner(socket.getInputStream());
-        this.asyncSend(new PlaceFirstConstructorMessage());
-        while(Pos.equals("")){
-            Pos=in.nextLine();
-        }
-        coordinates=Pos.split(",");
+            this.asyncSend(new PlaceFirstConstructorMessage());
+            while(Pos.equals("")){
+                Pos=in.nextLine();
+            }
+            coordinates=Pos.split(",");
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
-    return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
+        return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }
 
 }
