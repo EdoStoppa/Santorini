@@ -7,8 +7,8 @@ import java.io.Serializable;
 public class ChosenMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
     int size;
-    public ChosenMiniController(int i){
-        this.size = i;
+    public ChosenMiniController(int size){
+        this.size = size;
     }
 
     @Override

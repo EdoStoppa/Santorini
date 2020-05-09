@@ -13,7 +13,7 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class Client {
+public abstract class Client {
     private String ip;
     private int port;
     private boolean active= true;
@@ -33,60 +33,9 @@ public class Client {
         this.active=active;
     }
 
-    public  Thread asyncReadFromSocket(final ObjectInputStream socketIn){
-        Thread t= new Thread(() -> {
-            try {
-                while(isActive()){
-                    Object inputObject = socketIn.readObject();
-                    if(inputObject instanceof String){
-                        System.out.println((String)inputObject);
-                    } else if (inputObject instanceof PickGodMessage){
-                        System.out.println("choose god for your game format of input [1,2]");
-                        for(int i=0;i<((PickGodMessage) inputObject).getSize();i++)
-                        System.out.println(i+") "+((PickGodMessage) inputObject).GetGod(i).getGodName()+"  "+
-                        ((PickGodMessage) inputObject).GetGod(i).getGodSubtitle()+"\n"+
-                        ((PickGodMessage) inputObject).GetGod(i).getGodPower()+"\n\n");
-                    } else if (inputObject instanceof ChosenGodMessage){
-                        System.out.println("choose your god and enter name of god [apollo]");
-                        for(int i=0;i<((ChosenGodMessage) inputObject).getSize();i++){
-                            System.out.println(i+") "+((PickGodMessage) inputObject).GetGod(i).getGodName()+"  "+
-                                    ((PickGodMessage) inputObject).GetGod(i).getGodSubtitle()+"\n"+
-                                    ((PickGodMessage) inputObject).GetGod(i).getGodPower()+"\n\n");
-                        }
-                    }else if (inputObject instanceof OrderGameMessage){
-                        System.out.println("choose the player who starts the game");
-                        for (int i=0;i<((OrderGameMessage) inputObject).getSize();i++){
-                            System.out.println(((OrderGameMessage) inputObject).getPlayerlist().get(i));
-                        }
-                    }
-                    {
-                        throw new  IllegalArgumentException();
-                    }
-                }
-            }catch (Exception e){
-                setActive(false);
-            }
+    public abstract Thread asyncReadFromSocket(final ObjectInputStream socketIn);
 
-        });
-    t.start();
-    return t;
-    }
-
-    public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
-        Thread t=new Thread(() -> {
-            try{
-                while (isActive()){
-                    String inputLine = stdin.nextLine();
-                    socketOut.println(inputLine);
-                    socketOut.flush();
-                }
-            }catch (Exception e){
-                setActive(false);
-            }
-        });
-        t.start();
-        return t;
-    }
+    public abstract Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut);
 
     public void run() throws IOException{
         Socket socket= new Socket(ip,port);

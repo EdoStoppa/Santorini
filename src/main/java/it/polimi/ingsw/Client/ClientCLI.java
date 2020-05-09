@@ -1,25 +1,25 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
-import it.polimi.ingsw.Controller.MiniController.MiniController;
+import it.polimi.ingsw.Controller.MiniController.*;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+import it.polimi.ingsw.Model.God;
 
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class ClientCLI extends Client{
+    String idPlayer = null;
     private MiniController miniController;
 
     public ClientCLI(String ip, int port) {
         super(ip, port);
-    }
-
-    public void setMiniController(MiniController miniController) {
-        this.miniController = miniController;
     }
 
     @Override
@@ -37,7 +37,6 @@ public class ClientCLI extends Client{
                             socketOut.flush();
                             playSpace.reset();
                             miniController = null;
-                            System.out.println("Choice accepted");
                         } else {
                             System.out.println(sBuilder);
                         }
@@ -61,8 +60,7 @@ public class ClientCLI extends Client{
                     Object inputObject = socketIn.readObject();
 
                     if(inputObject instanceof String){
-                        this.miniController = new BaseMiniController();
-                        System.out.println((String)inputObject);
+                        manageString((String)inputObject);
                     } else if (inputObject instanceof ServerMessage){
                         manageServerMessage((ServerMessage)inputObject);
                     } else if (inputObject instanceof GameMessage){
@@ -78,15 +76,40 @@ public class ClientCLI extends Client{
         return t;
     }
 
+    private void manageString(String input){
+        if(idPlayer == null){
+            if(!getName(input)){
+                this.miniController = new BaseMiniController();
+                System.out.println(input);
+            }
+        } else {
+            this.miniController = new BaseMiniController();
+            System.out.println(input);
+        }
+    }
+
     private void manageServerMessage(ServerMessage inputObject) {
 
+        /*if (inputObject instanceof PickGodMessage){
+            System.out.println("Please choose the correct number of gods writing their corresponding number (ex. 1,2)");
+            this.miniController = new PickGodMiniController(God.getAllGod().size(), 2);
+
+        } else if (inputObject instanceof ChosenGodMessage){
+            System.out.println("choose your god and enter his/her corresponding number");
+            this.miniController = new ChosenMiniController(2);
+
+        }else if (inputObject instanceof OrderGameMessage){
+            System.out.println("choose the player who starts the game");
+            this.miniController = new OrderMiniController(((OrderGameMessage)inputObject).getPlayerlist());
+        }*/
     }
 
     private void manageGameMessage(GameMessage inputObject) {
-        if(inputObject instanceof TileToShowMessage){
-            String[] isYouTurn = inputObject.getMessage().split(" ");
+        boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
+        inputObject.autoSetMessage(isMyTurn, true);
 
-            if(isYouTurn[0].equals("Choose")) {
+        if(inputObject instanceof TileToShowMessage){
+            if(isMyTurn) {
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
                 //System.out.println("Escape Sequence to wipe everything");
                 //inputObject.updatePlaySpace(playSpace);
@@ -99,9 +122,21 @@ public class ClientCLI extends Client{
             //inputObject.updatePlaySpace(playSpace);
             //System.out.println("Escape Sequence to wipe everything");
             playSpace.printPlaySpace();
-            if(!inputObject.getMessage().equals(HelpMessage.endedPhase))
+            if(!isMyTurn)
                 System.out.println(inputObject.getMessage());
         }
 
+    }
+
+    private boolean getName(String s){
+        String[] splitted = s.split(" ");
+
+        if(splitted.length == 2)
+            if(splitted[0].equals("Accepted")){
+                this.idPlayer = splitted[1];
+                return true;
+            }
+
+        return false;
     }
 }

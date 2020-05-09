@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private static final int PORT=12333;
+    private static final int PORT=12345;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, ClientConnection> waitingConnection2P = new HashMap<>();
