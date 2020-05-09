@@ -79,7 +79,7 @@ class ControllerTest {
         model.startGame();
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(500)
     void preparePhaseBasicTest(RepetitionInfo repetitionInfo)    {//Artemis as God
         assertTimeoutPreemptively(ofMillis(200), () ->  {
             List<Position> list = new ArrayList<>();
@@ -162,11 +162,12 @@ class ControllerTest {
         });
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(500)
     void handleActionTest()    {
-        assertTimeoutPreemptively(ofMillis(200), () ->  {
+        assertTimeoutPreemptively(ofMillis(500), () ->  {
             Random random = new Random();
             int miavar = random.nextInt(3);
+            System.out.println(miavar);
             Player player = null;
             if(miavar == 0)  {
                 for(Player p : controller.getModel().getListPlayer())   {
@@ -231,29 +232,38 @@ class ControllerTest {
                     }
                 }
                 Position pos = new Position(row, col);
-                while(controller.getModel().getOccupied(pos))  {
-                    if(currConsPos.getRow() < 3)    {
-                        row = currConsPos.getRow() + random.nextInt(2);
-                        if(currConsPos.getCol() < 3)    {
-                            col = currConsPos.getCol() + random.nextInt(2);
+                int cont = 0;
+                boolean check = true;
+                while(controller.getModel().getOccupied(pos) && check)  {
+                    if(cont < 10)   {
+                        if(currConsPos.getRow() < 3)    {
+                            row = currConsPos.getRow() + random.nextInt(2);
+                            if(currConsPos.getCol() < 3)    {
+                                col = currConsPos.getCol() + random.nextInt(2);
+                            }
+                            else    {
+                                col = currConsPos.getCol() - random.nextInt(2);
+                            }
                         }
                         else    {
-                            col = currConsPos.getCol() - random.nextInt(2);
+                            row = currConsPos.getRow() - random.nextInt(2);
+                            if(currConsPos.getCol() < 3)    {
+                                col = currConsPos.getCol() + random.nextInt(2);
+                            }
+                            else    {
+                                col = currConsPos.getCol() - random.nextInt(2);
+                            }
                         }
+                        pos = new Position(row, col);
+                        cont++;
                     }
                     else    {
-                        row = currConsPos.getRow() - random.nextInt(2);
-                        if(currConsPos.getCol() < 3)    {
-                            col = currConsPos.getCol() + random.nextInt(2);
-                        }
-                        else    {
-                            col = currConsPos.getCol() - random.nextInt(2);
-                        }
+                        check = false;
+                        System.out.println("All positions are already occupied");
                     }
-                    pos = new Position(row, col);
                 }
                 PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
-                if(!(controller.getModel().getConstructionLevel(pos) == 3 && controller.getModel().getDome(pos))) {
+                if(!(controller.getModel().getConstructionLevel(pos) == 3 && controller.getModel().getDome(pos)) && !check) {
                     controller.handleBuild(message);
                     assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
                     assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getLastBuildPos().getCol(), "The col should be the same");
@@ -262,7 +272,7 @@ class ControllerTest {
         });
     }
 
-    @RepeatedTest(1000)
+    @RepeatedTest(500)
     void updateTest()  {
         assertTimeoutPreemptively(ofMillis(200), () ->  {
             Position pos;
