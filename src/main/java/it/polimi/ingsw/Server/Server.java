@@ -183,25 +183,34 @@ public class Server {
         waitingConnection2P.clear();
         if (PlayerList.get(0).getIdPlayer().equals(playerGodLike.getIdPlayer())){
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent.FirstPlaceConstructor();
+            model.serverMove(playerOpponent.getAllConstructors().get(0),firstConstructor,playerOpponent.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent.FirstPlaceConstructor();
+            model.serverMove(playerOpponent.getAllConstructors().get(1),firstConstructor,playerOpponent.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());}
         else {
             firstConstructor=opponent.FirstPlaceConstructor();
+            model.serverMove(playerOpponent.getAllConstructors().get(0),firstConstructor,playerOpponent.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent.FirstPlaceConstructor();
+            model.serverMove(playerOpponent.getAllConstructors().get(1),firstConstructor,playerOpponent.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());}
         Goodlike.EndCreation();
         opponent.EndCreation();
-        //start model e controller
+        model.startGame();
+        controller.preparePhase();
     });
 
     Thread thread3P= new Thread(() -> {
@@ -286,48 +295,67 @@ public class Server {
         playingConnection3P.put(opponent2,Goodlike);
         if (PlayerList.get(0).getIdPlayer().equals(playerGodLike.getIdPlayer())){
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent1.FirstPlaceConstructor();
+            model.serverMove(playerOpponent1.getAllConstructors().get(0),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent1.FirstPlaceConstructor();
+            model.serverMove(playerOpponent1.getAllConstructors().get(1),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent2.FirstPlaceConstructor();
+            model.serverMove(playerOpponent2.getAllConstructors().get(0),firstConstructor,playerOpponent2.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent2.FirstPlaceConstructor();
+            model.serverMove(playerOpponent2.getAllConstructors().get(1),firstConstructor,playerOpponent2.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());}
         else if (PlayerList.get(1).getIdPlayer().equals(playerGodLike.getIdPlayer())){
             firstConstructor=opponent1.FirstPlaceConstructor();
+            model.serverMove(playerOpponent1.getAllConstructors().get(0),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent1.FirstPlaceConstructor();
+            model.serverMove(playerOpponent1.getAllConstructors().get(1),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent2.FirstPlaceConstructor();
+            model.serverMove(playerOpponent2.getAllConstructors().get(0),firstConstructor,playerOpponent2.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent2.FirstPlaceConstructor();
+            model.serverMove(playerOpponent2.getAllConstructors().get(1),firstConstructor,playerOpponent2.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());}
         else {
             firstConstructor=opponent2.FirstPlaceConstructor();
+            model.serverMove(playerOpponent2.getAllConstructors().get(0),firstConstructor,playerOpponent2.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent2.FirstPlaceConstructor();
+            model.serverMove(playerOpponent2.getAllConstructors().get(1),firstConstructor,playerOpponent2.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=Goodlike.FirstPlaceConstructor();
+            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent1.FirstPlaceConstructor();
+            model.serverMove(playerOpponent1.getAllConstructors().get(0),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
             firstConstructor=opponent1.FirstPlaceConstructor();
+            model.serverMove(playerOpponent1.getAllConstructors().get(1),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("inserito in posizone" + firstConstructor.getRow() + firstConstructor.getCol());
         }
         Goodlike.EndCreation();
         opponent1.EndCreation();
         opponent2.EndCreation();
-        //start model e controller
+        model.startGame();
+        controller.preparePhase();
     });
 
 
