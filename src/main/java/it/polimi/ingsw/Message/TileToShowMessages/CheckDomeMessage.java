@@ -12,9 +12,4 @@ public class CheckDomeMessage  extends TileToShowMessage {
         super(player, phase, list);
         this.miniController = new CheckDomeMiniController();
     }
-
-    @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
-    }
 }

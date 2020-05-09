@@ -3,10 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Controller.MiniController.*;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
-import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
-import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
-import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
-import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
+import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.God;
 
@@ -90,18 +87,20 @@ public class ClientCLI extends Client{
 
     private void manageServerMessage(ServerMessage inputObject) {
 
-        /*if (inputObject instanceof PickGodMessage){
-            System.out.println("Please choose the correct number of gods writing their corresponding number (ex. 1,2)");
-            this.miniController = new PickGodMiniController(God.getAllGod().size(), 2);
+        if (inputObject instanceof PickGodMessage){
+            System.out.println(inputObject.getMessage());
+            this.miniController = new PickGodMiniController(God.getAllGod().size(), ((PickGodMessage)inputObject).getNumPlayer());
 
         } else if (inputObject instanceof ChosenGodMessage){
-            System.out.println("choose your god and enter his/her corresponding number");
-            this.miniController = new ChosenMiniController(2);
-
-        }else if (inputObject instanceof OrderGameMessage){
-            System.out.println("choose the player who starts the game");
-            this.miniController = new OrderMiniController(((OrderGameMessage)inputObject).getPlayerlist());
-        }*/
+            System.out.println(inputObject.getMessage());
+            this.miniController = new ChosenMiniController(((ChosenGodMessage)inputObject).getNumPlayer());
+        }else if (inputObject instanceof OrderGameMessage) {
+            System.out.println(inputObject.getMessage());
+            this.miniController = new OrderMiniController(((OrderGameMessage) inputObject).getPlayerlist());
+        }else if (inputObject instanceof PlaceFirstConstructorMessage)  {
+            System.out.println(inputObject.getMessage());
+            this.miniController = new ServerMoveMiniController();
+        }
     }
 
     private void manageGameMessage(GameMessage inputObject) {
@@ -112,14 +111,14 @@ public class ClientCLI extends Client{
             if(isMyTurn) {
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
                 //System.out.println("Escape Sequence to wipe everything");
-                //inputObject.updatePlaySpace(playSpace);
+                inputObject.updatePlaySpace(playSpace);
                 playSpace.printPlaySpace();
             }
             System.out.println(inputObject.getMessage());
         } /*else if(inputObject instanceof WinMessage){
 
         }*/ else {
-            //inputObject.updatePlaySpace(playSpace);
+            inputObject.updatePlaySpace(playSpace);
             //System.out.println("Escape Sequence to wipe everything");
             playSpace.printPlaySpace();
             if(!isMyTurn)

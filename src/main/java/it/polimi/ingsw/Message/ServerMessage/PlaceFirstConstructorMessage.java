@@ -8,5 +8,8 @@ public class PlaceFirstConstructorMessage extends ServerMessage {
         this.miniController= new ServerMoveMiniController();
     }
 
-
+    @Override
+    public String getMessage() {
+        return "Choose where to place your constructor typing the position (ex. 2,2)\n";
+    }
 }

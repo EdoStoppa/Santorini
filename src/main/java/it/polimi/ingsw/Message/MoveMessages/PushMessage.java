@@ -21,9 +21,4 @@ public class PushMessage extends MoveMessage {
 
         setMessage(text);
     }
-
-    @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
-    }
 }

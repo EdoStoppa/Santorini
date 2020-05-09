@@ -26,9 +26,4 @@ public class CanEndTileMessage extends TileToShowMessage {
 
         setMessage(text);
     }
-
-    @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
-    }
 }

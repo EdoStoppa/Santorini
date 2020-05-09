@@ -19,11 +19,9 @@ public abstract class BuildMessage extends GameMessage implements Serializable{
         return this.buildingMatrix;
     }
 
-    /*@Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
+    @Override
+    public void updatePlaySpace(PlaySpace playSpace) {
         playSpace.setBuildingMatrix(getBuildingMatrix());
-
-        playSpace.reset();
-    }*/
+    }
 
 }

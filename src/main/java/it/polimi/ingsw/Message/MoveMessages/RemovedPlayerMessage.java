@@ -20,9 +20,4 @@ public class RemovedPlayerMessage extends MoveMessage {
 
         setMessage(text);
     }
-
-    @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
-    }
 }

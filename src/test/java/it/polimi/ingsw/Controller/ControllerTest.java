@@ -10,11 +10,11 @@ import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
@@ -81,154 +81,137 @@ class ControllerTest {
 
     @RepeatedTest(1000)
     void preparePhaseBasicTest(RepetitionInfo repetitionInfo)    {//Artemis as God
-        List<Position> list = new ArrayList<>();
-        Player player = null;
-        Random random = new Random();
-        int miavar = random.nextInt(3);
+        assertTimeoutPreemptively(ofMillis(200), () ->  {
+            List<Position> list = new ArrayList<>();
+            Player player = null;
+            Random random = new Random();
+            int miavar = random.nextInt(3);
 
-        if(miavar == 0)    {//CHOOSE_CONSTRUCTOR
-            for(Player p : controller.getModel().getListPlayer())   {
-                if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))   {
-                    player = p;
-                    break;
+            if(miavar == 0)    {//CHOOSE_CONSTRUCTOR
+                for(Player p : controller.getModel().getListPlayer())   {
+                    if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))   {
+                        player = p;
+                        break;
+                    }
+                }
+                for(Constructor c : player.getAllConstructors())    {
+                    System.out.println(c.getCanMove());
+                    if(c.getCanMove())  {
+                        System.out.println(c.getPos().toString());
+                        list.add(c.getPos());
+                    }
+                }
+                System.out.println(controller.getModel().getCurrentPhase());
+                System.out.println(controller.getModel().isLastStanding());
+                System.out.println(controller.getModel().isLosing(player));
+                controller.preparePhase();
+                if(r.receivedMessage instanceof TileToShowMessage)  {
+                    List<Position> receivedList = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                    assertEquals(list.size(), receivedList.size(), "The size should be the same");
+                    for(int i = 0; i < receivedList.size(); i++)    {
+                        System.out.println(receivedList.get(i).toString());
+                        assertEquals(list.get(i).getRow(), receivedList.get(i).getRow(), "The row should be the same");
+                        assertEquals(list.get(i).getCol(), receivedList.get(i).getCol(), "The col should be the same");
+                    }
                 }
             }
-            for(Constructor c : player.getAllConstructors())    {
-                System.out.println(c.getCanMove());
-                if(c.getCanMove())  {
-                    System.out.println(c.getPos().toString());
-                    list.add(c.getPos());
+            if(miavar == 1)  {//MOVE
+                controller.getModel().nextPhase();
+                for(Player p : controller.getModel().getListPlayer()) {
+                    if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
+                        player = p;
+                        break;
+                    }
+                }
+                controller.getModel().createPossibleMovePos(null, null);
+                list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                System.out.println(list.size());
+                controller.preparePhase();
+                if(r.receivedMessage instanceof TileToShowMessage)  {
+                    List<Position> receivedList = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                    assertEquals(list.size(), receivedList.size(), "The size should be the same");
+                    for(int i = 0; i < receivedList.size(); i++)    {
+                        assertEquals(list.get(i).getRow(), receivedList.get(i).getRow(), "The row should be the same");
+                        assertEquals(list.get(i).getCol(), receivedList.get(i).getCol(), "The col should be the same");
+                    }
                 }
             }
-            System.out.println(controller.getModel().getCurrentPhase());
-            System.out.println(controller.getModel().isLastStanding());
-            System.out.println(controller.getModel().isLosing(player));
-            controller.preparePhase();
-            if(r.receivedMessage instanceof TileToShowMessage)  {
-                List<Position> receivedList = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                assertEquals(list.size(), receivedList.size(), "The size should be the same");
-                for(int i = 0; i < receivedList.size(); i++)    {
-                    System.out.println(receivedList.get(i).toString());
-                    assertEquals(list.get(i).getRow(), receivedList.get(i).getRow(), "The row should be the same");
-                    assertEquals(list.get(i).getCol(), receivedList.get(i).getCol(), "The col should be the same");
+            if(miavar == 2)  {//BUILD
+                controller.getModel().nextPhase();
+                controller.getModel().nextPhase();
+                controller.getModel().nextPhase();
+                for(Player p : controller.getModel().getListPlayer()) {
+                    if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
+                        player = p;
+                        break;
+                    }
+                }
+                controller.getModel().createPossibleBuildPos(null, null);
+                list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                System.out.println(list.size());
+                controller.preparePhase();
+                if(r.receivedMessage instanceof TileToShowMessage)  {
+                    List<Position> receivedList = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                    assertEquals(list.size(), receivedList.size(), "The size should be the same");
+                    for(int i = 0; i < receivedList.size(); i++)    {
+                        assertEquals(list.get(i).getRow(), receivedList.get(i).getRow(), "The row should be the same");
+                        assertEquals(list.get(i).getCol(), receivedList.get(i).getCol(), "The col should be the same");
+                    }
                 }
             }
-        }
-        if(miavar == 1)  {//MOVE
-            controller.getModel().nextPhase();
-            for(Player p : controller.getModel().getListPlayer()) {
-                if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
-                    player = p;
-                    break;
-                }
-            }
-            controller.getModel().createPossibleMovePos(null, null);
-            list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-            System.out.println(list.size());
-            controller.preparePhase();
-            if(r.receivedMessage instanceof TileToShowMessage)  {
-                List<Position> receivedList = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                assertEquals(list.size(), receivedList.size(), "The size should be the same");
-                for(int i = 0; i < receivedList.size(); i++)    {
-                    assertEquals(list.get(i).getRow(), receivedList.get(i).getRow(), "The row should be the same");
-                    assertEquals(list.get(i).getCol(), receivedList.get(i).getCol(), "The col should be the same");
-                }
-            }
-        }
-        if(miavar == 2)  {//BUILD
-            controller.getModel().nextPhase();
-            controller.getModel().nextPhase();
-            controller.getModel().nextPhase();
-            for(Player p : controller.getModel().getListPlayer()) {
-                if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
-                    player = p;
-                    break;
-                }
-            }
-            controller.getModel().createPossibleBuildPos(null, null);
-            list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-            System.out.println(list.size());
-            controller.preparePhase();
-            if(r.receivedMessage instanceof TileToShowMessage)  {
-                List<Position> receivedList = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                assertEquals(list.size(), receivedList.size(), "The size should be the same");
-                for(int i = 0; i < receivedList.size(); i++)    {
-                    assertEquals(list.get(i).getRow(), receivedList.get(i).getRow(), "The row should be the same");
-                    assertEquals(list.get(i).getCol(), receivedList.get(i).getCol(), "The col should be the same");
-                }
-            }
-        }
+        });
     }
 
     @RepeatedTest(1000)
     void handleActionTest()    {
-        Random random = new Random();
-        int miavar = random.nextInt(3);
-        Player player = null;
-        if(miavar == 0)  {
-            for(Player p : controller.getModel().getListPlayer())   {
-                if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
-                    player = p;
-                    break;
+        assertTimeoutPreemptively(ofMillis(200), () ->  {
+            Random random = new Random();
+            int miavar = random.nextInt(3);
+            Player player = null;
+            if(miavar == 0)  {
+                for(Player p : controller.getModel().getListPlayer())   {
+                    if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
+                        player = p;
+                        break;
+                    }
                 }
+                PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, player.getAllConstructors().get(1).getPos());
+                controller.handleChooseConstructor(message);
+                assertEquals(player.getAllConstructors().get(1).getPos().getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(),"The row should be the same");
+                assertEquals(player.getAllConstructors().get(1).getPos().getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(),"The col should be the same");
             }
-            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, player.getAllConstructors().get(1).getPos());
-            controller.handleChooseConstructor(message);
-            assertEquals(player.getAllConstructors().get(1).getPos().getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(),"The row should be the same");
-            assertEquals(player.getAllConstructors().get(1).getPos().getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(),"The col should be the same");
-        }
-        if(miavar == 1)  {
-            controller.getModel().nextPhase();
-            for(Player p : controller.getModel().getListPlayer())   {
-                if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
-                    player = p;
-                    break;
+            if(miavar == 1)  {
+                controller.getModel().nextPhase();
+                for(Player p : controller.getModel().getListPlayer())   {
+                    if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
+                        player = p;
+                        break;
+                    }
                 }
+                Position pos = new Position(random.nextInt(5), random.nextInt(5));
+                Tile t = new Tile(pos);
+                while(t.getOccupied())  {
+                    pos = new Position(random.nextInt(5), random.nextInt(5));
+                    t = new Tile(pos);
+                }
+                PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
+                controller.handleMove(message);
+                assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(), "The row should be the same");
+                assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col should be the same");
             }
-            Position pos = new Position(random.nextInt(5), random.nextInt(5));
-            Tile t = new Tile(pos);
-            while(t.getOccupied())  {
-                pos = new Position(random.nextInt(5), random.nextInt(5));
-                t = new Tile(pos);
-            }
-            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
-            controller.handleMove(message);
-            assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(), "The row should be the same");
-            assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col should be the same");
-        }
-        if(miavar == 2)  {
-            int row;
-            int col;
-            Position currConsPos = controller.getModel().getCurrentConstructor().getPos();
-            controller.getModel().nextPhase();
-            controller.getModel().nextPhase();
-            controller.getModel().nextPhase();
-            for(Player p : controller.getModel().getListPlayer())   {
-                if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
-                    player = p;
-                    break;
+            if(miavar == 2)  {
+                int row;
+                int col;
+                Position currConsPos = controller.getModel().getCurrentConstructor().getPos();
+                controller.getModel().nextPhase();
+                controller.getModel().nextPhase();
+                controller.getModel().nextPhase();
+                for(Player p : controller.getModel().getListPlayer())   {
+                    if(p.getIdPlayer().equals(controller.getModel().getCurrentPlayerId()))  {
+                        player = p;
+                        break;
+                    }
                 }
-            }
-            if(currConsPos.getRow() < 3)    {
-                row = currConsPos.getRow() + random.nextInt(2);
-                if(currConsPos.getCol() < 3)    {
-                    col = currConsPos.getCol() + random.nextInt(2);
-                }
-                else    {
-                    col = currConsPos.getCol() - random.nextInt(2);
-                }
-            }
-            else    {
-                row = currConsPos.getRow() - random.nextInt(2);
-                if(currConsPos.getCol() < 3)    {
-                    col = currConsPos.getCol() + random.nextInt(2);
-                }
-                else    {
-                    col = currConsPos.getCol() - random.nextInt(2);
-                }
-            }
-            Position pos = new Position(row, col);
-            while(controller.getModel().getOccupied(pos))  {
                 if(currConsPos.getRow() < 3)    {
                     row = currConsPos.getRow() + random.nextInt(2);
                     if(currConsPos.getCol() < 3)    {
@@ -247,91 +230,114 @@ class ControllerTest {
                         col = currConsPos.getCol() - random.nextInt(2);
                     }
                 }
-                pos = new Position(row, col);
+                Position pos = new Position(row, col);
+                while(controller.getModel().getOccupied(pos))  {
+                    if(currConsPos.getRow() < 3)    {
+                        row = currConsPos.getRow() + random.nextInt(2);
+                        if(currConsPos.getCol() < 3)    {
+                            col = currConsPos.getCol() + random.nextInt(2);
+                        }
+                        else    {
+                            col = currConsPos.getCol() - random.nextInt(2);
+                        }
+                    }
+                    else    {
+                        row = currConsPos.getRow() - random.nextInt(2);
+                        if(currConsPos.getCol() < 3)    {
+                            col = currConsPos.getCol() + random.nextInt(2);
+                        }
+                        else    {
+                            col = currConsPos.getCol() - random.nextInt(2);
+                        }
+                    }
+                    pos = new Position(row, col);
+                }
+                PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
+                if(!(controller.getModel().getConstructionLevel(pos) == 3 && controller.getModel().getDome(pos))) {
+                    controller.handleBuild(message);
+                    assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
+                    assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getLastBuildPos().getCol(), "The col should be the same");
+                }
             }
-            PosMessage message = new PosMessage("Boh", player.getIdPlayer(), null, pos);
-            if(!(controller.getModel().getConstructionLevel(pos) == 3 && controller.getModel().getDome(pos))) {
-                controller.handleBuild(message);
-                assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getLastBuildPos().getRow(), "The row should be the same");
-                assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getLastBuildPos().getCol(), "The col should be the same");
-            }
-        }
+        });
     }
 
     @RepeatedTest(1000)
     void updateTest()  {
-        Position pos;
-        Random random = new Random();
-        int miavar = random.nextInt(3);
-        PossiblePhases possiblePhases = null;
-        PosMessage message;
-        List<Position> list;
-        Player player = null;
-        for(Player p : controller.getModel().getListPlayer())    {
-            if(controller.getModel().getCurrentConstructor().getPlayerNumber() == p.getPlayerNumber())  {
-                player = p;
-                break;
+        assertTimeoutPreemptively(ofMillis(200), () ->  {
+            Position pos;
+            Random random = new Random();
+            int miavar = random.nextInt(3);
+            PossiblePhases possiblePhases = null;
+            PosMessage message;
+            List<Position> list;
+            Player player = null;
+            for(Player p : controller.getModel().getListPlayer())    {
+                if(controller.getModel().getCurrentConstructor().getPlayerNumber() == p.getPlayerNumber())  {
+                    player = p;
+                    break;
+                }
             }
-        }
-        if(miavar == 0)  {//CHOOSE_CONSTRUCTOR
-            pos = player.getAllConstructors().get(1).getPos();
-            message = new PosMessage("standard", player.getIdPlayer(), null, pos);
-            s.forceNotify(message);
-            possiblePhases = PossiblePhases.MOVE;
-            assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_CHOOSE_CONSTRUCTOR");
-            assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(), "The row should be the same");
-            assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col shoul be the same");
-        }
-        if(miavar == 1)  {//MOVE
-            controller.getModel().nextPhase();
-            controller.getModel().createPossibleMovePos(null, null);
-            list = ((StandardTileMessage) r.receivedMessage).getTileToShow();
-            if(list.size() > 0) {
-                message = new PosMessage("standard", player.getIdPlayer(), null, list.get(0));
+            if(miavar == 0)  {//CHOOSE_CONSTRUCTOR
+                pos = player.getAllConstructors().get(1).getPos();
+                message = new PosMessage("standard", player.getIdPlayer(), null, pos);
                 s.forceNotify(message);
-               if(!controller.getModel().checkWin())    {
-                   assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be CanEndTile");
-                   controller.getModel().createPossibleMovePos(null, null);
-                   list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                   if(list.size() == 1 && list.get(0).equals(controller.getModel().getCurrentConstructor().getPrevPos()))   {
-                       possiblePhases = possiblePhases.BUILD;
-                   }
-                   else    {
-                       possiblePhases = possiblePhases.SPECIAL_MOVE;
-                   }
-                   assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_MOVE");
-               }
+                possiblePhases = PossiblePhases.MOVE;
+                assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_CHOOSE_CONSTRUCTOR");
+                assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(), "The row should be the same");
+                assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col shoul be the same");
             }
-        }
-        if(miavar == 3) {//BUILD
-            controller.getModel().nextPhase();
-            controller.getModel().nextPhase();
-            controller.getModel().nextPhase();
-            controller.getModel().createPossibleBuildPos(null, null);
-            list = ((StandardTileMessage) r.receivedMessage).getTileToShow();
-            if (list.size() > 0) {
-                message = new PosMessage("standard", player.getIdPlayer(), null, list.get(0));
-                s.forceNotify(message);
-                assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be a TileToShow");
-                possiblePhases = PossiblePhases.CHOOSE_CONSTRUCTOR;
-                assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "This should be the first phase of Atlas");
-                list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                for(Player p : controller.getModel().getListPlayer())   {
-                    if(!p.equals(player))   {
-                        player = p;
-                        break;
+            if(miavar == 1)  {//MOVE
+                controller.getModel().nextPhase();
+                controller.getModel().createPossibleMovePos(null, null);
+                list = ((StandardTileMessage) r.receivedMessage).getTileToShow();
+                if(list.size() > 0) {
+                    message = new PosMessage("standard", player.getIdPlayer(), null, list.get(0));
+                    s.forceNotify(message);
+                    if(!controller.getModel().checkWin())    {
+                        assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be CanEndTile");
+                        controller.getModel().createPossibleMovePos(null, null);
+                        list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                        if(list.size() == 1 && list.get(0).equals(controller.getModel().getCurrentConstructor().getPrevPos()))   {
+                            possiblePhases = possiblePhases.BUILD;
+                        }
+                        else    {
+                            possiblePhases = possiblePhases.SPECIAL_MOVE;
+                        }
+                        assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_MOVE");
                     }
                 }
-                int i = 0;
-                for(Constructor c : player.getAllConstructors())    {
-                    System.out.println(c.getPos().toString());
-                    System.out.println(list.get(i).toString());
-                    assertEquals(c.getPos().getRow(), list.get(i).getRow(), "The row should be the same");
-                    assertEquals(c.getPos().getCol(), list.get(i).getCol(), "The col should be the same");
-                    i++;
+            }
+            if(miavar == 3) {//BUILD
+                controller.getModel().nextPhase();
+                controller.getModel().nextPhase();
+                controller.getModel().nextPhase();
+                controller.getModel().createPossibleBuildPos(null, null);
+                list = ((StandardTileMessage) r.receivedMessage).getTileToShow();
+                if (list.size() > 0) {
+                    message = new PosMessage("standard", player.getIdPlayer(), null, list.get(0));
+                    s.forceNotify(message);
+                    assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be a TileToShow");
+                    possiblePhases = PossiblePhases.CHOOSE_CONSTRUCTOR;
+                    assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "This should be the first phase of Atlas");
+                    list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
+                    for(Player p : controller.getModel().getListPlayer())   {
+                        if(!p.equals(player))   {
+                            player = p;
+                            break;
+                        }
+                    }
+                    int i = 0;
+                    for(Constructor c : player.getAllConstructors())    {
+                        System.out.println(c.getPos().toString());
+                        System.out.println(list.get(i).toString());
+                        assertEquals(c.getPos().getRow(), list.get(i).getRow(), "The row should be the same");
+                        assertEquals(c.getPos().getCol(), list.get(i).getCol(), "The col should be the same");
+                        i++;
+                    }
                 }
             }
-        }
+        });
     }
 
     private List<Player> createPlayer(God p1God, God p2God) {

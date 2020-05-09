@@ -19,10 +19,8 @@ public abstract class MoveMessage extends GameMessage implements Serializable{
         return this.constructorMatrix;
     }
 
-    /*@Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-        playSpace.setConstructorMatrix(getConstructorMatrix());
 
-        playSpace.reset();
-    }*/
+    public void updatePlaySpace(PlaySpace playSpace) {
+        playSpace.setConstructorMatrix(getConstructorMatrix());
+    }
 }

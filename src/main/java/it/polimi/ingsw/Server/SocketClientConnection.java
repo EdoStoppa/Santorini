@@ -147,7 +147,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         ArrayList<God> pickGod=new ArrayList<>();
         int i=0;
         try{Scanner in = new Scanner(socket.getInputStream());
-            this.asyncSend(new PickGodMessage());
+            this.asyncSend(new PickGodMessage(player));
             System.out.println("sto prendendo i numeri");
             String pickPool=in.nextLine();
             String[] pick= pickPool.split(",");

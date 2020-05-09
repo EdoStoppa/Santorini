@@ -40,4 +40,8 @@ public abstract class TileToShowMessage extends GameMessage implements Serializa
     public MiniController getMiniController(){
         return this.miniController;
     }
+
+    public void updatePlaySpace(PlaySpace playSpace)    {
+        playSpace.setTileToShow(getTileToShow());
+    };
 }

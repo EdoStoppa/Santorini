@@ -21,9 +21,4 @@ public class StandardBuildMessage extends BuildMessage {
 
         setMessage(text);
     }
-
-    @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
-    }
 }

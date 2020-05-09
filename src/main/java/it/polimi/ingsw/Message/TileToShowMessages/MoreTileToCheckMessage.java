@@ -35,7 +35,7 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
     }
 
     @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
+    public void updatePlaySpace(PlaySpace playSpace)    {
+        playSpace.setTileToCheck(getSpecialList());
     }
 }

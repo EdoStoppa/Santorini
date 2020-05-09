@@ -12,9 +12,4 @@ public class StandardTileMessage extends TileToShowMessage {
         super(player, phase, list);
         miniController = new StandardMiniController();
     }
-
-    @Override
-    public void updatePlaySpace(PlaySpace playSpace, boolean isMyTurn) {
-
-    }
 }

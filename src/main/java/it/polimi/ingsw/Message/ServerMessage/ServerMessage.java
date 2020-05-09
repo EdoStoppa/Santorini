@@ -12,4 +12,5 @@ public abstract class ServerMessage implements Serializable {
         return miniController;
     }
 
+    public abstract String getMessage();
 }

@@ -149,9 +149,9 @@ public class Server {
             playerGodLike = new Player(keys.get(1), 1);
             playerOpponent = new Player(keys.get(0), 2);
         }
-        ChosenGod=Goodlike.ChooseGod(2,new PickGodMessage());
+        ChosenGod=Goodlike.ChooseGod(2,new PickGodMessage(2));
         System.out.println("playerGodLike ha scelto"+ChosenGod.get(0).getGodName()+"  "+ChosenGod.get(1).getGodName());
-        God GodChosen = opponent.PickGod(new ChosenGodMessage(ChosenGod));
+        God GodChosen = opponent.PickGod(new ChosenGodMessage(ChosenGod, 2));
         playerOpponent.setGod(GodChosen);
         System.out.println("player2 ha scelto"+GodChosen.getGodName() );
         if (GodChosen.getGodName().equals(ChosenGod.get(0).getGodName())) {
@@ -245,9 +245,9 @@ public class Server {
             playerOpponent1 = new Player(keys.get(0), 2);
             playerOpponent2= new Player(keys.get(1),3);
         }
-        ChosenGod=Goodlike.ChooseGod(3,new PickGodMessage());
+        ChosenGod=Goodlike.ChooseGod(3,new PickGodMessage(3));
         System.out.println("playerGodLike ha scelto"+ChosenGod.get(0).getGodName()+"  "+ChosenGod.get(1).getGodName()+" "+ChosenGod.get(2).getGodName());
-        God GodChosen = opponent1.PickGod(new ChosenGodMessage(ChosenGod));
+        God GodChosen = opponent1.PickGod(new ChosenGodMessage(ChosenGod, 3));
         playerOpponent1.setGod(GodChosen);
         System.out.println("opponent ha scelto"+GodChosen.getGodName() );
         for(int i=0;i<3;i++){
@@ -256,7 +256,7 @@ public class Server {
                 break;
             }
         }
-        GodChosen = opponent2.PickGod(new ChosenGodMessage(ChosenGod));
+        GodChosen = opponent2.PickGod(new ChosenGodMessage(ChosenGod, 2));
         playerOpponent2.setGod(GodChosen);
         System.out.println("player3 ha scelto: "+GodChosen.getGodName() );
         if (GodChosen.getGodName().equals(ChosenGod.get(0).getGodName())) {
