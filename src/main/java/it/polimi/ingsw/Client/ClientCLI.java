@@ -1,8 +1,10 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.MiniController.*;
+import it.polimi.ingsw.Message.BuildMessages.BuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.God;
@@ -23,22 +25,25 @@ public class ClientCLI extends Client{
     public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
         Thread t=new Thread(() -> {
             try{
+
                 StringBuilder sBuilder = new StringBuilder();
-                while (isActive()){
+                while (isActive()) {
                     String inputLine = stdin.nextLine();
-                    if(this.miniController != null){
-                        sBuilder.delete(0, 100);
-                        sBuilder.append("Sorry, your choice is invalid. Please try again");
-                        if(this.miniController.checkPos(inputLine, playSpace, sBuilder)){
-                            socketOut.println(this.miniController.getMessage(inputLine));
-                            socketOut.flush();
-                            playSpace.reset();
-                            miniController = null;
+                    synchronized(this){
+                        if (this.miniController != null) {
+                            sBuilder.delete(0, 100);
+                            sBuilder.append("Sorry, your choice is invalid. Please try again");
+                            if (this.miniController.checkPos(inputLine, playSpace, sBuilder)) {
+                                socketOut.println(this.miniController.getMessage(inputLine));
+                                socketOut.flush();
+                                playSpace.reset();
+                                miniController = null;
+                            } else {
+                                System.out.println(sBuilder);
+                            }
                         } else {
-                            System.out.println(sBuilder);
+                            System.out.println("Now you can't make a move. Please wait");
                         }
-                    } else {
-                        System.out.println("Now you can't make a move. Please wait");
                     }
                 }
             }catch (Exception e){
@@ -56,12 +61,14 @@ public class ClientCLI extends Client{
                 while(isActive()){
                     Object inputObject = socketIn.readObject();
 
-                    if(inputObject instanceof String){
-                        manageString((String)inputObject);
-                    } else if (inputObject instanceof ServerMessage){
-                        manageServerMessage((ServerMessage)inputObject);
-                    } else if (inputObject instanceof GameMessage){
-                        manageGameMessage((GameMessage)inputObject);
+                    synchronized(this){
+                        if(inputObject instanceof String){
+                            manageString((String)inputObject);
+                        } else if (inputObject instanceof ServerMessage){
+                            manageServerMessage((ServerMessage)inputObject);
+                        } else if (inputObject instanceof GameMessage){
+                            manageGameMessage((GameMessage)inputObject);
+                        }
                     }
                 }
             }catch (Exception e){
@@ -117,12 +124,14 @@ public class ClientCLI extends Client{
             System.out.println(inputObject.getMessage());
         } /*else if(inputObject instanceof WinMessage){
 
-        }*/ else {
+        }*/ else if(inputObject instanceof BuildMessage || inputObject instanceof MoveMessage) {
             inputObject.updatePlaySpace(playSpace);
             //System.out.println("Escape Sequence to wipe everything");
             playSpace.printPlaySpace();
             if(!isMyTurn)
                 System.out.println(inputObject.getMessage());
+        } else {
+            System.out.println("\n\n\n\n" + inputObject.getMessage());
         }
 
     }

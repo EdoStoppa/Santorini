@@ -2,6 +2,7 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.PosMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
@@ -57,6 +58,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
 
     @Override
     public void update(GameMessage message) {
+        System.out.println(message.getIdPlayer() + ", " + message.getPhase() + ": " + message.getClass() + (message instanceof TileToShowMessage? ((TileToShowMessage)message).getTileToShow().size() : ""));
         SendToClient(message);
     }
 }

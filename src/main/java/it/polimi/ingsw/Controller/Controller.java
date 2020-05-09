@@ -38,10 +38,12 @@ public class Controller implements Observer<PosMessage> {
      * @param message the message arrived from a view
      */
     public void handleAction(PosMessage message) {
+        System.out.println("Started handleAction");
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
                 handleChooseConstructor(message);
+                break;
             case SPECIAL_CHOOSE_CONSTRUCTOR:
                 GodController chooseGodController = model.getCurrentPlayerController();
                 chooseGodController.handleSpecialChooseConstructor(model, this, message);
@@ -91,6 +93,7 @@ public class Controller implements Observer<PosMessage> {
      * </p>
      */
     public void preparePhase() {
+        System.out.println("Started PreparePhase");
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
@@ -99,6 +102,7 @@ public class Controller implements Observer<PosMessage> {
             case SPECIAL_CHOOSE_CONSTRUCTOR:
                 GodController chooseGodController = model.getCurrentPlayerController();
                 chooseGodController.prepareSpecialChooseConstructor(model, this);
+                break;
             case MOVE:
                 prepareMove();
                 break;
