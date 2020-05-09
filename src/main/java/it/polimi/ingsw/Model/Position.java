@@ -1,10 +1,13 @@
 package it.polimi.ingsw.Model;
 
+import java.io.Serializable;
+
 /**This is an helper class used to represent the <em>Position</em> of
  * <em>Tiles</em> or any <em>Constructor</em>
  */
 
-public class Position implements Cloneable{
+public class Position implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
     private final int row;
     private final int col;
 

@@ -21,7 +21,7 @@ public class PickGodMessage extends ServerMessage {
         String message = "Choose " + numPlayer + " gods that will be in the match by typing the corresponding number\n\n";
         int i = 0;
         for(God god : AllGod)   {
-            message = message + i + ") " + god.getGodName() + " - " + god.getGodSubtitle() +"\n" + god.getGodPower() + "\n\n";
+            message = message + i + ") " + god.getGodName() + " - " + god.getGodSubtitle() +"\n" + god.getGodPower() + "\n";
             i++;
         }
         return message;

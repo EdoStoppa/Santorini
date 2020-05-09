@@ -24,6 +24,6 @@ public class OrderGameMessage extends ServerMessage{
         for(String string : Playerlist)   {
             message = message + "- " + string + "\n";
         }
-        return message + "\n";
+        return message;
     }
 }

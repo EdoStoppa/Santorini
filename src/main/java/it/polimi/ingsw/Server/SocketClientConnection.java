@@ -128,11 +128,13 @@ public class SocketClientConnection extends Observable<String> implements Client
     public void asyncSend(final Object message) {
         Thread thread = new Thread(() -> {
             try {
-                out.reset();
-                out.writeObject(message);
-                out.flush();
+                synchronized(this){
+                    out.reset();
+                    out.writeObject(message);
+                    out.flush();
+                }
             } catch (IOException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
         });
         thread.start();

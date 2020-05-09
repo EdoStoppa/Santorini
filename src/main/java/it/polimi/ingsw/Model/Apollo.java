@@ -51,14 +51,14 @@ public class Apollo extends God {
                 if (board.getTile(position).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
                     if(board.getTile(c.getPos()).getConstructionLevel()+1 >= board.getTile(position).getConstructionLevel()){
                         Tile occTile = model.getBoard().getTile(position);
-                        if(model.getBoard().possibleBuild(occTile.getActualConstructor()).size() >= 1)
+                        if(model.getBoard().possibleBuild(occTile.getActualConstructor()).size() >= 1 || occTile.getConstructionLevel() == 3)
                             numEnemyOcc += 1;
                     }
                 }
             }
 
-            //if there is at least one standard move or at least one enemy's occupied position
-            //setCanMove to true
+            //if there is at least one standard move or at least one enemy's occupied position where is possible to build
+            //or the occupied position is a level 3, then setCanMove to true
             c.setCanMove(listMove.size() != 0 || numEnemyOcc != 0);
 
         }
