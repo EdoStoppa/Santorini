@@ -25,7 +25,7 @@ public class ChosenMiniController implements MiniController, Serializable {
             }
 
 
-            if(nGod>0 && nGod<=size)
+            if(nGod>=0 && nGod<size)
                 return true;
             else{
                 build(stringBuilder);

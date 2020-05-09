@@ -21,7 +21,7 @@ public class ChosenGodMessage extends ServerMessage {
 
     @Override
     public String getMessage() {
-        String message = "Choose your god by typing the corresponding number";
+        String message = "Choose your god by typing the corresponding number\n\n";
         int i = 0;
         for(God god : ChosenGod)   {
             message = message + i + ") " + god.getGodName() + " - " + god.getGodSubtitle() +"\n" + god.getGodPower() + "\n\n";
