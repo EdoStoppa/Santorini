@@ -141,6 +141,22 @@ class BoardTest {
         assertEquals(0, possibleMoveSet.get(1).getCol());
     }
 
+    @Test
+    void Elevated(){
+        ArrayList<Position> possibleMoveSet;
+        Board board = new Board();
+        Constructor constructor = new Constructor(1);
+        Position position = new Position(1,1);
+        board.setCanGoUp(false);
+        board.placeBuilding(board.getTile(position));
+        board.placeBuilding(board.getTile(new Position(1,2)));
+        board.placeBuilding(board.getTile(new Position(1,2)));
+        board.placeConstructor(board.getTile(position),constructor);
+        possibleMoveSet = board.possibleMoveset(constructor);
+
+        assertEquals(7, possibleMoveSet.size());
+    }
+
 
     /**
      * the constructor is in a generic position
