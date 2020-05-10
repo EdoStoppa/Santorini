@@ -78,9 +78,12 @@ public class Apollo extends God {
 
         occList = model.getBoard().searchForOccupied(model.getCurrentConstructor().getPos());
         for (Position p : occList){
-            if(board.getTile(p).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
-                if(board.getTile(model.getCurrentConstructor().getPos()).getConstructionLevel()+1 >= board.getTile(p).getConstructionLevel()){
-                    addList.add(p.clone());
+            Tile enemyTile = board.getTile(p);
+            if(enemyTile.getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()){
+                if(board.getTile(model.getCurrentConstructor().getPos()).getConstructionLevel() + (model.getBoard().getCanGoUp()? 1 : 0) >= enemyTile.getConstructionLevel()){
+                    if(model.getBoard().possibleBuild(enemyTile.getActualConstructor()).size() >= 1){
+                        addList.add(p.clone());
+                    }
                 }
             }
         }

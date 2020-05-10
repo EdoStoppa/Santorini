@@ -308,7 +308,7 @@ class ControllerTest {
                         assertTrue(r.receivedMessage instanceof TileToShowMessage, "The message should be CanEndTile");
                         controller.getModel().createPossibleMovePos(null, null);
                         list = ((TileToShowMessage) r.receivedMessage).getTileToShow();
-                        if(list.size() == 1 && list.get(0).equals(controller.getModel().getCurrentConstructor().getPrevPos()))   {
+                        if(list.size() == 1 && list.get(0).equals(controller.getModel().getCurrentConstructor().getPrevPos()) || list.size() == 0)   {
                             possiblePhases = possiblePhases.BUILD;
                         }
                         else    {

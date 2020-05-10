@@ -41,6 +41,6 @@ public class Artemis extends God {
     public boolean cantDoAnother(Model model, List<Position> delList){
         List<Position> possibleMove = model.getBoard().possibleMoveset(model.getCurrentConstructor());
 
-        return (possibleMove.size() == 1 && possibleMove.get(0).equals(delList.get(0)));
+        return (possibleMove.size() == 1 && possibleMove.get(0).equals(delList.get(0))) || (possibleMove.size() == 0);
     }
 }
