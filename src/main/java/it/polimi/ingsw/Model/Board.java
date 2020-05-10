@@ -36,7 +36,7 @@ public class Board {
                     int constructorHeight = getTile(CurrentConstructor.getPos()).getConstructionLevel();
                     int tileHeight = tiles[i][j].getConstructionLevel();
 
-                    if(((canGoUp && (constructorHeight + 1 >= tileHeight)) || (!canGoUp && constructorHeight >= tileHeight)) && !tiles[i][j].getDome()) {
+                    if((constructorHeight + (canGoUp? 1 : 0) >= tileHeight) && !tiles[i][j].getDome()){
                         moves.add(new Position(i, j));
                     }
                 }
