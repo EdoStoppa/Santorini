@@ -24,7 +24,7 @@ public class PickGodMessage extends ServerMessage {
             message = message + i + ") " + god.getGodName() + " - " + god.getGodSubtitle() +"\n" + god.getGodPower() + "\n";
             i++;
         }
-        return message;
+        return message + "\nType their corresponding number to choose them (ex. 2,4)";
     }
 
     public int getNumPlayer()   {

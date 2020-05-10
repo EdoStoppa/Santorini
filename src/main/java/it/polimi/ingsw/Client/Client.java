@@ -14,8 +14,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public abstract class Client {
-    private String ip;
-    private int port;
+    protected String ip;
+    protected int port;
     private boolean active= true;
     protected PlaySpace playSpace;
 
@@ -37,25 +37,5 @@ public abstract class Client {
 
     public abstract Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut);
 
-    public void run() throws IOException{
-        Socket socket= new Socket(ip,port);
-        System.out.println("connection established");
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
-        Scanner stdin= new Scanner(System.in);
-
-        try {
-            Thread t0 =asyncReadFromSocket(socketIn);
-            Thread t1=asyncWriteToSocket(stdin, socketOut);
-            t0.join();
-            t1.join();
-        }catch (InterruptedException | NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
-        } finally {
-            stdin.close();
-            socketIn.close();
-            socketOut.close();
-            socket.close();
-        }
-    }
+    public abstract void run() throws IOException;
 }

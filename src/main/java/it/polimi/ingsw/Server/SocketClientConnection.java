@@ -72,30 +72,41 @@ public class SocketClientConnection extends Observable<String> implements Client
     public void run() {
         Scanner in;
         String name;
-        String gameMode = null;
+        int gameMode;
         String read;
 
         try {in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
-            send("welcome!\n 2 or 3 player mode");
-            read=in.nextLine();
+            send("Welcome to Santorini!\n2 or 3 player mode?");
+            while(true){
+                try{
+                    read = in.nextLine();
+                    gameMode = Integer.parseInt(read);
+                    if(gameMode != 2 && gameMode != 3)
+                        throw new Exception();
+                    break;
+                } catch (Exception e){
+                    send("Please enter a possible game mode");
+                }
+            }
+            /*read=in.nextLine();
             gameMode=read;
             while(Integer.parseInt(gameMode)!=2 && Integer.parseInt(gameMode)!=3 ) {
-                send("please enter a correct number of player");
+                send("Please enter a correct number of player");
                 read=in.nextLine();
                 gameMode=read;
-            }
-            send(" Enter your name:");
+            }*/
+            send("Enter your name:");
             name = in.nextLine();
-            if (Integer.parseInt(gameMode) == 2) {
-                System.out.println("facciamo partire la lobby");
+            if (gameMode == 2) {
+                System.out.println("Starting lobby...");
                 server.lobby2P(this,name);
             } else {
                 server.lobby3P(this, name);
             }
-            while (isCreation()){
 
-            }
+            while (isCreation()){}
+
             while (isActive()) {
                 read = in.nextLine();
                 notify(read);
@@ -103,9 +114,6 @@ public class SocketClientConnection extends Observable<String> implements Client
 
         }catch (IOException | NoSuchElementException e){
             System.err.println("Error!" + e.getMessage());
-        }finally {
-            assert gameMode != null;
-            close(Integer.parseInt(gameMode));
         }
     }
 
@@ -150,10 +158,10 @@ public class SocketClientConnection extends Observable<String> implements Client
         int i=0;
         try{Scanner in = new Scanner(socket.getInputStream());
             this.asyncSend(new PickGodMessage(player));
-            System.out.println("sto prendendo i numeri");
+            System.out.println("Getting God numbers...");
             String pickPool=in.nextLine();
             String[] pick= pickPool.split(",");
-            System.out.println("sto prendendo i numeri");
+            System.out.println("Getting God numbers...");
             while (i<player){
                 pickGod.add(pickGodMessage.GetGod(Integer.parseInt(pick[i])));
                 i++;
@@ -173,7 +181,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             this.asyncSend(chosenGodMessage);
             pick=in.nextLine();
             while (Integer.parseInt(pick)>chosenGodMessage.getSize()){
-                this.asyncSend("please enter a correct god's number");
+                this.asyncSend("Please enter a correct god's number");
                 pick=in.nextLine();
             }
         }catch (IOException e){
@@ -192,10 +200,10 @@ public class SocketClientConnection extends Observable<String> implements Client
     public String enterNewName( Map <String, ClientConnection> NameOpponent) {
         String name = null;
         try {Scanner in= new Scanner(socket.getInputStream());
-            this.asyncSend("this name is already. Enter a new one");
+            this.asyncSend("This name is already taken. Please enter a new one");
             name= in.nextLine();
             while (NameOpponent.containsKey(name)){
-                this.asyncSend("this name is already. Enter a new one");
+                this.asyncSend("This name is already taken. Please enter a new one");
                 name= in.nextLine();
             }
         }catch (IOException e){
@@ -212,7 +220,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(orderGameMessage);
             firstPlayer = in.nextLine();
-            while(check){
+            /*while(check){
                 for (int i=0;i<orderGameMessage.getPlayerlist().size();i++){
                     if (firstPlayer.equals(orderGameMessage.getPlayerlist().get(i))) {
                         check = false;
@@ -220,10 +228,10 @@ public class SocketClientConnection extends Observable<String> implements Client
                     }
                 }
                 if (check){
-                    asyncSend("enter a correct name player");
+                    asyncSend("Please, enter a correct player name");
                     firstPlayer = in.nextLine();
                 }
-            }
+            }*/
 
         }catch (IOException e){
             System.err.println(e.getMessage());

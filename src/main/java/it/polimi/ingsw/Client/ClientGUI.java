@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -21,6 +22,11 @@ public class ClientGUI extends Client{
     @Override
     public Thread asyncWriteToSocket(Scanner stdin, PrintWriter socketOut) {
         return null;
+    }
+
+    @Override
+    public void run() throws IOException {
+
     }
 
     public void setMiniController(MiniController miniController) {

@@ -55,7 +55,7 @@ public class Minotaur extends God {
                 if (board.getTile(position).getActualConstructor().getPlayerNumber() != gameState.getCurrentPlayer().getPlayerNumber()) {
                     // if the player can actually move on this tile
                     if(board.getTile(c.getPos()).getConstructionLevel() + (model.getCanGoUp()? 1 : 0) >= board.getTile(position).getConstructionLevel()){
-                        Position futurePos = calculatePushedPos(model.getCurrentConstructor().getPos(), position);
+                        Position futurePos = calculatePushedPos(c.getPos(), position);
                         // if the future position where the enemy constructor will be pushed make sense
                         if(isGood(futurePos)){
                             // only if the future tile is not already occupied or has a dome

@@ -26,7 +26,7 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
         String text;
 
         if(isMyTurn){
-            text = getPhase().toString(true) + (isCLI? HelpMessage.endWithCLI : HelpMessage.endWithGUI);
+            text = getPhase().toString(true);
         } else {
             text = getIdPlayer() + getPhase().toString(false);
         }
@@ -36,6 +36,7 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
 
     @Override
     public void updatePlaySpace(PlaySpace playSpace)    {
+        playSpace.setTileToShow(getTileToShow());
         playSpace.setTileToCheck(getSpecialList());
     }
 }
