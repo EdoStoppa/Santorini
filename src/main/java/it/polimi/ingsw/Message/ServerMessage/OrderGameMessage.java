@@ -19,11 +19,11 @@ public class OrderGameMessage extends ServerMessage{
 
     @Override
     public String getMessage() {
-        String message = "Choose the first player typing the corresponding id \n";
+        String message = "Choose the player which'll move first\n";
         int i = 0;
         for(String string : Playerlist)   {
             message = message + "- " + string + "\n";
         }
-        return message;
+        return message + "(Please type the corresponding id)";
     }
 }

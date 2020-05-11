@@ -102,7 +102,6 @@ public class ClientCLI extends Client{
         if (inputObject instanceof PickGodMessage){
             System.out.println(inputObject.getMessage());
             this.miniController = new PickGodMiniController(God.getAllGod().size(), ((PickGodMessage)inputObject).getNumPlayer());
-
         } else if (inputObject instanceof ChosenGodMessage){
             System.out.println(inputObject.getMessage());
             this.miniController = new ChosenMiniController(((ChosenGodMessage)inputObject).getNumPlayer());
@@ -110,6 +109,9 @@ public class ClientCLI extends Client{
             System.out.println(inputObject.getMessage());
             this.miniController = new OrderMiniController(((OrderGameMessage) inputObject).getPlayerlist());
         }else if (inputObject instanceof PlaceFirstConstructorMessage)  {
+            if(((PlaceFirstConstructorMessage)inputObject).isFirst())
+                playSpace.printPlaySpace();
+
             System.out.println(inputObject.getMessage());
             this.miniController = new ServerMoveMiniController();
         }

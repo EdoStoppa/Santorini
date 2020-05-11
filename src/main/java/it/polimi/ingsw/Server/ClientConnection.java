@@ -27,7 +27,7 @@ public interface ClientConnection{
 
     String ChooseFirstPlayer(OrderGameMessage orderGameMessage);
 
-    Position FirstPlaceConstructor();
+    Position FirstPlaceConstructor(boolean isFirstMessage);
 
     void EndCreation();
 }

@@ -241,11 +241,11 @@ public class SocketClientConnection extends Observable<String> implements Client
     }
 
     @Override
-    public Position FirstPlaceConstructor(){
+    public Position FirstPlaceConstructor(boolean isFirstMessage){
         String Pos="";
         String[] coordinates= new String[2];
         try {Scanner in= new Scanner(socket.getInputStream());
-            this.asyncSend(new PlaceFirstConstructorMessage());
+            this.asyncSend(new PlaceFirstConstructorMessage(isFirstMessage));
             while(Pos.equals("")){
                 Pos=in.nextLine();
             }

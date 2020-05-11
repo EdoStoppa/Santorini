@@ -21,13 +21,13 @@ public class ChosenGodMessage extends ServerMessage {
 
     @Override
     public String getMessage() {
-        String message = "Choose your god by typing the corresponding number\n\n";
+        String message = "Choose the god you'll use for this match\n\n";
         int i = 0;
         for(God god : ChosenGod)   {
             message = message + i + ") " + god.getGodName() + " - " + god.getGodSubtitle() +"\n" + god.getGodPower() + "\n";
             i++;
         }
-        return message;
+        return message + "\nType the corresponding number to choose your god";
     }
 
     public int getNumPlayer(){

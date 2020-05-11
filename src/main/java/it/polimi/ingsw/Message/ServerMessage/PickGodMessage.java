@@ -18,13 +18,13 @@ public class PickGodMessage extends ServerMessage {
 
     @Override
     public String getMessage() {
-        String message = "Choose " + numPlayer + " gods that will be in the match by typing the corresponding number\n\n";
+        String message = "Choose " + numPlayer + " gods that will be in the match\n\n";
         int i = 0;
         for(God god : AllGod)   {
             message = message + i + ") " + god.getGodName() + " - " + god.getGodSubtitle() +"\n" + god.getGodPower() + "\n";
             i++;
         }
-        return message + "\nType their corresponding number to choose them (ex. 2,4)";
+        return message + "\nType the corresponding number to choose them " + (numPlayer==2? "(ex. 2,4)" : "(ex. 1,3,6)");
     }
 
     public int getNumPlayer()   {
