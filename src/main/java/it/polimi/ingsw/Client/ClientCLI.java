@@ -8,6 +8,7 @@ import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
 import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
 import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+import it.polimi.ingsw.Message.WinMessage;
 import it.polimi.ingsw.Model.God;
 
 import java.io.IOException;
@@ -129,9 +130,12 @@ public class ClientCLI extends Client{
                 playSpace.printPlaySpace();
             }
             System.out.println(inputObject.getMessage());
-        }/*else if(inputObject instanceof WinMessage){
-
-        }*/ else {
+        }else if(inputObject instanceof WinMessage){
+            playSpace.printPlaySpace();
+            System.out.println("YOU WON!!!");
+            System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restare the application.");
+            setActive(false);
+        } else {
             inputObject.updatePlaySpace(playSpace);
             //System.out.println("Escape Sequence to wipe everything");
             playSpace.printPlaySpace();
