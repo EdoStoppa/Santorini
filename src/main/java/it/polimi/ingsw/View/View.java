@@ -59,6 +59,11 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
     @Override
     public void update(GameMessage message) {
         System.out.println(message.getIdPlayer() + ", " + message.getPhase() + ": " + message.getClass() + (message instanceof TileToShowMessage? ((TileToShowMessage)message).getTileToShow().size() : ""));
-        SendToClient(message);
+        if(message.getIdPlayer() != null)   {
+            SendToClient(message);
+        }
+        else    {
+            clientConnection.closeConnection();
+        }
     }
 }
