@@ -24,18 +24,18 @@ public class Server {
     private static final int PORT=12345;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, ClientConnection> waitingConnection2P = new HashMap<>();
-    private Map<String, ClientConnection> waitingConnection3P = new HashMap<>();
-    private Map<ClientConnection,ClientConnection> playingConnection2P = new HashMap<>();
-    private Map<ClientConnection,ClientConnection> playingConnection3P = new HashMap<>();
+    private Map<String, SocketClientConnection> waitingConnection2P = new HashMap<>();
+    private Map<String, SocketClientConnection> waitingConnection3P = new HashMap<>();
+    private Map<SocketClientConnection,SocketClientConnection> playingConnection2P = new HashMap<>();
+    private Map<SocketClientConnection,SocketClientConnection> playingConnection3P = new HashMap<>();
 
     /**
      * when the game is and this function close the connection and deregister ClientConnetion
      * from the hashmap playingconnetion2P
      * @param c is the connection that have to close
      */
-    public synchronized void deregisterConnection2P(ClientConnection c){
-        ClientConnection opponent=playingConnection2P.get(c);
+    public synchronized void deregisterConnection2P(SocketClientConnection c){
+        SocketClientConnection opponent=playingConnection2P.get(c);
         if (opponent!= null){
             opponent.closeConnection();
         }
@@ -50,12 +50,12 @@ public class Server {
     }
 
     /**
-     * when the game is ending and this function close the connection and deregister ClientConnection
+     * when the game is ending and this function close the connection and deregister SocketClientConnection
      * from the hashmap playingConnection3P
      * @param c is the connection that have to close
      */
-    public synchronized void deregisterConnection3P(ClientConnection c){
-        ClientConnection opponent=playingConnection3P.get(c);
+    public synchronized void deregisterConnection3P(SocketClientConnection c){
+        SocketClientConnection opponent=playingConnection3P.get(c);
         if (opponent!= null){
             opponent.closeConnection();
         }
@@ -72,10 +72,10 @@ public class Server {
 
     /**
      * add a name to the list waitingconnection2p and is the size of this list is 2 start a game
-     * @param c clientconnection of the player
+     * @param c SocketClientConnection of the player
 
      */
-    public void lobby2P(ClientConnection c,String name){
+    public void lobby2P(SocketClientConnection c,String name){
         System.out.println("Registering in 2P lobby...");
         if (waitingConnection2P.containsKey(name)){
             System.out.println("Name already taken");
@@ -92,10 +92,10 @@ public class Server {
     }
     /**
      * add a name to the list waitingconnection3P and is the size of this list is 3 start a game
-     * @param c clientconnection of the player
+     * @param c SocketClientConnection of the player
      * @param name is the name choose from the player
      */
-    public synchronized void lobby3P(ClientConnection c,String name){
+    public synchronized void lobby3P(SocketClientConnection c,String name){
         System.out.println("Registering in 3P lobby...");
         if (waitingConnection3P.containsKey(name)){
             System.out.println("Name already taken");
@@ -133,8 +133,8 @@ public class Server {
         String FirstPlayer;
         Position firstConstructor;
         ArrayList<String> keys = new ArrayList<>(waitingConnection2P.keySet());
-        ClientConnection Goodlike;
-        ClientConnection opponent;
+        SocketClientConnection Goodlike;
+        SocketClientConnection opponent;
         Player playerGodLike,playerOpponent;
         Random random = new Random();
         int ChoseGodLike = random.nextInt(2);
@@ -208,8 +208,14 @@ public class Server {
             model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         }
-        Goodlike.EndCreation();
-        opponent.EndCreation();
+
+        synchronized (Goodlike.lock){
+            Goodlike.lock.notify();
+        }
+        synchronized (opponent.lock){
+            opponent.lock.notify();
+        }
+
         model.startGame();
         controller.preparePhase();
     });
@@ -220,7 +226,7 @@ public class Server {
         String FirstPlayer;
         Position firstConstructor;
         ArrayList<String> keys = new ArrayList<>(waitingConnection3P.keySet());
-        ClientConnection Goodlike,opponent1,opponent2;
+        SocketClientConnection Goodlike,opponent1,opponent2;
         Player playerGodLike,playerOpponent1,playerOpponent2;
         Random random = new Random();
         int ChoseGodLike = random.nextInt(3);
@@ -352,9 +358,17 @@ public class Server {
             model.serverMove(playerOpponent1.getAllConstructors().get(1),firstConstructor,playerOpponent1.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         }
-        Goodlike.EndCreation();
-        opponent1.EndCreation();
-        opponent2.EndCreation();
+
+        synchronized (Goodlike.lock){
+            Goodlike.lock.notify();
+        }
+        synchronized (opponent1.lock){
+            opponent1.lock.notify();
+        }
+        synchronized (opponent2.lock){
+            opponent2.lock.notify();
+        }
+
         model.startGame();
         controller.preparePhase();
     });

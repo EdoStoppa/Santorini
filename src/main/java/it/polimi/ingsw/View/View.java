@@ -6,7 +6,7 @@ import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Server.ClientConnection;
+import it.polimi.ingsw.Server.SocketClientConnection;
 
 
 public class View extends Observable<PosMessage>  implements Observer<GameMessage> {
@@ -25,9 +25,9 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
 
     private String idPlayer;
     private final Boolean isCli;
-    private ClientConnection clientConnection;
+    private SocketClientConnection clientConnection;
 
-    public View(String id, Boolean CLI, ClientConnection clientConnection) {
+    public View(String id, Boolean CLI, SocketClientConnection clientConnection) {
         this.idPlayer = id;
         this.isCli = CLI;
         this.clientConnection = clientConnection;

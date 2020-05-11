@@ -14,9 +14,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.*;
 
-public class SocketClientConnection extends Observable<String> implements ClientConnection,Runnable {
+public class SocketClientConnection extends Observable<String> implements Runnable {
 
-
+    public final Object lock = new Object();
     private Socket socket;
     private ObjectOutputStream out;
     private Server server;
@@ -33,16 +33,6 @@ public class SocketClientConnection extends Observable<String> implements Client
     private synchronized boolean isActive(){
         return active;
     }
-
-    @Override
-    public void EndCreation() {
-        this.creation=false;
-    }
-
-    public synchronized boolean isCreation(){
-        return creation;
-    }
-
 
     private synchronized void send(Object message){
         try {
@@ -89,23 +79,25 @@ public class SocketClientConnection extends Observable<String> implements Client
                     send("Please enter a possible game mode");
                 }
             }
-            /*read=in.nextLine();
-            gameMode=read;
-            while(Integer.parseInt(gameMode)!=2 && Integer.parseInt(gameMode)!=3 ) {
-                send("Please enter a correct number of player");
-                read=in.nextLine();
-                gameMode=read;
-            }*/
+
             send("Enter your name:");
             name = in.nextLine();
-            if (gameMode == 2) {
-                System.out.println("Starting lobby...");
-                server.lobby2P(this,name);
-            } else {
-                server.lobby3P(this, name);
-            }
+            //while (isCreation()){}
+            synchronized (lock){
+                if (gameMode == 2) {
+                    System.out.println("Starting lobby2P...");
+                    server.lobby2P(this,name);
+                } else {
+                    System.out.println("Starting lobby3P...");
+                    server.lobby3P(this, name);
+                }
 
-            while (isCreation()){}
+                try{
+                    lock.wait();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
 
             while (isActive()) {
                 read = in.nextLine();
@@ -117,7 +109,6 @@ public class SocketClientConnection extends Observable<String> implements Client
         }
     }
 
-    @Override
     public void closeConnection() {
         send("Connection closed!");
         try {
@@ -132,7 +123,6 @@ public class SocketClientConnection extends Observable<String> implements Client
      * send of the message only to the client selected
      * @param message message to send
      */
-    @Override
     public void asyncSend(final Object message) {
         Thread thread = new Thread(() -> {
             try {
@@ -152,7 +142,6 @@ public class SocketClientConnection extends Observable<String> implements Client
      * @param player number of player of the game
      * @return list of god chosen
      */
-    @Override
     public ArrayList<God> ChooseGod(int player,PickGodMessage pickGodMessage){
         ArrayList<God> pickGod=new ArrayList<>();
         int i=0;
@@ -173,7 +162,6 @@ public class SocketClientConnection extends Observable<String> implements Client
     }
 
 
-    @Override
     public God PickGod(ChosenGodMessage chosenGodMessage){
         String pick=null;
         try{
@@ -196,8 +184,7 @@ public class SocketClientConnection extends Observable<String> implements Client
      * @param NameOpponent map that contains all the name used in the server
      * @return a name not used in the server
      */
-    @Override
-    public String enterNewName( Map <String, ClientConnection> NameOpponent) {
+    public String enterNewName( Map <String, SocketClientConnection> NameOpponent) {
         String name = null;
         try {Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend("This name is already taken. Please enter a new one");
@@ -212,7 +199,6 @@ public class SocketClientConnection extends Observable<String> implements Client
         return name;
     }
 
-    @Override
     public String ChooseFirstPlayer(OrderGameMessage orderGameMessage){
         String firstPlayer=null;
         boolean check= true;
@@ -240,7 +226,6 @@ public class SocketClientConnection extends Observable<String> implements Client
         return firstPlayer;
     }
 
-    @Override
     public Position FirstPlaceConstructor(boolean isFirstMessage){
         String Pos="";
         String[] coordinates= new String[2];
