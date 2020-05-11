@@ -164,7 +164,7 @@ public class Controller implements Observer<PosMessage> {
      * This method launches the win sequence, where is declared a winner and the game simply end
      */
     public void executeWinSequence() {
-        // ALERT EVERYONE THAT SOMEONE HAS WON
+        model.endGame();
         shouldContinue = false;
         System.out.println("Win");
     }

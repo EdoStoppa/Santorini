@@ -8,6 +8,7 @@ import it.polimi.ingsw.Message.MoveMessages.*;
 import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
 import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
+import it.polimi.ingsw.Message.WinMessage;
 import it.polimi.ingsw.Observer.Observable;
 
 import java.util.ArrayList;
@@ -354,6 +355,15 @@ public class Model extends Observable<GameMessage> {
         int[][] matrix = board.createConstructorMatrix();
 
         notify(new RemovedPlayerMessage(playerR.getIdPlayer(), getCurrentPhase(), matrix));
+    }
+
+    /**
+     * This method let th
+     */
+    public void endGame()   {
+        notify(new WinMessage(getCurrentPlayerId(), null));
+
+        notify(new WinMessage(null, null));
     }
 
     public boolean getCanGoUp() {
