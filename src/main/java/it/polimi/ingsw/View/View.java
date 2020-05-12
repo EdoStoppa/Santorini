@@ -24,11 +24,13 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
     }
 
     private String idPlayer;
+    private int numPlayer;
     private final Boolean isCli;
     private SocketClientConnection clientConnection;
 
-    public View(String id, Boolean CLI, SocketClientConnection clientConnection) {
+    public View(String id, int numPlayer, Boolean CLI, SocketClientConnection clientConnection) {
         this.idPlayer = id;
+        this.numPlayer = numPlayer;
         this.isCli = CLI;
         this.clientConnection = clientConnection;
         this.clientConnection.addObserver(new MessageReceiver());
@@ -63,7 +65,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
             SendToClient(message);
         }
         else    {
-            clientConnection.closeConnection();
+            clientConnection.close(numPlayer);
         }
     }
 }

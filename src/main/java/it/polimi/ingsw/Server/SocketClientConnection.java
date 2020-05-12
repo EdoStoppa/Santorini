@@ -44,7 +44,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         }
     }
 
-    private void close(int gameMode) {
+    public void close(int gameMode) {
         closeConnection();
         System.out.println("Deregistering client...");
         if (gameMode==2) {

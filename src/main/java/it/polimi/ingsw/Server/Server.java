@@ -170,8 +170,8 @@ public class Server {
         }
         System.out.println("Fixing player list");
         System.out.println("Creating model-view-controller");
-        View player1View = new View(playerGodLike.getIdPlayer(), true, Goodlike);
-        View player2View = new View(playerOpponent.getIdPlayer(), true,opponent);
+        View player1View = new View(playerGodLike.getIdPlayer(), 2, true, Goodlike);
+        View player2View = new View(playerOpponent.getIdPlayer(), 2,  true, opponent);
         Model model = new Model(PlayerList);
         Controller controller = new Controller(model);
         model.addObserver(player1View);
@@ -283,9 +283,9 @@ public class Server {
         }
         System.out.println("Fixing player list");
         System.out.println("Creating model-view-controller");
-        View player1View = new View(playerGodLike.getIdPlayer(), true, Goodlike);
-        View player2View = new View(playerOpponent1.getIdPlayer(), true,opponent1);
-        View player3View= new View(playerOpponent2.getIdPlayer(),true,opponent2);
+        View player1View = new View(playerGodLike.getIdPlayer(), 3, true, Goodlike);
+        View player2View = new View(playerOpponent1.getIdPlayer(), 3,  true,opponent1);
+        View player3View= new View(playerOpponent2.getIdPlayer(), 3, true,opponent2);
         Model model = new Model(PlayerList);
         Controller controller = new Controller(model);
         model.addObserver(player1View);
