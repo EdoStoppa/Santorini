@@ -112,7 +112,7 @@ public class ClientCLI extends Client{
         }else if (inputObject instanceof PlaceFirstConstructorMessage)  {
             if(((PlaceFirstConstructorMessage)inputObject).isFirst())
                 playSpace.printPlaySpace();
-
+            //System.out.println("\u001b[2J\u001b[H");
             System.out.println(inputObject.getMessage());
             this.miniController = new ServerMoveMiniController();
         }
@@ -125,19 +125,19 @@ public class ClientCLI extends Client{
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
-                //System.out.println("Escape Sequence to wipe everything");
+                //System.out.println("\u001b[2J\u001b[H");
                 inputObject.updatePlaySpace(playSpace);
                 playSpace.printPlaySpace();
             }
             System.out.println(inputObject.getMessage());
         }else if(inputObject instanceof WinMessage){
             playSpace.printPlaySpace();
-            System.out.println("YOU WON!!!");
-            System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restare the application.");
+            System.out.println(inputObject.getMessage());
+            System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restart the application.");
             setActive(false);
         } else {
             inputObject.updatePlaySpace(playSpace);
-            //System.out.println("Escape Sequence to wipe everything");
+            //System.out.println("\u001b[2J\u001b[H");
             playSpace.printPlaySpace();
             if(!isMyTurn || inputObject instanceof RemovedPlayerMessage)
                 System.out.println(inputObject.getMessage());

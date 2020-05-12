@@ -75,7 +75,7 @@ public class Server {
      * @param c SocketClientConnection of the player
 
      */
-    public void lobby2P(SocketClientConnection c,String name){
+    public synchronized void lobby2P(SocketClientConnection c,String name){
         System.out.println("Registering in 2P lobby...");
         if (waitingConnection2P.containsKey(name)){
             System.out.println("Name already taken");
@@ -85,6 +85,7 @@ public class Server {
         System.out.println("Accepted " + name);
         c.asyncSend("Accepted " + name);
         if (waitingConnection2P.size() == 2) {
+            System.out.println("Launching Thread2P");
             thread2P.start();
         }
 
@@ -123,6 +124,7 @@ public class Server {
                 executor.submit(socketConnection);
             }catch (IOException e){
                 System.out.println("Connection Error!");
+                e.printStackTrace();
             }
         }
     }
@@ -209,12 +211,12 @@ public class Server {
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         }
 
-        synchronized (Goodlike.lock){
-            Goodlike.lock.notify();
-        }
-        synchronized (opponent.lock){
-            opponent.lock.notify();
-        }
+            synchronized (Goodlike.lock){
+                Goodlike.lock.notify();
+            }
+            synchronized (opponent.lock){
+                opponent.lock.notify();
+            }
 
         model.startGame();
         controller.preparePhase();
@@ -359,20 +361,18 @@ public class Server {
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         }
 
-        synchronized (Goodlike.lock){
-            Goodlike.lock.notify();
-        }
-        synchronized (opponent1.lock){
-            opponent1.lock.notify();
-        }
-        synchronized (opponent2.lock){
-            opponent2.lock.notify();
-        }
+            synchronized (Goodlike.lock){
+                Goodlike.lock.notify();
+            }
+            synchronized (opponent1.lock){
+                opponent1.lock.notify();
+            }
+            synchronized (opponent2.lock){
+                opponent2.lock.notify();
+            }
 
         model.startGame();
         controller.preparePhase();
     });
-
-
 
 }

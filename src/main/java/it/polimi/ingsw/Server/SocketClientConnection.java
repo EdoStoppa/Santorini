@@ -41,6 +41,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             out.flush();
         } catch (IOException e){
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -106,6 +107,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
         }catch (IOException | NoSuchElementException e){
             System.err.println("Error!" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -157,6 +159,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             }
         }catch (IOException e){
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return pickGod;
     }
@@ -174,6 +177,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             }
         }catch (IOException e){
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         assert pick != null;
         return chosenGodMessage.getChosenGod(Integer.parseInt(pick));
@@ -195,6 +199,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             }
         }catch (IOException e){
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return name;
     }
@@ -221,6 +226,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
         }catch (IOException e){
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return firstPlayer;
@@ -237,6 +243,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             coordinates=Pos.split(",");
         }catch (IOException e){
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }
