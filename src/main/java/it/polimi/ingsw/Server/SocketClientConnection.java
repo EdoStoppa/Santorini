@@ -21,9 +21,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     private ObjectOutputStream out;
     private Server server;
     private boolean active=true;
-    private boolean creation=true;
-
-
 
     public SocketClientConnection(Socket socket,Server server){
         this.server=server;
@@ -56,8 +53,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         }
         System.out.println("done");
     }
-
-
 
     @Override
     public void run() {
@@ -127,7 +122,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
      */
     public void asyncSend(final Object message) {
         Thread thread = new Thread(() -> {
-        send(message);
+            send(message);
         });
         thread.start();
     }
