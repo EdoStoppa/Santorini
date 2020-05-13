@@ -86,7 +86,7 @@ public class Server {
         c.asyncSend("Accepted " + name);
         if (waitingConnection2P.size() == 2) {
             System.out.println("Launching Thread2P");
-            thread2P.start();
+            initGame2P();
         }
 
 
@@ -106,7 +106,7 @@ public class Server {
         System.out.println("Accepted " +name);
         c.asyncSend("Accepted " +name);
         if (waitingConnection3P.size() == 3) {
-            thread3P.start();
+            initGame3P();
         }
 
 
@@ -128,7 +128,7 @@ public class Server {
             }
         }
     }
-
+private void initGame2P (){
     Thread thread2P= new Thread(() -> {
         ArrayList<God>ChosenGod;
         ArrayList<Player> PlayerList = new ArrayList<>();
@@ -151,6 +151,7 @@ public class Server {
             playerGodLike = new Player(keys.get(1), 1);
             playerOpponent = new Player(keys.get(0), 2);
         }
+        waitingConnection2P.clear();
         ChosenGod=Goodlike.ChooseGod(2,new PickGodMessage(2));
         System.out.println("playerGodLike chose "+ChosenGod.get(0).getGodName() + "  " + ChosenGod.get(1).getGodName());
         God GodChosen = opponent.PickGod(new ChosenGodMessage(ChosenGod, 2));
@@ -182,7 +183,6 @@ public class Server {
         player2View.addObserver(controller);
         playingConnection2P.put(Goodlike,opponent);
         playingConnection2P.put(opponent,Goodlike);
-        waitingConnection2P.clear();
         if (PlayerList.get(0).getIdPlayer().equals(playerGodLike.getIdPlayer())) {
             firstConstructor = Goodlike.FirstPlaceConstructor(true);
             model.serverMove(playerGodLike.getAllConstructors().get(0), firstConstructor, playerGodLike.getIdPlayer());
@@ -211,72 +211,75 @@ public class Server {
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         }
 
-            synchronized (Goodlike.lock){
-                Goodlike.lock.notify();
-            }
-            synchronized (opponent.lock){
-                opponent.lock.notify();
-            }
+        synchronized (Goodlike.lock){
+            Goodlike.lock.notify();
+        }
+        synchronized (opponent.lock){
+            opponent.lock.notify();
+        }
 
         model.startGame();
         controller.preparePhase();
     });
+    thread2P.start();
 
-    Thread thread3P= new Thread(() -> {
-        ArrayList<God>ChosenGod;
+}
+private void initGame3P() {
+    Thread thread3P = new Thread(() -> {
+        ArrayList<God> ChosenGod;
         ArrayList<Player> PlayerList = new ArrayList<>();
         String FirstPlayer;
         Position firstConstructor;
         ArrayList<String> keys = new ArrayList<>(waitingConnection3P.keySet());
-        SocketClientConnection Goodlike,opponent1,opponent2;
-        Player playerGodLike,playerOpponent1,playerOpponent2;
+        SocketClientConnection Goodlike, opponent1, opponent2;
+        Player playerGodLike, playerOpponent1, playerOpponent2;
         Random random = new Random();
         int ChoseGodLike = random.nextInt(3);
-        if (ChoseGodLike==0){
+        if (ChoseGodLike == 0) {
             Goodlike = waitingConnection3P.get(keys.get(0));
-            opponent1= waitingConnection3P.get(keys.get(1));
-            opponent2= waitingConnection3P.get(keys.get(2));
+            opponent1 = waitingConnection3P.get(keys.get(1));
+            opponent2 = waitingConnection3P.get(keys.get(2));
             playerGodLike = new Player(keys.get(0), 1);
             playerOpponent1 = new Player(keys.get(1), 2);
-            playerOpponent2= new Player(keys.get(2),3);
-        } else if (ChoseGodLike==1){
+            playerOpponent2 = new Player(keys.get(2), 3);
+        } else if (ChoseGodLike == 1) {
             Goodlike = waitingConnection3P.get(keys.get(1));
-            opponent1= waitingConnection3P.get(keys.get(2));
-            opponent2= waitingConnection3P.get(keys.get(0));
+            opponent1 = waitingConnection3P.get(keys.get(2));
+            opponent2 = waitingConnection3P.get(keys.get(0));
             playerGodLike = new Player(keys.get(1), 1);
             playerOpponent1 = new Player(keys.get(2), 2);
-            playerOpponent2= new Player(keys.get(0),3);
+            playerOpponent2 = new Player(keys.get(0), 3);
         } else {
             Goodlike = waitingConnection3P.get(keys.get(2));
-            opponent1= waitingConnection3P.get(keys.get(0));
-            opponent2= waitingConnection3P.get(keys.get(1));
+            opponent1 = waitingConnection3P.get(keys.get(0));
+            opponent2 = waitingConnection3P.get(keys.get(1));
             playerGodLike = new Player(keys.get(2), 1);
             playerOpponent1 = new Player(keys.get(0), 2);
-            playerOpponent2= new Player(keys.get(1),3);
+            playerOpponent2 = new Player(keys.get(1), 3);
         }
-        ChosenGod=Goodlike.ChooseGod(3,new PickGodMessage(3));
-        System.out.println("playerGodLike chose "+ ChosenGod.get(0).getGodName() + "  " + ChosenGod.get(1).getGodName() + " " + ChosenGod.get(2).getGodName());
+        ChosenGod = Goodlike.ChooseGod(3, new PickGodMessage(3));
+        System.out.println("playerGodLike chose " + ChosenGod.get(0).getGodName() + "  " + ChosenGod.get(1).getGodName() + " " + ChosenGod.get(2).getGodName());
         God GodChosen = opponent1.PickGod(new ChosenGodMessage(ChosenGod, 3));
         playerOpponent1.setGod(GodChosen);
-        System.out.println("Opponent chose "+ GodChosen.getGodName() );
-        for(int i=0;i<3;i++){
-            if (ChosenGod.get(i).getGodName().equals(GodChosen.getGodName())){
+        System.out.println("Opponent chose " + GodChosen.getGodName());
+        for (int i = 0; i < 3; i++) {
+            if (ChosenGod.get(i).getGodName().equals(GodChosen.getGodName())) {
                 ChosenGod.remove(i);
                 break;
             }
         }
         GodChosen = opponent2.PickGod(new ChosenGodMessage(ChosenGod, 2));
         playerOpponent2.setGod(GodChosen);
-        System.out.println("player3 chose: " + GodChosen.getGodName() );
+        System.out.println("player3 chose: " + GodChosen.getGodName());
         if (GodChosen.getGodName().equals(ChosenGod.get(0).getGodName())) {
             playerGodLike.setGod(ChosenGod.get(1));
-        }else {
+        } else {
             playerGodLike.setGod(ChosenGod.get(0));
         }
         PlayerList.add(playerGodLike);
         PlayerList.add(playerOpponent1);
         PlayerList.add(playerOpponent2);
-        FirstPlayer=Goodlike.ChooseFirstPlayer(new OrderGameMessage(keys));
+        FirstPlayer = Goodlike.ChooseFirstPlayer(new OrderGameMessage(keys));
         System.out.println("Starting player: " + FirstPlayer);
         while (!FirstPlayer.equals(PlayerList.get(0).getIdPlayer())) {
             Player notFirst = PlayerList.get(0);
@@ -286,8 +289,8 @@ public class Server {
         System.out.println("Fixing player list");
         System.out.println("Creating model-view-controller");
         View player1View = new View(playerGodLike.getIdPlayer(), 3, true, Goodlike);
-        View player2View = new View(playerOpponent1.getIdPlayer(), 3,  true,opponent1);
-        View player3View= new View(playerOpponent2.getIdPlayer(), 3, true,opponent2);
+        View player2View = new View(playerOpponent1.getIdPlayer(), 3, true, opponent1);
+        View player3View = new View(playerOpponent2.getIdPlayer(), 3, true, opponent2);
         Model model = new Model(PlayerList);
         Controller controller = new Controller(model);
         model.addObserver(player1View);
@@ -296,30 +299,30 @@ public class Server {
         player1View.addObserver(controller);
         player2View.addObserver(controller);
         player3View.addObserver(controller);
-        playingConnection3P.put(Goodlike,opponent1);
-        playingConnection3P.put(Goodlike,opponent2);
-        playingConnection3P.put(opponent1,Goodlike);
-        playingConnection3P.put(opponent1,opponent2);
-        playingConnection3P.put(opponent2,opponent1);
-        playingConnection3P.put(opponent2,Goodlike);
-        if (PlayerList.get(0).getIdPlayer().equals(playerGodLike.getIdPlayer())){
-            firstConstructor=Goodlike.FirstPlaceConstructor(true);
-            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
+        playingConnection3P.put(Goodlike, opponent1);
+        playingConnection3P.put(Goodlike, opponent2);
+        playingConnection3P.put(opponent1, Goodlike);
+        playingConnection3P.put(opponent1, opponent2);
+        playingConnection3P.put(opponent2, opponent1);
+        playingConnection3P.put(opponent2, Goodlike);
+        if (PlayerList.get(0).getIdPlayer().equals(playerGodLike.getIdPlayer())) {
+            firstConstructor = Goodlike.FirstPlaceConstructor(true);
+            model.serverMove(playerGodLike.getAllConstructors().get(0), firstConstructor, playerGodLike.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=Goodlike.FirstPlaceConstructor(false);
-            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
+            firstConstructor = Goodlike.FirstPlaceConstructor(false);
+            model.serverMove(playerGodLike.getAllConstructors().get(1), firstConstructor, playerGodLike.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent1.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent1.getAllConstructors().get(0),firstConstructor,playerOpponent1.getIdPlayer());
+            firstConstructor = opponent1.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent1.getAllConstructors().get(0), firstConstructor, playerOpponent1.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent1.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent1.getAllConstructors().get(1),firstConstructor,playerOpponent1.getIdPlayer());
+            firstConstructor = opponent1.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent1.getAllConstructors().get(1), firstConstructor, playerOpponent1.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent2.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent2.getAllConstructors().get(0),firstConstructor,playerOpponent2.getIdPlayer());
+            firstConstructor = opponent2.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent2.getAllConstructors().get(0), firstConstructor, playerOpponent2.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent2.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent2.getAllConstructors().get(1),firstConstructor,playerOpponent2.getIdPlayer());
+            firstConstructor = opponent2.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent2.getAllConstructors().get(1), firstConstructor, playerOpponent2.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         } else if (PlayerList.get(1).getIdPlayer().equals(playerGodLike.getIdPlayer())) {
             firstConstructor = opponent1.FirstPlaceConstructor(true);
@@ -341,38 +344,40 @@ public class Server {
             model.serverMove(playerGodLike.getAllConstructors().get(1), firstConstructor, playerGodLike.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         } else {
-            firstConstructor=opponent2.FirstPlaceConstructor(true);
-            model.serverMove(playerOpponent2.getAllConstructors().get(0),firstConstructor,playerOpponent2.getIdPlayer());
+            firstConstructor = opponent2.FirstPlaceConstructor(true);
+            model.serverMove(playerOpponent2.getAllConstructors().get(0), firstConstructor, playerOpponent2.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent2.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent2.getAllConstructors().get(1),firstConstructor,playerOpponent2.getIdPlayer());
+            firstConstructor = opponent2.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent2.getAllConstructors().get(1), firstConstructor, playerOpponent2.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=Goodlike.FirstPlaceConstructor(false);
-            model.serverMove(playerGodLike.getAllConstructors().get(0),firstConstructor,playerGodLike.getIdPlayer());
+            firstConstructor = Goodlike.FirstPlaceConstructor(false);
+            model.serverMove(playerGodLike.getAllConstructors().get(0), firstConstructor, playerGodLike.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=Goodlike.FirstPlaceConstructor(false);
-            model.serverMove(playerGodLike.getAllConstructors().get(1),firstConstructor,playerGodLike.getIdPlayer());
+            firstConstructor = Goodlike.FirstPlaceConstructor(false);
+            model.serverMove(playerGodLike.getAllConstructors().get(1), firstConstructor, playerGodLike.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent1.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent1.getAllConstructors().get(0),firstConstructor,playerOpponent1.getIdPlayer());
+            firstConstructor = opponent1.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent1.getAllConstructors().get(0), firstConstructor, playerOpponent1.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
-            firstConstructor=opponent1.FirstPlaceConstructor(false);
-            model.serverMove(playerOpponent1.getAllConstructors().get(1),firstConstructor,playerOpponent1.getIdPlayer());
+            firstConstructor = opponent1.FirstPlaceConstructor(false);
+            model.serverMove(playerOpponent1.getAllConstructors().get(1), firstConstructor, playerOpponent1.getIdPlayer());
             System.out.println("Placed on position: " + firstConstructor.getRow() + "," + firstConstructor.getCol());
         }
 
-            synchronized (Goodlike.lock){
-                Goodlike.lock.notify();
-            }
-            synchronized (opponent1.lock){
-                opponent1.lock.notify();
-            }
-            synchronized (opponent2.lock){
-                opponent2.lock.notify();
-            }
+        synchronized (Goodlike.lock) {
+            Goodlike.lock.notify();
+        }
+        synchronized (opponent1.lock) {
+            opponent1.lock.notify();
+        }
+        synchronized (opponent2.lock) {
+            opponent2.lock.notify();
+        }
 
         model.startGame();
         controller.preparePhase();
     });
+    thread3P.start();
+}
 
 }

@@ -127,15 +127,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
      */
     public void asyncSend(final Object message) {
         Thread thread = new Thread(() -> {
-            try {
-                synchronized(this){
-                    out.reset();
-                    out.writeObject(message);
-                    out.flush();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        send(message);
         });
         thread.start();
     }
