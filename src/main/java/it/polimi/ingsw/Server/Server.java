@@ -147,10 +147,10 @@ public class Server {
             String FirstPlayer;
             Position firstConstructor;
             ArrayList<String> keys = new ArrayList<>(waitingConnection2P.keySet());
-            SocketClientConnection Goodlike;
-            SocketClientConnection opponent;
+            SocketClientConnection Goodlike, opponent;
             Player playerGodLike,playerOpponent;
             Random random = new Random();
+
             int ChoseGodLike = random.nextInt(2);
             if (ChoseGodLike==0){
                 Goodlike = waitingConnection2P.get(keys.get(0));
@@ -163,11 +163,22 @@ public class Server {
                 playerGodLike = new Player(keys.get(1), 1);
                 playerOpponent = new Player(keys.get(0), 2);
             }
+
             ChosenGod=Goodlike.ChooseGod(2,new PickGodMessage(2));
+            if(ChosenGod.size() == 0){
+                deregisterConnection2P(Goodlike);
+                return;
+            }
             System.out.println("playerGodLike chose "+ChosenGod.get(0).getGodName() + "  " + ChosenGod.get(1).getGodName());
+
             God GodChosen = opponent.PickGod(new ChosenGodMessage(ChosenGod, 2));
+            if(GodChosen == null){
+                deregisterConnection2P(Goodlike);
+                return;
+            }
             playerOpponent.setGod(GodChosen);
             System.out.println("player2 chose " + GodChosen.getGodName() );
+
             if (GodChosen.getGodName().equals(ChosenGod.get(0).getGodName())) {
                 playerGodLike.setGod(ChosenGod.get(1));
             }else {
@@ -176,13 +187,19 @@ public class Server {
             PlayerList.add(playerGodLike);
             PlayerList.add(playerOpponent);
             FirstPlayer = Goodlike.ChooseFirstPlayer(new OrderGameMessage(keys));
+            if(FirstPlayer == null){
+                deregisterConnection2P(Goodlike);
+                return;
+            }
             System.out.println("Starting player: " + FirstPlayer);
+
+            System.out.println("Fixing player list");
             while (!FirstPlayer.equals(PlayerList.get(0).getIdPlayer())) {
                 Player notFirst = PlayerList.get(0);
                 PlayerList.remove(0);
                 PlayerList.add(notFirst);
             }
-            System.out.println("Fixing player list");
+
             System.out.println("Creating model-view-controller");
             View player1View = new View(playerGodLike.getIdPlayer(), 2, true, Goodlike);
             View player2View = new View(playerOpponent.getIdPlayer(), 2,  true, opponent);
@@ -192,6 +209,7 @@ public class Server {
             model.addObserver(player2View);
             player1View.addObserver(controller);
             player2View.addObserver(controller);
+
             if (PlayerList.get(0).getIdPlayer().equals(playerGodLike.getIdPlayer())) {
                 firstConstructor = Goodlike.FirstPlaceConstructor(true);
                 model.serverMove(playerGodLike.getAllConstructors().get(0), firstConstructor, playerGodLike.getIdPlayer());

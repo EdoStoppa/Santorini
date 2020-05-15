@@ -12,15 +12,17 @@ import it.polimi.ingsw.Model.God;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 public class SocketClientConnection extends Observable<String> implements Runnable {
 
-    public final Object lock = new Object();
-    private Socket socket;
+    private final Server server;
+    private final Socket socket;
     private ObjectOutputStream out;
-    private Server server;
+    public final Object lock = new Object();
     private boolean active=true;
+    private boolean playing = true;
 
     public SocketClientConnection(Socket socket,Server server){
         this.server=server;
@@ -37,8 +39,13 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             out.writeObject(message);
             out.flush();
         } catch (IOException e){
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            if(playing){
+                System.err.println(e.getMessage());
+                e.printStackTrace();
+            } else {
+                System.out.println("Connection already closed");
+            }
+            active = false;
         }
     }
 
@@ -48,7 +55,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         if (gameMode==2) {
             server.deregisterConnection2P(this);
         }
-        else{
+        if(gameMode==3){
             server.deregisterConnection3P(this);
         }
         System.out.println("done");
@@ -58,13 +65,13 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     public void run() {
         Scanner in;
         String name;
-        int gameMode;
+        int gameMode = 0;
         String read;
 
         try {in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome to Santorini!\n2 or 3 player mode?");
-            while(true){
+            while(active){
                 try{
                     read = in.nextLine();
                     gameMode = Integer.parseInt(read);
@@ -78,7 +85,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
             send("Enter your name:");
             name = in.nextLine();
-            //while (isCreation()){}
+
             synchronized (lock){
                 if (gameMode == 2) {
                     System.out.println("Starting lobby2P...");
@@ -101,8 +108,14 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             }
 
         }catch (IOException | NoSuchElementException e){
-            System.err.println("Error!" + e.getMessage());
-            e.printStackTrace();
+            if(active){
+                if(playing){
+                    close(gameMode);
+                }
+                e.printStackTrace();
+            } else {
+                System.out.println("Connection closed");
+            }
         }
     }
 
@@ -144,7 +157,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 pickGod.add(pickGodMessage.GetGod(Integer.parseInt(pick[i])));
                 i++;
             }
-        }catch (IOException e){
+        }catch (IOException | NoSuchElementException e){
             System.err.println(e.getMessage());
             e.printStackTrace();
         }
@@ -162,12 +175,12 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 this.asyncSend("Please enter a correct god's number");
                 pick=in.nextLine();
             }
+            return chosenGodMessage.getChosenGod(Integer.parseInt(pick));
         }catch (IOException e){
             System.err.println(e.getMessage());
             e.printStackTrace();
+            return null;
         }
-        assert pick != null;
-        return chosenGodMessage.getChosenGod(Integer.parseInt(pick));
     }
 
     /**
@@ -193,24 +206,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
     public String ChooseFirstPlayer(OrderGameMessage orderGameMessage){
         String firstPlayer=null;
-        boolean check= true;
         try {
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(orderGameMessage);
             firstPlayer = in.nextLine();
-            /*while(check){
-                for (int i=0;i<orderGameMessage.getPlayerlist().size();i++){
-                    if (firstPlayer.equals(orderGameMessage.getPlayerlist().get(i))) {
-                        check = false;
-                        break;
-                    }
-                }
-                if (check){
-                    asyncSend("Please, enter a correct player name");
-                    firstPlayer = in.nextLine();
-                }
-            }*/
-
         }catch (IOException e){
             System.err.println(e.getMessage());
             e.printStackTrace();
@@ -235,4 +234,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }
 
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
 }

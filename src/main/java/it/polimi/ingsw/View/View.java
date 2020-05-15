@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
 import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Model.Position;
@@ -61,10 +62,13 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
     @Override
     public void update(GameMessage message) {
         System.out.println(message.getIdPlayer() + ", " + message.getPhase() + ": " + message.getClass() + (message instanceof TileToShowMessage? ((TileToShowMessage)message).getTileToShow().size() : ""));
+
         if(message.getIdPlayer() != null)   {
+            if (message instanceof RemovedPlayerMessage && message.getIdPlayer().equals(idPlayer))
+                clientConnection.setPlaying(false);
+
             SendToClient(message);
-        }
-        else    {
+        } else {
             clientConnection.close(numPlayer);
         }
     }
