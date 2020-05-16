@@ -42,6 +42,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             if(playing && active){
                 System.err.println(e.getMessage() + " while playing == true");
                 //e.printStackTrace();
+                playing = false;
                 close(gameMode);
             } else {
                 System.out.println("Connection already closed");
@@ -83,7 +84,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 } catch (NumberFormatException e){
                     send("Please enter a possible game mode");
                 } catch (NoSuchElementException e){
-                    System.out.println("Connection closed by Client, proceeding closing SocketClientConnection");
+                    System.out.println("Connection closed by Client while choosing game mode, proceeding closing SocketClientConnection");
+                    return;
+                } catch (Exception e){
+                    System.out.println("Unknown exception, closing SocketClientConnection");
                     return;
                 }
             }
@@ -139,7 +143,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
     public void closeConnection() {
         if(!socket.isClosed()){
-            send("Connection closed!");
+            send("Some problem occurred, connection closed!\nIf you want to play again, please restart the game!");
             try {
                 socket.close();
             } catch (IOException e){
@@ -178,8 +182,8 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 i++;
             }
         }catch (IOException | NoSuchElementException e){
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            System.err.println(e.getMessage() + " while choosing all Gods");
+            //e.printStackTrace();
         }
         return pickGod;
     }
@@ -250,7 +254,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             coordinates=Pos.split(",");
         }catch (IOException e){
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }

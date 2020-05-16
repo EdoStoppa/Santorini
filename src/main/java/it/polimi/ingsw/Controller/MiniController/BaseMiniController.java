@@ -8,7 +8,7 @@ public class BaseMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
-        return true;
+        return (input.length() >= 1);
     }
 
     @Override
