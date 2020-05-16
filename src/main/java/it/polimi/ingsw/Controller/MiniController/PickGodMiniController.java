@@ -60,7 +60,7 @@ public class PickGodMiniController implements MiniController, Serializable {
                             return false;
                         }
 
-                        if (pr <= 0 || pr >= numGod) {
+                        if (pr < 0 || pr >= numGod) {
                             stringBuilder.delete(0, 100);
                             stringBuilder.append("Please, choose a possible God");
                             return false;

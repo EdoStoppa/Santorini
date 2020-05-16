@@ -136,7 +136,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 }
                 System.out.println(e.getMessage() + " closed SocketClientConnection");
             } else {
-                System.out.println("SocketClientConnection closed");
+                System.out.println("SocketClientConnection already closed");
             }
         }
     }
@@ -245,16 +245,17 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
     public Position FirstPlaceConstructor(boolean isFirstMessage){
         String Pos="";
-        String[] coordinates= new String[2];
+        String[] coordinates;
         try {Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(new PlaceFirstConstructorMessage(isFirstMessage));
             while(Pos.equals("")){
                 Pos=in.nextLine();
             }
             coordinates=Pos.split(",");
-        }catch (IOException e){
+        }catch (IOException | NoSuchElementException e){
             System.err.println(e.getMessage());
             //e.printStackTrace();
+            return null;
         }
         return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }
