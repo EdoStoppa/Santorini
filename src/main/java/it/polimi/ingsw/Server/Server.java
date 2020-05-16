@@ -29,6 +29,14 @@ public class Server {
     private Map<SocketClientConnection,SocketClientConnection> playingConnection2P = new HashMap<>();
     private Map<SocketClientConnection,SocketClientConnection> playingConnection3P = new HashMap<>();
 
+    public Map<String, SocketClientConnection> getWaitingConnection2P(){
+        return waitingConnection2P;
+    }
+
+    public Map<String, SocketClientConnection> getWaitingConnection3P(){
+        return waitingConnection3P;
+    }
+
     /**
      * when the game is and this function close the connection and deregister ClientConnetion
      * from the hashmap playingconnetion2P
@@ -166,14 +174,14 @@ public class Server {
 
             ChosenGod=Goodlike.ChooseGod(2,new PickGodMessage(2));
             if(ChosenGod.size() == 0){
-                deregisterConnection2P(Goodlike);
+                Goodlike.close(2);
                 return;
             }
             System.out.println("playerGodLike chose "+ChosenGod.get(0).getGodName() + "  " + ChosenGod.get(1).getGodName());
 
             God GodChosen = opponent.PickGod(new ChosenGodMessage(ChosenGod, 2));
             if(GodChosen == null){
-                deregisterConnection2P(Goodlike);
+                opponent.close(2);
                 return;
             }
             playerOpponent.setGod(GodChosen);
@@ -188,7 +196,7 @@ public class Server {
             PlayerList.add(playerOpponent);
             FirstPlayer = Goodlike.ChooseFirstPlayer(new OrderGameMessage(keys));
             if(FirstPlayer == null){
-                deregisterConnection2P(Goodlike);
+                Goodlike.close(2);
                 return;
             }
             System.out.println("Starting player: " + FirstPlayer);

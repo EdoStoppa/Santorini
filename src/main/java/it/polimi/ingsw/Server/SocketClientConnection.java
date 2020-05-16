@@ -20,10 +20,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     private final Server server;
     private final Socket socket;
     private ObjectOutputStream out;
+    private int gameMode;
     public final Object lock = new Object();
     private boolean active=true;
     private boolean playing = true;
-
     public SocketClientConnection(Socket socket,Server server){
         this.server=server;
         this.socket=socket;
@@ -39,9 +39,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             out.writeObject(message);
             out.flush();
         } catch (IOException e){
-            if(playing){
-                System.err.println(e.getMessage());
-                e.printStackTrace();
+            if(playing && active){
+                System.err.println(e.getMessage() + " while playing == true");
+                //e.printStackTrace();
+                close(gameMode);
             } else {
                 System.out.println("Connection already closed");
             }
@@ -65,10 +66,11 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     public void run() {
         Scanner in;
         String name;
-        int gameMode = 0;
+        gameMode = 0;
         String read;
 
-        try {in = new Scanner(socket.getInputStream());
+        try {
+            in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
             send("Welcome to Santorini!\n2 or 3 player mode?");
             while(active){
@@ -76,15 +78,31 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                     read = in.nextLine();
                     gameMode = Integer.parseInt(read);
                     if(gameMode != 2 && gameMode != 3)
-                        throw new Exception();
+                        throw new NumberFormatException();
                     break;
-                } catch (Exception e){
+                } catch (NumberFormatException e){
                     send("Please enter a possible game mode");
+                } catch (NoSuchElementException e){
+                    System.out.println("Connection closed by Client, proceeding closing SocketClientConnection");
+                    return;
                 }
             }
 
             send("Enter your name:");
             name = in.nextLine();
+            if(gameMode == 2){
+                if(server.getWaitingConnection2P().containsKey(name)){
+                    name = enterNewName(server.getWaitingConnection2P());
+                }
+            } else {
+                if(server.getWaitingConnection3P().containsKey(name)){
+                    name = enterNewName(server.getWaitingConnection3P());
+                }
+            }
+            if(name == null){
+                System.out.println("Failed new player authentication, closing SocketClientConnection");
+                return;
+            }
 
             synchronized (lock){
                 if (gameMode == 2) {
@@ -112,19 +130,21 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 if(playing){
                     close(gameMode);
                 }
-                e.printStackTrace();
+                System.out.println(e.getMessage() + " closed SocketClientConnection");
             } else {
-                System.out.println("Connection closed");
+                System.out.println("SocketClientConnection closed");
             }
         }
     }
 
     public void closeConnection() {
-        send("Connection closed!");
-        try {
-            socket.close();
-        } catch (IOException e){
-            System.err.println("Error when closing socket");
+        if(!socket.isClosed()){
+            send("Connection closed!");
+            try {
+                socket.close();
+            } catch (IOException e){
+                System.err.println("Error when closing socket");
+            }
         }
         active=false;
     }
@@ -176,9 +196,9 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 pick=in.nextLine();
             }
             return chosenGodMessage.getChosenGod(Integer.parseInt(pick));
-        }catch (IOException e){
+        }catch (IOException | NoSuchElementException e){
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }
@@ -197,9 +217,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 this.asyncSend("This name is already taken. Please enter a new one");
                 name= in.nextLine();
             }
-        }catch (IOException e){
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+        }catch (IOException | NoSuchElementException e){
+            System.err.println(e.getMessage() + ", failed to retrieve a new correct id");
+            //e.printStackTrace();
+            name = null;
         }
         return name;
     }
@@ -210,9 +231,9 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             Scanner in= new Scanner(socket.getInputStream());
             this.asyncSend(orderGameMessage);
             firstPlayer = in.nextLine();
-        }catch (IOException e){
+        }catch (IOException | NoSuchElementException e){
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return firstPlayer;
