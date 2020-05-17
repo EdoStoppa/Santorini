@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
@@ -97,13 +98,14 @@ public class Server {
         waitingConnection2P.put(name,c);
         System.out.println("Accepted " + name);
         c.asyncSend("Accepted " + name);
-        if (waitingConnection2P.size() == 2) {
-            System.out.println("Launching Thread2P");
+        if (waitingConnection2P.size() == 2 && areOthersAlive(waitingConnection2P, name)) {
+            System.out.println("Launching initGame2P");
             initGame2P();
+        } else {
+            c.asyncSend(HelpMessage.noAnswer + "Please, wait for other players to connect...");
         }
-
-
     }
+
     /**
      * add a name to the list waitingconnection3P and is the size of this list is 3 start a game
      * @param c SocketClientConnection of the player
@@ -118,11 +120,33 @@ public class Server {
         waitingConnection3P.put(name,c);
         System.out.println("Accepted " +name);
         c.asyncSend("Accepted " +name);
-        if (waitingConnection3P.size() == 3) {
+        if (waitingConnection3P.size() == 3 && areOthersAlive(waitingConnection3P, name)) {
+            System.out.println("Launching initGame2P");
             initGame3P();
+        } else {
+            c.asyncSend(HelpMessage.noAnswer + "Please, wait for other players to connect...");
+        }
+    }
+
+    private boolean areOthersAlive(Map<String, SocketClientConnection> waitingConnection, String callerName){
+        boolean answ = true;
+        List<String> names = new ArrayList<>(waitingConnection.keySet());
+        for(String name : names){
+            if(!name.equals(callerName)){
+                SocketClientConnection connection = waitingConnection.get(name);
+                if(!connection.ping()){
+                    System.out.println("Removing lock on Connection run() to end associated thread");
+                    synchronized (connection.lock){
+                        connection.lock.notify();
+                    }
+                    waitingConnection.remove(name);
+                    answ = false;
+                }
+            }
+
         }
 
-
+        return answ;
     }
 
     public Server() throws IOException{

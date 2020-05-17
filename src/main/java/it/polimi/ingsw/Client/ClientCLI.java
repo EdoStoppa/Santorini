@@ -93,8 +93,15 @@ public class ClientCLI extends Client{
                 System.out.println(input);
             }
         } else {
-            this.miniController = new BaseMiniController();
-            System.out.println(input);
+            if(input.startsWith(HelpMessage.noAnswer)){
+                StringBuilder sb = new StringBuilder(input);
+                sb.delete(0,1);
+                System.out.println(sb);
+                System.out.println();
+            } else {
+                this.miniController = new BaseMiniController();
+                System.out.println(input);
+            }
         }
     }
 

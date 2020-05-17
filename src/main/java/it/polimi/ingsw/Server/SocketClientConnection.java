@@ -51,6 +51,18 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         }
     }
 
+    public synchronized boolean ping(){
+        try {
+            out.reset();
+            out.writeObject(true);
+            out.flush();
+            return true;
+        } catch (IOException e){
+            System.out.println("Failed ping");
+            return false;
+        }
+    }
+
     public void close(int gameMode) {
         closeConnection();
         System.out.println("Deregistering client...");
@@ -61,6 +73,18 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             server.deregisterConnection3P(this);
         }
         System.out.println("done");
+    }
+
+    public void closeConnection() {
+        if(!socket.isClosed()){
+            send("Some problem occurred, connection closed!\nIf you want to play again, please restart the game!");
+            try {
+                socket.close();
+            } catch (IOException e){
+                System.err.println("Error when closing socket");
+            }
+        }
+        active=false;
     }
 
     @Override
@@ -139,18 +163,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 System.out.println("SocketClientConnection already closed");
             }
         }
-    }
-
-    public void closeConnection() {
-        if(!socket.isClosed()){
-            send("Some problem occurred, connection closed!\nIf you want to play again, please restart the game!");
-            try {
-                socket.close();
-            } catch (IOException e){
-                System.err.println("Error when closing socket");
-            }
-        }
-        active=false;
     }
 
     /**
