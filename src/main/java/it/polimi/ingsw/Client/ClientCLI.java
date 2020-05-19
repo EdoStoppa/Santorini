@@ -94,9 +94,7 @@ public class ClientCLI extends Client{
             }
         } else {
             if(input.startsWith(HelpMessage.noAnswer)){
-                StringBuilder sb = new StringBuilder(input);
-                sb.delete(0,1);
-                System.out.println(sb);
+                System.out.println(input.substring(HelpMessage.noAnswer.length()));
                 System.out.println();
             } else {
                 this.miniController = new BaseMiniController();
@@ -107,22 +105,15 @@ public class ClientCLI extends Client{
 
     private void manageServerMessage(ServerMessage inputObject) {
 
-        if (inputObject instanceof PickGodMessage){
-            System.out.println(inputObject.getMessage());
-            this.miniController = new PickGodMiniController(God.getAllGod().size(), ((PickGodMessage)inputObject).getNumPlayer());
-        } else if (inputObject instanceof ChosenGodMessage){
-            System.out.println(inputObject.getMessage());
-            this.miniController = new ChosenMiniController(((ChosenGodMessage)inputObject).getNumPlayer());
-        }else if (inputObject instanceof OrderGameMessage) {
-            System.out.println(inputObject.getMessage());
-            this.miniController = new OrderMiniController(((OrderGameMessage) inputObject).getPlayerlist());
-        }else if (inputObject instanceof PlaceFirstConstructorMessage)  {
-            if(((PlaceFirstConstructorMessage)inputObject).isFirst())
+        if (inputObject instanceof PlaceFirstConstructorMessage) {
+            if (((PlaceFirstConstructorMessage) inputObject).isFirst()) {
                 playSpace.printPlaySpace();
+            }
             //System.out.println("\u001b[2J\u001b[H");
-            System.out.println(inputObject.getMessage());
-            this.miniController = new ServerMoveMiniController();
         }
+        System.out.println(inputObject.getMessage());
+        this.miniController = inputObject.getMiniController();
+
     }
 
     private void manageGameMessage(GameMessage inputObject) {
