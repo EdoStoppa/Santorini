@@ -8,9 +8,7 @@ public abstract class ServerMessage implements Serializable {
     private static final long serialVersionUID = 1L;
     protected MiniController miniController;
 
-    public MiniController getMiniController() {
-        return miniController;
-    }
+    public abstract MiniController getMiniController();
 
     public abstract String getMessage();
 }

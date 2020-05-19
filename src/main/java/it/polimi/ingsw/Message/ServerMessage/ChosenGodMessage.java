@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
+import it.polimi.ingsw.Client.PlaySpace;
+import it.polimi.ingsw.Controller.MiniController.ChosenMiniController;
+import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Model.God;
 
 import java.util.ArrayList;
@@ -17,6 +20,11 @@ public class ChosenGodMessage extends ServerMessage {
     public God getChosenGod(int i) {
 
         return ChosenGod.get(i);
+    }
+
+    @Override
+    public MiniController getMiniController() {
+        return new ChosenMiniController(numPlayer);
     }
 
     @Override
