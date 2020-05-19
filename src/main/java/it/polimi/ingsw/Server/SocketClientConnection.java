@@ -180,7 +180,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
      * @param player number of player of the game
      * @return list of god chosen
      */
-    public ArrayList<God> ChooseGod(int player,PickGodMessage pickGodMessage){
+    public ArrayList<God> chooseGod(int player, PickGodMessage pickGodMessage){
         ArrayList<God> pickGod=new ArrayList<>();
         int i=0;
         try{Scanner in = new Scanner(socket.getInputStream());
@@ -201,7 +201,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     }
 
 
-    public God PickGod(ChosenGodMessage chosenGodMessage){
+    public God pickGod(ChosenGodMessage chosenGodMessage){
         String pick=null;
         try{
             Scanner in= new Scanner(socket.getInputStream());
@@ -241,7 +241,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         return name;
     }
 
-    public String ChooseFirstPlayer(OrderGameMessage orderGameMessage){
+    public String chooseFirstPlayer(OrderGameMessage orderGameMessage){
         String firstPlayer=null;
         try {
             Scanner in= new Scanner(socket.getInputStream());
@@ -255,7 +255,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         return firstPlayer;
     }
 
-    public Position FirstPlaceConstructor(boolean isFirstMessage){
+    public Position firstPlaceConstructor(boolean isFirstMessage){
         String Pos="";
         String[] coordinates;
         try {Scanner in= new Scanner(socket.getInputStream());

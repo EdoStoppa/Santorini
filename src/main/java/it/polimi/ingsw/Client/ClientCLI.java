@@ -87,16 +87,17 @@ public class ClientCLI extends Client{
     }
 
     private void manageString(String input){
-        if(idPlayer == null){
-            if(!getName(input)){
-                this.miniController = new BaseMiniController();
-                System.out.println(input);
-            }
+
+        if(input.startsWith(HelpMessage.noAnswer)){
+            System.out.println(input.substring(HelpMessage.noAnswer.length()));
+            System.out.println();
         } else {
-            if(input.startsWith(HelpMessage.noAnswer)){
-                System.out.println(input.substring(HelpMessage.noAnswer.length()));
-                System.out.println();
-            } else {
+            if(idPlayer == null) {
+                if (!getName(input)) {
+                    this.miniController = new BaseMiniController();
+                    System.out.println(input);
+                }
+            } else{
                 this.miniController = new BaseMiniController();
                 System.out.println(input);
             }
