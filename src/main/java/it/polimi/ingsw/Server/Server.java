@@ -174,16 +174,12 @@ public class Server {
         this.waitingConnection2P.clear();
 
         Thread thread2P= new Thread(() -> {
-            ArrayList<God> chosenGod;
-            ArrayList<Player> playerList = new ArrayList<>();
-            String firstPlayer;
-            Position firstConstructor;
             ArrayList<String> keys = new ArrayList<>(waitingConnection2P.keySet());
             SocketClientConnection godLike, opponent;
             Player playerGodLike,playerOpponent;
-            Random random = new Random();
+            ArrayList<Player> playerList = new ArrayList<>();
 
-            int choseGodLike = random.nextInt(2);
+            int choseGodLike = (new Random()).nextInt(2);
             if (choseGodLike==0){
                 godLike = waitingConnection2P.get(keys.get(0));
                 opponent= waitingConnection2P.get(keys.get(1));
@@ -195,30 +191,36 @@ public class Server {
                 playerGodLike = new Player(keys.get(1), 1);
                 playerOpponent = new Player(keys.get(0), 2);
             }
+            playerList.add(playerGodLike);
+            playerList.add(playerOpponent);
 
-            chosenGod=godLike.chooseGod(2,new PickGodMessage(2));
-            if(chosenGod.size() == 0){
+            godLike.asyncSend(HelpMessage.noAnswer + HelpMessage.init);
+            opponent.asyncSend(HelpMessage.noAnswer + HelpMessage.init + "\n" + HelpMessage.wait);
+
+            ArrayList<God> pickedGod = godLike.chooseGod(2,new PickGodMessage(2));
+            if(pickedGod.size() == 0){
                 godLike.close(2);
                 return;
             }
-            System.out.println("playerGodLike chose "+chosenGod.get(0).getGodName() + "  " + chosenGod.get(1).getGodName());
+            System.out.println("playerGodLike chose " + pickedGod.get(0).getGodName() + "  " + pickedGod.get(1).getGodName());
 
-            God godChosen = opponent.pickGod(new ChosenGodMessage(chosenGod, 2));
-            if(godChosen == null){
+            godLike.asyncSend(HelpMessage.noAnswer + HelpMessage.wait);
+            God chosenGod = opponent.pickGod(new ChosenGodMessage(pickedGod, 2));
+            if(chosenGod == null){
                 opponent.close(2);
                 return;
             }
-            playerOpponent.setGod(godChosen);
-            System.out.println("player2 chose " + godChosen.getGodName() );
+            playerOpponent.setGod(chosenGod);
+            System.out.println("player2 chose " + chosenGod.getGodName() );
 
-            if (godChosen.getGodName().equals(chosenGod.get(0).getGodName())) {
-                playerGodLike.setGod(chosenGod.get(1));
+            if (chosenGod.getGodName().equals(pickedGod.get(0).getGodName())) {
+                playerGodLike.setGod(pickedGod.get(1));
             }else {
-                playerGodLike.setGod(chosenGod.get(0));
+                playerGodLike.setGod(pickedGod.get(0));
             }
-            playerList.add(playerGodLike);
-            playerList.add(playerOpponent);
-            firstPlayer = godLike.chooseFirstPlayer(new OrderGameMessage(keys));
+
+            opponent.asyncSend(HelpMessage.noAnswer + HelpMessage.wait);
+            String firstPlayer = godLike.chooseFirstPlayer(new OrderGameMessage(keys));
             if(firstPlayer == null){
                 godLike.close(2);
                 return;
@@ -268,14 +270,12 @@ public class Server {
         this.waitingConnection3P.clear();
 
         Thread thread3P = new Thread(() -> {
-            ArrayList<God> chosenGod;
-            ArrayList<Player> playerList = new ArrayList<>();
-            String firstPlayer;
             ArrayList<String> keys = new ArrayList<>(waitingConnection3P.keySet());
             SocketClientConnection godLike, opponent1, opponent2;
             Player playerGodLike, playerOpponent1, playerOpponent2;
-            Random random = new Random();
-            int choseGodLike = random.nextInt(3);
+            ArrayList<Player> playerList = new ArrayList<>();
+
+            int choseGodLike = (new Random()).nextInt(3);
             if (choseGodLike == 0) {
                 godLike = waitingConnection3P.get(keys.get(0));
                 opponent1 = waitingConnection3P.get(keys.get(1));
@@ -299,44 +299,44 @@ public class Server {
                 playerOpponent2 = new Player(keys.get(1), 3);
             }
 
-            chosenGod = godLike.chooseGod(3, new PickGodMessage(3));
-            if(chosenGod.size() == 0){
+            ArrayList<God> pickedGod = godLike.chooseGod(3, new PickGodMessage(3));
+            if(pickedGod.size() == 0){
                 godLike.close(3);
                 return;
             }
-            System.out.println("playerGodLike chose " + chosenGod.get(0).getGodName() + "  " + chosenGod.get(1).getGodName() + " " + chosenGod.get(2).getGodName());
+            System.out.println("playerGodLike chose " + pickedGod.get(0).getGodName() + "  " + pickedGod.get(1).getGodName() + " " + pickedGod.get(2).getGodName());
 
-            God godChosen = opponent1.pickGod(new ChosenGodMessage(chosenGod, 3));
-            if(godChosen == null){
+            God chosenGod = opponent1.pickGod(new ChosenGodMessage(pickedGod, 3));
+            if(chosenGod == null){
                 opponent1.close(3);
                 return;
             }
-            playerOpponent1.setGod(godChosen);
-            System.out.println("Opponent chose " + godChosen.getGodName());
+            playerOpponent1.setGod(chosenGod);
+            System.out.println("Opponent chose " + chosenGod.getGodName());
             for (int i = 0; i < 3; i++) {
-                if (chosenGod.get(i).getGodName().equals(godChosen.getGodName())) {
-                    chosenGod.remove(i);
+                if (pickedGod.get(i).getGodName().equals(chosenGod.getGodName())) {
+                    pickedGod.remove(i);
                     break;
                 }
             }
 
-            godChosen = opponent2.pickGod(new ChosenGodMessage(chosenGod, 2));
-            if(godChosen == null){
+            chosenGod = opponent2.pickGod(new ChosenGodMessage(pickedGod, 2));
+            if(chosenGod == null){
                 opponent2.close(3);
                 return;
             }
-            playerOpponent2.setGod(godChosen);
-            System.out.println("player3 chose: " + godChosen.getGodName());
+            playerOpponent2.setGod(chosenGod);
+            System.out.println("player3 chose: " + chosenGod.getGodName());
 
-            if (godChosen.getGodName().equals(chosenGod.get(0).getGodName())) {
-                playerGodLike.setGod(chosenGod.get(1));
+            if (chosenGod.getGodName().equals(pickedGod.get(0).getGodName())) {
+                playerGodLike.setGod(pickedGod.get(1));
             } else {
-                playerGodLike.setGod(chosenGod.get(0));
+                playerGodLike.setGod(pickedGod.get(0));
             }
             playerList.add(playerGodLike);
             playerList.add(playerOpponent1);
             playerList.add(playerOpponent2);
-            firstPlayer = godLike.chooseFirstPlayer(new OrderGameMessage(keys));
+            String firstPlayer = godLike.chooseFirstPlayer(new OrderGameMessage(keys));
             if(firstPlayer == null){
                 godLike.close(3);
                 return;

@@ -6,6 +6,7 @@ import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
 import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
+import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Message.WinMessage;
@@ -138,6 +139,12 @@ public class ClientCLI extends Client{
             inputObject.updatePlaySpace(playSpace);
             //System.out.println("\u001b[2J\u001b[H");
             playSpace.printPlaySpace();
+
+            if(inputObject instanceof ServerMoveMessage) {
+                System.out.println(inputObject.getMessage());
+                return;
+            }
+
             if(!isMyTurn || inputObject instanceof RemovedPlayerMessage)
                 System.out.println(inputObject.getMessage());
         }
