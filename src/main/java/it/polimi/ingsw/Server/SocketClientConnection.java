@@ -77,7 +77,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
     public void closeConnection() {
         if(!socket.isClosed()){
-            send("Some problem occurred, connection closed!\nIf you want to play again, please restart the game!");
+            send("\nSome problem occurred, connection closed!\nIf you want to play again, please close and restart the game!");
             try {
                 socket.close();
             } catch (IOException e){

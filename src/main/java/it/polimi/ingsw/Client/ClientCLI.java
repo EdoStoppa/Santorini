@@ -109,9 +109,9 @@ public class ClientCLI extends Client{
 
         if (inputObject instanceof PlaceFirstConstructorMessage) {
             if (((PlaceFirstConstructorMessage) inputObject).isFirst()) {
+                //System.out.println("\u001b[2J\u001b[H");
                 playSpace.printPlaySpace();
             }
-            //System.out.println("\u001b[2J\u001b[H");
         }
         System.out.println(inputObject.getMessage());
         this.miniController = inputObject.getMiniController();
@@ -142,6 +142,7 @@ public class ClientCLI extends Client{
 
             if(inputObject instanceof ServerMoveMessage) {
                 System.out.println(inputObject.getMessage());
+                System.out.println();
                 return;
             }
 
