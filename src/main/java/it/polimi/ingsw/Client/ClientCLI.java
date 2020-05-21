@@ -27,7 +27,6 @@ public class ClientCLI extends Client{
         super(ip, port);
     }
 
-    @Override
     public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
         Thread t=new Thread(() -> {
             try{

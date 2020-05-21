@@ -5,6 +5,8 @@ import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,6 +46,7 @@ public class ClientGUI extends Client{
         return t;
     }
 
+
     private void manageStringGUI(String input){
 
         if(input.startsWith(HelpMessage.noAnswer)){
@@ -79,9 +82,37 @@ public class ClientGUI extends Client{
 
 
 
-    @Override
-    public Thread asyncWriteToSocket(Scanner stdin, PrintWriter socketOut) {
-        return null;
+
+
+    public Thread asyncWriteToSocketGUI(PrintWriter socketOut) {
+        Thread t=new Thread(() -> {
+            try{
+                StringBuilder sBuilder = new StringBuilder();
+                while (isActive()) {
+                    String message=null;
+                    synchronized(this){
+                        if (this.miniController != null) {
+                            sBuilder.delete(0, 100);
+                            sBuilder.append("Sorry, your choice is invalid. Please try again");
+                            if (this.miniController.checkPos(message, playSpace, sBuilder)) {
+                                socketOut.println(this.miniController.getMessage(message));
+                                socketOut.flush();
+                                playSpace.reset();
+                                miniController = null;
+                            } else {
+                                System.out.println(sBuilder);
+                            }
+                        } else {
+                            System.out.println("Now you can't make a move. Please wait");
+                        }
+                    }
+                }
+            }catch (Exception e){
+                setActive(false);
+            }
+        });
+
+        return t;
     }
 
     @Override
@@ -93,9 +124,7 @@ public class ClientGUI extends Client{
 
         try {
             Thread t0 =asyncReadFromSocket(socketIn);
-            Thread t1=asyncWriteToSocket(stdin, socketOut);
             t0.join();
-            t1.join();
         }catch (InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {

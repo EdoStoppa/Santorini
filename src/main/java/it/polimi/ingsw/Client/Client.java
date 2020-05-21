@@ -35,7 +35,5 @@ public abstract class Client {
 
     public abstract Thread asyncReadFromSocket(final ObjectInputStream socketIn);
 
-    public abstract Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut);
-
     public abstract void run() throws IOException;
 }
