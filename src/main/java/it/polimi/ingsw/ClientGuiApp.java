@@ -17,15 +17,23 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ClientGuiApp extends Application {
-   private static ClientGUI  client = new ClientGUI("127.0.0.1", 12345);
+   private static ClientGUI  client;
+
+    static {
+        try {
+            client = new ClientGUI("127.0.0.1", 12345);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
+        launch(args);
         try{
             client.run();
         }catch (IOException e){
             System.err.println(e.getMessage());
         }
-        launch(args);
     }
 
     @Override

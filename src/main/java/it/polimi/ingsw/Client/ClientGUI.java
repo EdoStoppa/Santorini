@@ -18,8 +18,10 @@ import java.util.Scanner;
 public class ClientGUI extends Client{
     String idPlayer = null;
     private MiniController miniController;
+    private Socket socket;
+    private PrintWriter socketOut;
 
-    public ClientGUI(String ip, int port) {
+    public ClientGUI(String ip, int port) throws IOException {
         super(ip, port);
     }
 
@@ -80,16 +82,18 @@ public class ClientGUI extends Client{
         return false;
     }
 
+    public void messageToSend(String message){
+        Thread t1=asyncWriteToSocketGUI(message);
+    }
 
 
 
 
-    public Thread asyncWriteToSocketGUI(PrintWriter socketOut) {
+
+    public Thread asyncWriteToSocketGUI(String message) {
         Thread t=new Thread(() -> {
             try{
                 StringBuilder sBuilder = new StringBuilder();
-                while (isActive()) {
-                    String message=null;
                     synchronized(this){
                         if (this.miniController != null) {
                             sBuilder.delete(0, 100);
@@ -106,7 +110,6 @@ public class ClientGUI extends Client{
                             System.out.println("Now you can't make a move. Please wait");
                         }
                     }
-                }
             }catch (Exception e){
                 setActive(false);
             }
@@ -117,11 +120,10 @@ public class ClientGUI extends Client{
 
     @Override
     public void run() throws IOException {
-        Socket socket= new Socket(ip,port);
+        socket= new Socket(ip,port);
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+        socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin= new Scanner(System.in);
-
         try {
             Thread t0 =asyncReadFromSocket(socketIn);
             t0.join();
