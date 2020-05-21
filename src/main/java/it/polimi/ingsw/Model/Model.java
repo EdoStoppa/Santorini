@@ -88,7 +88,9 @@ public class Model extends Observable<GameMessage> {
      */
     public boolean checkWin() {
         Tile currentTile = board.getTile(currentConstructor.getPos());
-        return (currentTile.getConstructionLevel() == 3);
+        Tile previousTile = board.getTile(currentConstructor.getPrevPos());
+
+        return (currentTile.getConstructionLevel() == 3 && previousTile.getConstructionLevel() == 2);
     }
 
     /**
