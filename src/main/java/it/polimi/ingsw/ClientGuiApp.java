@@ -1,10 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Client.Client;
+
 
 import it.polimi.ingsw.Client.ClientGUI;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,11 +19,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 
 public class ClientGuiApp extends Application {
    private ClientGUI  client;
-   private Stage primaryStage1;
    private int phaseInit=0;
    private boolean initializzazion=true;
 
