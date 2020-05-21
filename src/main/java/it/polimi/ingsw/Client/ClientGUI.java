@@ -17,9 +17,9 @@ import java.util.Scanner;
 
 public class ClientGUI extends Client{
     String idPlayer = null;
-    private MiniController miniController;
-    private Socket socket;
+    private MiniController miniController;;
     private PrintWriter socketOut;
+    private Socket socket;
 
     public ClientGUI(String ip, int port) throws IOException {
         super(ip, port);
@@ -35,6 +35,8 @@ public class ClientGUI extends Client{
                     synchronized(this){
                         if(inputObject instanceof String) {
                             manageStringGUI((String) inputObject);
+                        }else if (inputObject instanceof ServerMessage){
+                            manageServerMessageGUI((ServerMessage)inputObject);
                         }
 
                     }
@@ -67,6 +69,10 @@ public class ClientGUI extends Client{
         }
     }
 
+    private void manageServerMessageGUI(ServerMessage imputObject){
+
+    }
+
 
 
 
@@ -82,58 +88,27 @@ public class ClientGUI extends Client{
         return false;
     }
 
-    public void messageToSend(String message){
-        Thread t1=asyncWriteToSocketGUI(message);
-    }
 
 
 
 
 
-    public Thread asyncWriteToSocketGUI(String message) {
-        Thread t=new Thread(() -> {
-            try{
-                StringBuilder sBuilder = new StringBuilder();
-                    synchronized(this){
-                        if (this.miniController != null) {
-                            sBuilder.delete(0, 100);
-                            sBuilder.append("Sorry, your choice is invalid. Please try again");
-                            if (this.miniController.checkPos(message, playSpace, sBuilder)) {
-                                socketOut.println(this.miniController.getMessage(message));
+
+    public void asyncWriteToSocketGUI(String message) {
+                                socketOut.println(message);
                                 socketOut.flush();
-                                playSpace.reset();
-                                miniController = null;
-                            } else {
-                                System.out.println(sBuilder);
-                            }
-                        } else {
-                            System.out.println("Now you can't make a move. Please wait");
-                        }
-                    }
-            }catch (Exception e){
-                setActive(false);
-            }
-        });
 
-        return t;
     }
 
     @Override
     public void run() throws IOException {
-        socket= new Socket(ip,port);
+        socket = new Socket(ip,port);
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
-        Scanner stdin= new Scanner(System.in);
         try {
             Thread t0 =asyncReadFromSocket(socketIn);
-            t0.join();
-        }catch (InterruptedException | NoSuchElementException e){
+        }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
-        } finally {
-            stdin.close();
-            socketIn.close();
-            socketOut.close();
-            socket.close();
         }
 
     }
