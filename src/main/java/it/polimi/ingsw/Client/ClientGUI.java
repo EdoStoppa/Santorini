@@ -73,10 +73,7 @@ public class ClientGUI extends Client{
     private void manageServerMessageGUI(ServerMessage inputObject){
         int i;
         if(inputObject instanceof PickGodMessage){
-            i=3;
-            System.out.println("1");
-            ClientGuiApp.switchScene(i);
-            System.out.println("djdsaasji");
+            view.update(3);
 
         }
 

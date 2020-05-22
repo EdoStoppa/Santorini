@@ -3,7 +3,10 @@ package it.polimi.ingsw;
 
 
 import it.polimi.ingsw.Client.ClientGUI;
+import it.polimi.ingsw.Client.EventHandler;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,13 +23,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
-public class ClientGuiApp extends Application {
+public class ClientGuiApp extends Application implements EventHandler {
     private static ClientGUI  client;
     private static Stage primaryStage;
-    private static BorderPane layout;
-    private static VBox layout1;
-    private static Scene scene1;
+    private int phase=0;
 
+    public void setPhase(int phase) {
+        this.phase = phase;
+        System.out.println(phase);
+    }
 
     @Override
     public void init() throws Exception {
@@ -41,9 +46,8 @@ public class ClientGuiApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         //fistLayout
-        layout=new BorderPane();
         this.primaryStage=primaryStage;
-        layout1= new VBox(50);
+        VBox layout1= new VBox(50);
         Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
         HBox Buttons= new HBox(150);
         Button twoPlayer= new Button("2 player");
@@ -62,56 +66,22 @@ public class ClientGuiApp extends Application {
         Buttons.setAlignment(Pos.CENTER);
         layout1.setAlignment(Pos.CENTER);
         layout1.getChildren().addAll(welcome,Buttons);
-        layout.setCenter(layout1);
-        scene1= new Scene(layout,800,710);
+        Scene scene1= new Scene(layout1,800,710);
         primaryStage.setScene(scene1);
         primaryStage.show();
     }
 
-    public void setPhase(int phase) {
-        System.out.println("2");
-        switchScene(phase);
 
-    }
-
-
-    public static void switchScene(int phase){
-        switch (phase) {
-            case 3 -> {
-                System.out.println("2");
-                layout.getChildren().remove(layout1);
-                System.out.println("3");
-                layout.getChildren().add(ChooseName());
-                System.out.println("4");
-                primaryStage.setScene(scene1);
-                System.out.println("5");
-                primaryStage.show();
-                System.out.println("6");
-
-
-            }
-            /*case 4 -> {
-                Scene scene4 = new Scene(ChooseGod(), 800, 710);
-                this.primaryStage.setScene(scene4);
-                this.primaryStage.show();
-            }
-            case 5 -> {
-                Scene scene5 = new Scene(ChooseGod(), 800, 710);
-                this.primaryStage.setScene(scene5);
-                this.primaryStage.show();
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + phase);*/
-        }
-    }
-
-
-
-    private static Parent ChooseName(){
+    private Parent ChooseName(){
         VBox layout=new VBox(40);
         Label textName= new Label("enter your name");
         TextField name= new TextField();
         Button go= new Button("go");
-        go.setOnAction(e-> client.asyncWriteToSocketGUI(name.getText()));
+        go.setOnAction(e->{
+            client.asyncWriteToSocketGUI(name.getText());
+            Scene sceneWait= new Scene(waitScene(),800,710);
+            primaryStage.setScene(sceneWait);
+        });
         name.setMaxWidth(150);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
@@ -179,7 +149,42 @@ public class ClientGuiApp extends Application {
         IWGod.setFitWidth(110);
     }
 
+    private Parent waitScene(){
+        Label label= new Label("wait");
+        VBox layout=new VBox(10);
 
-
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().add(label);
+        return layout;
 
     }
+
+    private void switchScene(int i){
+        if(phase==3){
+            System.out.println("scena creata");
+            Scene scene3= new Scene(ChooseGod(),800,710);
+            System.out.println("scena creata");
+            primaryStage.setOnShowing(e->primaryStage.setScene(scene3));
+            System.out.println("scena settata");
+            phase=0;
+        }
+
+    }
+
+
+    @Override
+    public void update(final int phase) {
+        Platform.runLater(()->{
+            System.out.println("scena creata"+phase);
+            if(phase==3){
+                System.out.println("scena creata");
+                Scene scene3= new Scene(ChooseGod(),800,710);
+                System.out.println("scena creata");
+                primaryStage.setScene(scene3);
+                System.out.println("scena settata");
+            }
+        });
+
+    }
+
+}
