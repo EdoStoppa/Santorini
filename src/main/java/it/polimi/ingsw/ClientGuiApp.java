@@ -21,14 +21,16 @@ import javafx.stage.Stage;
 
 
 public class ClientGuiApp extends Application {
-   private ClientGUI  client;
-   private int phaseInit=0;
-   private boolean initializzazion=true;
+    private static ClientGUI  client;
+    private static Stage primaryStage;
+    private static BorderPane layout;
+    private static VBox layout1;
+    private static Scene scene1;
 
 
     @Override
     public void init() throws Exception {
-        client=new ClientGUI("127.0.0.1", 12345);
+        client=new ClientGUI("127.0.0.1", 12345,this);
         client.run();
     }
 
@@ -39,7 +41,9 @@ public class ClientGuiApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         //fistLayout
-        VBox layout1= new VBox(50);
+        layout=new BorderPane();
+        this.primaryStage=primaryStage;
+        layout1= new VBox(50);
         Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
         HBox Buttons= new HBox(150);
         Button twoPlayer= new Button("2 player");
@@ -47,63 +51,73 @@ public class ClientGuiApp extends Application {
         twoPlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("2");
             Scene scene=new Scene(ChooseName(),800,710);
-            primaryStage.setScene(scene);
+            this.primaryStage.setScene(scene);
         });
         treePlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("3");
-            Scene scene=new Scene(ChooseName(),800,710);
+            Scene scene=new Scene(ChooseGod(),800,710);
             primaryStage.setScene(scene);
         });
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
         Buttons.setAlignment(Pos.CENTER);
         layout1.setAlignment(Pos.CENTER);
         layout1.getChildren().addAll(welcome,Buttons);
-        Scene scene1= new Scene(layout1,800,710);
+        layout.setCenter(layout1);
+        scene1= new Scene(layout,800,710);
         primaryStage.setScene(scene1);
         primaryStage.show();
+    }
+
+    public void setPhase(int phase) {
+        System.out.println("2");
+        switchScene(phase);
+
+    }
 
 
-        while(initializzazion){
-            switch (phaseInit){
-            case 3:
-                Scene scene3= new Scene(ChooseGod(),800,710);
-                primaryStage.setScene(scene3);
+    public static void switchScene(int phase){
+        switch (phase) {
+            case 3 -> {
+                System.out.println("2");
+                layout.getChildren().remove(layout1);
+                System.out.println("3");
+                layout.getChildren().add(ChooseName());
+                System.out.println("4");
+                primaryStage.setScene(scene1);
+                System.out.println("5");
                 primaryStage.show();
-                break;
-                case 4:
-                    Scene scene4= new Scene(ChooseGod(),800,710);
-                    primaryStage.setScene(scene4);
-                    primaryStage.show();
-                    break;
-                case 5:
-                    Scene scene5= new Scene(ChooseGod(),800,710);
-                    primaryStage.setScene(scene5);
-                    primaryStage.show();
-                    break;
+                System.out.println("6");
 
 
-                default:
-                    throw new IllegalStateException("Unexpected value: " + phaseInit);
             }
-    }
+            /*case 4 -> {
+                Scene scene4 = new Scene(ChooseGod(), 800, 710);
+                this.primaryStage.setScene(scene4);
+                this.primaryStage.show();
+            }
+            case 5 -> {
+                Scene scene5 = new Scene(ChooseGod(), 800, 710);
+                this.primaryStage.setScene(scene5);
+                this.primaryStage.show();
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + phase);*/
+        }
     }
 
 
-    private Parent ChooseName (){
+
+    private static Parent ChooseName(){
         VBox layout=new VBox(40);
         Label textName= new Label("enter your name");
         TextField name= new TextField();
         Button go= new Button("go");
-        go.setOnAction(e->{
-            client.asyncWriteToSocketGUI(name.getText());
-        });
+        go.setOnAction(e-> client.asyncWriteToSocketGUI(name.getText()));
         name.setMaxWidth(150);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
         return layout;
     }
-
-    private Parent ChooseGod(){
+        private Parent ChooseGod(){
         BorderPane layout=new BorderPane();
         HBox firstLine= new HBox(10);
         HBox secondLine=new HBox(10);
@@ -160,7 +174,7 @@ public class ClientGuiApp extends Application {
         return layout;
     }
 
-    private void setGodImage(ImageView IWGod){
+    private static void setGodImage(ImageView IWGod){
         IWGod.setFitHeight(170.66);
         IWGod.setFitWidth(110);
     }

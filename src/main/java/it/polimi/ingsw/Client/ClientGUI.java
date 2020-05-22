@@ -1,28 +1,29 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
-import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
+
 
 public class ClientGUI extends Client{
     String idPlayer = null;
-    private MiniController miniController;;
+    private MiniController miniController;
     private PrintWriter socketOut;
-    private Socket socket;
+    ClientGuiApp view;
 
-    public ClientGUI(String ip, int port) throws IOException {
+    public ClientGUI(String ip, int port,ClientGuiApp view){
         super(ip, port);
+        this.view=view;
     }
 
     @Override
@@ -69,7 +70,16 @@ public class ClientGUI extends Client{
         }
     }
 
-    private void manageServerMessageGUI(ServerMessage imputObject){
+    private void manageServerMessageGUI(ServerMessage inputObject){
+        int i;
+        if(inputObject instanceof PickGodMessage){
+            i=3;
+            System.out.println("1");
+            ClientGuiApp.switchScene(i);
+            System.out.println("djdsaasji");
+
+        }
+
 
     }
 
@@ -102,7 +112,7 @@ public class ClientGUI extends Client{
 
     @Override
     public void run() throws IOException {
-        socket = new Socket(ip,port);
+        Socket socket = new Socket(ip, port);
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
         try {
