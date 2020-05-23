@@ -91,10 +91,10 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
     }
         public static void ChooseGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
-        HBox firstLine= new HBox(10);
-        HBox secondLine=new HBox(10);
-        HBox thirdLine=new HBox(10);
-        HBox fourLine= new HBox(10);
+        HBox firstLine= new HBox();
+        HBox secondLine=new HBox();
+        HBox thirdLine=new HBox();
+        HBox fourLine= new HBox();
         CheckBox apollo=new CheckBox();
         CheckBox artemis=new CheckBox();
         CheckBox athena= new CheckBox();
@@ -131,34 +131,41 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
         setGodImage(IWPan);
         ImageView IWPrometheus= new ImageView(prometheu);
         setGodImage(IWPrometheus);
-        Label ApolloDesctripion =new Label(message.GetGod(0).getGodPower());
-        Label ArtemisDesctripion =new Label(message.GetGod(1).getGodPower());
-        Label AthenaDesctripion =new Label(message.GetGod(2).getGodPower());
-        Label AtlasDesctripion =new Label(message.GetGod(3).getGodPower());
-        Label DemeterDesctripion =new Label(message.GetGod(4).getGodPower());
-        Label HepheastusDesctripion =new Label(message.GetGod(5).getGodPower());
-        Label MinotausDesctripion =new Label(message.GetGod(6).getGodPower());
-        Label PanDesctripion =new Label(message.GetGod(7).getGodPower());
-        Label PrometheusDesctripion =new Label(message.GetGod(8).getGodPower());
+        Text ApolloDesctripion =new Text(message.GetGod(0).getGodPower());
+        ApolloDesctripion.setWrappingWidth(130);
+        Text ArtemisDesctripion =new Text(message.GetGod(1).getGodPower());
+        ArtemisDesctripion.setWrappingWidth(130);
+        Text AthenaDesctripion =new Text(message.GetGod(2).getGodPower());
+        AthenaDesctripion.setWrappingWidth(130);
+        Text AtlasDesctripion =new Text(message.GetGod(3).getGodPower());
+        AtlasDesctripion.setWrappingWidth(130);
+        Text DemeterDesctripion =new Text(message.GetGod(4).getGodPower());
+        DemeterDesctripion.setWrappingWidth(130);
+        Text HephaestusDesctripion =new Text(message.GetGod(5).getGodPower());
+        HephaestusDesctripion.setWrappingWidth(130);
+        Text MinotaurDesctripion =new Text(message.GetGod(6).getGodPower());
+        MinotaurDesctripion.setWrappingWidth(130);
+        Text PanDesctripion =new Text(message.GetGod(7).getGodPower());
+        PanDesctripion.setWrappingWidth(130);
+        Text PrometheusDesctripion =new Text(message.GetGod(8).getGodPower());
+        PrometheusDesctripion.setWrappingWidth(130);
+
         firstLine.getChildren().addAll(apollo,IWApollo,ApolloDesctripion,artemis,IWArtemis,ArtemisDesctripion,athena,IWAthena,AthenaDesctripion);
-        secondLine.getChildren().addAll(atlas,IWAtlas,demeter,IWDemeter,hephaestus,IWHephaestus);
-        thirdLine.getChildren().addAll(minotaur,IWMinotaur,pan,IWPan,prometheus,IWPrometheus);
-        VBox griglia=new VBox(50);
+        secondLine.getChildren().addAll(atlas,IWAtlas,AtlasDesctripion,demeter,IWDemeter,DemeterDesctripion,hephaestus,IWHephaestus,HephaestusDesctripion);
+        thirdLine.getChildren().addAll(minotaur,IWMinotaur,MinotaurDesctripion,pan,IWPan,PanDesctripion,prometheus,IWPrometheus,PrometheusDesctripion);
+        VBox griglia=new VBox(30);
         Button chosenGods=new Button("enter");
         fourLine.getChildren().add(chosenGods);
         fourLine.setAlignment(Pos.CENTER);
         griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
-        Pane left= new Pane();
-        left.setPrefSize(50,720);
         layout.setCenter(griglia);
-        layout.setLeft(left);
-        Scene scene3= new Scene(layout,800,710);
+        Scene scene3= new Scene(layout,850,710);
         primaryStage.setScene(scene3);
     }
 
     private static void setGodImage(ImageView IWGod){
-        IWGod.setFitHeight(170.66);
-        IWGod.setFitWidth(110);
+        IWGod.setFitHeight(190);
+        IWGod.setFitWidth(133.33);
     }
 
     private Parent waitScene(){
