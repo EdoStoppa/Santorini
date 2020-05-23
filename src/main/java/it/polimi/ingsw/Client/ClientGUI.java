@@ -4,7 +4,6 @@ import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.HelpMessage;
-import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 
 
@@ -37,6 +36,7 @@ public class ClientGUI extends Client{
                         if(inputObject instanceof String) {
                             manageStringGUI((String) inputObject);
                         }else if (inputObject instanceof ServerMessage){
+                            System.out.println("siamo qui");
                             manageServerMessageGUI((ServerMessage)inputObject);
                         }
 
@@ -71,14 +71,10 @@ public class ClientGUI extends Client{
     }
 
     private void manageServerMessageGUI(ServerMessage inputObject){
-        int i;
-        if(inputObject instanceof PickGodMessage){
-            view.update(3);
+        System.out.println("siamo qui");
+        view.update(inputObject);
 
         }
-
-
-    }
 
 
 

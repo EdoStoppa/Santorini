@@ -1,9 +1,10 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.event.Event;
 
 import java.util.EventListener;
 
 public interface EventHandler<T extends Event> extends EventListener{
-    void update(final int phase);
+    void update(ServerMessage message);
 }

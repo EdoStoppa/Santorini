@@ -4,7 +4,6 @@ import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
-import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Model.God;
@@ -12,7 +11,6 @@ import it.polimi.ingsw.Model.God;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.*;
 
 public class SocketClientConnection extends Observable<String> implements Runnable {

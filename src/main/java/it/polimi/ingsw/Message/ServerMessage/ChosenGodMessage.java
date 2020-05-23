@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
-import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.ChosenMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Model.God;
@@ -36,6 +35,11 @@ public class ChosenGodMessage extends ServerMessage {
             i++;
         }
         return message + "\nType the corresponding number to choose your god";
+    }
+
+    @Override
+    public void buildScene() {
+
     }
 
     public int getNumPlayer(){

@@ -1,16 +1,13 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Controller.MiniController.*;
-import it.polimi.ingsw.Message.BuildMessages.BuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
-import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
 import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
 import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Message.WinMessage;
-import it.polimi.ingsw.Model.God;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

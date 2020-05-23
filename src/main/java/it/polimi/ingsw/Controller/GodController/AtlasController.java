@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Controller.GodController;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Model.Atlas;
 import it.polimi.ingsw.Model.Model;

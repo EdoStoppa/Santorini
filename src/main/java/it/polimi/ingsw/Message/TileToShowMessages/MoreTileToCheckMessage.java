@@ -2,7 +2,6 @@ package it.polimi.ingsw.Message.TileToShowMessages;
 
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.MoreCheckMiniController;
-import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 

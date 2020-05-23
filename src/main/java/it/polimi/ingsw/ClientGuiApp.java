@@ -4,26 +4,28 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.EventHandler;
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 
-public class ClientGuiApp extends Application implements EventHandler {
+
+public class ClientGuiApp extends Application implements EventHandler, Serializable {
+    private static final long serialVersionUID = 1L;
     private static ClientGUI  client;
     private static Stage primaryStage;
     private int phase=0;
@@ -59,7 +61,7 @@ public class ClientGuiApp extends Application implements EventHandler {
         });
         treePlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("3");
-            Scene scene=new Scene(ChooseGod(),800,710);
+            Scene scene=new Scene(ChooseName(),800,710);
             primaryStage.setScene(scene);
         });
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
@@ -87,7 +89,7 @@ public class ClientGuiApp extends Application implements EventHandler {
         layout.getChildren().addAll(textName,name,go);
         return layout;
     }
-        private Parent ChooseGod(){
+        public static void ChooseGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
         HBox firstLine= new HBox(10);
         HBox secondLine=new HBox(10);
@@ -129,7 +131,16 @@ public class ClientGuiApp extends Application implements EventHandler {
         setGodImage(IWPan);
         ImageView IWPrometheus= new ImageView(prometheu);
         setGodImage(IWPrometheus);
-        firstLine.getChildren().addAll(apollo,IWApollo,artemis,IWArtemis,athena,IWAthena);
+        Label ApolloDesctripion =new Label(message.GetGod(0).getGodPower());
+        Label ArtemisDesctripion =new Label(message.GetGod(1).getGodPower());
+        Label AthenaDesctripion =new Label(message.GetGod(2).getGodPower());
+        Label AtlasDesctripion =new Label(message.GetGod(3).getGodPower());
+        Label DemeterDesctripion =new Label(message.GetGod(4).getGodPower());
+        Label HepheastusDesctripion =new Label(message.GetGod(5).getGodPower());
+        Label MinotausDesctripion =new Label(message.GetGod(6).getGodPower());
+        Label PanDesctripion =new Label(message.GetGod(7).getGodPower());
+        Label PrometheusDesctripion =new Label(message.GetGod(8).getGodPower());
+        firstLine.getChildren().addAll(apollo,IWApollo,ApolloDesctripion,artemis,IWArtemis,ArtemisDesctripion,athena,IWAthena,AthenaDesctripion);
         secondLine.getChildren().addAll(atlas,IWAtlas,demeter,IWDemeter,hephaestus,IWHephaestus);
         thirdLine.getChildren().addAll(minotaur,IWMinotaur,pan,IWPan,prometheus,IWPrometheus);
         VBox griglia=new VBox(50);
@@ -141,7 +152,8 @@ public class ClientGuiApp extends Application implements EventHandler {
         left.setPrefSize(50,720);
         layout.setCenter(griglia);
         layout.setLeft(left);
-        return layout;
+        Scene scene3= new Scene(layout,800,710);
+        primaryStage.setScene(scene3);
     }
 
     private static void setGodImage(ImageView IWGod){
@@ -159,30 +171,12 @@ public class ClientGuiApp extends Application implements EventHandler {
 
     }
 
-    private void switchScene(int i){
-        if(phase==3){
-            System.out.println("scena creata");
-            Scene scene3= new Scene(ChooseGod(),800,710);
-            System.out.println("scena creata");
-            primaryStage.setOnShowing(e->primaryStage.setScene(scene3));
-            System.out.println("scena settata");
-            phase=0;
-        }
-
-    }
-
 
     @Override
-    public void update(final int phase) {
+    public void update(ServerMessage message) {
         Platform.runLater(()->{
-            System.out.println("scena creata"+phase);
-            if(phase==3){
-                System.out.println("scena creata");
-                Scene scene3= new Scene(ChooseGod(),800,710);
-                System.out.println("scena creata");
-                primaryStage.setScene(scene3);
-                System.out.println("scena settata");
-            }
+            System.out.println("sssss");
+            message.buildScene();
         });
 
     }
