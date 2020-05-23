@@ -16,12 +16,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ClientCLI extends Client{
     String idPlayer = null;
     private MiniController miniController;
+    LocalTime lastPingTime;
 
     public ClientCLI(String ip, int port) {
         super(ip, port);
@@ -74,6 +77,8 @@ public class ClientCLI extends Client{
                             manageServerMessage((ServerMessage)inputObject);
                         } else if (inputObject instanceof GameMessage){
                             manageGameMessage((GameMessage)inputObject);
+                        } else if(inputObject.equals(true)){
+                            managePing();
                         }
                     }
                 }
@@ -84,6 +89,37 @@ public class ClientCLI extends Client{
         });
         t.start();
         return t;
+    }
+
+    public Thread asyncCheckConnection(){
+        Thread t = new Thread(() ->{
+            LocalTime lastThreadTime = LocalTime.now();
+            while(isActive()){
+                try{
+                    Thread.sleep(7000);
+                } catch(InterruptedException e){
+                    setActive(false);
+                    System.out.println("\n\nSomething went horribly wrong, please restart the game");
+                }
+
+                synchronized(this){
+                    //System.out.println("Checking Ping, Thread time = " + lastThreadTime.toString() + " and Ping time = " + lastPingTime.toString());
+                    if(lastThreadTime.equals(lastPingTime)){
+                        setActive(false);
+                        System.out.println("The Server connection was lost, please restart the game");
+                    } else {
+                        lastThreadTime = lastPingTime;
+                    }
+                }
+
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    private synchronized void managePing(){
+        lastPingTime = LocalTime.now();
     }
 
     private void manageString(String input){
@@ -173,10 +209,12 @@ public class ClientCLI extends Client{
         Scanner stdin= new Scanner(System.in);
 
         try {
-            Thread t0 =asyncReadFromSocket(socketIn);
-            Thread t1=asyncWriteToSocket(stdin, socketOut);
+            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t1 = asyncWriteToSocket(stdin, socketOut);
+            Thread t2 = asyncCheckConnection();
             t0.join();
             t1.join();
+            t2.join();
         }catch (InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {

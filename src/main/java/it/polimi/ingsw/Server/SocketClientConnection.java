@@ -84,6 +84,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 System.err.println("Error when closing socket");
             }
         }
+        playing = false;
         active=false;
     }
 
@@ -97,6 +98,9 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         try {
             in = new Scanner(socket.getInputStream());
             out = new ObjectOutputStream(socket.getOutputStream());
+            //this run a Thread to ping the client
+            runPingThread();
+
             send("Welcome to Santorini!\n2 or 3 player mode?");
             while(active){
                 try{
@@ -109,9 +113,13 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                     send("Please enter a possible game mode");
                 } catch (NoSuchElementException e){
                     System.out.println("Connection closed by Client while choosing game mode, proceeding closing SocketClientConnection");
+                    active = false;
+                    playing = false;
                     return;
                 } catch (Exception e){
                     System.out.println("Unknown exception, closing SocketClientConnection");
+                    active = false;
+                    playing = false;
                     return;
                 }
             }
@@ -163,6 +171,28 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 System.out.println("SocketClientConnection already closed");
             }
         }
+    }
+
+    private void runPingThread(){
+        new Thread(() ->{
+            while(playing && active){
+                if(!ping()){
+                    if(playing){
+                        System.out.println("Closing game due to disconnected Client");
+                        close(gameMode);
+                    }
+
+                    playing = false;
+                    active = false;
+                }
+
+                try{
+                    Thread.sleep(5000);
+                } catch(InterruptedException e){
+                    System.out.println("Game Interrupted");
+                }
+            }
+        }).start();
     }
 
     /**
