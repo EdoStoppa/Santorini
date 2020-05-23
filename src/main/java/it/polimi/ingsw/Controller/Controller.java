@@ -1,15 +1,10 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.GodController.GodController;
-import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.*;
-import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
-import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.Observer.Observer;
-
-import java.util.List;
 
 // -----------------------------------------------------------------------------------
 

@@ -1,10 +1,7 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
-import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Controller.MiniController.OrderMiniController;
-import it.polimi.ingsw.Model.God;
-import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
 
@@ -32,5 +29,10 @@ public class OrderGameMessage extends ServerMessage{
             message = message + "- " + string + "\n";
         }
         return message + "(Please type the corresponding id)";
+    }
+
+    @Override
+    public void buildScene() {
+
     }
 }

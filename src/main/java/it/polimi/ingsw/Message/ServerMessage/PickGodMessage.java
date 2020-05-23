@@ -1,8 +1,11 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
+
+import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Controller.MiniController.PickGodMiniController;
 import it.polimi.ingsw.Model.God;
+
 
 import java.util.List;
 
@@ -37,4 +40,11 @@ public class PickGodMessage extends ServerMessage {
     public int getNumPlayer()   {
         return this.numPlayer;
     }
+
+
+    @Override
+    public void buildScene() {
+        ClientGuiApp.ChooseGod(this);
+    }
+
 }

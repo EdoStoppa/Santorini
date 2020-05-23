@@ -2,16 +2,8 @@ package it.polimi.ingsw.Client;
 
 
 
-import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
-import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
-import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public abstract class Client {
     protected String ip;

@@ -24,4 +24,9 @@ public class PlaceFirstConstructorMessage extends ServerMessage {
     public String getMessage() {
         return "Choose where to place your constructor typing the position (ex. 2,3)";
     }
+
+    @Override
+    public void buildScene() {
+
+    }
 }

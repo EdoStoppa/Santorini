@@ -3,7 +3,6 @@ package it.polimi.ingsw.Controller.GodController;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Model.Apollo;
-import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Position;
 

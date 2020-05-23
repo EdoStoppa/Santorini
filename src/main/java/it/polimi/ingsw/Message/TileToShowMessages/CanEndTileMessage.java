@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
-import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.CanEndMiniController;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Message;
 
-import it.polimi.ingsw.Model.PossiblePhases;
-
 public class HelpMessage {
     public final static String endedPhase = "Phase ended";
     public final static String yesOrNo = "[y/n]";

@@ -1,11 +1,6 @@
 package it.polimi.ingsw.Message.MoveMessages;
 
-import it.polimi.ingsw.Client.PlaySpace;
-import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
-import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
-
-import java.util.List;
 
 public class ServerMoveMessage extends MoveMessage {
     public ServerMoveMessage(String player, PossiblePhases phase, int[][] matrix) {

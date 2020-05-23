@@ -3,32 +3,41 @@ package it.polimi.ingsw;
 
 
 import it.polimi.ingsw.Client.ClientGUI;
+import it.polimi.ingsw.Client.EventHandler;
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 
-public class ClientGuiApp extends Application {
-   private ClientGUI  client;
-   private int phaseInit=0;
-   private boolean initializzazion=true;
 
+public class ClientGuiApp extends Application implements EventHandler, Serializable {
+    private static final long serialVersionUID = 1L;
+    private static ClientGUI  client;
+    private static Stage primaryStage;
+    private int phase=0;
+
+    public void setPhase(int phase) {
+        this.phase = phase;
+        System.out.println(phase);
+    }
 
     @Override
     public void init() throws Exception {
-        client=new ClientGUI("127.0.0.1", 12345);
+        client=new ClientGUI("127.0.0.1", 12345,this);
         client.run();
     }
 
@@ -39,6 +48,7 @@ public class ClientGuiApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         //fistLayout
+        this.primaryStage=primaryStage;
         VBox layout1= new VBox(50);
         Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
         HBox Buttons= new HBox(150);
@@ -47,7 +57,7 @@ public class ClientGuiApp extends Application {
         twoPlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("2");
             Scene scene=new Scene(ChooseName(),800,710);
-            primaryStage.setScene(scene);
+            this.primaryStage.setScene(scene);
         });
         treePlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("3");
@@ -61,49 +71,25 @@ public class ClientGuiApp extends Application {
         Scene scene1= new Scene(layout1,800,710);
         primaryStage.setScene(scene1);
         primaryStage.show();
-
-
-        while(initializzazion){
-            switch (phaseInit){
-            case 3:
-                Scene scene3= new Scene(ChooseGod(),800,710);
-                primaryStage.setScene(scene3);
-                primaryStage.show();
-                break;
-                case 4:
-                    Scene scene4= new Scene(ChooseGod(),800,710);
-                    primaryStage.setScene(scene4);
-                    primaryStage.show();
-                    break;
-                case 5:
-                    Scene scene5= new Scene(ChooseGod(),800,710);
-                    primaryStage.setScene(scene5);
-                    primaryStage.show();
-                    break;
-
-
-                default:
-                    throw new IllegalStateException("Unexpected value: " + phaseInit);
-            }
-    }
     }
 
 
-    private Parent ChooseName (){
+    private Parent ChooseName(){
         VBox layout=new VBox(40);
         Label textName= new Label("enter your name");
         TextField name= new TextField();
         Button go= new Button("go");
         go.setOnAction(e->{
             client.asyncWriteToSocketGUI(name.getText());
+            Scene sceneWait= new Scene(waitScene(),800,710);
+            primaryStage.setScene(sceneWait);
         });
         name.setMaxWidth(150);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
         return layout;
     }
-
-    private Parent ChooseGod(){
+        public static void ChooseGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
         HBox firstLine= new HBox(10);
         HBox secondLine=new HBox(10);
@@ -145,7 +131,16 @@ public class ClientGuiApp extends Application {
         setGodImage(IWPan);
         ImageView IWPrometheus= new ImageView(prometheu);
         setGodImage(IWPrometheus);
-        firstLine.getChildren().addAll(apollo,IWApollo,artemis,IWArtemis,athena,IWAthena);
+        Label ApolloDesctripion =new Label(message.GetGod(0).getGodPower());
+        Label ArtemisDesctripion =new Label(message.GetGod(1).getGodPower());
+        Label AthenaDesctripion =new Label(message.GetGod(2).getGodPower());
+        Label AtlasDesctripion =new Label(message.GetGod(3).getGodPower());
+        Label DemeterDesctripion =new Label(message.GetGod(4).getGodPower());
+        Label HepheastusDesctripion =new Label(message.GetGod(5).getGodPower());
+        Label MinotausDesctripion =new Label(message.GetGod(6).getGodPower());
+        Label PanDesctripion =new Label(message.GetGod(7).getGodPower());
+        Label PrometheusDesctripion =new Label(message.GetGod(8).getGodPower());
+        firstLine.getChildren().addAll(apollo,IWApollo,ApolloDesctripion,artemis,IWArtemis,ArtemisDesctripion,athena,IWAthena,AthenaDesctripion);
         secondLine.getChildren().addAll(atlas,IWAtlas,demeter,IWDemeter,hephaestus,IWHephaestus);
         thirdLine.getChildren().addAll(minotaur,IWMinotaur,pan,IWPan,prometheus,IWPrometheus);
         VBox griglia=new VBox(50);
@@ -157,15 +152,33 @@ public class ClientGuiApp extends Application {
         left.setPrefSize(50,720);
         layout.setCenter(griglia);
         layout.setLeft(left);
-        return layout;
+        Scene scene3= new Scene(layout,800,710);
+        primaryStage.setScene(scene3);
     }
 
-    private void setGodImage(ImageView IWGod){
+    private static void setGodImage(ImageView IWGod){
         IWGod.setFitHeight(170.66);
         IWGod.setFitWidth(110);
     }
 
+    private Parent waitScene(){
+        Label label= new Label("wait");
+        VBox layout=new VBox(10);
 
-
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().add(label);
+        return layout;
 
     }
+
+
+    @Override
+    public void update(ServerMessage message) {
+        Platform.runLater(()->{
+            System.out.println("sssss");
+            message.buildScene();
+        });
+
+    }
+
+}
