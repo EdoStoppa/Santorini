@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class ClientCLI extends Client{
     String idPlayer = null;
     private MiniController miniController;
+    private final Object ipLock = new Object();
     LocalTime lastPingTime;
 
     public ClientCLI(String ip, int port) {
@@ -67,15 +68,19 @@ public class ClientCLI extends Client{
                 while(isActive()){
                     Object inputObject = socketIn.readObject();
 
-                    synchronized(this){
-                        if(inputObject instanceof String){
-                            manageString((String)inputObject);
-                        } else if (inputObject instanceof ServerMessage){
-                            manageServerMessage((ServerMessage)inputObject);
-                        } else if (inputObject instanceof GameMessage){
-                            manageGameMessage((GameMessage)inputObject);
-                        } else if(inputObject.equals(true)){
+                    if(inputObject.equals(true)){
+                        synchronized (ipLock){
                             managePing();
+                        }
+                    } else {
+                        synchronized(this){
+                            if (inputObject instanceof ServerMessage){
+                                manageServerMessage((ServerMessage)inputObject);
+                            } else if (inputObject instanceof GameMessage){
+                                manageGameMessage((GameMessage)inputObject);
+                            } else if(inputObject instanceof String){
+                                manageString((String)inputObject);
+                            }
                         }
                     }
                 }
@@ -99,11 +104,12 @@ public class ClientCLI extends Client{
                     System.out.println("\n\nSomething went horribly wrong, please restart the game");
                 }
 
-                synchronized(this){
+                synchronized(ipLock){
                     //System.out.println("Checking Ping, Thread time = " + lastThreadTime.toString() + " and Ping time = " + lastPingTime.toString());
                     if(lastThreadTime.equals(lastPingTime)){
+                        if(isActive())
+                            System.out.println("The Server connection was lost, please restart the game");
                         setActive(false);
-                        System.out.println("The Server connection was lost, please restart the game");
                     } else {
                         lastThreadTime = lastPingTime;
                     }
