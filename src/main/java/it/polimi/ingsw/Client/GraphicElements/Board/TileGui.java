@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
+import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
@@ -17,7 +18,9 @@ import javafx.scene.text.Text;
         private int level;
         private int count=0;
         private static boolean init=true;
-        private static boolean yourTurn;
+        private static boolean yourTurn=false;
+        private  int x,y;
+
 
         public static void setInit() {
             init=true;
@@ -70,7 +73,12 @@ import javafx.scene.text.Text;
                         }
                     }
                 }else if(e.getButton()== MouseButton.PRIMARY && init ){
-                    Piece piece= new Piece(PieceType.WHITE,BoardScene.toBoard(e.getSceneX()),BoardScene.toBoard(e.getSceneY()));
+                    this.piece=BoardScene.makePiece(PieceType.WHITE,x,y);
+                    this.setPiece(piece);
+                    BoardScene.pieceGroup.getChildren().add(piece);
+                    ClientGuiApp.getClient().asyncWriteToSocketGUI(x+","+y);
+                    init=false;
+                    yourTurn=false;
                     
 
 

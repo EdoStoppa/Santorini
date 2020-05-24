@@ -23,7 +23,7 @@ public class BoardScene {
     private static final TileGui[][] board= new TileGui[WIDTH][HEIGHT];
 
     private static final Group tileGroup = new Group();
-    private static final Group pieceGroup= new Group();
+    public static final Group pieceGroup= new Group();
 
 
 
