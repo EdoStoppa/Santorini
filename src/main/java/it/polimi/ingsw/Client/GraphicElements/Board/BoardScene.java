@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
 
+
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -51,7 +52,7 @@ public class BoardScene {
 
                 tileGroup.getChildren().add(tile);
 
-                Piece piece=null;
+               Piece piece=null;
 
                 if ((x==2 && y==1)||(x==3 && y==4)){
                     piece=makePiece(PieceType.RED,x,y);

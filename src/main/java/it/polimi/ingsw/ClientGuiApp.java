@@ -5,21 +5,14 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.EventHandler;
 import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
-import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.Serializable;
@@ -29,7 +22,6 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
     private static final long serialVersionUID = 1L;
     private static ClientGUI  client;
     private static Stage primaryStage;
-    private int phase=0;
     private static SceneBuilder sceneBuilder;
 
     public static ClientGUI getClient() {
@@ -53,7 +45,7 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
     @Override
     public void start(Stage primaryStage) {
         //fistLayout
-        this.primaryStage=primaryStage;
+        ClientGuiApp.primaryStage =primaryStage;
         sceneBuilder=new SceneBuilder();
         VBox layout1= new VBox(50);
         Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
@@ -63,7 +55,7 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
         twoPlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("2");
             Scene scene=new Scene(sceneBuilder.ChooseName(),800,710);
-            this.primaryStage.setScene(scene);
+            ClientGuiApp.primaryStage.setScene(scene);
         });
         treePlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("3");
@@ -83,9 +75,7 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
 
     @Override
     public void update(ServerMessage message) {
-        Platform.runLater(()->{
-            message.buildScene();
-        });
+        Platform.runLater(message::buildScene);
 
     }
 

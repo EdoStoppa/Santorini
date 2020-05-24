@@ -5,9 +5,6 @@ import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
-import it.polimi.ingsw.Model.Apollo;
-import it.polimi.ingsw.Model.Board;
-import it.polimi.ingsw.Model.Pan;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,7 +24,7 @@ public class SceneBuilder {
 
 
 
-    private  static HashMap<String,Image> imageHashMap= new HashMap<String, Image>();
+    private  static final HashMap<String,Image> imageHashMap= new HashMap<>();
 
     public SceneBuilder(){
          Image Apollo= new Image("file:Apollo.png");
@@ -161,18 +158,18 @@ public class SceneBuilder {
         chosenGod.add(7);
     }
     if(prometheus.isSelected()){
-        chosenGod.add(8);;
+        chosenGod.add(8);
     }
     if (chosenGod.size()==numPlayer){
-        String message="";
+        StringBuilder message= new StringBuilder();
         for(int i=0;i<numPlayer;i++){
-            message=message+chosenGod.get(i);
+            message.append(chosenGod.get(i));
             if (i!=numPlayer-1){
-                message=message+",";
+                message.append(",");
             }
         }
         System.out.println(message);
-        ClientGuiApp.getClient().asyncWriteToSocketGUI(message);
+        ClientGuiApp.getClient().asyncWriteToSocketGUI(message.toString());
         Scene scene=new Scene(waitScene(),810,700);
         ClientGuiApp.getPrimaryStage().setScene(scene);
     }else{
@@ -220,7 +217,7 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("1");
             if(third.isSelected())
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(waitScene(),810,700);
+            Scene scene=new Scene(BoardScene.createContent(),810,700);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         fourLine.setAlignment(Pos.CENTER);
@@ -236,6 +233,9 @@ public class SceneBuilder {
         RadioButton first=new RadioButton();
         RadioButton second=new RadioButton();
         RadioButton third=new RadioButton();
+        first.setToggleGroup(radioGroup);
+        second.setToggleGroup(radioGroup);
+        third.setToggleGroup(radioGroup);
         HBox firstLine=new HBox(10);
         Text firstName=new Text(message.getPlayerlist().get(0));
         firstLine.getChildren().addAll(first,firstName);
