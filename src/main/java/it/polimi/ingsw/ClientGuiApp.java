@@ -4,6 +4,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.EventHandler;
+import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.application.Application;
@@ -29,10 +30,14 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
     private static ClientGUI  client;
     private static Stage primaryStage;
     private int phase=0;
+    private static SceneBuilder sceneBuilder;
 
-    public void setPhase(int phase) {
-        this.phase = phase;
-        System.out.println(phase);
+    public static ClientGUI getClient() {
+        return client;
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     @Override
@@ -49,6 +54,7 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
     public void start(Stage primaryStage) {
         //fistLayout
         this.primaryStage=primaryStage;
+        sceneBuilder=new SceneBuilder();
         VBox layout1= new VBox(50);
         Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
         HBox Buttons= new HBox(150);
@@ -56,12 +62,12 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
         Button treePlayer=new Button("3 player");
         twoPlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(ChooseName(),800,710);
+            Scene scene=new Scene(sceneBuilder.ChooseName(),800,710);
             this.primaryStage.setScene(scene);
         });
         treePlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("3");
-            Scene scene=new Scene(ChooseName(),800,710);
+            Scene scene=new Scene(sceneBuilder.ChooseName(),800,710);
             primaryStage.setScene(scene);
         });
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
@@ -74,115 +80,10 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
     }
 
 
-    private Parent ChooseName(){
-        VBox layout=new VBox(40);
-        Label textName= new Label("enter your name");
-        TextField name= new TextField();
-        Button go= new Button("go");
-        go.setOnAction(e->{
-            client.asyncWriteToSocketGUI(name.getText());
-            Scene sceneWait= new Scene(waitScene(),800,710);
-            primaryStage.setScene(sceneWait);
-        });
-        name.setMaxWidth(150);
-        layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(textName,name,go);
-        return layout;
-    }
-        public static void ChooseGod(PickGodMessage message){
-        BorderPane layout=new BorderPane();
-        HBox firstLine= new HBox();
-        HBox secondLine=new HBox();
-        HBox thirdLine=new HBox();
-        HBox fourLine= new HBox();
-        CheckBox apollo=new CheckBox();
-        CheckBox artemis=new CheckBox();
-        CheckBox athena= new CheckBox();
-        CheckBox atlas= new CheckBox();
-        CheckBox demeter= new CheckBox();
-        CheckBox hephaestus= new CheckBox();
-        CheckBox minotaur=new CheckBox();
-        CheckBox pan= new CheckBox();
-        CheckBox prometheus= new CheckBox();
-        Image apoll= new Image("file:Apollo.png");
-        Image artemi= new Image("file:Artemis.png");
-        Image athen= new Image("file:Athena.png");
-        Image atla= new Image("file:Atlas.png");
-        Image demete= new Image("file:Demeter.png");
-        Image hephaestu= new Image("file:Hephaestus.png");
-        Image minotau= new Image("file:Minotaur.png");
-        Image pa=new Image("file:Pan.png");
-        Image prometheu= new Image("file:Prometheus.png");
-        ImageView IWApollo= new ImageView(apoll);
-        setGodImage(IWApollo);
-        ImageView IWArtemis= new ImageView(artemi);
-        setGodImage(IWArtemis);
-        ImageView IWAthena= new ImageView(athen);
-        setGodImage(IWAthena);
-        ImageView IWAtlas= new ImageView(atla);
-        setGodImage(IWAtlas);
-        ImageView IWDemeter = new ImageView(demete);
-        setGodImage(IWDemeter);
-        ImageView IWHephaestus = new ImageView(hephaestu);
-        setGodImage(IWHephaestus);
-        ImageView IWMinotaur= new ImageView(minotau);
-        setGodImage(IWMinotaur);
-        ImageView IWPan= new ImageView(pa);
-        setGodImage(IWPan);
-        ImageView IWPrometheus= new ImageView(prometheu);
-        setGodImage(IWPrometheus);
-        Text ApolloDesctripion =new Text(message.GetGod(0).getGodPower());
-        ApolloDesctripion.setWrappingWidth(130);
-        Text ArtemisDesctripion =new Text(message.GetGod(1).getGodPower());
-        ArtemisDesctripion.setWrappingWidth(130);
-        Text AthenaDesctripion =new Text(message.GetGod(2).getGodPower());
-        AthenaDesctripion.setWrappingWidth(130);
-        Text AtlasDesctripion =new Text(message.GetGod(3).getGodPower());
-        AtlasDesctripion.setWrappingWidth(130);
-        Text DemeterDesctripion =new Text(message.GetGod(4).getGodPower());
-        DemeterDesctripion.setWrappingWidth(130);
-        Text HephaestusDesctripion =new Text(message.GetGod(5).getGodPower());
-        HephaestusDesctripion.setWrappingWidth(130);
-        Text MinotaurDesctripion =new Text(message.GetGod(6).getGodPower());
-        MinotaurDesctripion.setWrappingWidth(130);
-        Text PanDesctripion =new Text(message.GetGod(7).getGodPower());
-        PanDesctripion.setWrappingWidth(130);
-        Text PrometheusDesctripion =new Text(message.GetGod(8).getGodPower());
-        PrometheusDesctripion.setWrappingWidth(130);
-
-        firstLine.getChildren().addAll(apollo,IWApollo,ApolloDesctripion,artemis,IWArtemis,ArtemisDesctripion,athena,IWAthena,AthenaDesctripion);
-        secondLine.getChildren().addAll(atlas,IWAtlas,AtlasDesctripion,demeter,IWDemeter,DemeterDesctripion,hephaestus,IWHephaestus,HephaestusDesctripion);
-        thirdLine.getChildren().addAll(minotaur,IWMinotaur,MinotaurDesctripion,pan,IWPan,PanDesctripion,prometheus,IWPrometheus,PrometheusDesctripion);
-        VBox griglia=new VBox(30);
-        Button chosenGods=new Button("enter");
-        fourLine.getChildren().add(chosenGods);
-        fourLine.setAlignment(Pos.CENTER);
-        griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
-        layout.setCenter(griglia);
-        Scene scene3= new Scene(layout,850,710);
-        primaryStage.setScene(scene3);
-    }
-
-    private static void setGodImage(ImageView IWGod){
-        IWGod.setFitHeight(190);
-        IWGod.setFitWidth(133.33);
-    }
-
-    private Parent waitScene(){
-        Label label= new Label("wait");
-        VBox layout=new VBox(10);
-
-        layout.setAlignment(Pos.CENTER);
-        layout.getChildren().add(label);
-        return layout;
-
-    }
-
 
     @Override
     public void update(ServerMessage message) {
         Platform.runLater(()->{
-            System.out.println("sssss");
             message.buildScene();
         });
 

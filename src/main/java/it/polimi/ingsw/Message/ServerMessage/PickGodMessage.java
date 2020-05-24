@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
 
+import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Controller.MiniController.PickGodMiniController;
@@ -44,7 +45,7 @@ public class PickGodMessage extends ServerMessage {
 
     @Override
     public void buildScene() {
-        ClientGuiApp.ChooseGod(this);
+        SceneBuilder.PickGod(this);
     }
 
 }
