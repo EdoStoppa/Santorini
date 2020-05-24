@@ -1,15 +1,17 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
+import it.polimi.ingsw.Model.Apollo;
+import it.polimi.ingsw.Model.Board;
+import it.polimi.ingsw.Model.Pan;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -17,18 +19,38 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SceneBuilder {
-    static Image apoll= new Image("file:Apollo.png");
-    static Image artemi= new Image("file:Artemis.png");
-    static Image athen= new Image("file:Athena.png");
-    static Image atla= new Image("file:Atlas.png");
-    static Image demete= new Image("file:Demeter.png");
-    static Image hephaestu= new Image("file:Hephaestus.png");
-    static Image minotau= new Image("file:Minotaur.png");
-    static Image pa=new Image("file:Pan.png");
-    static Image prometheu= new Image("file:Prometheus.png");
+
+
+
+    private  static HashMap<String,Image> imageHashMap= new HashMap<String, Image>();
+
+    public SceneBuilder(){
+         Image Apollo= new Image("file:Apollo.png");
+         Image Artemis= new Image("file:Artemis.png");
+         Image Athena= new Image("file:Athena.png");
+         Image Atlas= new Image("file:Atlas.png");
+         Image Demeter= new Image("file:Demeter.png");
+         Image Hephaestus= new Image("file:Hephaestus.png");
+         Image Minotaur= new Image("file:Minotaur.png");
+         Image Pan=new Image("file:Pan.png");
+         Image Prometheus= new Image("file:Prometheus.png");
+         imageHashMap.put("Apollo",Apollo);
+        imageHashMap.put("Artemis",Artemis);
+        imageHashMap.put("Athena",Athena);
+        imageHashMap.put("Atlas",Atlas);
+        imageHashMap.put("Demeter",Demeter);
+        imageHashMap.put("Hephaestus",Hephaestus);
+        imageHashMap.put("Minotaur",Minotaur);
+        imageHashMap.put("Pan",Pan);
+        imageHashMap.put("Prometheus",Prometheus);
+
+
+    }
 
 
     public Parent ChooseName(){
@@ -62,23 +84,23 @@ public class SceneBuilder {
         CheckBox minotaur=new CheckBox();
         CheckBox pan= new CheckBox();
         CheckBox prometheus= new CheckBox();
-        ImageView IWApollo= new ImageView(apoll);
+        ImageView IWApollo= new ImageView(imageHashMap.get("Apollo"));
         setGodImage(IWApollo);
-        ImageView IWArtemis= new ImageView(artemi);
+        ImageView IWArtemis= new ImageView(imageHashMap.get("Artemis"));
         setGodImage(IWArtemis);
-        ImageView IWAthena= new ImageView(athen);
+        ImageView IWAthena= new ImageView(imageHashMap.get("Athena"));
         setGodImage(IWAthena);
-        ImageView IWAtlas= new ImageView(atla);
+        ImageView IWAtlas= new ImageView(imageHashMap.get("Atlas"));
         setGodImage(IWAtlas);
-        ImageView IWDemeter = new ImageView(demete);
+        ImageView IWDemeter = new ImageView(imageHashMap.get("Demeter"));
         setGodImage(IWDemeter);
-        ImageView IWHephaestus = new ImageView(hephaestu);
+        ImageView IWHephaestus = new ImageView(imageHashMap.get("Hephaestus"));
         setGodImage(IWHephaestus);
-        ImageView IWMinotaur= new ImageView(minotau);
+        ImageView IWMinotaur= new ImageView(imageHashMap.get("Minotaur"));
         setGodImage(IWMinotaur);
-        ImageView IWPan= new ImageView(pa);
+        ImageView IWPan= new ImageView(imageHashMap.get("Pan"));
         setGodImage(IWPan);
-        ImageView IWPrometheus= new ImageView(prometheu);
+        ImageView IWPrometheus= new ImageView(imageHashMap.get("Prometheus"));
         setGodImage(IWPrometheus);
         Text ApolloDesctripion =new Text(message.GetGod(0).getGodPower());
         ApolloDesctripion.setWrappingWidth(130);
@@ -142,13 +164,14 @@ public class SceneBuilder {
         chosenGod.add(8);;
     }
     if (chosenGod.size()==numPlayer){
-        String message=null;
+        String message="";
         for(int i=0;i<numPlayer;i++){
             message=message+chosenGod.get(i);
             if (i!=numPlayer-1){
                 message=message+",";
             }
         }
+        System.out.println(message);
         ClientGuiApp.getClient().asyncWriteToSocketGUI(message);
         Scene scene=new Scene(waitScene(),810,700);
         ClientGuiApp.getPrimaryStage().setScene(scene);
@@ -158,6 +181,91 @@ public class SceneBuilder {
     }
 
     public static void chooseGod(ChosenGodMessage message){
+        BorderPane borderPane=new BorderPane();
+        VBox layout=new VBox(20);
+        layout.setAlignment(Pos.CENTER);
+        ToggleGroup radioGroup = new ToggleGroup();
+        RadioButton third= new RadioButton();
+        HBox firstLine= new HBox(20);
+        RadioButton first= new RadioButton();
+        first.setToggleGroup(radioGroup);
+        ImageView IWFirst = new ImageView(imageHashMap.get(message.getChosenGod(0).getGodName()));
+        setGodImage(IWFirst);
+        Text firstDescription=new Text(message.getChosenGod(0).getGodPower());
+        firstLine.getChildren().addAll(first,IWFirst,firstDescription);
+        HBox secondLine= new HBox(20);
+        RadioButton second= new RadioButton();
+        second.setToggleGroup(radioGroup);
+        ImageView IWSecond= new ImageView(imageHashMap.get(message.getChosenGod(1).getGodName()));
+        setGodImage(IWSecond);
+        Text secondDescription=new Text(message.getChosenGod(1).getGodPower());
+        secondLine.getChildren().addAll(second,IWSecond,secondDescription);
+        layout.getChildren().addAll(firstLine,secondLine);
+        if(message.getSize()==3){
+            HBox thirdLine= new HBox(20);
+            third.setToggleGroup(radioGroup);
+            ImageView IWThird= new ImageView(imageHashMap.get(message.getChosenGod(2).getGodName()));
+            setGodImage(IWThird);
+            Text thirdDescription=new Text(message.getChosenGod(2).getGodPower());
+            thirdLine.getChildren().addAll(third,IWThird,thirdDescription);
+            layout.getChildren().add(thirdLine);
+        }
+        HBox fourLine= new HBox();
+        Button sendMessage= new Button("enter");
+        fourLine.getChildren().add(sendMessage);
+        sendMessage.setOnAction(e->{
+            if(first.isSelected())
+                ClientGuiApp.getClient().asyncWriteToSocketGUI("0");
+            if(second.isSelected())
+                ClientGuiApp.getClient().asyncWriteToSocketGUI("1");
+            if(third.isSelected())
+                ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
+            Scene scene=new Scene(waitScene(),810,700);
+            ClientGuiApp.getPrimaryStage().setScene(scene);
+        });
+        fourLine.setAlignment(Pos.CENTER);
+        layout.getChildren().add(fourLine);
+        borderPane.setCenter(layout);
+        Scene scene4= new Scene(borderPane,850,710);
+        ClientGuiApp.getPrimaryStage().setScene(scene4);
+    }
+
+    public static void orderGame(OrderGameMessage message){
+        VBox layout=new VBox();
+        ToggleGroup radioGroup = new ToggleGroup();
+        RadioButton first=new RadioButton();
+        RadioButton second=new RadioButton();
+        RadioButton third=new RadioButton();
+        HBox firstLine=new HBox(10);
+        Text firstName=new Text(message.getPlayerlist().get(0));
+        firstLine.getChildren().addAll(first,firstName);
+        HBox secondLine=new HBox(10);
+        Text secondName=new Text(message.getPlayerlist().get(1));
+        secondLine.getChildren().addAll(second,secondName);
+        layout.getChildren().addAll(firstLine,secondLine);
+        if (message.getPlayerlist().size()==3){
+            HBox thirdLine=new HBox(10);
+            Text thirdName=new Text(message.getPlayerlist().get(2));
+            thirdLine.getChildren().addAll(third,thirdName);
+        }
+        HBox fourLine= new HBox();
+        Button sendMessage= new Button("enter");
+        fourLine.getChildren().add(sendMessage);
+        fourLine.setAlignment(Pos.CENTER);
+        layout.getChildren().add(fourLine);
+        sendMessage.setOnAction(e->{
+            if(first.isSelected())
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(0));
+            if(second.isSelected())
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(1));
+            if(third.isSelected())
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(2));
+            Scene scene=new Scene(BoardScene.createContent(),810,700);
+            ClientGuiApp.getPrimaryStage().setScene(scene);
+        });
+        layout.setAlignment(Pos.CENTER);
+        Scene scene=new Scene(layout,710,800);
+        ClientGuiApp.getPrimaryStage().setScene(scene);
 
     }
 

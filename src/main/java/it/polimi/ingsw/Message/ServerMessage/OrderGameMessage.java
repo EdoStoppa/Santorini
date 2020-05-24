@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
+import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Controller.MiniController.OrderMiniController;
 
@@ -33,6 +34,7 @@ public class OrderGameMessage extends ServerMessage{
 
     @Override
     public void buildScene() {
+        SceneBuilder.orderGame(this);
 
     }
 }
