@@ -25,6 +25,8 @@ public class BoardScene {
     private static final Group tileGroup = new Group();
     private static final Group pieceGroup= new Group();
 
+
+
     public static Parent createContent(){
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
@@ -51,19 +53,6 @@ public class BoardScene {
                 board[x][y]=tile;
 
                 tileGroup.getChildren().add(tile);
-
-               Piece piece=null;
-
-                if ((x==2 && y==1)||(x==3 && y==4)){
-                    piece=makePiece(PieceType.RED,x,y);
-                }
-                if ((x==0 && y==0)||(x==2 && y==2)){
-                    piece=makePiece(PieceType.WHITE,x,y);
-                }
-                if (piece!=null){
-                    tile.setPiece(piece);
-                    pieceGroup.getChildren().add(piece);
-                }
 
             }
         }
@@ -156,4 +145,5 @@ public class BoardScene {
         transition.play();
 
     }
+
 }

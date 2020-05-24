@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
+import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -15,6 +16,14 @@ import javafx.scene.text.Text;
         private Piece piece;
         private int level;
         private int count=0;
+        private static boolean init=true;
+        private static boolean yourTurn;
+
+        public static void setInit() {
+            init=true;
+            yourTurn=true;
+        }
+
 
         public  boolean hasPiece(){
             return piece!=null;
@@ -40,7 +49,8 @@ import javafx.scene.text.Text;
             getChildren().addAll(border,text);
 
             setOnMouseClicked(e->{
-                if(e.getButton()== MouseButton.PRIMARY){
+                if(yourTurn){
+                if(e.getButton()== MouseButton.PRIMARY && !init){
                     switch (level) {
                         case 0 -> {
                             draw1();
@@ -59,7 +69,14 @@ import javafx.scene.text.Text;
                             level++;
                         }
                     }
-                }});
+                }else if(e.getButton()== MouseButton.PRIMARY && init ){
+                    Piece piece= new Piece(PieceType.WHITE,BoardScene.toBoard(e.getSceneX()),BoardScene.toBoard(e.getSceneY()));
+                    
+
+
+            }
+                }
+            });
         }
 
         private void draw1(){
