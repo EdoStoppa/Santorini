@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
+import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 
@@ -36,8 +37,9 @@ public class ClientGUI extends Client{
                         if(inputObject instanceof String) {
                             manageStringGUI((String) inputObject);
                         }else if (inputObject instanceof ServerMessage){
-                            System.out.println("siamo qui");
                             manageServerMessageGUI((ServerMessage)inputObject);
+                        }else if (inputObject instanceof GameMessage){
+                            manageGameMessageGUI((GameMessage)inputObject);
                         }
 
                     }
@@ -49,6 +51,9 @@ public class ClientGUI extends Client{
         });
         t.start();
         return t;
+    }
+
+    private void manageGameMessageGUI(GameMessage inputObject) {
     }
 
 

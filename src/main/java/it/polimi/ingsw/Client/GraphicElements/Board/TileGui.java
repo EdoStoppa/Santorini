@@ -16,10 +16,8 @@ import javafx.scene.text.Text;
         private Text text=new Text();
         private Piece piece;
         private int level;
-        private int count=0;
         private static boolean init=true;
         private static boolean yourTurn=false;
-        private  int x,y;
 
 
         public static void setInit() {
