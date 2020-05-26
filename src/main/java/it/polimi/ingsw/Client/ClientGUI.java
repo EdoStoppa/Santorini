@@ -140,4 +140,9 @@ public class ClientGUI extends Client implements EventHandler{
     public void updateConstructor(GameMessage message) {
         Platform.runLater(()-> message.updateGUI(playSpace));
     }
+
+    @Override
+    public void updateBuilding(GameMessage message, boolean dome) {
+        Platform.runLater(()->message.updateGUI(playSpace));
+    }
 }

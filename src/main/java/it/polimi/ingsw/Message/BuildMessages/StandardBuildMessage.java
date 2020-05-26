@@ -24,6 +24,8 @@ public class StandardBuildMessage extends BuildMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-
+        playSpace.updateBuildingGUI(getBuildingMatrix());
     }
+
+
 }

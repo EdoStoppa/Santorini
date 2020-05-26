@@ -12,9 +12,10 @@ import javafx.scene.text.Text;
 
     public class TileGui extends StackPane {
 
-        private Text text=new Text();
+        private static Text text=new Text();
         private Piece piece;
-        private int level;
+        private static int level;
+        private int x, y;
 
 
 
@@ -37,6 +38,8 @@ import javafx.scene.text.Text;
         public TileGui(boolean light, int x, int y){
             Rectangle border= new Rectangle(BoardScene.TILE_SIZE, BoardScene.TILE_SIZE);
             level=0;
+            this.x=x;
+            this.y=y;
 
             relocate(x*BoardScene.TILE_SIZE,y*BoardScene.TILE_SIZE);
             text.setFont(Font.font(72));
@@ -47,52 +50,41 @@ import javafx.scene.text.Text;
             setOnMouseClicked(e->{
                 if(BoardScene.isYourTurn()){
                 if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit()){
-                    switch (level) {
-                        case 0 -> {
-                            draw1();
-                            level++;
-                        }
-                        case 1 -> {
-                            draw2();
-                            level++;
-                        }
-                        case 2 -> {
-                            draw3();
-                            level++;
-                        }
-                        case 3 -> {
-                            drawD();
-                            level++;
-                        }
-                    }
+
                 }else if(e.getButton()== MouseButton.PRIMARY){
-                    this.piece=BoardScene.makePiece(PieceType.WHITE,x,y,true);
-                    this.setPiece(piece);
-                    BoardScene.pieceGroup.getChildren().add(piece);
                     ClientGuiApp.getClient().asyncWriteToSocketGUI(x+","+y);
-                    BoardScene.setInit(false);
-                    BoardScene.setYourTurn(false);
-                    
-
-
-            }
+                }
                 }
             });
         }
 
-        private void draw1(){
-            text.setText("1");
+        public static void drawNextLevel(int x, int y){
+            TileGui tile=BoardScene.getTile(x,y);
+            switch (tile.level) {
+                case 0 -> {
+                    text.setText("1");
+                    level++;
+                }
+                case 1 -> {
+                    text.setText("2");
+                    level++;
+                }
+                case 2 -> {
+                    text.setText("3");
+                    level++;
+                }
+                case 3 -> {
+                    text.setText("D");
+                    level++;
+                }
+            }
+            }
+
+
+
         }
 
-        private void draw2(){
-            text.setText("2");
-        }
-        private void draw3(){
-            text.setText("3");
-        }
-        private void drawD(){
-            text.setText("D");
-        }
 
-    }
+
+
 

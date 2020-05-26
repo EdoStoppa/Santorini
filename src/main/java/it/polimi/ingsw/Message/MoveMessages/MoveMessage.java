@@ -26,12 +26,10 @@ public abstract class MoveMessage extends GameMessage implements Serializable{
 
     @Override
     public void updateGUI(PlaySpace playSpace){
-        updateConstructor(playSpace);
-    }
-
-    public void updateConstructor(PlaySpace playSpace){
         playSpace.updateConstructorGUI(getConstructorMatrix());
     }
+
+
 
 
 }

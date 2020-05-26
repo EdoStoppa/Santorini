@@ -9,6 +9,7 @@ import it.polimi.ingsw.Controller.MiniController.ServerMoveMiniController;
 public class PlaceFirstConstructorMessage extends ServerMessage {
     boolean isFirst;
 
+
     public PlaceFirstConstructorMessage(boolean isFirst){
         this.miniController= new ServerMoveMiniController();
         this.isFirst = isFirst;

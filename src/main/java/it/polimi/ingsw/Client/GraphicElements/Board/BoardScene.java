@@ -2,12 +2,9 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 
 
-import it.polimi.ingsw.Client.EventHandler;
+
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
-import it.polimi.ingsw.Message.GameMessage;
-import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;

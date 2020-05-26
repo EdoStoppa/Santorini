@@ -160,18 +160,32 @@ public class PlaySpace {
     }
 
     public void updateConstructorGUI (int [][]playSpaceUpdated){
-        if (BoardScene.isInit() && !BoardScene.isYourTurn()){
-            for(int i=0;i<=4;i++){
-                for (int j=0;j<=4;j++){
-                    if (playSpaceUpdated[i][j]!=0 && constructorMatrix[i][j]==0){
-                        System.out.println("creo il pezzo");
-                        Piece piece=BoardScene.makePiece(PieceType.RED,i,j,false);
-                        System.out.println("creato pezzo avversario"+i+" "+j);
-                        BoardScene.pieceGroup.getChildren().add(piece);
+        if (BoardScene.isInit()) {
+            for (int i = 0; i <= 4; i++) {
+                for (int j = 0; j <= 4; j++) {
+                    if (playSpaceUpdated[i][j] != 0 && constructorMatrix[i][j] == 0) {
+                        if (!BoardScene.isYourTurn()) {
+                            Piece piece;
+                            if (playSpaceUpdated[i][j] == 1) {
+                                piece = BoardScene.makePiece(PieceType.RED, i, j, false);
+                            } else {
+                                piece = BoardScene.makePiece(PieceType.WHITE, i, j, false);
+                            }
+                            BoardScene.pieceGroup.getChildren().add(piece);
+                        } else {
+                            Piece piece;
+                            if (playSpaceUpdated[i][j] == 1) {
+                                piece = BoardScene.makePiece(PieceType.RED, i, j, true);
+                            } else {
+                                piece = BoardScene.makePiece(PieceType.WHITE, i, j, true);
+                            }
+                            BoardScene.pieceGroup.getChildren().add(piece);
+                        }
                     }
-            }
 
-        }}
+                }
+            }
+        }else{
 
         for(int i=0;i<=4;i++){
             for(int j=0;j<=4;j++){
@@ -190,6 +204,20 @@ public class PlaySpace {
                   }
                 }
             }
-        }
+        }}
+        BoardScene.setYourTurn(false);
     }
+
+    public void updateBuildingGUI(int[][] updatedBuildingMatrix) {
+        for (int i=0;i<=4;i++){
+            for (int j=0;j<=4;j++){
+                if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j]){
+                    TileGui.drawNextLevel(i,j);
+                }
+            }
+        }
+
+    }
+
+
 }

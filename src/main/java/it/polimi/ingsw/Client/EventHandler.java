@@ -10,4 +10,6 @@ public interface EventHandler<T extends Event> extends EventListener{
     void update(ServerMessage message);
 
     void updateConstructor(GameMessage message);
+
+    void updateBuilding(GameMessage message,boolean dome);
 }
