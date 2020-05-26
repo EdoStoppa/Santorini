@@ -3,11 +3,8 @@ package it.polimi.ingsw;
 
 
 import it.polimi.ingsw.Client.ClientGUI;
-import it.polimi.ingsw.Client.EventHandler;
 import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
-import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.Serializable;
 
 
-public class ClientGuiApp extends Application implements EventHandler, Serializable {
+public class ClientGuiApp extends Application implements Serializable {
     private static final long serialVersionUID = 1L;
     private static ClientGUI  client;
     private static Stage primaryStage;
@@ -34,7 +31,7 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
 
     @Override
     public void init() throws Exception {
-        client=new ClientGUI("127.0.0.1", 12345,this);
+        client=new ClientGUI("127.0.0.1", 12345);
         client.run();
     }
 
@@ -73,10 +70,6 @@ public class ClientGuiApp extends Application implements EventHandler, Serializa
 
 
 
-    @Override
-    public void update(ServerMessage message) {
-        Platform.runLater(message::buildScene);
 
-    }
 
 }

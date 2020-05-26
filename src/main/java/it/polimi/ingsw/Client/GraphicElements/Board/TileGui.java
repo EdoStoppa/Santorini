@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.ClientGuiApp;
-import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -16,14 +15,10 @@ import javafx.scene.text.Text;
         private Text text=new Text();
         private Piece piece;
         private int level;
-        private static boolean init=true;
-        private static boolean yourTurn=false;
 
 
-        public static void setInit() {
-            init=true;
-            yourTurn=true;
-        }
+
+
 
 
         public  boolean hasPiece(){
@@ -50,8 +45,8 @@ import javafx.scene.text.Text;
             getChildren().addAll(border,text);
 
             setOnMouseClicked(e->{
-                if(yourTurn){
-                if(e.getButton()== MouseButton.PRIMARY && !init){
+                if(BoardScene.isYourTurn()){
+                if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit()){
                     switch (level) {
                         case 0 -> {
                             draw1();
@@ -70,13 +65,13 @@ import javafx.scene.text.Text;
                             level++;
                         }
                     }
-                }else if(e.getButton()== MouseButton.PRIMARY && init ){
-                    this.piece=BoardScene.makePiece(PieceType.WHITE,x,y);
+                }else if(e.getButton()== MouseButton.PRIMARY){
+                    this.piece=BoardScene.makePiece(PieceType.WHITE,x,y,true);
                     this.setPiece(piece);
                     BoardScene.pieceGroup.getChildren().add(piece);
                     ClientGuiApp.getClient().asyncWriteToSocketGUI(x+","+y);
-                    init=false;
-                    yourTurn=false;
+                    BoardScene.setInit(false);
+                    BoardScene.setYourTurn(false);
                     
 
 

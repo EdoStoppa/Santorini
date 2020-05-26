@@ -27,4 +27,9 @@ public class WinMessage extends GameMessage {
     public void updatePlaySpace(PlaySpace playSpace) {
 
     }
+
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+
+    }
 }

@@ -5,7 +5,12 @@ import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
+import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+import it.polimi.ingsw.Message.WinMessage;
+import javafx.application.Platform;
 
 
 import java.io.IOException;
@@ -15,16 +20,17 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 
 
-public class ClientGUI extends Client{
-    String idPlayer = null;
+public class ClientGUI extends Client implements EventHandler{
+    private String idPlayer = null;
     private MiniController miniController;
     private PrintWriter socketOut;
-    ClientGuiApp view;
 
-    public ClientGUI(String ip, int port,ClientGuiApp view){
+
+    public ClientGUI(String ip, int port){
         super(ip, port);
-        this.view=view;
     }
+
+
 
     @Override
     public Thread asyncReadFromSocket(ObjectInputStream socketIn) {
@@ -54,6 +60,7 @@ public class ClientGUI extends Client{
     }
 
     private void manageGameMessageGUI(GameMessage inputObject) {
+    updateConstructor(inputObject);
     }
 
 
@@ -76,10 +83,9 @@ public class ClientGUI extends Client{
     }
 
     private void manageServerMessageGUI(ServerMessage inputObject){
-        System.out.println("siamo qui");
-        view.update(inputObject);
-
-        }
+        System.out.println(idPlayer);
+        update(inputObject);
+    }
 
 
 
@@ -123,5 +129,15 @@ public class ClientGUI extends Client{
 
     public void setMiniController(MiniController miniController) {
         this.miniController = miniController;
+    }
+
+    @Override
+    public void update(ServerMessage message) {
+        Platform.runLater(message::buildScene);
+    }
+
+    @Override
+    public void updateConstructor(GameMessage message) {
+        Platform.runLater(()-> message.updateGUI(playSpace));
     }
 }

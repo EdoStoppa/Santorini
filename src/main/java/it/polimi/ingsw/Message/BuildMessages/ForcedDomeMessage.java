@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.BuildMessages;
 
+import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
@@ -19,5 +20,10 @@ public class ForcedDomeMessage extends BuildMessage {
         }
 
         setMessage(text);
+    }
+
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+
     }
 }

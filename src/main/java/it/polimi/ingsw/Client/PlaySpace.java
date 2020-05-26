@@ -1,5 +1,10 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
+import it.polimi.ingsw.Client.GraphicElements.Board.Piece;
+import it.polimi.ingsw.Client.GraphicElements.Board.PieceType;
+import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
+import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Position;
 
 import java.util.List;
@@ -152,5 +157,39 @@ public class PlaySpace {
             System.out.println(line);
         }
         System.out.println("  \u255A"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ2 + "\u255D");
+    }
+
+    public void updateConstructorGUI (int [][]playSpaceUpdated){
+        if (BoardScene.isInit() && !BoardScene.isYourTurn()){
+            for(int i=0;i<=4;i++){
+                for (int j=0;j<=4;j++){
+                    if (playSpaceUpdated[i][j]!=0 && constructorMatrix[i][j]==0){
+                        System.out.println("creo il pezzo");
+                        Piece piece=BoardScene.makePiece(PieceType.RED,i,j,false);
+                        System.out.println("creato pezzo avversario"+i+" "+j);
+                        BoardScene.pieceGroup.getChildren().add(piece);
+                    }
+            }
+
+        }}
+
+        for(int i=0;i<=4;i++){
+            for(int j=0;j<=4;j++){
+                 if (constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
+                  for (int h=-1;h<=1;h++){
+                      for (int k=-1;k<=1;k++){
+                          if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h!=0 && k!=0)){
+                              if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==0){
+                                  Piece moved= BoardScene.getTile(i,j).getPiece();
+                                  BoardScene.animation(moved,h,k);
+                                  BoardScene.getTile(i,j).setPiece(null);
+                                  BoardScene.getTile(i+h,j+k).setPiece(moved);
+                              }
+                          }
+                      }
+                  }
+                }
+            }
+        }
     }
 }

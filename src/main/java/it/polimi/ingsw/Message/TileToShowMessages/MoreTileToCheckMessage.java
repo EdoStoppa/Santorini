@@ -38,4 +38,9 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
         playSpace.setTileToShow(getTileToShow());
         playSpace.setTileToCheck(getSpecialList());
     }
+
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+
+    }
 }

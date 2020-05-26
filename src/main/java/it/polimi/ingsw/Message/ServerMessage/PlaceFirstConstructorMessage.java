@@ -1,7 +1,8 @@
 package it.polimi.ingsw.Message.ServerMessage;
 
 
-import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
+
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Controller.MiniController.ServerMoveMiniController;
 
@@ -29,6 +30,7 @@ public class PlaceFirstConstructorMessage extends ServerMessage {
 
     @Override
     public void buildScene() {
-        TileGui.setInit();
+        BoardScene.setYourTurn(true);
+        BoardScene.setInit(true);
     }
 }

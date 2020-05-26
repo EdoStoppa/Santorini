@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
+import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.CanEndMiniController;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;
@@ -24,5 +25,10 @@ public class CanEndTileMessage extends TileToShowMessage {
         }
 
         setMessage(text);
+    }
+
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+
     }
 }

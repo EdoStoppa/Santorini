@@ -7,11 +7,12 @@ import javafx.scene.shape.Ellipse;
 public class Piece extends StackPane {
     private static final int TILE_SIZE=120;
 
-    private PieceType type;
+    private final PieceType type;
 
     private double mouseX,mouseY;
     private double oldX,oldY;
     private double translationX=0,translationY=0;
+    private final boolean isYourPiece;
 
     public void setTranslationX(double translationX) {
         this.translationX = this.translationX+translationX;
@@ -49,8 +50,9 @@ public class Piece extends StackPane {
         return type;
     }
 
-    public Piece (PieceType type, int x, int y){
+    public Piece(PieceType type, int x, int y, boolean isYourPiece){
         this.type=type;
+        this.isYourPiece = isYourPiece;
         move(x,y);
 
         Ellipse bg= new Ellipse(TILE_SIZE*0.3125,TILE_SIZE*0.26);
@@ -71,16 +73,18 @@ public class Piece extends StackPane {
 
 
         setOnMousePressed(e->{
+            if(isYourPiece){
             mouseX=e.getSceneX();
             mouseY=e.getSceneY();
             System.out.println("mouse click"+mouseX+" "+mouseY);
-        });
+        }});
 
         setOnMouseDragged(e->{
-            relocate(e.getSceneX()-mouseX+oldX+translationX,e.getSceneY()-mouseY+oldY+translationY);
-            System.out.println((e.getSceneX()-mouseX+oldX+translationX)+" "+ (e.getSceneY()-mouseY + oldY+translationY));
+            if(isYourPiece) {
+                relocate(e.getSceneX() - mouseX + oldX + translationX, e.getSceneY() - mouseY + oldY + translationY);
+                System.out.println((e.getSceneX() - mouseX + oldX + translationX) + " " + (e.getSceneY() - mouseY + oldY + translationY));
 
-        });
+            }});
     }
 
     public void move(double x, double y){
@@ -98,6 +102,7 @@ public class Piece extends StackPane {
     }
 
 
-
-
+    public boolean isYourPiece() {
+        return isYourPiece;
+    }
 }

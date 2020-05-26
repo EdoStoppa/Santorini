@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.MoveMessages;
 
+import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Model.PossiblePhases;
 
 public class RemovedPlayerMessage extends MoveMessage {
@@ -19,4 +20,5 @@ public class RemovedPlayerMessage extends MoveMessage {
 
         setMessage(text);
     }
+
 }

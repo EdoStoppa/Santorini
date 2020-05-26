@@ -35,4 +35,6 @@ public abstract class GameMessage implements Serializable {
     public abstract void autoSetMessage(boolean isMyTurn, boolean isCLI);
 
     public abstract void updatePlaySpace(PlaySpace playSpace);
+
+    public abstract void updateGUI(PlaySpace playSpace);
 }

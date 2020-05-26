@@ -2,13 +2,17 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 
 
+import it.polimi.ingsw.Client.EventHandler;
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
+import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -18,7 +22,25 @@ public class BoardScene {
     public static final int TILE_SIZE=120;
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
+    private static TextArea messages= new TextArea();
+    private static boolean init=true;
+    private static boolean yourTurn=false;
 
+    public static void setInit(boolean init) {
+        BoardScene.init=init;
+    }
+
+    public static void setYourTurn(boolean yourTurn) {
+        BoardScene.yourTurn = yourTurn;
+    }
+
+    public static boolean isInit() {
+        return init;
+    }
+
+    public static boolean isYourTurn() {
+        return yourTurn;
+    }
 
     private static final TileGui[][] board= new TileGui[WIDTH][HEIGHT];
 
@@ -26,6 +48,9 @@ public class BoardScene {
     public static final Group pieceGroup= new Group();
 
 
+    public static TileGui getTile(int x,int y) {
+        return board[x][y];
+    }
 
     public static Parent createContent(){
         Pane root= new Pane();
@@ -35,9 +60,7 @@ public class BoardScene {
         controller.setAlignment(Pos.BOTTOM_CENTER);
         controller.prefHeight(50);
         Pane message= new Pane();
-        Label testo= new Label("qui verrà visualizzati i messaggi");
-        message.getChildren().add(testo);
-        testo.setAlignment(Pos.TOP_LEFT);
+        message.getChildren().add(messages);
         Button cosi= new Button("god list");
         cosi.setOnAction(e-> AlertBox.displayError("divinita"));
         controller.getChildren().addAll(message,cosi);
@@ -86,10 +109,11 @@ public class BoardScene {
         return (int)(pixel+TILE_SIZE/2)/TILE_SIZE;
     }
 
-    public static Piece makePiece(PieceType type, int x, int y){
-        Piece piece= new Piece(type,x,y);
+    public static Piece makePiece(PieceType type, int x, int y,boolean isYourPiece){
+        Piece piece= new Piece(type,x,y, isYourPiece);
 
         piece.setOnMouseReleased(e->{
+            if(isYourPiece){
             int newX=toBoard(piece.getLayoutX()-piece.getTranslationX());
             int newY=toBoard(piece.getLayoutY()-piece.getTranslationY());
             MoveResult result=tryMove(piece,newX,newY);
@@ -130,7 +154,7 @@ public class BoardScene {
                 }
             }
 
-        });
+        }});
 
         return piece;
     }
@@ -145,5 +169,6 @@ public class BoardScene {
         transition.play();
 
     }
+
 
 }
