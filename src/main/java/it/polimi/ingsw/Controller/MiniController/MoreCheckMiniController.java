@@ -77,4 +77,8 @@ public class MoreCheckMiniController implements MiniController, Serializable {
 
         return false;
     }
+
+    void setToCheck(List<Position> toCheck) {
+        this.toCheck = toCheck;
+    }
 }
