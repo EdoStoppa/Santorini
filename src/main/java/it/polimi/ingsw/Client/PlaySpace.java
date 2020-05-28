@@ -186,7 +186,7 @@ public class PlaySpace {
                 }
             }
         }else{
-
+            if(!BoardScene.isYourTurn()){
         for(int i=0;i<=4;i++){
             for(int j=0;j<=4;j++){
                  if (constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
@@ -204,20 +204,85 @@ public class PlaySpace {
                   }
                 }
             }
-        }}
+        }
+            }
+        }
         BoardScene.setYourTurn(false);
     }
 
-    public void updateBuildingGUI(int[][] updatedBuildingMatrix) {
+    public void updateBuildingGUI(int[][] updatedBuildingMatrix,boolean dome) {
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
-                if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j]){
+                if (constructorMatrix[i][j]!=updatedBuildingMatrix[i][j] && !dome){
                     TileGui.drawNextLevel(i,j);
+                }else if(constructorMatrix[i][j]!=updatedBuildingMatrix[i][j] && dome){
+                    TileGui.drawDome(i,j);
                 }
             }
         }
-
     }
+
+    public void swapConstructorGUI (int [][]playSpaceUpdated){
+        for (int i=0;i<=4;i++){
+            for (int j=0;j<=4;j++){
+                if (constructorMatrix[i][j]!=playSpaceUpdated[i][j]){
+                    for (int h=-1;h<=1;h++){
+                        for (int k=-1;k<=1;k++){
+                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h!=0 && k!=0)){
+                                if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==playSpaceUpdated[i][j]){
+                                    Piece moved= BoardScene.getTile(i,j).getPiece();
+                                    Piece swapped=BoardScene.getTile(i+h,j+k).getPiece();
+                                    BoardScene.animation(moved,h,k);
+                                    BoardScene.animation(swapped,-h,-k);
+                                    BoardScene.getTile(i,j).setPiece(swapped);
+                                    BoardScene.getTile(i+h,j+k).setPiece(moved);
+                }
+            }
+        }
+    }
+                }
+            }
+        }
+    }
+
+    public void pushConstructorGUI (int[][] playSpaceUpdated){
+        for (int i=0;i<=4;i++){
+            for (int j=0;j<=4;j++){
+                if(playSpaceUpdated[i][j]!=constructorMatrix[i][j] && constructorMatrix[i][j]==0){
+                    for (int h=-1;h<=1;h++){
+                        for (int k=-1;k<=1;k++){
+                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h!=0 && k!=0)){
+                                if(playSpaceUpdated[i][j]==constructorMatrix[i+h][j+k]){
+                                   Piece minotaur=BoardScene.getTile(i+h*2,j+k*2).getPiece();
+                                   Piece pushed=BoardScene.getTile(i+h,j+k).getPiece();
+                                   BoardScene.animation(minotaur,h,k);
+                                   BoardScene.animation(pushed,h,k);
+                                   BoardScene.getTile(i,j).setPiece(pushed);
+                                   BoardScene.getTile(i+h,j+k).setPiece(minotaur);
+                                   BoardScene.getTile(i+h*2,j+k*2).setPiece(null);
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
+
+    public void removeConstructorGUI (int[][] playSpaceUpdated){
+        for(int i=0;i<=4;i++){
+            for (int j=0;j<=4;j++){
+                if (playSpaceUpdated[i][j]==0 && constructorMatrix[i][j]!=0){
+                    BoardScene.pieceGroup.getChildren().remove(BoardScene.getTile(i,j).getPiece());
+                    BoardScene.getTile(i,j).setPiece(null);
+                }
+            }
+        }
+    }
+
 
 
 }

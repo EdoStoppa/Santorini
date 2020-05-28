@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
-import it.polimi.ingsw.ClientGuiApp;
+import it.polimi.ingsw.Client.ClientGuiApp;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -52,7 +52,7 @@ import javafx.scene.text.Text;
                 if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit()){
 
                 }else if(e.getButton()== MouseButton.PRIMARY){
-                    ClientGuiApp.getClient().asyncWriteToSocketGUI(x+","+y);
+                    ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
                 }
                 }
             });
@@ -79,6 +79,29 @@ import javafx.scene.text.Text;
                 }
             }
             }
+
+        public static void drawDome(int x,int y){
+            TileGui tile=BoardScene.getTile(x,y);
+            switch (tile.level) {
+                case 0 -> {
+                    text.setText("5");
+                    level=5;
+                }
+                case 1 -> {
+                    text.setText("6");
+                    level=6;
+                }
+                case 2 -> {
+                    text.setText("7");
+                    level=7;
+                }
+                case 3 -> {
+                    text.setText("D");
+                    level=4;
+                }
+            }
+
+        }
 
 
 

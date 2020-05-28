@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
-import it.polimi.ingsw.ClientGuiApp;
+import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;

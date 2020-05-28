@@ -24,6 +24,8 @@ public class ForcedDomeMessage extends BuildMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-
+        playSpace.updateBuildingGUI(getBuildingMatrix(),true);
     }
+
+
 }

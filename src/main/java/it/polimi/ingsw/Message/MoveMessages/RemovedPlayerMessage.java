@@ -21,4 +21,8 @@ public class RemovedPlayerMessage extends MoveMessage {
         setMessage(text);
     }
 
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+        playSpace.removeConstructorGUI(getConstructorMatrix());
+    }
 }

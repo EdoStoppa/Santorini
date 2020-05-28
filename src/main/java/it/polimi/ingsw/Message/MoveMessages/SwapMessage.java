@@ -23,4 +23,8 @@ public class SwapMessage extends MoveMessage {
         setMessage(text);
     }
 
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+        playSpace.swapConstructorGUI(getConstructorMatrix());
+    }
 }

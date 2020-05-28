@@ -1,8 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.Client;
 
 
 
-import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import javafx.application.Application;
 import javafx.geometry.Pos;

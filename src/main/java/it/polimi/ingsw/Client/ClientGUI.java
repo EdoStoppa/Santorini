@@ -1,15 +1,10 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.ClientGuiApp;
 import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
-import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
-import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
-import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
-import it.polimi.ingsw.Message.WinMessage;
 import javafx.application.Platform;
 
 

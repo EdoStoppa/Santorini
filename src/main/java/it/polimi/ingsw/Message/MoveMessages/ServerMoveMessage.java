@@ -21,5 +21,8 @@ public class ServerMoveMessage extends MoveMessage {
         setMessage(text);
     }
 
-
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+        playSpace.updateConstructorGUI(getConstructorMatrix());
+    }
 }
