@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
+import it.polimi.ingsw.Client.ClientGuiApp;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -73,14 +74,16 @@ public class Piece extends StackPane {
 
 
         setOnMousePressed(e->{
-            if(isYourPiece){
+            if(isYourPiece && BoardScene.isYourTurn()){
             mouseX=e.getSceneX();
             mouseY=e.getSceneY();
+            System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldY));
             System.out.println("mouse click"+mouseX+" "+mouseY);
         }});
 
         setOnMouseDragged(e->{
-            if(isYourPiece) {
+            if(isYourPiece && BoardScene.isYourTurn()) {
                 relocate(e.getSceneX() - mouseX + oldX + translationX, e.getSceneY() - mouseY + oldY + translationY);
                 System.out.println((e.getSceneX() - mouseX + oldX + translationX) + " " + (e.getSceneY() - mouseY + oldY + translationY));
 

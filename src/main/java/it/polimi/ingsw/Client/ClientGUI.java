@@ -1,10 +1,14 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+import it.polimi.ingsw.Message.WinMessage;
 import javafx.application.Platform;
 
 
@@ -55,7 +59,32 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     private void manageGameMessageGUI(GameMessage inputObject) {
-    updatePlaySpaceGUI(inputObject);
+        boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
+        inputObject.autoSetMessage(isMyTurn, false);
+        BoardScene.setYourTurn(isMyTurn);
+        if(inputObject instanceof TileToShowMessage){
+            BoardScene.setInit(false);
+            if(isMyTurn) {
+                this.miniController = ((TileToShowMessage) inputObject).getMiniController();
+                updatePlaySpaceGUI(inputObject);
+                playSpace.printPlaySpace();
+            }
+            BoardScene.messages.appendText(inputObject.getMessage());
+            System.out.println(inputObject.getMessage());
+        }else if(inputObject instanceof WinMessage){
+            playSpace.printPlaySpace();
+            BoardScene.newText(inputObject.getMessage());
+            System.out.println(inputObject.getMessage());
+            System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restart the application.");
+            setActive(false);
+        }
+        if(inputObject instanceof ServerMoveMessage) {
+            updatePlaySpaceGUI(inputObject);
+            BoardScene.newText(inputObject.getMessage());
+            System.out.println(inputObject.getMessage());
+            System.out.println();
+            return;
+        }
     }
 
 
@@ -104,7 +133,7 @@ public class ClientGUI extends Client implements EventHandler{
 
 
     public void asyncWriteToSocketGUI(String message) {
-                                socketOut.println(message);
+                                socketOut.println(this.miniController.getMessage(message));
                                 socketOut.flush();
 
     }

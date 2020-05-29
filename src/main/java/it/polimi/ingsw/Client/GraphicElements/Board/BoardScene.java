@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 
 
+import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -19,11 +20,13 @@ public class BoardScene {
     public static final int TILE_SIZE=120;
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
-    private static TextArea messages= new TextArea();
+    public static TextArea messages= new TextArea();
     private static boolean init=true;
     private static boolean yourTurn=false;
     private static boolean move=false;
     private static boolean build=false;
+    private static boolean specialChooseConstructor=false;
+    private static boolean special=false;
 
     public static boolean isBuild() {
         return build;
@@ -114,6 +117,7 @@ public class BoardScene {
             return new MoveResult(MoveType.NONE);
         }
         if (Math.abs(x0-newX)<=1 || Math.abs(y0-newY)<=1){
+            ClientGuiApp.getClient().asyncWriteToSocketGUI(newY+","+newX);
             return new MoveResult(MoveType.NORMAL);
         }
         return new MoveResult(MoveType.NONE);
@@ -132,7 +136,7 @@ public class BoardScene {
             int newX=toBoard(piece.getLayoutX()-piece.getTranslationX());
             int newY=toBoard(piece.getLayoutY()-piece.getTranslationY());
             MoveResult result=tryMove(piece,newX,newY);
-
+            ClientGuiApp.getClient().asyncWriteToSocketGUI(newY+","+newX);
             int x0= toBoard(piece.getOldX());
             int y0=toBoard(piece.getOldY());
 
@@ -185,5 +189,25 @@ public class BoardScene {
 
     }
 
+    public static void newText(String message){
+        messages.appendText(message+"\n");
 
+    }
+
+
+    public static void setSpecialChooseConstructor(boolean specialChooseConstructor) {
+        BoardScene.specialChooseConstructor = specialChooseConstructor;
+    }
+
+    public static void setSpecial(boolean special) {
+        BoardScene.special = special;
+    }
+
+    public static boolean isSpecialChooseConstructor() {
+        return specialChooseConstructor;
+    }
+
+    public static boolean isSpecial() {
+        return special;
+    }
 }

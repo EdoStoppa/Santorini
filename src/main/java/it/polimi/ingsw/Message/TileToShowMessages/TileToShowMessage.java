@@ -30,6 +30,10 @@ public abstract class TileToShowMessage extends GameMessage implements Serializa
             text = getIdPlayer() + getPhase().toString(false);
         }
 
+        if(!isCLI){
+            setPhase(getPhase());
+        }
+
         setMessage(text);
     }
 
@@ -44,6 +48,27 @@ public abstract class TileToShowMessage extends GameMessage implements Serializa
     public void updatePlaySpace(PlaySpace playSpace)    {
         playSpace.setTileToShow(getTileToShow());
     }
+
+    public void setPhase(PossiblePhases phase){
+        switch (phase){
+            case CHOOSE_CONSTRUCTOR,MOVE,SPECIAL_CHOOSE_CONSTRUCTOR,SPECIAL_MOVE -> {
+                BoardScene.setMove(true);
+                BoardScene.setBuild(false);
+                if (phase==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR){
+                    BoardScene.setSpecialChooseConstructor(true);
+                }
+                if (phase==PossiblePhases.SPECIAL_MOVE)
+                    BoardScene.setSpecial(true);
+
+            }
+            case BUILD,SPECIAL_BUILD -> {
+                BoardScene.setMove(false);
+                BoardScene.setBuild(true);
+                BoardScene.setSpecial(PossiblePhases.SPECIAL_BUILD == phase);
+            }
+        }
+    }
+
 
     @Override
     public void updateGUI(PlaySpace playSpace) {

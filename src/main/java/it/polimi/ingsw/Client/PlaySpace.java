@@ -172,6 +172,7 @@ public class PlaySpace {
                                 piece = BoardScene.makePiece(PieceType.WHITE, j, i, false);
                             }
                             BoardScene.pieceGroup.getChildren().add(piece);
+                            setConstructorMatrix(playSpaceUpdated);
                         } else {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
@@ -180,6 +181,7 @@ public class PlaySpace {
                                 piece = BoardScene.makePiece(PieceType.WHITE, j, i, true);
                             }
                             BoardScene.pieceGroup.getChildren().add(piece);
+                            setConstructorMatrix(playSpaceUpdated);
                         }
                     }
 
@@ -205,7 +207,8 @@ public class PlaySpace {
                 }
             }
         }
-            }
+            setConstructorMatrix(playSpaceUpdated);
+            printPlaySpace();}
         }
         BoardScene.setYourTurn(false);
     }

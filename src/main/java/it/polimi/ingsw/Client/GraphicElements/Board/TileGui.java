@@ -51,9 +51,10 @@ import javafx.scene.text.Text;
             setOnMouseClicked(e->{
                 if(BoardScene.isYourTurn()){
                 if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit() && BoardScene.isYourTurn() &&
-                        BoardScene.isBuild() && highlighted){
-                ClientGuiApp.getClient().asyncWriteToSocketGUI("build"+y+","+x);
-                }else if(e.getButton()== MouseButton.PRIMARY){
+                        BoardScene.isBuild() && highlighted && !BoardScene.isSpecial()){
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
+                }else if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit() && BoardScene.isYourTurn() &&
+                        BoardScene.isBuild() && highlighted && BoardScene.isSpecial()){
                     ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
                 }
                 }
