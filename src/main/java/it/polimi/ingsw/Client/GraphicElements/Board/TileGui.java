@@ -84,22 +84,26 @@ import javafx.scene.text.Text;
 
         public static void drawDome(int x,int y){
             TileGui tile=BoardScene.getTile(x,y);
-            switch (tile.level) {
+            switch (level) {
                 case 0 -> {
-                    text.setText("5");
+                    tile.text.setText("5");
                     level=5;
+                    break;
                 }
                 case 1 -> {
-                    text.setText("6");
+                    tile.text.setText("6");
                     level=6;
+                    break;
                 }
                 case 2 -> {
-                    text.setText("7");
+                    tile.text.setText("7");
                     level=7;
+                    break;
                 }
                 case 3 -> {
-                    text.setText("D");
+                    tile.text.setText("D");
                     level=4;
+                    break;
                 }
             }
 
