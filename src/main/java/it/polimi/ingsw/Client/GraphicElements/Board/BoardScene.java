@@ -22,6 +22,24 @@ public class BoardScene {
     private static TextArea messages= new TextArea();
     private static boolean init=true;
     private static boolean yourTurn=false;
+    private static boolean move=false;
+    private static boolean build=false;
+
+    public static boolean isBuild() {
+        return build;
+    }
+
+    public static void setBuild(boolean build) {
+        BoardScene.build = build;
+    }
+
+    public static boolean isMove() {
+        return move;
+    }
+
+    public static void setMove(boolean move) {
+        BoardScene.move = move;
+    }
 
     public static void setInit(boolean init) {
         BoardScene.init=init;

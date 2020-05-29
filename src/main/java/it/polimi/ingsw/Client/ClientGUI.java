@@ -55,7 +55,7 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     private void manageGameMessageGUI(GameMessage inputObject) {
-    updateConstructor(inputObject);
+    updatePlaySpaceGUI(inputObject);
     }
 
 
@@ -132,12 +132,8 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     @Override
-    public void updateConstructor(GameMessage message) {
-        Platform.runLater(()-> message.updateGUI(playSpace));
-    }
-
-    @Override
-    public void updateBuilding(GameMessage message, boolean dome) {
+    public void updatePlaySpaceGUI(GameMessage message) {
         Platform.runLater(()->message.updateGUI(playSpace));
     }
+
 }

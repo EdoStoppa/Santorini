@@ -167,17 +167,17 @@ public class PlaySpace {
                         if (!BoardScene.isYourTurn()) {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
-                                piece = BoardScene.makePiece(PieceType.RED, i, j, false);
+                                piece = BoardScene.makePiece(PieceType.RED, j, i, false);
                             } else {
-                                piece = BoardScene.makePiece(PieceType.WHITE, i, j, false);
+                                piece = BoardScene.makePiece(PieceType.WHITE, j, i, false);
                             }
                             BoardScene.pieceGroup.getChildren().add(piece);
                         } else {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
-                                piece = BoardScene.makePiece(PieceType.RED, i, j, true);
+                                piece = BoardScene.makePiece(PieceType.RED, j, i, true);
                             } else {
-                                piece = BoardScene.makePiece(PieceType.WHITE, i, j, true);
+                                piece = BoardScene.makePiece(PieceType.WHITE, j, i, true);
                             }
                             BoardScene.pieceGroup.getChildren().add(piece);
                         }
@@ -281,6 +281,11 @@ public class PlaySpace {
                 }
             }
         }
+    }
+
+    public void tileToShowGUI (List<Position> tiles){
+        setTileToShow(tiles);
+
     }
 
 

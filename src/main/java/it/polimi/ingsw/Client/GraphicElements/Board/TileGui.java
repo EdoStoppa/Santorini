@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
         private Piece piece;
         private static int level;
         private int x, y;
+        private boolean highlighted=false;
 
 
 
@@ -49,8 +50,9 @@ import javafx.scene.text.Text;
 
             setOnMouseClicked(e->{
                 if(BoardScene.isYourTurn()){
-                if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit()){
-
+                if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit() && BoardScene.isYourTurn() &&
+                        BoardScene.isBuild() && highlighted){
+                ClientGuiApp.getClient().asyncWriteToSocketGUI("build"+y+","+x);
                 }else if(e.getButton()== MouseButton.PRIMARY){
                     ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
                 }

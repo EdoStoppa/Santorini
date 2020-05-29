@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
@@ -42,5 +43,10 @@ public abstract class TileToShowMessage extends GameMessage implements Serializa
 
     public void updatePlaySpace(PlaySpace playSpace)    {
         playSpace.setTileToShow(getTileToShow());
-    };
+    }
+
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+        playSpace.tileToShowGUI(getTileToShow());
+    }
 }

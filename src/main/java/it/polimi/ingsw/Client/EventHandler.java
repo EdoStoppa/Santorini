@@ -9,7 +9,7 @@ import java.util.EventListener;
 public interface EventHandler<T extends Event> extends EventListener{
     void update(ServerMessage message);
 
-    void updateConstructor(GameMessage message);
+    void updatePlaySpaceGUI(GameMessage message);
 
-    void updateBuilding(GameMessage message,boolean dome);
+
 }
