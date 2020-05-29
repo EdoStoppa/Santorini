@@ -50,8 +50,7 @@ import javafx.scene.text.Text;
 
             setOnMouseClicked(e->{
                 if(BoardScene.isYourTurn()){
-                if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit() && BoardScene.isYourTurn() &&
-                        BoardScene.isBuild() && highlighted && !BoardScene.isSpecial()){
+                if(e.getButton()== MouseButton.PRIMARY && BoardScene.isInit() && BoardScene.isYourTurn() ){
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
                 }else if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit() && BoardScene.isYourTurn() &&
                         BoardScene.isBuild() && highlighted && BoardScene.isSpecial()){
