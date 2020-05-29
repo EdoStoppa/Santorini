@@ -147,7 +147,7 @@ public class ClientCLI extends Client{
 
         if (inputObject instanceof PlaceFirstConstructorMessage) {
             if (((PlaceFirstConstructorMessage) inputObject).isFirst()) {
-                //System.out.println("\u001b[2J\u001b[H");
+                System.out.println("\u001b[2J\u001b[H");
                 playSpace.printPlaySpace();
             }
         }
@@ -163,7 +163,7 @@ public class ClientCLI extends Client{
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
-                //System.out.println("\u001b[2J\u001b[H");
+                System.out.println("\u001b[2J\u001b[H");
                 inputObject.updatePlaySpace(playSpace);
                 playSpace.printPlaySpace();
             }
@@ -175,7 +175,7 @@ public class ClientCLI extends Client{
             setActive(false);
         } else {
             inputObject.updatePlaySpace(playSpace);
-            //System.out.println("\u001b[2J\u001b[H");
+            System.out.println("\u001b[2J\u001b[H");
             playSpace.printPlaySpace();
 
             if(inputObject instanceof ServerMoveMessage) {
