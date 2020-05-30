@@ -18,7 +18,7 @@ public class GodRecapMessage extends ServerMessage{
         //This block is used only to let the player read which god everyone chose.
         //At the end of it a new message from the server will be ready on the socket
         try{
-            Thread.sleep(3000);
+            Thread.sleep(4000);
         } catch(Exception e){
             return null;
         }
@@ -28,7 +28,7 @@ public class GodRecapMessage extends ServerMessage{
 
     @Override
     public String getMessage() {
-        String s = "Everyone has chosen a God, here's a recap:";
+        String s = "Everyone has chosen a God, here's a recap:\n";
         for(String idPlayer : playerGodMap.keySet()){
             God god = playerGodMap.get(idPlayer);
             s = s + idPlayer + " chose: " + god.getGodName() + "\n";

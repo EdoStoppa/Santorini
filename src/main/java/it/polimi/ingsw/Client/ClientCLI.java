@@ -193,11 +193,10 @@ public class ClientCLI extends Client{
     private boolean getName(String s){
         String[] splitted = s.split(" ");
 
-        if(splitted.length == 2)
-            if(splitted[0].equals("Accepted")){
-                this.idPlayer = splitted[1];
-                return true;
-            }
+        if(splitted[0].equals("Accepted")){
+            this.idPlayer = s.substring(splitted[0].length()+1);
+            return true;
+        }
 
         return false;
     }
