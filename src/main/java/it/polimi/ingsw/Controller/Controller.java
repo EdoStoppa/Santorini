@@ -6,12 +6,6 @@ import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.Observer.Observer;
 
-// -----------------------------------------------------------------------------------
-
-//                  ADD NOTIFY MID NEXT PHASE
-
-// -----------------------------------------------------------------------------------
-
 public class Controller implements Observer<PosMessage> {
 
     private Model model;
@@ -173,7 +167,7 @@ public class Controller implements Observer<PosMessage> {
     @Override
     public void update(PosMessage message) {
         if (!model.isPlayerTurn(message.getIdPlayer())) {
-            // DO SOMETHING WITH VIEW
+            System.out.println("Serious problem with input from Client, this message shouldn't have arrived...");
             return;
         }
 

@@ -3,9 +3,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.HelpMessage;
-import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
-import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
-import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
+import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.Player;
@@ -167,6 +165,7 @@ public class Server {
             SocketClientConnection godLike, opponent;
             Player playerGodLike,playerOpponent;
             ArrayList<Player> playerList = new ArrayList<>();
+            HashMap<String, God> mapPlayerGod = new HashMap<>();
 
             int choseGodLike = (new Random()).nextInt(2);
             if (choseGodLike==0){
@@ -200,13 +199,10 @@ public class Server {
                 return;
             }
             playerOpponent.setGod(chosenGod);
+            mapPlayerGod.put(playerOpponent.getIdPlayer(), chosenGod);
             System.out.println("player2 chose " + chosenGod.getGodName() );
 
-            if (chosenGod.getGodName().equals(pickedGod.get(0).getGodName())) {
-                playerGodLike.setGod(pickedGod.get(1));
-            }else {
-                playerGodLike.setGod(pickedGod.get(0));
-            }
+            setLastGod(playerGodLike, mapPlayerGod, pickedGod, chosenGod);
 
             opponent.asyncSend(HelpMessage.noAnswer + HelpMessage.wait);
             String firstPlayer = godLike.chooseFirstPlayer(new OrderGameMessage(keys));
@@ -232,6 +228,10 @@ public class Server {
             model.addObserver(player2View);
             player1View.addObserver(controller);
             player2View.addObserver(controller);
+
+            /*ServerMessage message = new GodRecapMessage(mapPlayerGod);
+            godLike.asyncSend(message);
+            opponent.asyncSend(message);*/
 
             if(!placeOnBoardSequence(model, playerList, waitingConnection2P))
                 return;
@@ -263,6 +263,7 @@ public class Server {
             SocketClientConnection godLike, opponent1, opponent2;
             Player playerGodLike, playerOpponent1, playerOpponent2;
             ArrayList<Player> playerList = new ArrayList<>();
+            HashMap<String, God> mapPlayerGod = new HashMap<>();
 
             int choseGodLike = (new Random()).nextInt(3);
             if (choseGodLike == 0) {
@@ -309,6 +310,7 @@ public class Server {
                 return;
             }
             playerOpponent1.setGod(chosenGod);
+            mapPlayerGod.put(playerOpponent1.getIdPlayer(), chosenGod);
             System.out.println("Opponent chose " + chosenGod.getGodName());
             for (int i = 0; i < 3; i++) {
                 if (pickedGod.get(i).getGodName().equals(chosenGod.getGodName())) {
@@ -324,14 +326,11 @@ public class Server {
                 return;
             }
             playerOpponent2.setGod(chosenGod);
+            mapPlayerGod.put(playerOpponent2.getIdPlayer(), chosenGod);
             System.out.println("player3 chose: " + chosenGod.getGodName());
             opponent2.asyncSend(HelpMessage.noAnswer + HelpMessage.wait);
 
-            if (chosenGod.getGodName().equals(pickedGod.get(0).getGodName())) {
-                playerGodLike.setGod(pickedGod.get(1));
-            } else {
-                playerGodLike.setGod(pickedGod.get(0));
-            }
+            setLastGod(playerGodLike, mapPlayerGod, pickedGod, chosenGod);
 
             String firstPlayer = godLike.chooseFirstPlayer(new OrderGameMessage(keys));
             if(firstPlayer == null){
@@ -360,6 +359,11 @@ public class Server {
             player2View.addObserver(controller);
             player3View.addObserver(controller);
 
+            /*ServerMessage message = new GodRecapMessage(mapPlayerGod);
+            godLike.asyncSend(message);
+            opponent1.asyncSend(message);
+            opponent2.asyncSend(message);*/
+
             //launching the sequence to place all constructors on the board, if return false someone disconnected -> close game
             if(!placeOnBoardSequence(model, playerList, waitingConnection3P))
                 return;
@@ -379,6 +383,16 @@ public class Server {
             controller.preparePhase();
         });
         thread3P.start();
+    }
+
+    private void setLastGod(Player playerGodLike, HashMap<String, God> mapPlayerGod, ArrayList<God> pickedGod, God chosenGod) {
+        if (chosenGod.getGodName().equals(pickedGod.get(0).getGodName())) {
+            playerGodLike.setGod(pickedGod.get(1));
+            mapPlayerGod.put(playerGodLike.getIdPlayer(), pickedGod.get(1));
+        } else {
+            playerGodLike.setGod(pickedGod.get(0));
+            mapPlayerGod.put(playerGodLike.getIdPlayer(), pickedGod.get(0));
+        }
     }
 
     private boolean placeOnBoardSequence(Model model, List<Player> pList, Map<String, SocketClientConnection> connectionMap){
