@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
-import javafx.scene.input.MouseButton;
+import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
         private static Text text=new Text();
         private Piece piece;
         private static int level;
-        private int x, y;
+        private final int x, y;
         private boolean highlighted=false;
 
 
@@ -50,19 +50,16 @@ import javafx.scene.text.Text;
 
             setOnMouseClicked(e->{
                 if(BoardScene.isYourTurn()){
-                if(e.getButton()== MouseButton.PRIMARY && BoardScene.isInit() && BoardScene.isYourTurn() ){
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
-                }else if(e.getButton()== MouseButton.PRIMARY && !BoardScene.isInit() && BoardScene.isYourTurn() &&
-                        BoardScene.isBuild() && highlighted && BoardScene.isSpecial()){
-                    ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
-                }
+                    if(BoardScene.isInit() || BoardScene.getPhase()==PossiblePhases.MOVE || BoardScene.getPhase()==PossiblePhases.BUILD
+                    || BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE || BoardScene.getPhase()==PossiblePhases.SPECIAL_BUILD){
+                        ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
+                    }
                 }
             });
         }
 
         public static void drawNextLevel(int x, int y){
-            TileGui tile=BoardScene.getTile(x,y);
-            switch (tile.level) {
+            switch (level) {
                 case 0 -> {
                     text.setText("1");
                     level++;
@@ -83,31 +80,53 @@ import javafx.scene.text.Text;
             }
 
         public static void drawDome(int x,int y){
-            TileGui tile=BoardScene.getTile(x,y);
             switch (level) {
                 case 0 -> {
-                    tile.text.setText("5");
+                    text.setText("5");
                     level=5;
-                    break;
+
                 }
                 case 1 -> {
-                    tile.text.setText("6");
+                    text.setText("6");
                     level=6;
-                    break;
+
                 }
                 case 2 -> {
-                    tile.text.setText("7");
+                    text.setText("7");
                     level=7;
-                    break;
+
                 }
                 case 3 -> {
-                    tile.text.setText("D");
+                    text.setText("D");
                     level=4;
-                    break;
+
                 }
             }
 
         }
+
+        /*private void HandeMove(){
+            int  newX=x;
+            int newY=y;
+            MoveResult result=BoardScene.tryMove(newX,newY);
+
+            int x0= BoardScene.toBoard(BoardScene.getPieceToMove().getOldX());
+            int y0=BoardScene.toBoard(BoardScene.getPieceToMove().getOldY());
+
+            System.out.println(newX+" "+newY+" "+x0+" "+y0);
+            switch (result.getType()) {
+                case NONE -> BoardScene.getPieceToMove().abortMove();
+                case NORMAL -> {
+                    BoardScene.animation(BoardScene.getPieceToMove(), newX - x0, newY - y0);
+                    BoardScene.getPieceToMove().setOldX(newX * 120);
+                    BoardScene.getPieceToMove().setOldY(newY * 120);
+                    BoardScene.board[x0][y0].setPiece(null);
+                    BoardScene.board[newX][newY].setPiece(BoardScene.getPieceToMove());
+                    BoardScene.setPieceToMove(null);
+                }
+            }
+
+        }*/
 
 
 

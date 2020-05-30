@@ -25,6 +25,7 @@ public class StandardMoveMessage extends MoveMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
+        playSpace.printPlaySpace();
         playSpace.updateConstructorGUI(getConstructorMatrix());
     }
 }

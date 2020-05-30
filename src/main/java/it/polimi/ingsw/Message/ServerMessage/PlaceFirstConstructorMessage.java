@@ -31,7 +31,7 @@ public class PlaceFirstConstructorMessage extends ServerMessage {
 
     @Override
     public void buildScene() {
-        BoardScene.setYourTurn(true);
-        BoardScene.setInit(true);
+    BoardScene.setInit(true);
+    BoardScene.setYourTurn(true);
     }
 }

@@ -5,6 +5,7 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
+import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -21,46 +22,24 @@ public class BoardScene {
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
     public static TextArea messages= new TextArea();
-    private static boolean init=true;
     private static boolean yourTurn=false;
-    private static boolean move=false;
-    private static boolean build=false;
-    private static boolean specialChooseConstructor=false;
-    private static boolean special=false;
+    private static PossiblePhases phase;
+    private static  boolean init=true;
+    private static Piece pieceToMove;
+    private static Piece specialPieceToMove;
 
-    public static boolean isBuild() {
-        return build;
-    }
 
-    public static void setBuild(boolean build) {
-        BoardScene.build = build;
-    }
-
-    public static boolean isMove() {
-        return move;
-    }
-
-    public static void setMove(boolean move) {
-        BoardScene.move = move;
-    }
-
-    public static void setInit(boolean init) {
-        BoardScene.init=init;
-    }
 
     public static void setYourTurn(boolean yourTurn) {
         BoardScene.yourTurn = yourTurn;
     }
 
-    public static boolean isInit() {
-        return init;
-    }
 
     public static boolean isYourTurn() {
         return yourTurn;
     }
 
-    private static final TileGui[][] board= new TileGui[WIDTH][HEIGHT];
+    public static final TileGui[][] board= new TileGui[WIDTH][HEIGHT];
 
     private static final Group tileGroup = new Group();
     public static final Group pieceGroup= new Group();
@@ -101,9 +80,9 @@ public class BoardScene {
         return borderPane;
     }
 
-    private static MoveResult tryMove(Piece piece, int newX, int newY){
-        int x0=toBoard(piece.getOldX());
-        int y0=toBoard(piece.getOldY());
+    public static MoveResult tryMove(int newX, int newY){
+        int x0=toBoard(pieceToMove.getOldX());
+        int y0=toBoard(pieceToMove.getOldY());
         if (Math.abs(x0-newX)>1 || Math.abs(y0-newY)>1){
             return new MoveResult(MoveType.NONE);
         }
@@ -130,52 +109,7 @@ public class BoardScene {
 
     public static Piece makePiece(PieceType type, int x, int y,boolean isYourPiece){
         Piece piece= new Piece(type,x,y, isYourPiece);
-
-        piece.setOnMouseReleased(e->{
-            if(isYourPiece){
-            int newX=toBoard(piece.getLayoutX()-piece.getTranslationX());
-            int newY=toBoard(piece.getLayoutY()-piece.getTranslationY());
-            MoveResult result=tryMove(piece,newX,newY);
-            ClientGuiApp.getClient().asyncWriteToSocketGUI(newY+","+newX);
-            int x0= toBoard(piece.getOldX());
-            int y0=toBoard(piece.getOldY());
-
-            System.out.println(newX+" "+newY+" "+x0+" "+y0);
-            switch (result.getType()) {
-                case NONE -> piece.abortMove();
-                case NORMAL -> {
-                    piece.move(newX, newY);
-                    board[x0][y0].setPiece(null);
-                    board[newX][newY].setPiece(piece);
-                }
-                case SWAP -> {
-                    Piece swapped;
-                    swapped = board[newX][newY].getPiece();
-                    animation(swapped, x0 - newX, y0 - newY);
-                    piece.move(newX, newY);
-                    board[x0][y0].setPiece(swapped);
-                    board[newX][newY].setPiece(piece);
-                    swapped.setOldX(x0 * TILE_SIZE);
-                    swapped.setOldY(y0 * TILE_SIZE);
-                    System.out.println("shappato " + swapped.getOldX() + " " + swapped.getOldY());
-                }
-                case PUSH -> {
-                    Piece pushed = board[newX][newY].getPiece();
-                    animation(pushed, newX - x0, newY - y0);
-                    piece.move(newX, newY);
-                    pushed.setOldX((newX + newX - x0) * TILE_SIZE);
-                    pushed.setOldY((newY + newY - y0) * TILE_SIZE);
-                    System.out.println(pushed.getOldX() + " " + pushed.getOldY());
-                    board[2 * newX - x0][2 * newX - x0].setPiece(pushed);
-                    board[newX][newY].setPiece(piece);
-                    board[x0][y0].setPiece(null);
-                    System.out.println(newX - x0);
-                }
-            }
-
-        }});
-
-        return piece;
+                return piece;
     }
 
     public static synchronized void animation(Piece piece, int x, int y){
@@ -195,19 +129,35 @@ public class BoardScene {
     }
 
 
-    public static void setSpecialChooseConstructor(boolean specialChooseConstructor) {
-        BoardScene.specialChooseConstructor = specialChooseConstructor;
+    public static PossiblePhases getPhase() {
+        return phase;
     }
 
-    public static void setSpecial(boolean special) {
-        BoardScene.special = special;
+    public static void setPhase(PossiblePhases phase) {
+        BoardScene.phase = phase;
     }
 
-    public static boolean isSpecialChooseConstructor() {
-        return specialChooseConstructor;
+    public static boolean isInit() {
+        return init;
     }
 
-    public static boolean isSpecial() {
-        return special;
+    public static void setInit(boolean init) {
+        BoardScene.init = init;
+    }
+
+    public static Piece getPieceToMove() {
+        return pieceToMove;
+    }
+
+    public static void setPieceToMove(Piece pieceToMove) {
+        BoardScene.pieceToMove = pieceToMove;
+    }
+
+    public static Piece getSpecialPieceToMove() {
+        return specialPieceToMove;
+    }
+
+    public static void setSpecialPieceToMove(Piece specialPieceToMove) {
+        BoardScene.specialPieceToMove = specialPieceToMove;
     }
 }

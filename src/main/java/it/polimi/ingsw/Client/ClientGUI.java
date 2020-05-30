@@ -62,9 +62,17 @@ public class ClientGUI extends Client implements EventHandler{
         boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
         inputObject.autoSetMessage(isMyTurn, false);
         BoardScene.setYourTurn(isMyTurn);
+        if(inputObject instanceof ServerMoveMessage) {
+            updatePlaySpaceGUI(inputObject);
+            BoardScene.newText(inputObject.getMessage());
+            System.out.println(inputObject.getMessage());
+            System.out.println();
+            return;
+        }
         if(inputObject instanceof TileToShowMessage){
-            BoardScene.setInit(false);
             if(isMyTurn) {
+                BoardScene.setPhase(inputObject.getPhase());
+                System.out.println("fsjsdsokdk");
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
                 updatePlaySpaceGUI(inputObject);
                 playSpace.printPlaySpace();
@@ -77,13 +85,9 @@ public class ClientGUI extends Client implements EventHandler{
             System.out.println(inputObject.getMessage());
             System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restart the application.");
             setActive(false);
-        }
-        if(inputObject instanceof ServerMoveMessage) {
-            updatePlaySpaceGUI(inputObject);
-            BoardScene.newText(inputObject.getMessage());
-            System.out.println(inputObject.getMessage());
-            System.out.println();
-            return;
+        }else{
+            inputObject.updateGUI(playSpace);
+            playSpace.printPlaySpace();
         }
     }
 

@@ -6,6 +6,7 @@ import it.polimi.ingsw.Client.GraphicElements.Board.PieceType;
 import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
 import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Position;
+import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.List;
 
@@ -188,7 +189,6 @@ public class PlaySpace {
                 }
             }
         }else{
-            if(!BoardScene.isYourTurn()){
         for(int i=0;i<=4;i++){
             for(int j=0;j<=4;j++){
                  if (constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
@@ -208,7 +208,7 @@ public class PlaySpace {
             }
         }
             setConstructorMatrix(playSpaceUpdated);
-            printPlaySpace();}
+            printPlaySpace();
         }
         BoardScene.setYourTurn(false);
     }

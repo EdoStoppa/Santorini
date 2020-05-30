@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
+import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
@@ -72,22 +73,13 @@ public class Piece extends StackPane {
         ellipse.setTranslateY((TILE_SIZE- TILE_SIZE*0.26*2)/2);
         getChildren().addAll(bg,ellipse);
 
-
-        setOnMousePressed(e->{
-            if(isYourPiece && BoardScene.isYourTurn()){
-            mouseX=e.getSceneX();
-            mouseY=e.getSceneY();
-            System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldY));
-            System.out.println("mouse click"+mouseX+" "+mouseY);
-        }});
-
-        setOnMouseDragged(e->{
-            if(isYourPiece && BoardScene.isYourTurn()) {
-                relocate(e.getSceneX() - mouseX + oldX + translationX, e.getSceneY() - mouseY + oldY + translationY);
-                System.out.println((e.getSceneX() - mouseX + oldX + translationX) + " " + (e.getSceneY() - mouseY + oldY + translationY));
-
-            }});
+        setOnMouseClicked(e->{
+            if(BoardScene.getPhase()== PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR){
+                BoardScene.setPieceToMove(this);
+                System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+            }
+        });
     }
 
     public void move(double x, double y){
