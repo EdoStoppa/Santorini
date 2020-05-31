@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.MoveMessages;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
@@ -25,7 +26,8 @@ public class StandardMoveMessage extends MoveMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-        playSpace.printPlaySpace();
+        BoardScene.setInit(false);
+        System.out.println("ciao");
         playSpace.updateConstructorGUI(getConstructorMatrix());
     }
 }

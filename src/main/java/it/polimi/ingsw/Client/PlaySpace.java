@@ -172,6 +172,7 @@ public class PlaySpace {
                             } else {
                                 piece = BoardScene.makePiece(PieceType.WHITE, j, i, false);
                             }
+                            BoardScene.getTile(j,i).setPiece(piece);
                             BoardScene.pieceGroup.getChildren().add(piece);
                             setConstructorMatrix(playSpaceUpdated);
                         } else {
@@ -181,6 +182,7 @@ public class PlaySpace {
                             } else {
                                 piece = BoardScene.makePiece(PieceType.WHITE, j, i, true);
                             }
+                            BoardScene.getTile(j,i).setPiece(piece);
                             BoardScene.pieceGroup.getChildren().add(piece);
                             setConstructorMatrix(playSpaceUpdated);
                         }
@@ -189,18 +191,29 @@ public class PlaySpace {
                 }
             }
         }else{
+            System.out.println("bello");
+            printPlaySpace();
         for(int i=0;i<=4;i++){
             for(int j=0;j<=4;j++){
                  if (constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
+                     System.out.println(i+"bello"+j);
                   for (int h=-1;h<=1;h++){
                       for (int k=-1;k<=1;k++){
-                          if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h!=0 && k!=0)){
-                              if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==0){
-                                  Piece moved= BoardScene.getTile(i,j).getPiece();
-                                  BoardScene.animation(moved,h,k);
-                                  BoardScene.getTile(i,j).setPiece(null);
-                                  BoardScene.getTile(i+h,j+k).setPiece(moved);
-                              }
+                          if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4) {
+                              if ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0) ){
+                              System.out.println((i + h) + "ciao" + (j + k));
+                              System.out.println(playSpaceUpdated[i + h][j + k] + "," + constructorMatrix[i][j] + "," + constructorMatrix[i + h][j + k]);
+                              if (playSpaceUpdated[i + h][j + k] == constructorMatrix[i][j] && constructorMatrix[i + h][j + k] == 0) {
+                                  Piece moved = BoardScene.getTile(j, i).getPiece();
+                                  BoardScene.animation(moved, k, h);
+                                  BoardScene.getTile(j, i).setPiece(null);
+                                  BoardScene.getTile(j + k, i + h).setPiece(moved);
+                                  if (moved!=null){
+                                  moved.setOldX((j + k)*BoardScene.TILE_SIZE);
+                                  moved.setOldY((i + h)*BoardScene.TILE_SIZE);
+                              }}
+
+                          }
                           }
                       }
                   }
@@ -208,7 +221,6 @@ public class PlaySpace {
             }
         }
             setConstructorMatrix(playSpaceUpdated);
-            printPlaySpace();
         }
         BoardScene.setYourTurn(false);
     }
@@ -216,53 +228,88 @@ public class PlaySpace {
     public void updateBuildingGUI(int[][] updatedBuildingMatrix,boolean dome) {
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
-                if (constructorMatrix[i][j]!=updatedBuildingMatrix[i][j] && !dome){
-                    TileGui.drawNextLevel(i,j);
-                }else if(constructorMatrix[i][j]!=updatedBuildingMatrix[i][j] && dome){
-                    TileGui.drawDome(i,j);
+                if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && !dome){
+                    System.out.println(i+","+j);
+                    BoardScene.drawNextLevel(BoardScene.getTile(j,i));
+                }else if(buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && dome){
+                    System.out.println(i+","+j);
+                    BoardScene.getTile(j,i).drawDome();
                 }
             }
         }
+        setBuildingMatrix(updatedBuildingMatrix);
+        BoardScene.setYourTurn(false);
     }
 
     public void swapConstructorGUI (int [][]playSpaceUpdated){
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
                 if (constructorMatrix[i][j]!=playSpaceUpdated[i][j]){
+                    System.out.println("swapped"+i+","+j);
                     for (int h=-1;h<=1;h++){
                         for (int k=-1;k<=1;k++){
-                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h!=0 && k!=0)){
+                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0)){
                                 if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==playSpaceUpdated[i][j]){
-                                    Piece moved= BoardScene.getTile(i,j).getPiece();
-                                    Piece swapped=BoardScene.getTile(i+h,j+k).getPiece();
-                                    BoardScene.animation(moved,h,k);
-                                    BoardScene.animation(swapped,-h,-k);
-                                    BoardScene.getTile(i,j).setPiece(swapped);
-                                    BoardScene.getTile(i+h,j+k).setPiece(moved);
-                }
+                                    Piece moved= BoardScene.getTile(j,i).getPiece();
+                                    Piece swapped=BoardScene.getTile(j+k,i+h).getPiece();
+                                    BoardScene.animation(moved,k,h);
+                                    BoardScene.animation(swapped,-k,-h);
+                                    BoardScene.getTile(j+k,i+h).setPiece(moved);
+                                    BoardScene.getTile(j,i).setPiece(swapped);
+                                    System.out.println(j+"fs"+i+"ss"+k+"aa"+h+"xs");
+                                    if (moved!=null){
+                                        moved.setOldX((j+k)*BoardScene.TILE_SIZE);
+                                        moved.setOldY((i+h)*BoardScene.TILE_SIZE);
+                                    }
+                                    if (swapped!=null){
+                                        swapped.setOldX(j*BoardScene.TILE_SIZE);
+                                        swapped.setOldY(i*BoardScene.TILE_SIZE);
+                                        System.out.println(swapped.getOldX()+","+swapped.getOldY());
+                                    }
+                                    setConstructorMatrix(playSpaceUpdated);
+
             }
         }
+
     }
                 }
             }
         }
+    }
     }
 
     public void pushConstructorGUI (int[][] playSpaceUpdated){
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
-                if(playSpaceUpdated[i][j]!=constructorMatrix[i][j] && constructorMatrix[i][j]==0){
+                if(constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
+                    System.out.println(i+"spiedo"+j);
                     for (int h=-1;h<=1;h++){
                         for (int k=-1;k<=1;k++){
-                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h!=0 && k!=0)){
-                                if(playSpaceUpdated[i][j]==constructorMatrix[i+h][j+k]){
-                                   Piece minotaur=BoardScene.getTile(i+h*2,j+k*2).getPiece();
-                                   Piece pushed=BoardScene.getTile(i+h,j+k).getPiece();
-                                   BoardScene.animation(minotaur,h,k);
-                                   BoardScene.animation(pushed,h,k);
-                                   BoardScene.getTile(i,j).setPiece(pushed);
-                                   BoardScene.getTile(i+h,j+k).setPiece(minotaur);
-                                   BoardScene.getTile(i+h*2,j+k*2).setPiece(null);
+                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0))){
+                                System.out.println((i+h)+"pollo"+(j+k));
+                                if(playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && playSpaceUpdated[i+h][j+k]!=constructorMatrix[i+h][j+k]){
+                                   Piece minotaur=BoardScene.getTile(j,i).getPiece();
+                                   Piece pushed=BoardScene.getTile(j+k,i+h).getPiece();
+                                   if (minotaur==null){
+                                       System.out.println((i+h*2)+"error minotaur"+(j+k*2));
+                                   }
+                                    if (pushed==null){
+                                        System.out.println((i+h)+"error pushed"+(j+k));
+                                    }
+                                   BoardScene.animation(minotaur,k,h);
+                                   BoardScene.animation(pushed,k,h);
+                                   BoardScene.getTile(j+k*2,i+h*2).setPiece(pushed);
+                                   BoardScene.getTile(j+k,i+h).setPiece(minotaur);
+                                   BoardScene.getTile(j,i).setPiece(null);
+                                    if (pushed!=null){
+                                        pushed.setOldX((j+k*2)*BoardScene.TILE_SIZE);
+                                        pushed.setOldY((i+h*2)*BoardScene.TILE_SIZE);
+                                    }
+                                    if (minotaur!=null){
+                                        minotaur.setOldX((j+k)*BoardScene.TILE_SIZE);
+                                        minotaur.setOldY((i+h)*BoardScene.TILE_SIZE);
+                                    }
+                                    setConstructorMatrix(playSpaceUpdated);
                                 }
                             }
                         }

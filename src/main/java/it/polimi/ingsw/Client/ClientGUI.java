@@ -72,13 +72,13 @@ public class ClientGUI extends Client implements EventHandler{
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 BoardScene.setPhase(inputObject.getPhase());
-                System.out.println("fsjsdsokdk");
+                inputObject.updatePlaySpace(playSpace);
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
-                updatePlaySpaceGUI(inputObject);
-                playSpace.printPlaySpace();
             }
+            BoardScene.setInit(false);
             BoardScene.messages.appendText(inputObject.getMessage());
             System.out.println(inputObject.getMessage());
+            playSpace.printPlaySpace();
         }else if(inputObject instanceof WinMessage){
             playSpace.printPlaySpace();
             BoardScene.newText(inputObject.getMessage());
@@ -111,6 +111,7 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     private void manageServerMessageGUI(ServerMessage inputObject){
+        this.miniController=inputObject.getMiniController();
         System.out.println(idPlayer);
         update(inputObject);
     }
@@ -137,8 +138,20 @@ public class ClientGUI extends Client implements EventHandler{
 
 
     public void asyncWriteToSocketGUI(String message) {
-                                socketOut.println(this.miniController.getMessage(message));
-                                socketOut.flush();
+        StringBuilder sBuilder = new StringBuilder();
+        if (this.miniController != null) {
+            if (this.miniController.checkPos(message, playSpace, sBuilder)) {
+                socketOut.println(this.miniController.getMessage(message));
+                socketOut.flush();
+                System.out.println();
+                playSpace.reset();
+                miniController = null;
+            } else {
+                System.out.println(sBuilder);
+            }
+        } else {
+            System.out.println("Now you can't make a move. Please wait");
+        }
 
     }
 

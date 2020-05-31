@@ -57,6 +57,7 @@ public class BoardScene {
         controller.setAlignment(Pos.BOTTOM_CENTER);
         controller.prefHeight(50);
         Pane message= new Pane();
+        messages.setPrefHeight(50);
         message.getChildren().add(messages);
         Button cosi= new Button("god list");
         cosi.setOnAction(e-> AlertBox.displayError("divinita"));
@@ -126,6 +127,26 @@ public class BoardScene {
     public static void newText(String message){
         messages.appendText(message+"\n");
 
+    }
+    public static void drawNextLevel(TileGui tile){
+        switch (tile.getLevel()) {
+            case 0 -> {
+                tile.getText().setText("1");
+                tile.setLevel(1);
+            }
+            case 1 -> {
+                tile.getText().setText("2");
+                tile.setLevel(2);
+            }
+            case 2 -> {
+                tile.getText().setText("3");
+                tile.setLevel(3);
+            }
+            case 3 -> {
+                tile.getText().setText("D");
+                tile.setLevel(4);;
+            }
+        }
     }
 
 

@@ -16,8 +16,11 @@ public class StandardMiniController implements MiniController, Serializable {
             int row = Integer.parseInt(rowAndCol[0]);
             int col = Integer.parseInt(rowAndCol[1]);
 
-            if(0<=row && row<=4 && 0<=col && col<=4)
+
+            if(0<=row && row<=4 && 0<=col && col<=4){
                 return playSpace.printTileToShow(row, col);
+            }
+
             else
                 return false;
 

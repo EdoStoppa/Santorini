@@ -79,6 +79,10 @@ public class Piece extends StackPane {
                 System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
             }
+            if(BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE){
+                BoardScene.setSpecialPieceToMove(this);
+                ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+            }
         });
     }
 

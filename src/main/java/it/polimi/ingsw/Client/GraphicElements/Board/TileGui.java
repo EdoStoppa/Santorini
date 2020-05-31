@@ -12,16 +12,23 @@ import javafx.scene.text.Text;
 
     public class TileGui extends StackPane {
 
-        private static Text text=new Text();
+        private Text text=new Text();
         private Piece piece;
-        private static int level;
+        private int level;
         private final int x, y;
         private boolean highlighted=false;
 
+        public  int getLevel() {
+            return level;
+        }
 
+        public  void setLevel(int level) {
+            this.level = level;
+        }
 
-
-
+        public  Text getText() {
+            return text;
+        }
 
         public  boolean hasPiece(){
             return piece!=null;
@@ -58,47 +65,28 @@ import javafx.scene.text.Text;
             });
         }
 
-        public static void drawNextLevel(int x, int y){
-            switch (level) {
-                case 0 -> {
-                    text.setText("1");
-                    level++;
-                }
-                case 1 -> {
-                    text.setText("2");
-                    level++;
-                }
-                case 2 -> {
-                    text.setText("3");
-                    level++;
-                }
-                case 3 -> {
-                    text.setText("D");
-                    level++;
-                }
-            }
-            }
 
-        public static void drawDome(int x,int y){
-            switch (level) {
+
+        public void drawDome(){
+            switch (this.level) {
                 case 0 -> {
-                    text.setText("5");
-                    level=5;
+                    this.text.setText("5");
+                    this.level=5;
 
                 }
                 case 1 -> {
-                    text.setText("6");
-                    level=6;
+                    this.text.setText("6");
+                    this.level=6;
 
                 }
                 case 2 -> {
-                    text.setText("7");
-                    level=7;
+                    this.text.setText("7");
+                    this.level=7;
 
                 }
                 case 3 -> {
-                    text.setText("D");
-                    level=4;
+                    this.text.setText("D");
+                    this.level=4;
 
                 }
             }
