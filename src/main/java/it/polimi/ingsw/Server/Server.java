@@ -229,9 +229,8 @@ public class Server {
             player1View.addObserver(controller);
             player2View.addObserver(controller);
 
-            /*ServerMessage message = new GodRecapMessage(mapPlayerGod);
-            godLike.asyncSend(message);
-            opponent.asyncSend(message);*/
+            /*godLike.asyncSend(mapPlayerGod);
+            opponent.asyncSend(mapPlayerGod);*/
 
             if(!placeOnBoardSequence(model, playerList, waitingConnection2P))
                 return;
@@ -359,10 +358,9 @@ public class Server {
             player2View.addObserver(controller);
             player3View.addObserver(controller);
 
-            /*ServerMessage message = new GodRecapMessage(mapPlayerGod);
-            godLike.asyncSend(message);
-            opponent1.asyncSend(message);
-            opponent2.asyncSend(message);*/
+            /*godLike.asyncSend(mapPlayerGod);
+            opponent1.asyncSend(mapPlayerGod);
+            opponent2.asyncSend(mapPlayerGod);*/
 
             //launching the sequence to place all constructors on the board, if return false someone disconnected -> close game
             if(!placeOnBoardSequence(model, playerList, waitingConnection3P))
