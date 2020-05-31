@@ -3,10 +3,7 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.GraphicElements.Board.Piece;
 import it.polimi.ingsw.Client.GraphicElements.Board.PieceType;
-import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
-import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Position;
-import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.List;
 
@@ -27,9 +24,6 @@ public class PlaySpace {
 
     }
 
-    public int[][] getBuildingMatrix() {
-        return buildingMatrix;
-    }
 
     public int[][] getConstructorMatrix() {
         return constructorMatrix;
