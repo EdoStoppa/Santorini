@@ -29,6 +29,7 @@ public class BoardScene {
     private static boolean special=false;
     private static Piece pieceToMove;
     private static Piece specialPieceToMove;
+    private static boolean checkDome=false;
 
 
 
@@ -196,5 +197,13 @@ public class BoardScene {
 
     public static void setSpecial(boolean special) {
         BoardScene.special = special;
+    }
+
+    public static boolean isCheckDome() {
+        return checkDome;
+    }
+
+    public static void setCheckDome(boolean checkDome) {
+        BoardScene.checkDome = checkDome;
     }
 }

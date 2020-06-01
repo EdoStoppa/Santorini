@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
+import it.polimi.ingsw.Client.GraphicElements.AlertBox;
+import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -60,6 +62,15 @@ import javafx.scene.text.Text;
                     if(BoardScene.isInit() || BoardScene.getPhase()==PossiblePhases.MOVE || BoardScene.getPhase()==PossiblePhases.BUILD
                     || BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE || BoardScene.getPhase()==PossiblePhases.SPECIAL_BUILD){
                         ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
+                    }
+                    if(BoardScene.isCheckDome() && BoardScene.getPhase()==PossiblePhases.SPECIAL_BUILD){
+                        ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
+                        Boolean answer=AlertBox.CheckDome("dome");
+                        if(answer){
+                            ClientGuiApp.getClient().asyncWriteToSocketGUI("y");
+                        }else{
+                            ClientGuiApp.getClient().asyncWriteToSocketGUI("n");
+                        }
                     }
                 }
             });

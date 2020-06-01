@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.MiniController;
 
+import it.polimi.ingsw.Client.ClientGuiApp;
+import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 
@@ -45,4 +47,15 @@ public class CheckDomeMiniController implements MiniController, Serializable {
         }
 
     }
+
+    public String getMessageGui(String input){
+        Boolean answer= AlertBox.CheckDome("dome");
+        if(answer){
+            return "dome " + input;
+        }else{
+            return "standard " + input;
+        }
+
+    }
+
 }
