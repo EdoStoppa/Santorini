@@ -5,11 +5,13 @@ import it.polimi.ingsw.Message.BuildMessages.ForcedDomeMessage;
 import it.polimi.ingsw.Message.BuildMessages.StandardBuildMessage;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.PosMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.CheckDomeMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +78,13 @@ class AtlasControllerTest {
             assertTrue(r.receivedMessage instanceof StandardBuildMessage, "The message should be a StandardBuildMessage");
             assertFalse(model.getDome(pos));
         }
+    }
+
+    @Test
+    void prepareSpecialBuildTest() {
+        AtlasController atlasController = new AtlasController();
+        atlasController.prepareSpecialBuild(model, controller);
+        assertTrue(r.receivedMessage instanceof CheckDomeMessage);
     }
 
 

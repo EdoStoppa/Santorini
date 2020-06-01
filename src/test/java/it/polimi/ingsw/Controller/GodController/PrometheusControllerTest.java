@@ -2,12 +2,16 @@ package it.polimi.ingsw.Controller.GodController;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.MoreTileToCheckMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observer;
+import javafx.geometry.Pos;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -169,6 +173,71 @@ class PrometheusControllerTest {
 
     }
 
+    @RepeatedTest(2)
+    void handleSpecialChooseConstructor(RepetitionInfo repetitionInfo)  {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(1,2));
+        posList.add(new Position(2,0));
+        posList.add(new Position(3,2));
+        posList.add(new Position(3,4));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        if(repetitionInfo.getCurrentRepetition() == 1)  {
+            PossiblePhases possiblePhases = null;
+            PrometheusController prometheusController = (PrometheusController) model.getCurrentGod().getGodController();
+            PosMessage posMessage = new PosMessage("skipPhase", null, null, new Position(1,2));
+            prometheusController.handleSpecialChooseConstructor(model, controller, posMessage);
+            assertEquals(1, model.getCurrentConstructor().getPos().getRow());
+            assertEquals(2, model.getCurrentConstructor().getPos().getCol());
+            assertEquals(possiblePhases.SPECIAL_BUILD, model.getCurrentPhase());
+        }
+        else    {
+            PossiblePhases possiblePhases = null;
+            PrometheusController prometheusController = (PrometheusController) model.getCurrentGod().getGodController();
+            PosMessage posMessage = new PosMessage("boh", null, null, new Position(1,2));
+            prometheusController.handleSpecialChooseConstructor(model, controller, posMessage);
+            assertEquals(1, model.getCurrentConstructor().getPos().getRow());
+            assertEquals(2, model.getCurrentConstructor().getPos().getCol());
+            assertEquals(possiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR, model.getCurrentPhase());
+        }
+    }
+
+
+
+    @Test
+    void handleSpecialMove()  {
+        PrometheusController prometheusController = new PrometheusController();
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(1,2));
+        posList.add(new Position(2,0));
+        posList.add(new Position(3,2));
+        posList.add(new Position(3,4));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        Prometheus p = (Prometheus) model.getCurrentGod();
+        PosMessage posMessage = new PosMessage("boh", null, null, new Position(1,3));
+        prometheusController.handleSpecialMove(model, controller, posMessage);
+        assertEquals(1, model.getCurrentConstructor().getPos().getRow());
+        assertEquals(3, model.getCurrentConstructor().getPos().getCol());
+        assertTrue(p.getCanGoUp());
+    }
+
     // -----------------      prepareSpecialBuild TESTS      -----------------
     @Test
     void standardPrepareBuild(){
@@ -234,6 +303,8 @@ class PrometheusControllerTest {
         List<Position> toShow = message.getTileToShow();
         assertEquals(1, toShow.size(), "Only the tile at level one should be here");
     }
+
+
 
     // ----------------           Helper methods           ----------------
     private List<Player> createPlayer(God p1God, God p2God) {

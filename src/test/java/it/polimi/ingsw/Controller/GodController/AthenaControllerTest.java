@@ -9,6 +9,7 @@ import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,15 @@ class AthenaControllerTest {
             }
             n = 2;
         }
+    }
+
+    @Test
+    void handleSpecialChooseConstructorTest()   {
+        PosMessage posMessage = new PosMessage("boh", null, null, new Position(1,1));
+        AthenaController athenaController = new AthenaController();
+        athenaController.handleSpecialChooseConstructor(model, controller, posMessage);
+        assertEquals(1, model.getCurrentConstructor().getPos().getRow());
+        assertEquals(1, model.getCurrentConstructor().getPos().getCol());
     }
 
     @RepeatedTest(3)
