@@ -14,7 +14,13 @@ public class CheckDomeMessage  extends TileToShowMessage {
     }
 
     @Override
-    public void updateGUI(PlaySpace playSpace) {
+    public void updatePlaySpace(PlaySpace playSpace)    {
+        playSpace.setTileToShow(getTileToShow());
+        playSpace.setSpecial(true);
+    }
 
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+        playSpace.setSpecial(true);
     }
 }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
-import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
-import it.polimi.ingsw.Client.PlaySpace;
+
 import it.polimi.ingsw.Controller.MiniController.StandardMiniController;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.Model.PossiblePhases;
@@ -14,8 +13,4 @@ public class StandardTileMessage extends TileToShowMessage {
         miniController = new StandardMiniController();
     }
 
-    @Override
-    public void updateGUI(PlaySpace playSpace) {
-
-    }
 }

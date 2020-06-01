@@ -72,8 +72,8 @@ public class ClientGUI extends Client implements EventHandler{
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 BoardScene.setPhase(inputObject.getPhase());
-                inputObject.updatePlaySpace(playSpace);
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
+                updatePlaySpaceGUI(inputObject);
             }
             BoardScene.setInit(false);
             BoardScene.messages.appendText(inputObject.getMessage());
@@ -139,8 +139,12 @@ public class ClientGUI extends Client implements EventHandler{
 
     public void asyncWriteToSocketGUI(String message) {
         StringBuilder sBuilder = new StringBuilder();
+        System.out.println("scrivo al server");
         if (this.miniController != null) {
+            System.out.println("scrivo al server2");
+            System.out.println(message+",,,");
             if (this.miniController.checkPos(message, playSpace, sBuilder)) {
+                System.out.println("scrivo al server3");
                 socketOut.println(this.miniController.getMessage(message));
                 socketOut.flush();
                 System.out.println();

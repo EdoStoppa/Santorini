@@ -15,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class BoardScene {
@@ -25,6 +26,7 @@ public class BoardScene {
     private static boolean yourTurn=false;
     private static PossiblePhases phase;
     private static  boolean init=true;
+    private static boolean special=false;
     private static Piece pieceToMove;
     private static Piece specialPieceToMove;
 
@@ -57,11 +59,21 @@ public class BoardScene {
         controller.setAlignment(Pos.BOTTOM_CENTER);
         controller.prefHeight(50);
         Pane message= new Pane();
-        messages.setPrefHeight(50);
+        messages.setPrefHeight(70);
         message.getChildren().add(messages);
-        Button cosi= new Button("god list");
-        cosi.setOnAction(e-> AlertBox.displayError("divinita"));
-        controller.getChildren().addAll(message,cosi);
+        Button godList= new Button("God List");
+        Button endPhase= new Button("End Phase");
+        godList.setOnAction(e-> AlertBox.displayError("divinita"));
+        endPhase.setOnAction(e->{
+            System.out.println(special+","+yourTurn);
+            if(special && yourTurn){
+                System.out.println("end");
+                ClientGuiApp.getClient().asyncWriteToSocketGUI("end");
+            }
+        });
+        VBox buttons=new VBox(10);
+        buttons.getChildren().addAll(godList,endPhase);
+        controller.getChildren().addAll(message,buttons);
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(root);
         borderPane.setBottom(controller);
@@ -180,5 +192,9 @@ public class BoardScene {
 
     public static void setSpecialPieceToMove(Piece specialPieceToMove) {
         BoardScene.specialPieceToMove = specialPieceToMove;
+    }
+
+    public static void setSpecial(boolean special) {
+        BoardScene.special = special;
     }
 }

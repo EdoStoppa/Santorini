@@ -66,7 +66,9 @@ public class PlaySpace {
      */
     public boolean printTileToShow(int i, int j){
         if(this.tileToShow != null){
+            System.out.println("scrivo al server4");
             for (int k=0;k<this.tileToShow.size();k++){
+                System.out.println("scrivo al server4");
                 if (this.tileToShow.get(k).getRow()==i && this.tileToShow.get(k).getCol()==j){
                     return true;
                 }
@@ -329,7 +331,10 @@ public class PlaySpace {
 
     public void tileToShowGUI (List<Position> tiles){
         setTileToShow(tiles);
+    }
 
+    public void setSpecial(boolean special){
+        BoardScene.setSpecial(special);
     }
 
 

@@ -24,11 +24,18 @@ public class CanEndTileMessage extends TileToShowMessage {
             text = getIdPlayer() + getPhase().toString(false);
         }
 
+
         setMessage(text);
     }
 
     @Override
-    public void updateGUI(PlaySpace playSpace) {
+    public void updatePlaySpace(PlaySpace playSpace)    {
+        playSpace.setTileToShow(getTileToShow());
+    }
 
+    @Override
+    public void updateGUI(PlaySpace playSpace) {
+        playSpace.setTileToShow(getTileToShow());
+        playSpace.setSpecial(true);
     }
 }

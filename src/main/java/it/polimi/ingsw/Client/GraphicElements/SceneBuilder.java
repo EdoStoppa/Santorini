@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class SceneBuilder {
 
@@ -27,25 +28,28 @@ public class SceneBuilder {
     private  static final HashMap<String,Image> imageHashMap= new HashMap<>();
 
     public SceneBuilder(){
-         Image Apollo= new Image("file:Apollo.png");
-         Image Artemis= new Image("file:Artemis.png");
-         Image Athena= new Image("file:Athena.png");
-         Image Atlas= new Image("file:Atlas.png");
-         Image Demeter= new Image("file:Demeter.png");
-         Image Hephaestus= new Image("file:Hephaestus.png");
-         Image Minotaur= new Image("file:Minotaur.png");
-         Image Pan=new Image("file:Pan.png");
-         Image Prometheus= new Image("file:Prometheus.png");
-         imageHashMap.put("Apollo",Apollo);
-        imageHashMap.put("Artemis",Artemis);
-        imageHashMap.put("Athena",Athena);
-        imageHashMap.put("Atlas",Atlas);
-        imageHashMap.put("Demeter",Demeter);
-        imageHashMap.put("Hephaestus",Hephaestus);
-        imageHashMap.put("Minotaur",Minotaur);
-        imageHashMap.put("Pan",Pan);
-        imageHashMap.put("Prometheus",Prometheus);
-
+        try {
+            Image Apollo = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Apollo.png")));
+            Image Artemis = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Artemis.png")));
+            Image Athena = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Athena.png")));
+            Image Atlas = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Atlas.png")));
+            Image Demeter = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Demeter.png")));
+            Image Hephaestus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Hephaestus.png")));
+            Image Minotaur = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Minotaur.png")));
+            Image Pan = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Pan.png")));
+            Image Prometheus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Prometheus.png")));
+            imageHashMap.put("Apollo", Apollo);
+            imageHashMap.put("Artemis", Artemis);
+            imageHashMap.put("Athena", Athena);
+            imageHashMap.put("Atlas", Atlas);
+            imageHashMap.put("Demeter", Demeter);
+            imageHashMap.put("Hephaestus", Hephaestus);
+            imageHashMap.put("Minotaur", Minotaur);
+            imageHashMap.put("Pan", Pan);
+            imageHashMap.put("Prometheus", Prometheus);
+        }catch (Exception e){
+            System.err.println(e);
+        }
 
     }
 

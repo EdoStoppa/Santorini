@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
-import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
+
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
