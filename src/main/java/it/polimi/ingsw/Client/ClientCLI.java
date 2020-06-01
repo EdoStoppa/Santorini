@@ -8,6 +8,7 @@ import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.*;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Message.WinMessage;
+import it.polimi.ingsw.Model.God;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -23,6 +25,7 @@ public class ClientCLI extends Client{
     private MiniController miniController;
     private final Object ipLock = new Object();
     LocalTime lastPingTime;
+    private Map<String, God> playerGodMap;
 
     public ClientCLI(String ip, int port) {
         super(ip, port);
@@ -145,10 +148,19 @@ public class ClientCLI extends Client{
 
     private void manageServerMessage(ServerMessage inputObject) {
 
+        if (inputObject instanceof GodRecapMessage) {
+            if (!((GodRecapMessage) inputObject).getFirstPlayer().equals(idPlayer)) {
+                System.out.println(inputObject.getMessage());
+            }
+            this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
+            return;
+        }
+
         if (inputObject instanceof PlaceFirstConstructorMessage) {
             if (((PlaceFirstConstructorMessage) inputObject).isFirst()) {
                 System.out.println("\u001b[2J\u001b[H");
                 playSpace.printPlaySpace();
+                System.out.println((new GodRecapMessage(playerGodMap, null)).getMessage());
             }
         }
         System.out.println(inputObject.getMessage());
