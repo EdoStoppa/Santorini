@@ -160,7 +160,8 @@ public class ClientCLI extends Client{
             if (((PlaceFirstConstructorMessage) inputObject).isFirst()) {
                 System.out.println("\u001b[2J\u001b[H");
                 playSpace.printPlaySpace();
-                System.out.println((new GodRecapMessage(playerGodMap, null)).getMessage());
+                if(playerGodMap != null)
+                    System.out.println((new GodRecapMessage(playerGodMap, null)).getMessage());
             }
         }
         System.out.println(inputObject.getMessage());
