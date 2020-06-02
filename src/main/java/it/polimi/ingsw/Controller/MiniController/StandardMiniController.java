@@ -33,4 +33,14 @@ public class StandardMiniController implements MiniController, Serializable {
     public String getMessage(String input) {
         return "standard "+input;
     }
+
+    @Override
+    public String getMessageGui(String message) {
+        return getMessage(message);
+    }
+
+    @Override
+    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
+        return checkPos(input,playSpace,stringBuilder);
+    }
 }

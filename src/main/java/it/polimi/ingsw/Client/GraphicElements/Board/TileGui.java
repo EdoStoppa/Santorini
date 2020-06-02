@@ -65,12 +65,6 @@ import javafx.scene.text.Text;
                     }
                     if(BoardScene.isCheckDome() && BoardScene.getPhase()==PossiblePhases.SPECIAL_BUILD){
                         ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
-                        Boolean answer=AlertBox.CheckDome("dome");
-                        if(answer){
-                            ClientGuiApp.getClient().asyncWriteToSocketGUI("y");
-                        }else{
-                            ClientGuiApp.getClient().asyncWriteToSocketGUI("n");
-                        }
                     }
                 }
             });
@@ -81,17 +75,17 @@ import javafx.scene.text.Text;
         public void drawDome(){
             switch (this.level) {
                 case 0 -> {
-                    this.text.setText("5");
+                    this.text.setText("D");
                     this.level=5;
 
                 }
                 case 1 -> {
-                    this.text.setText("6");
+                    this.text.setText("D");
                     this.level=6;
 
                 }
                 case 2 -> {
-                    this.text.setText("7");
+                    this.text.setText("D");
                     this.level=7;
 
                 }

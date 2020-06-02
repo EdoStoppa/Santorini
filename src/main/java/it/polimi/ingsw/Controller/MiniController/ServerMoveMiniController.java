@@ -32,4 +32,14 @@ public class ServerMoveMiniController implements MiniController, Serializable {
     public String getMessage(String input) {
         return input;
     }
+
+    @Override
+    public String getMessageGui(String message) {
+        return getMessage(message);
+    }
+
+    @Override
+    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
+        return checkPos(input,playSpace,stringBuilder);
+    }
 }

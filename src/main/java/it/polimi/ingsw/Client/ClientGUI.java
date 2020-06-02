@@ -76,7 +76,7 @@ public class ClientGUI extends Client implements EventHandler{
                 updatePlaySpaceGUI(inputObject);
             }
             BoardScene.setInit(false);
-            BoardScene.messages.appendText(inputObject.getMessage());
+            BoardScene.newText(inputObject.getMessage());
             System.out.println(inputObject.getMessage());
             playSpace.printPlaySpace();
         }else if(inputObject instanceof WinMessage){
@@ -122,11 +122,10 @@ public class ClientGUI extends Client implements EventHandler{
     private boolean getName(String s){
         String[] splitted = s.split(" ");
 
-        if(splitted.length == 2)
-            if(splitted[0].equals("Accepted")){
-                this.idPlayer = splitted[1];
-                return true;
-            }
+        if(splitted[0].equals("Accepted")){
+            this.idPlayer = s.substring(splitted[0].length()+1);
+            return true;
+        }
 
         return false;
     }
@@ -139,13 +138,11 @@ public class ClientGUI extends Client implements EventHandler{
 
     public void asyncWriteToSocketGUI(String message) {
         StringBuilder sBuilder = new StringBuilder();
-        System.out.println("scrivo al server");
         if (this.miniController != null) {
-            System.out.println("scrivo al server2");
-            System.out.println(message+",,,");
-            if (this.miniController.checkPos(message, playSpace, sBuilder)) {
-                System.out.println("scrivo al server3");
-                socketOut.println(this.miniController.getMessage(message));
+            if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {
+                String output= this.miniController.getMessageGui(message);
+                System.out.println(output);
+                socketOut.println(output);
                 socketOut.flush();
                 System.out.println();
                 playSpace.reset();

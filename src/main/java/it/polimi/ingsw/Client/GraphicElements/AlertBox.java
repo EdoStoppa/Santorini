@@ -39,7 +39,7 @@ public class AlertBox {
            window.close();
         });
         Button no= new Button("no");
-        yes.setOnAction(e->{
+        no.setOnAction(e->{
             answer=false;
             window.close();
         });

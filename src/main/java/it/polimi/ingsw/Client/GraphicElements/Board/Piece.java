@@ -74,7 +74,7 @@ public class Piece extends StackPane {
         getChildren().addAll(bg,ellipse);
 
         setOnMouseClicked(e->{
-            if (isYourPiece && BoardScene.isYourTurn()){
+            if (BoardScene.isYourTurn()){
             if(BoardScene.getPhase()== PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR){
                 BoardScene.setPieceToMove(this);
                 System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
@@ -82,6 +82,7 @@ public class Piece extends StackPane {
             }
             if(BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE){
                 BoardScene.setSpecialPieceToMove(this);
+                System.out.println("sono qui");
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
             }
         }});

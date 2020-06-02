@@ -6,4 +6,8 @@ public interface MiniController {
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder);
 
     public String getMessage(String input);
+
+    public String getMessageGui(String message);
+
+    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder);
 }

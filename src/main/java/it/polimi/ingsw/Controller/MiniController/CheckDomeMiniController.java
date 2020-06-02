@@ -49,13 +49,19 @@ public class CheckDomeMiniController implements MiniController, Serializable {
     }
 
     public String getMessageGui(String input){
-        Boolean answer= AlertBox.CheckDome("dome");
+        Boolean answer=null;
+        answer= AlertBox.CheckDome("Instead of a normal construction, do you want to place a dome? ");
         if(answer){
             return "dome " + input;
         }else{
             return "standard " + input;
         }
 
+    }
+
+    @Override
+    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
+        return checkPos(input,playSpace,stringBuilder);
     }
 
 }

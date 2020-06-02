@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller.MiniController;
 
+import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.Position;
@@ -66,6 +67,48 @@ public class MoreCheckMiniController implements MiniController, Serializable {
             return "skipPhase " + input;
 
         return "standard " + input;
+    }
+
+    @Override
+    public String getMessageGui(String message) {
+        return getMessage(message);
+    }
+
+    @Override
+    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
+        try{
+            toCheck = playSpace.getTileToCheck();
+            if(input.length() != 3)
+                return false;
+
+            String[] rowAndCol = input.split(",");
+            int row = Integer.parseInt(rowAndCol[0]);
+            int col = Integer.parseInt(rowAndCol[1]);
+
+            if(0<=row && row<=4 && 0<=col && col<=4){
+                if(playSpace.printTileToShow(row, col)){
+                    if(moreCheck(new Position(row, col), toCheck)){
+                        Boolean answer= AlertBox.CheckDome("If you choose this constructor you won't be able to use your special power, do you want to continue? ");
+                        if (answer){
+                            return true;
+                        }else {
+                            stringBuilder.delete(0,200);
+                            stringBuilder.append("Please, choose another constructor to continue");
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
+
+                } else {
+                    return false;
+                }
+            } else
+                return false;
+
+        } catch(Exception e){
+            return false;
+        }
     }
 
     boolean moreCheck(Position pos, List<Position> checkList){

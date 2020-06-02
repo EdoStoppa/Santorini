@@ -67,7 +67,6 @@ public class PlaySpace {
     public boolean printTileToShow(int i, int j){
         if(this.tileToShow != null){
             for (int k=0;k<this.tileToShow.size();k++){
-                System.out.println("scrivo al server4");
                 if (this.tileToShow.get(k).getRow()==i && this.tileToShow.get(k).getCol()==j){
                     return true;
                 }
