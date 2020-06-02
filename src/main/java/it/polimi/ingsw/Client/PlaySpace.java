@@ -163,8 +163,10 @@ public class PlaySpace {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
                                 piece = BoardScene.makePiece(PieceType.RED, j, i, false);
-                            } else {
+                            } else if(playSpaceUpdated[i][j]==2){
                                 piece = BoardScene.makePiece(PieceType.WHITE, j, i, false);
+                            }else{
+                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i, false);
                             }
                             BoardScene.getTile(j,i).setPiece(piece);
                             BoardScene.pieceGroup.getChildren().add(piece);
@@ -173,8 +175,10 @@ public class PlaySpace {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
                                 piece = BoardScene.makePiece(PieceType.RED, j, i, true);
-                            } else {
+                            } else if(playSpaceUpdated[i][j]==2){
                                 piece = BoardScene.makePiece(PieceType.WHITE, j, i, true);
+                            }else {
+                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i, true);
                             }
                             BoardScene.getTile(j,i).setPiece(piece);
                             BoardScene.pieceGroup.getChildren().add(piece);

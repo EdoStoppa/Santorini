@@ -11,7 +11,6 @@ public class Piece extends StackPane {
 
     private final PieceType type;
 
-    private double mouseX,mouseY;
     private double oldX,oldY;
     private double translationX=0,translationY=0;
     private final boolean isYourPiece;
@@ -66,7 +65,7 @@ public class Piece extends StackPane {
         bg.setTranslateY((TILE_SIZE- TILE_SIZE*0.26*2)/2+TILE_SIZE*0.07);
 
         Ellipse ellipse= new Ellipse(TILE_SIZE*0.3125,TILE_SIZE*0.26);
-        ellipse.setFill(type==PieceType.RED? Color.valueOf("#c40003"):Color.valueOf("fff9f4"));
+        ellipse.setFill(type==PieceType.RED? Color.valueOf("#c40003"): type==PieceType.WHITE?Color.valueOf("fff9f4"):Color.valueOf("#45ffff"));
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(TILE_SIZE*0.03);
         ellipse.setTranslateX((TILE_SIZE- TILE_SIZE*0.3125*2)/2);
@@ -92,8 +91,6 @@ public class Piece extends StackPane {
         oldX=x*TILE_SIZE;
         oldY=y*TILE_SIZE;
         relocate(oldX+translationX,oldY+translationY);
-        //translationY=0;
-        //translationX=0;
         System.out.println("piece messo "+(oldX)+" "+(oldY));
 
     }

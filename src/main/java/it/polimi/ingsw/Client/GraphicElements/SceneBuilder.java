@@ -56,17 +56,29 @@ public class SceneBuilder {
 
     public Parent ChooseName(){
         VBox layout=new VBox(40);
-        Label textName= new Label("enter your name");
+        Text textName= new Text("enter your name");
         TextField name= new TextField();
         Button go= new Button("go");
         go.setOnAction(e->{
             ClientGuiApp.getClient().asyncWriteToSocketGUI(name.getText());
-            Scene sceneWait= new Scene(waitScene(),800,710);
-            ClientGuiApp.getPrimaryStage().setScene(sceneWait);
         });
         name.setMaxWidth(150);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
+        return layout;
+    }
+
+    public static Parent nameAlreadyTaken(){
+        VBox layout=new VBox(40);
+        Text textName= new Text("This name is already taken. Please enter a new one");
+        TextField newName= new TextField();
+        Button go= new Button("go");
+        go.setOnAction(e->{
+            ClientGuiApp.getClient().asyncWriteToSocketGUI(newName.getText());
+        });
+        newName.setMaxWidth(150);
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(textName,newName,go);
         return layout;
     }
 
@@ -251,6 +263,7 @@ public class SceneBuilder {
             HBox thirdLine=new HBox(10);
             Text thirdName=new Text(message.getPlayerlist().get(2));
             thirdLine.getChildren().addAll(third,thirdName);
+            layout.getChildren().add(thirdLine);
         }
         HBox fourLine= new HBox();
         Button sendMessage= new Button("enter");
@@ -280,7 +293,7 @@ public class SceneBuilder {
         IWGod.setFitWidth(133.33);
     }
 
-    private static Parent waitScene(){
+    public static Parent waitScene(){
         Label label= new Label("wait");
         VBox layout=new VBox(10);
 
