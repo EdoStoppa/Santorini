@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
@@ -255,10 +256,10 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     public String enterNewName( Map <String, SocketClientConnection> NameOpponent) {
         String name = null;
         try {Scanner in= new Scanner(socket.getInputStream());
-            this.asyncSend("This name is already taken. Please enter a new one");
+            this.asyncSend(HelpMessage.taken);
             name= in.nextLine();
             while (NameOpponent.containsKey(name)){
-                this.asyncSend("This name is already taken. Please enter a new one");
+                this.asyncSend(HelpMessage.taken);
                 name= in.nextLine();
             }
         }catch (IOException | NoSuchElementException e){

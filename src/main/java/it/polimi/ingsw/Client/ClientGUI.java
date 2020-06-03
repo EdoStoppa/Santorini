@@ -33,12 +33,9 @@ public class ClientGUI extends Client implements EventHandler{
     LocalTime lastPingTime;
     private final Object ipLock = new Object();
 
-
     public ClientGUI(String ip, int port){
         super(ip, port);
     }
-
-
 
     @Override
     public Thread asyncReadFromSocket(ObjectInputStream socketIn) {
@@ -108,13 +105,15 @@ public class ClientGUI extends Client implements EventHandler{
         lastPingTime = LocalTime.now();
     }
 
-
     private void manageStringGUI(String input){
 
         if(input.startsWith(HelpMessage.noAnswer)){
             System.out.println(input.substring(HelpMessage.noAnswer.length()));
             System.out.println();
         } else {
+            //This statement is useless, but somehow prevent a hideous bug
+            //(we seriously don't know how or why, but this fixes the problem)
+            System.out.print("");
             if(idPlayer == null) {
                 if (!getName(input)) {
                     this.miniController = new BaseMiniController();
@@ -140,9 +139,6 @@ public class ClientGUI extends Client implements EventHandler{
         update(inputObject);
     }
 
-
-
-
     private boolean getName(String s){
         String[] splitted = s.split(" ");
 
@@ -150,7 +146,7 @@ public class ClientGUI extends Client implements EventHandler{
             this.idPlayer = s.substring(splitted[0].length()+1);
             checkName(true);
             return true;
-        }else if(s.equals("This name is already taken. Please enter a new one")) {
+        }else if(s.equals(HelpMessage.taken)) {
             checkName(false);
         }
 
@@ -185,12 +181,6 @@ public class ClientGUI extends Client implements EventHandler{
         return t;
     }
 
-
-
-
-
-
-
     public void asyncWriteToSocketGUI(String message) {
         StringBuilder sBuilder = new StringBuilder();
         if (this.miniController != null) {
@@ -215,16 +205,14 @@ public class ClientGUI extends Client implements EventHandler{
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
         try {
-            Thread t0 =asyncReadFromSocket(socketIn);
-            Thread t1=asyncCheckConnection();
+            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t1 = asyncCheckConnection();
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         }
-
     }
 
-
- public void checkName(boolean check){
+    public void checkName(boolean check){
         Platform.runLater(()->{
             if(check) {
                 Scene wait = new Scene(SceneBuilder.waitScene(), 800, 710);

@@ -9,6 +9,7 @@ public class HelpMessage {
 
     public final static String wait = "Please, wait for your turn";
     public final static String init = "Starting game initialization!";
+    public final static String taken = "This name is already taken. Please enter a new one";
 
     public final static String noAnswer = ".";
 
