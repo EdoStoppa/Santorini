@@ -174,7 +174,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
     private void runPingThread(){
         new Thread(() ->{
-            while(playing && active){
+            while(playing || active){
                 if(!ping()){
                     if(playing){
                         System.out.println("Closing game due to disconnected Client");
