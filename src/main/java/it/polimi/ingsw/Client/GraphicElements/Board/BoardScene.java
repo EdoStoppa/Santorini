@@ -27,8 +27,6 @@ public class BoardScene {
     private static PossiblePhases phase;
     private static  boolean init=true;
     private static boolean special=false;
-    private static Piece pieceToMove;
-    private static Piece specialPieceToMove;
     private static boolean checkDome=false;
 
 
@@ -56,11 +54,11 @@ public class BoardScene {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
         root.getChildren().addAll(tileGroup,pieceGroup);
-        HBox controller =new HBox(200);
+        HBox controller =new HBox(70);
         controller.setAlignment(Pos.BOTTOM_CENTER);
-        controller.prefHeight(50);
+        controller.prefHeight(100);
         Pane message= new Pane();
-        messages.setPrefHeight(70);
+        messages.setPrefHeight(100);
         message.getChildren().add(messages);
         Button godList= new Button("God List");
         Button endPhase= new Button("End Phase");
@@ -72,12 +70,18 @@ public class BoardScene {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("end");
             }
         });
+        Pane left=new Pane();
+        left.setPrefSize(105,600);
+        Pane right=new Pane();
+        right.setPrefSize(105,600);
         VBox buttons=new VBox(10);
         buttons.getChildren().addAll(godList,endPhase);
         controller.getChildren().addAll(message,buttons);
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(root);
         borderPane.setBottom(controller);
+        borderPane.setLeft(left);
+        borderPane.setRight(right);
 
 
 
@@ -94,36 +98,13 @@ public class BoardScene {
         return borderPane;
     }
 
-    public static MoveResult tryMove(int newX, int newY){
-        int x0=toBoard(pieceToMove.getOldX());
-        int y0=toBoard(pieceToMove.getOldY());
-        if (Math.abs(x0-newX)>1 || Math.abs(y0-newY)>1){
-            return new MoveResult(MoveType.NONE);
-        }
-        if (board[newX][newY].hasPiece() && board[newX][newY].getPiece().getType()==PieceType.RED){
-            return  new MoveResult(MoveType.SWAP);
-        }
-        if (board[newX][newY].hasPiece() && board[newX][newY].getPiece().getType()==PieceType.WHITE){
-            return  new MoveResult(MoveType.PUSH);
-        }
-        if (board[newX][newY].hasPiece()){
-            return new MoveResult(MoveType.NONE);
-        }
-        if (Math.abs(x0-newX)<=1 || Math.abs(y0-newY)<=1){
-            ClientGuiApp.getClient().asyncWriteToSocketGUI(newY+","+newX);
-            return new MoveResult(MoveType.NORMAL);
-        }
-        return new MoveResult(MoveType.NONE);
-
-    }
 
     static int toBoard(double pixel){
         return (int)(pixel+TILE_SIZE/2)/TILE_SIZE;
     }
 
-    public static Piece makePiece(PieceType type, int x, int y,boolean isYourPiece){
-        Piece piece= new Piece(type,x,y, isYourPiece);
-                return piece;
+    public static Piece makePiece(PieceType type, int x, int y){
+        return new Piece(type,x,y);
     }
 
     public static synchronized void animation(Piece piece, int x, int y){
@@ -157,7 +138,7 @@ public class BoardScene {
             }
             case 3 -> {
                 tile.getText().setText("D");
-                tile.setLevel(4);;
+                tile.setLevel(4);
             }
         }
     }
@@ -179,21 +160,6 @@ public class BoardScene {
         BoardScene.init = init;
     }
 
-    public static Piece getPieceToMove() {
-        return pieceToMove;
-    }
-
-    public static void setPieceToMove(Piece pieceToMove) {
-        BoardScene.pieceToMove = pieceToMove;
-    }
-
-    public static Piece getSpecialPieceToMove() {
-        return specialPieceToMove;
-    }
-
-    public static void setSpecialPieceToMove(Piece specialPieceToMove) {
-        BoardScene.specialPieceToMove = specialPieceToMove;
-    }
 
     public static void setSpecial(boolean special) {
         BoardScene.special = special;

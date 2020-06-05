@@ -9,11 +9,9 @@ import javafx.scene.shape.Ellipse;
 public class Piece extends StackPane {
     private static final int TILE_SIZE=120;
 
-    private final PieceType type;
 
     private double oldX,oldY;
     private double translationX=0,translationY=0;
-    private final boolean isYourPiece;
 
     public void setTranslationX(double translationX) {
         this.translationX = this.translationX+translationX;
@@ -47,13 +45,8 @@ public class Piece extends StackPane {
         return oldY;
     }
 
-    public PieceType getType(){
-        return type;
-    }
 
-    public Piece(PieceType type, int x, int y, boolean isYourPiece){
-        this.type=type;
-        this.isYourPiece = isYourPiece;
+    public Piece(PieceType type, int x, int y){
         move(x,y);
 
         Ellipse bg= new Ellipse(TILE_SIZE*0.3125,TILE_SIZE*0.26);
@@ -74,13 +67,11 @@ public class Piece extends StackPane {
 
         setOnMouseClicked(e->{
             if (BoardScene.isYourTurn()){
-            if(BoardScene.getPhase()== PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR){
-                BoardScene.setPieceToMove(this);
+            if(BoardScene.getPhase()== PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR ){
                 System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
             }
             if(BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE){
-                BoardScene.setSpecialPieceToMove(this);
                 System.out.println("sono qui");
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
             }
@@ -95,12 +86,4 @@ public class Piece extends StackPane {
 
     }
 
-    public void abortMove(){
-        relocate(oldX+translationX,oldY+translationY);
-    }
-
-
-    public boolean isYourPiece() {
-        return isYourPiece;
-    }
 }

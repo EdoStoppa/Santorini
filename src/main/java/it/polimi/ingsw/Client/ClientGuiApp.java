@@ -50,12 +50,12 @@ public class ClientGuiApp extends Application implements Serializable {
         Button treePlayer=new Button("3 player");
         twoPlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(sceneBuilder.ChooseName(),800,710);
+            Scene scene=new Scene(sceneBuilder.ChooseName("enter your name"),800,710);
             ClientGuiApp.primaryStage.setScene(scene);
         });
         treePlayer.setOnAction(e->{
             client.asyncWriteToSocketGUI("3");
-            Scene scene=new Scene(sceneBuilder.ChooseName(),800,710);
+            Scene scene=new Scene(sceneBuilder.ChooseName("enter your name"),800,710);
             primaryStage.setScene(scene);
         });
         Buttons.getChildren().addAll(twoPlayer,treePlayer);

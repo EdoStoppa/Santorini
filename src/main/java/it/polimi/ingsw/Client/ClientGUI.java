@@ -6,12 +6,15 @@ import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
 import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
+import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
 import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.GodRecapMessage;
+import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Message.WinMessage;
 import it.polimi.ingsw.Model.God;
+import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 
@@ -86,19 +89,23 @@ public class ClientGUI extends Client implements EventHandler{
                 updatePlaySpaceGUI(inputObject);
             }
             BoardScene.setInit(false);
+            if (inputObject.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || inputObject.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR){
+                BoardScene.newText(" ");}
             BoardScene.newText(inputObject.getMessage());
             System.out.println(inputObject.getMessage());
             playSpace.printPlaySpace();
-        }else if(inputObject instanceof WinMessage){
+        }else if(inputObject instanceof RemovedPlayerMessage) {
+            updatePlaySpaceGUI(inputObject);
+            if (isMyTurn)
+            winScene(false);
             playSpace.printPlaySpace();
-            BoardScene.newText(inputObject.getMessage());
-            System.out.println(inputObject.getMessage());
-            System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restart the application.");
+        } else if(inputObject instanceof WinMessage){
+            updatePlaySpaceGUI(inputObject);
+            winScene(isMyTurn);
             setActive(false);
-        }else{
-            inputObject.updateGUI(playSpace);
-            playSpace.printPlaySpace();
         }
+        inputObject.updateGUI(playSpace);
+        playSpace.printPlaySpace();
     }
 
     private synchronized void managePing(){
@@ -134,8 +141,10 @@ public class ClientGUI extends Client implements EventHandler{
             this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
             return;
         }
+        if (inputObject instanceof PlaceFirstConstructorMessage){
+            BoardScene.newText(inputObject.getMessage());
+        }
         this.miniController=inputObject.getMiniController();
-        System.out.println(idPlayer);
         update(inputObject);
     }
 
@@ -215,15 +224,27 @@ public class ClientGUI extends Client implements EventHandler{
     public void checkName(boolean check){
         Platform.runLater(()->{
             if(check) {
-                Scene wait = new Scene(SceneBuilder.waitScene(), 800, 710);
+                Scene wait = new Scene(SceneBuilder.handeScene("wait"), 800, 710);
                 ClientGuiApp.getPrimaryStage().setScene(wait);
             }else{
-                Scene newName= new Scene(SceneBuilder.nameAlreadyTaken(),800,710);
+                Scene newName= new Scene(SceneBuilder.ChooseName("this name is already taken"),800,710);
                 ClientGuiApp.getPrimaryStage().setScene(newName);
             }
         });
+    }
 
-}
+    public  static void winScene(boolean win){
+        Platform.runLater(()->{
+            if (win){
+                Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),800,710);
+                ClientGuiApp.getPrimaryStage().setScene(SceneWin);
+            }else{
+                Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),800,710);
+                ClientGuiApp.getPrimaryStage().setScene(SceneLose);
+            }
+        });
+
+    }
 
     @Override
     public void update(ServerMessage message) {

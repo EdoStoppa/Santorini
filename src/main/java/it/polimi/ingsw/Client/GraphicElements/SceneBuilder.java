@@ -48,39 +48,24 @@ public class SceneBuilder {
             imageHashMap.put("Pan", Pan);
             imageHashMap.put("Prometheus", Prometheus);
         }catch (Exception e){
-            System.err.println(e);
+            System.err.println(e.getMessage());
         }
 
     }
 
 
-    public Parent ChooseName(){
+    public static Parent ChooseName(String message){
         VBox layout=new VBox(40);
-        Text textName= new Text("enter your name");
+        Text textName= new Text(message);
         TextField name= new TextField();
         Button go= new Button("go");
-        go.setOnAction(e->{
-            ClientGuiApp.getClient().asyncWriteToSocketGUI(name.getText());
-        });
+        go.setOnAction(e-> ClientGuiApp.getClient().asyncWriteToSocketGUI(name.getText()));
         name.setMaxWidth(150);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
         return layout;
     }
 
-    public static Parent nameAlreadyTaken(){
-        VBox layout=new VBox(40);
-        Text textName= new Text("This name is already taken. Please enter a new one");
-        TextField newName= new TextField();
-        Button go= new Button("go");
-        go.setOnAction(e->{
-            ClientGuiApp.getClient().asyncWriteToSocketGUI(newName.getText());
-        });
-        newName.setMaxWidth(150);
-        layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(textName,newName,go);
-        return layout;
-    }
 
     public static void PickGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
@@ -186,7 +171,7 @@ public class SceneBuilder {
         }
         System.out.println(message);
         ClientGuiApp.getClient().asyncWriteToSocketGUI(message.toString());
-        Scene scene=new Scene(waitScene(),810,700);
+        Scene scene=new Scene(handeScene("wait"),810,700);
         ClientGuiApp.getPrimaryStage().setScene(scene);
     }else{
         AlertBox.displayError("select a correct number of God");
@@ -293,8 +278,8 @@ public class SceneBuilder {
         IWGod.setFitWidth(133.33);
     }
 
-    public static Parent waitScene(){
-        Label label= new Label("wait");
+    public static Parent handeScene(String message){
+        Label label= new Label(message);
         VBox layout=new VBox(10);
 
         layout.setAlignment(Pos.CENTER);

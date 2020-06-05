@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message;
 
+import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Model.PossiblePhases;
 
@@ -30,6 +31,13 @@ public class WinMessage extends GameMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
+
+    }
+
+
+    public void updateGUI(PlaySpace playSpace,boolean isMyTurn) {
+            ClientGUI.winScene(isMyTurn);
+
 
     }
 }
