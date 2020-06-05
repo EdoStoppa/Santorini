@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
-import it.polimi.ingsw.Client.GraphicElements.AlertBox;
-import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -14,11 +12,10 @@ import javafx.scene.text.Text;
 
     public class TileGui extends StackPane {
 
-        private Text text=new Text();
+        private final Text text=new Text();
         private Piece piece;
         private int level;
-        private final int x, y;
-        private boolean highlighted=false;
+
 
         public  int getLevel() {
             return level;
@@ -32,9 +29,6 @@ import javafx.scene.text.Text;
             return text;
         }
 
-        public  boolean hasPiece(){
-            return piece!=null;
-        }
 
         public void setPiece(Piece piece) {
             this.piece = piece;
@@ -48,8 +42,7 @@ import javafx.scene.text.Text;
         public TileGui(boolean light, int x, int y){
             Rectangle border= new Rectangle(BoardScene.TILE_SIZE, BoardScene.TILE_SIZE);
             level=0;
-            this.x=x;
-            this.y=y;
+
 
             relocate(x*BoardScene.TILE_SIZE,y*BoardScene.TILE_SIZE);
             text.setFont(Font.font(72));

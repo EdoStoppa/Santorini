@@ -162,11 +162,11 @@ public class PlaySpace {
                         if (!BoardScene.isYourTurn()) {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
-                                piece = BoardScene.makePiece(PieceType.RED, j, i, false);
+                                piece = BoardScene.makePiece(PieceType.RED, j, i);
                             } else if(playSpaceUpdated[i][j]==2){
-                                piece = BoardScene.makePiece(PieceType.WHITE, j, i, false);
+                                piece = BoardScene.makePiece(PieceType.WHITE, j, i);
                             }else{
-                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i, false);
+                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i);
                             }
                             BoardScene.getTile(j,i).setPiece(piece);
                             BoardScene.pieceGroup.getChildren().add(piece);
@@ -174,11 +174,11 @@ public class PlaySpace {
                         } else {
                             Piece piece;
                             if (playSpaceUpdated[i][j] == 1) {
-                                piece = BoardScene.makePiece(PieceType.RED, j, i, true);
+                                piece = BoardScene.makePiece(PieceType.RED, j, i);
                             } else if(playSpaceUpdated[i][j]==2){
-                                piece = BoardScene.makePiece(PieceType.WHITE, j, i, true);
+                                piece = BoardScene.makePiece(PieceType.WHITE, j, i);
                             }else {
-                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i, true);
+                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i);
                             }
                             BoardScene.getTile(j,i).setPiece(piece);
                             BoardScene.pieceGroup.getChildren().add(piece);
@@ -189,12 +189,10 @@ public class PlaySpace {
                 }
             }
         }else{
-            System.out.println("bello");
             printPlaySpace();
         for(int i=0;i<=4;i++){
             for(int j=0;j<=4;j++){
                  if (constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
-                     System.out.println(i+"bello"+j);
                   for (int h=-1;h<=1;h++){
                       for (int k=-1;k<=1;k++){
                           if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4) {
@@ -280,11 +278,9 @@ public class PlaySpace {
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
                 if(constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
-                    System.out.println(i+"spiedo"+j);
                     for (int h=-1;h<=1;h++){
                         for (int k=-1;k<=1;k++){
                             if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0))){
-                                System.out.println((i+h)+"pollo"+(j+k));
                                 if(playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && playSpaceUpdated[i+h][j+k]!=constructorMatrix[i+h][j+k]){
                                    Piece minotaur=BoardScene.getTile(j,i).getPiece();
                                    Piece pushed=BoardScene.getTile(j+k,i+h).getPiece();
@@ -329,6 +325,7 @@ public class PlaySpace {
                 }
             }
         }
+        setConstructorMatrix(playSpaceUpdated);
     }
 
     public void tileToShowGUI (List<Position> tiles){
