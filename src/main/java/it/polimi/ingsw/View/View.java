@@ -69,6 +69,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
 
             SendToClient(message);
         } else {
+            System.out.println("Game ended, proceeding to close server-side of the match");
             clientConnection.close(numPlayer);
         }
     }
