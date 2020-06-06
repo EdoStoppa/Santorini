@@ -17,7 +17,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
         public void update(String input) {
             System.out.println("Received: " + input);
             try {
-                ParseClientInput(input);
+                parseClientInput(input);
             } catch (IllegalArgumentException e) {
                 clientConnection.asyncSend("Error!");
             }
@@ -41,12 +41,12 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
         return idPlayer;
     }
 
-    public void SendToClient(Object message) {
-        clientConnection.asyncSend(message);
+    public void sendToClient(Object message) {
+        clientConnection.send(message);
     }
 
-    public void ParseClientInput(String ClientMessage) {
-        String[] cod = ClientMessage.split(" ");
+    public void parseClientInput(String clientMessage) {
+        String[] cod = clientMessage.split(" ");
         String[] pos = cod[1].split(",");
         if(cod[0].equals("end"))   {
             PosMessage clientInput = new PosMessage(cod[0],this.idPlayer, this, null);
@@ -61,13 +61,13 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
 
     @Override
     public void update(GameMessage message) {
-        System.out.println(message.getIdPlayer() + ", " + message.getPhase() + ": " + message.getClass() + (message instanceof TileToShowMessage? ((TileToShowMessage)message).getTileToShow().size() : ""));
-
         if(message.getIdPlayer() != null)   {
             if (message instanceof RemovedPlayerMessage && message.getIdPlayer().equals(idPlayer))
                 clientConnection.setPlaying(false);
 
-            SendToClient(message);
+            System.out.println( idPlayer + " sends -> Current Player: " + message.getIdPlayer() + ", Phase: " + message.getPhase() +
+                                ", Message: " + message.getClass().getSimpleName() + (message instanceof TileToShowMessage? ", # of tileToShow: " + ((TileToShowMessage)message).getTileToShow().size() : ""));
+            sendToClient(message);
         } else {
             System.out.println("Game ended, proceeding to close server-side of the match");
             clientConnection.close(numPlayer);
