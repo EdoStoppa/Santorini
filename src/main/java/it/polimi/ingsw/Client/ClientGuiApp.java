@@ -30,7 +30,7 @@ public class ClientGuiApp extends Application implements Serializable {
 
     @Override
     public void init() throws Exception {
-        client=new ClientGUI("127.0.0.1", 12345);
+        client=new ClientGUI("127.0.0.1", 54321);
         client.run();
     }
 
