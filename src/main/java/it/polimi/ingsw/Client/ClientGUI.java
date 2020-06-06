@@ -216,6 +216,8 @@ public class ClientGUI extends Client implements EventHandler{
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncCheckConnection();
+            Scene scene= new Scene(SceneBuilder.ChooseGameMode(),810,700);
+            ClientGuiApp.getPrimaryStage().setScene(scene);
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         }

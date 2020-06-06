@@ -53,6 +53,30 @@ public class SceneBuilder {
 
     }
 
+    public static Parent ChooseGameMode(){
+        VBox layout1= new VBox(50);
+        Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
+        HBox Buttons= new HBox(150);
+        Button twoPlayer= new Button("2 player");
+        Button treePlayer=new Button("3 player");
+        twoPlayer.setOnAction(e->{
+            ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
+            Scene scene=new Scene(ChooseName("enter your name"),800,710);
+            ClientGuiApp.getPrimaryStage().setScene(scene);
+        });
+        treePlayer.setOnAction(e->{
+            ClientGuiApp.getClient().asyncWriteToSocketGUI("3");
+            Scene scene=new Scene(ChooseName("enter your name"),800,710);
+            ClientGuiApp.getPrimaryStage().setScene(scene);
+        });
+        Buttons.getChildren().addAll(twoPlayer,treePlayer);
+        Buttons.setAlignment(Pos.CENTER);
+        layout1.setAlignment(Pos.CENTER);
+        layout1.getChildren().addAll(welcome,Buttons);
+        return layout1;
+
+    }
+
 
     public static Parent ChooseName(String message){
         VBox layout=new VBox(40);
