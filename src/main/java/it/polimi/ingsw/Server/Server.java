@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private static final int PORT=12345;
+    private static int PORT = 54321;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
     private Map<String, SocketClientConnection> waitingConnection2P = new HashMap<>();
@@ -137,13 +137,18 @@ public class Server {
     }
 
     public Server() throws IOException{
-        this.serverSocket=new ServerSocket(PORT);
+        this.serverSocket = new ServerSocket(PORT);
+    }
+
+    public Server(int port) throws IOException{
+        Server.PORT = port;
+        this.serverSocket = new ServerSocket(PORT);
     }
 
     public void run(){
         while (true){
             try {
-                Socket newSocket =serverSocket.accept();
+                Socket newSocket = serverSocket.accept();
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket,this);
                 executor.submit(socketConnection);
             }catch (IOException e){

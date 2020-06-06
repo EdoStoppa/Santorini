@@ -217,11 +217,37 @@ public class ClientCLI extends Client{
     @Override
     public void run() throws IOException {
         System.out.println("\n\n" + HelpMessage.santorini);
-        Socket socket= new Socket(ip,port);
-        System.out.println("connection established\n");
+        Scanner stdin = new Scanner(System.in);
+        Socket socket;
+        String in;
+
+        while(true){
+            try {
+                System.out.println("\nPlease enter the server ip and connection port separated by a space! (If you want to play locally, just hit enter)");
+                in = stdin.nextLine();
+                if (in.equals("")) {
+                    socket = new Socket(ip, port);
+                    break;
+                }
+                System.out.println("\nPlease wait...\n");
+
+                String[] s = in.split(" ");
+                if(s.length == 2){
+                    socket = new Socket(s[0], Integer.parseInt(s[1]));
+                    this.ip = s[0];
+                    this.port =  Integer.parseInt(s[1]);
+                    break;
+                } else {
+                    throw new Exception();
+                }
+            } catch(Exception e){
+                System.out.println("The connection couldn't be established, please try again!\n");
+            }
+        }
+
+        System.out.println("Connection established!\n");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
-        Scanner stdin= new Scanner(System.in);
 
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
