@@ -25,7 +25,7 @@ public class SceneBuilder {
 
 
 
-    private  static final HashMap<String,Image> imageHashMap= new HashMap<>();
+    public  static final HashMap<String,Image> imageHashMap= new HashMap<>();
 
     public SceneBuilder(){
         try {
@@ -297,7 +297,7 @@ public class SceneBuilder {
 
 
 
-    private static void setGodImage(ImageView IWGod){
+    public static void setGodImage(ImageView IWGod){
         IWGod.setFitHeight(190);
         IWGod.setFitWidth(133.33);
     }

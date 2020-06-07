@@ -32,7 +32,7 @@ public class ClientGUI extends Client implements EventHandler{
     private String idPlayer = null;
     private MiniController miniController;
     private PrintWriter socketOut;
-    public Map<String, God> playerGodMap;
+    private static Map<String, God> playerGodMap;
     LocalTime lastPingTime;
     private final Object ipLock = new Object();
 
@@ -258,4 +258,7 @@ public class ClientGUI extends Client implements EventHandler{
         Platform.runLater(()->message.updateGUI(playSpace));
     }
 
+    public static Map<String, God> getPlayerGodMap() {
+        return playerGodMap;
+    }
 }

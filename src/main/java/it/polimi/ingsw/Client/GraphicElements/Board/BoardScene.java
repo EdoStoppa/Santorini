@@ -62,7 +62,7 @@ public class BoardScene {
         message.getChildren().add(messages);
         Button godList= new Button("God List");
         Button endPhase= new Button("End Phase");
-        godList.setOnAction(e-> AlertBox.displayError("divinita"));
+        godList.setOnAction(e-> AlertBox.displayGod());
         endPhase.setOnAction(e->{
             System.out.println(special+","+yourTurn);
             if(special && yourTurn){

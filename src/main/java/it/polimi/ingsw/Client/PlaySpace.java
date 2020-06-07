@@ -244,8 +244,12 @@ public class PlaySpace {
                     System.out.println("swapped"+i+","+j);
                     for (int h=-1;h<=1;h++){
                         for (int k=-1;k<=1;k++){
-                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && (h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0)){
+                            if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0))){
+                                System.out.println("sono dentro l'if");
+                                System.out.println(h+","+k);
+                                System.out.println((i+h)+","+(j+k));
                                 if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==playSpaceUpdated[i][j]){
+                                    System.out.println("sono dentro l'if");
                                     Piece moved= BoardScene.getTile(j,i).getPiece();
                                     Piece swapped=BoardScene.getTile(j+k,i+h).getPiece();
                                     BoardScene.animation(moved,k,h);
@@ -263,6 +267,8 @@ public class PlaySpace {
                                         System.out.println(swapped.getOldX()+","+swapped.getOldY());
                                     }
                                     setConstructorMatrix(playSpaceUpdated);
+                                    break;
+
 
             }
         }

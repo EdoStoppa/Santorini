@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.Socket;
 
 
 public class ClientGuiApp extends Application implements Serializable {
@@ -64,7 +63,6 @@ public class ClientGuiApp extends Application implements Serializable {
         Button go= new Button("enter");
         go.setOnAction(e->{
             if(serverIp.getText().equals("") && portField.getText().equals("")){
-                System.out.println("siamo qui");
                 client=new ClientGUI("127.0.0.1", 54321);
                 try {
                     client.run();
