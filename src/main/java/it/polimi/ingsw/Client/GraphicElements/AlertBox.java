@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
 import it.polimi.ingsw.Client.ClientGUI;
+import it.polimi.ingsw.Model.God;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +16,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlertBox {
 
@@ -66,41 +69,23 @@ public class AlertBox {
     public static void displayGod() {
         Stage window= new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setMinWidth(250);
+        window.setMinWidth(500);
         BorderPane borderPane=new BorderPane();
-        ArrayList<String> keys = new ArrayList<>(ClientGUI.getPlayerGodMap().keySet());
+        Map<String, God> playerGodMap=ClientGUI.getPlayerGodMap();
+        ArrayList<String> keys = new ArrayList<>(playerGodMap.keySet());
         VBox layout=new VBox(20);
-        layout.setAlignment(Pos.CENTER);
-        HBox firstLine= new HBox(20);
-        Label nameOne= new Label(keys.get(0)+" --->");
-        nameOne.setFont(Font.font(32));
-        ImageView IWFirst = new ImageView(SceneBuilder.imageHashMap.get(ClientGUI.getPlayerGodMap().get(keys.get(0)).getGodName()));
-        SceneBuilder.setGodImage(IWFirst);
-        Text firstDescription=new Text(ClientGUI.getPlayerGodMap().get(keys.get(0)).getGodPower());
-        firstDescription.setWrappingWidth(450);
-        firstDescription.setFont(Font.font(18));
-        firstLine.getChildren().addAll(nameOne,IWFirst,firstDescription);
-        HBox secondLine= new HBox(20);
-        Label nameTwo= new Label(keys.get(1)+" --->");
-        nameTwo.setFont(Font.font(32));
-        ImageView IWSecond= new ImageView(SceneBuilder.imageHashMap.get(ClientGUI.getPlayerGodMap().get(keys.get(1)).getGodName()));
-        SceneBuilder.setGodImage(IWSecond);
-        Text secondDescription=new Text(ClientGUI.getPlayerGodMap().get(keys.get(1)).getGodPower());
-        secondDescription.setWrappingWidth(450);
-        secondDescription.setFont(Font.font(18));
-        secondLine.getChildren().addAll(nameTwo,IWSecond,secondDescription);
-        layout.getChildren().addAll(firstLine,secondLine);
+        Text playerOne= new Text(keys.get(0)+" --->"+playerGodMap.get(keys.get(0)).getGodName()+" : "+playerGodMap.get(keys.get(0)).getGodPower());
+        playerOne.setWrappingWidth(450);
+        playerOne.setFont(Font.font(16));
+        Text playerTwo= new Text(keys.get(1)+" --->"+playerGodMap.get(keys.get(1)).getGodName()+" : "+playerGodMap.get(keys.get(1)).getGodPower());
+        playerTwo.setWrappingWidth(450);
+        playerTwo.setFont(Font.font(16));
+        layout.getChildren().addAll(playerOne,playerTwo);
         if(keys.size()==3){
-            HBox thirdLine= new HBox(20);
-            Label nameThree= new Label(keys.get(2)+" --->");
-            nameThree.setFont(Font.font(32));
-            ImageView IWThird= new ImageView(SceneBuilder.imageHashMap.get(ClientGUI.getPlayerGodMap().get(keys.get(2)).getGodName()));
-            SceneBuilder.setGodImage(IWThird);
-            Text thirdDescription=new Text(ClientGUI.getPlayerGodMap().get(keys.get(2)).getGodPower());
-            thirdDescription.setWrappingWidth(450);
-            thirdDescription.setFont(Font.font(18));
-            thirdLine.getChildren().addAll(nameThree,IWThird,thirdDescription);
-            layout.getChildren().add(thirdLine);
+            Text playerThree= new Text(keys.get(2)+" --->"+playerGodMap.get(keys.get(2)).getGodName()+" : "+playerGodMap.get(keys.get(2)).getGodPower());
+            playerThree.setWrappingWidth(450);
+            playerThree.setFont(Font.font(16));
+            layout.getChildren().add(playerThree);
         }
         HBox fourLine= new HBox();
         Button exit= new Button("exit");
@@ -109,7 +94,7 @@ public class AlertBox {
         fourLine.setAlignment(Pos.CENTER);
         layout.getChildren().add(fourLine);
         borderPane.setCenter(layout);
-        Scene scene4= new Scene(borderPane,850,710);
+        Scene scene4= new Scene(borderPane);
         window.setScene(scene4);
         window.showAndWait();
     }

@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
@@ -96,59 +97,61 @@ public class SceneBuilder {
         HBox firstLine= new HBox();
         HBox secondLine=new HBox();
         HBox thirdLine=new HBox();
-        HBox fourLine= new HBox();
-        CheckBox apollo=new CheckBox();
-        CheckBox artemis=new CheckBox();
-        CheckBox athena= new CheckBox();
-        CheckBox atlas= new CheckBox();
-        CheckBox demeter= new CheckBox();
-        CheckBox hephaestus= new CheckBox();
-        CheckBox minotaur=new CheckBox();
-        CheckBox pan= new CheckBox();
-        CheckBox prometheus= new CheckBox();
-        ImageView IWApollo= new ImageView(imageHashMap.get("Apollo"));
-        setGodImage(IWApollo);
-        ImageView IWArtemis= new ImageView(imageHashMap.get("Artemis"));
-        setGodImage(IWArtemis);
-        ImageView IWAthena= new ImageView(imageHashMap.get("Athena"));
-        setGodImage(IWAthena);
-        ImageView IWAtlas= new ImageView(imageHashMap.get("Atlas"));
-        setGodImage(IWAtlas);
-        ImageView IWDemeter = new ImageView(imageHashMap.get("Demeter"));
-        setGodImage(IWDemeter);
-        ImageView IWHephaestus = new ImageView(imageHashMap.get("Hephaestus"));
-        setGodImage(IWHephaestus);
-        ImageView IWMinotaur= new ImageView(imageHashMap.get("Minotaur"));
-        setGodImage(IWMinotaur);
-        ImageView IWPan= new ImageView(imageHashMap.get("Pan"));
-        setGodImage(IWPan);
-        ImageView IWPrometheus= new ImageView(imageHashMap.get("Prometheus"));
-        setGodImage(IWPrometheus);
-        Text ApolloDesctripion =new Text(message.GetGod(0).getGodPower());
-        ApolloDesctripion.setWrappingWidth(130);
-        Text ArtemisDesctripion =new Text(message.GetGod(1).getGodPower());
-        ArtemisDesctripion.setWrappingWidth(130);
-        Text AthenaDesctripion =new Text(message.GetGod(2).getGodPower());
-        AthenaDesctripion.setWrappingWidth(130);
-        Text AtlasDesctripion =new Text(message.GetGod(3).getGodPower());
-        AtlasDesctripion.setWrappingWidth(130);
-        Text DemeterDesctripion =new Text(message.GetGod(4).getGodPower());
-        DemeterDesctripion.setWrappingWidth(130);
-        Text HephaestusDesctripion =new Text(message.GetGod(5).getGodPower());
-        HephaestusDesctripion.setWrappingWidth(130);
-        Text MinotaurDesctripion =new Text(message.GetGod(6).getGodPower());
-        MinotaurDesctripion.setWrappingWidth(130);
-        Text PanDesctripion =new Text(message.GetGod(7).getGodPower());
-        PanDesctripion.setWrappingWidth(130);
-        Text PrometheusDesctripion =new Text(message.GetGod(8).getGodPower());
-        PrometheusDesctripion.setWrappingWidth(130);
-        firstLine.getChildren().addAll(apollo,IWApollo,ApolloDesctripion,artemis,IWArtemis,ArtemisDesctripion,athena,IWAthena,AthenaDesctripion);
-        secondLine.getChildren().addAll(atlas,IWAtlas,AtlasDesctripion,demeter,IWDemeter,DemeterDesctripion,hephaestus,IWHephaestus,HephaestusDesctripion);
-        thirdLine.getChildren().addAll(minotaur,IWMinotaur,MinotaurDesctripion,pan,IWPan,PanDesctripion,prometheus,IWPrometheus,PrometheusDesctripion);
+        HBox fourLine= new HBox(30);
+        CheckBox zero=new CheckBox();
+        CheckBox one=new CheckBox();
+        CheckBox two= new CheckBox();
+        CheckBox three= new CheckBox();
+        CheckBox four= new CheckBox();
+        CheckBox five= new CheckBox();
+        CheckBox six=new CheckBox();
+        CheckBox seven= new CheckBox();
+        CheckBox eight= new CheckBox();
+        ImageView IWOne= new ImageView(imageHashMap.get(message.GetGod(0).getGodName()));
+        setGodImage(IWOne);
+        ImageView IWTwo= new ImageView(imageHashMap.get(message.GetGod(1).getGodName()));
+        setGodImage(IWTwo);
+        ImageView IWThree= new ImageView(imageHashMap.get(message.GetGod(2).getGodName()));
+        setGodImage(IWThree);
+        ImageView IWFour= new ImageView(imageHashMap.get(message.GetGod(3).getGodName()));
+        setGodImage(IWFour);
+        ImageView IWFive = new ImageView(imageHashMap.get(message.GetGod(4).getGodName()));
+        setGodImage(IWFive);
+        ImageView IWSix = new ImageView(imageHashMap.get(message.GetGod(5).getGodName()));
+        setGodImage(IWSix);
+        ImageView IWSeven=new ImageView(imageHashMap.get(message.GetGod(6).getGodName()));
+        setGodImage(IWSeven);
+        ImageView IWEight= new ImageView(imageHashMap.get(message.GetGod(7).getGodName()));
+        setGodImage(IWEight);
+        ImageView IWNine= new ImageView(imageHashMap.get(message.GetGod(8).getGodName()));
+        setGodImage(IWNine);
+        Text desctripionZero =new Text(message.GetGod(0).getGodPower());
+        desctripionZero.setWrappingWidth(130);
+        Text desctripionOne =new Text(message.GetGod(1).getGodPower());
+        desctripionOne.setWrappingWidth(130);
+        Text desctripionTwo =new Text(message.GetGod(2).getGodPower());
+        desctripionTwo.setWrappingWidth(130);
+        Text desctripionThree =new Text(message.GetGod(3).getGodPower());
+        desctripionThree.setWrappingWidth(130);
+        Text desctripionFour =new Text(message.GetGod(4).getGodPower());
+        desctripionFour.setWrappingWidth(130);
+        Text descriptionFive =new Text(message.GetGod(5).getGodPower());
+        descriptionFive.setWrappingWidth(130);
+        Text desctripionSix =new Text(message.GetGod(6).getGodPower());
+        desctripionSix.setWrappingWidth(130);
+        Text desctripionSeven =new Text(message.GetGod(7).getGodPower());
+        desctripionSeven.setWrappingWidth(130);
+        Text desctripionEight =new Text(message.GetGod(8).getGodPower());
+        desctripionEight.setWrappingWidth(130);
+        firstLine.getChildren().addAll(zero,IWOne,desctripionZero,one,IWTwo,desctripionOne,two,IWThree,desctripionTwo);
+        secondLine.getChildren().addAll(three,IWFour,desctripionThree,four,IWFive,desctripionFour,five,IWSix,descriptionFive);
+        thirdLine.getChildren().addAll(six,IWSeven,desctripionSix,seven,IWEight,desctripionSeven,eight,IWNine,desctripionEight);
         VBox griglia=new VBox(30);
         Button chosenGods=new Button("enter");
-        chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),apollo,artemis,athena,atlas,demeter,hephaestus,minotaur,pan,prometheus));
-        fourLine.getChildren().add(chosenGods);
+        chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),zero,one,two,three,four,five,six,seven,eight));
+        Text description= new Text("chose "+message.getNumPlayer()+" gods that will be in the match");
+        description.setFont(Font.font(18));
+        fourLine.getChildren().addAll(description,chosenGods);
         fourLine.setAlignment(Pos.CENTER);
         griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
         layout.setCenter(griglia);
@@ -156,33 +159,33 @@ public class SceneBuilder {
         ClientGuiApp.getPrimaryStage().setScene(scene3);
     }
 
-    private static void handleOptions(int numPlayer, CheckBox apollo, CheckBox artemis, CheckBox athena, CheckBox atlas, CheckBox demeter, CheckBox hephaestus, CheckBox minotaur, CheckBox pan, CheckBox prometheus) {
+    private static void handleOptions(int numPlayer, CheckBox zero, CheckBox one, CheckBox two, CheckBox three, CheckBox four, CheckBox five, CheckBox six, CheckBox seven, CheckBox eight) {
         ArrayList<Integer>chosenGod = new ArrayList<>();
-    if (apollo.isSelected()){
+    if (zero.isSelected()){
       chosenGod.add(0);
     }
-    if(artemis.isSelected()){
+    if(one.isSelected()){
         chosenGod.add(1);
     }
-    if(athena.isSelected()){
+    if(two.isSelected()){
         chosenGod.add(2);
     }
-    if(atlas.isSelected()){
+    if(three.isSelected()){
         chosenGod.add(3);
     }
-    if(demeter.isSelected()){
+    if(four.isSelected()){
         chosenGod.add(4);
     }
-    if(hephaestus.isSelected()){
+    if(five.isSelected()){
         chosenGod.add(5);
     }
-    if(minotaur.isSelected()){
+    if(six.isSelected()){
         chosenGod.add(6);
     }
-    if(pan.isSelected()){
+    if(seven.isSelected()){
         chosenGod.add(7);
     }
-    if(prometheus.isSelected()){
+    if(eight.isSelected()){
         chosenGod.add(8);
     }
     if (chosenGod.size()==numPlayer){

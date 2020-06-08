@@ -13,6 +13,7 @@ import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Message.WinMessage;
+import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.application.Platform;
@@ -77,7 +78,6 @@ public class ClientGUI extends Client implements EventHandler{
         BoardScene.setYourTurn(isMyTurn);
         if(inputObject instanceof ServerMoveMessage) {
             updatePlaySpaceGUI(inputObject);
-            BoardScene.newText(inputObject.getMessage());
             System.out.println(inputObject.getMessage());
             System.out.println();
             return;
@@ -86,12 +86,9 @@ public class ClientGUI extends Client implements EventHandler{
             if(isMyTurn) {
                 BoardScene.setPhase(inputObject.getPhase());
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
-                updatePlaySpaceGUI(inputObject);
             }
+            updatePlaySpaceGUI(inputObject);
             BoardScene.setInit(false);
-            if (inputObject.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || inputObject.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR){
-                BoardScene.newText(" ");}
-            BoardScene.newText(inputObject.getMessage());
             System.out.println(inputObject.getMessage());
             playSpace.printPlaySpace();
         }else if(inputObject instanceof RemovedPlayerMessage) {
@@ -262,7 +259,12 @@ public class ClientGUI extends Client implements EventHandler{
 
     @Override
     public void updatePlaySpaceGUI(GameMessage message) {
-        Platform.runLater(()->message.updateGUI(playSpace));
+        Platform.runLater(()->{
+            if (message.getPhase()==PossiblePhases.CHOOSE_CONSTRUCTOR || message.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR)
+                BoardScene.newText("\n");
+            BoardScene.newText(message.getMessage());
+            message.updateGUI(playSpace);
+        });
     }
 
     public static Map<String, God> getPlayerGodMap() {
