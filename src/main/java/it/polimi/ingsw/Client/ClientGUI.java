@@ -113,6 +113,11 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     private void manageStringGUI(String input){
+        if(input.equals(HelpMessage.forcedClose)){
+            //metti la scena wait ma con messaggio che è forceClose
+
+            //una volta messa la scena, fai proprio return (così è più pulita e veloce la funzione)
+        }
 
         if(input.startsWith(HelpMessage.noAnswer)){
             System.out.println(input.substring(HelpMessage.noAnswer.length()));
