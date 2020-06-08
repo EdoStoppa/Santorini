@@ -114,9 +114,11 @@ public class ClientGUI extends Client implements EventHandler{
 
     private void manageStringGUI(String input){
         if(input.equals(HelpMessage.forcedClose)){
-            //metti la scena wait ma con messaggio che è forceClose
-
-            //una volta messa la scena, fai proprio return (così è più pulita e veloce la funzione)
+            Platform.runLater(()->{
+                Scene error= new Scene(SceneBuilder.handeScene(input),810,700);
+                ClientGuiApp.getPrimaryStage().setScene(error);
+            });
+            return;
         }
 
         if(input.startsWith(HelpMessage.noAnswer)){
@@ -143,7 +145,7 @@ public class ClientGUI extends Client implements EventHandler{
             if (!((GodRecapMessage) inputObject).getFirstPlayer().equals(idPlayer)) {
                 System.out.println(inputObject.getMessage());
             }
-            this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
+            playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
             return;
         }
         if (inputObject instanceof PlaceFirstConstructorMessage){
