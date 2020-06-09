@@ -113,6 +113,7 @@ public class ClientGUI extends Client implements EventHandler{
         if(input.equals(HelpMessage.forcedClose)){
             Platform.runLater(()->{
                 Scene error= new Scene(SceneBuilder.handeScene(input),810,700);
+                setActive(false);
                 ClientGuiApp.getPrimaryStage().setScene(error);
             });
             return;

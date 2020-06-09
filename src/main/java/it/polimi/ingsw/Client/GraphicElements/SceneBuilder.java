@@ -161,48 +161,48 @@ public class SceneBuilder {
 
     private static void handleOptions(int numPlayer, CheckBox zero, CheckBox one, CheckBox two, CheckBox three, CheckBox four, CheckBox five, CheckBox six, CheckBox seven, CheckBox eight) {
         ArrayList<Integer>chosenGod = new ArrayList<>();
-    if (zero.isSelected()){
-      chosenGod.add(0);
-    }
-    if(one.isSelected()){
-        chosenGod.add(1);
-    }
-    if(two.isSelected()){
-        chosenGod.add(2);
-    }
-    if(three.isSelected()){
-        chosenGod.add(3);
-    }
-    if(four.isSelected()){
-        chosenGod.add(4);
-    }
-    if(five.isSelected()){
-        chosenGod.add(5);
-    }
-    if(six.isSelected()){
-        chosenGod.add(6);
-    }
-    if(seven.isSelected()){
-        chosenGod.add(7);
-    }
-    if(eight.isSelected()){
-        chosenGod.add(8);
-    }
-    if (chosenGod.size()==numPlayer){
-        StringBuilder message= new StringBuilder();
-        for(int i=0;i<numPlayer;i++){
-            message.append(chosenGod.get(i));
-            if (i!=numPlayer-1){
-                message.append(",");
-            }
+        if (zero.isSelected()){
+            chosenGod.add(0);
         }
-        System.out.println(message);
-        ClientGuiApp.getClient().asyncWriteToSocketGUI(message.toString());
-        Scene scene=new Scene(handeScene("wait"),810,700);
-        ClientGuiApp.getPrimaryStage().setScene(scene);
-    }else{
-        AlertBox.displayError("select a correct number of God");
-    }
+        if(one.isSelected()){
+            chosenGod.add(1);
+        }
+        if(two.isSelected()){
+            chosenGod.add(2);
+        }
+        if(three.isSelected()){
+            chosenGod.add(3);
+        }
+        if(four.isSelected()){
+            chosenGod.add(4);
+        }
+        if(five.isSelected()){
+            chosenGod.add(5);
+        }
+        if(six.isSelected()){
+            chosenGod.add(6);
+        }
+        if(seven.isSelected()){
+            chosenGod.add(7);
+        }
+        if(eight.isSelected()){
+            chosenGod.add(8);
+        }
+        if (chosenGod.size()==numPlayer){
+            StringBuilder message= new StringBuilder();
+            for(int i=0;i<numPlayer;i++){
+                message.append(chosenGod.get(i));
+                if (i!=numPlayer-1){
+                    message.append(",");
+                }
+            }
+            System.out.println(message);
+            ClientGuiApp.getClient().asyncWriteToSocketGUI(message.toString());
+            Scene scene=new Scene(handeScene("wait"),810,700);
+            ClientGuiApp.getPrimaryStage().setScene(scene);
+        }else{
+            AlertBox.displayError("select a correct number of God");
+        }
     }
 
     public static void chooseGod(ChosenGodMessage message){
