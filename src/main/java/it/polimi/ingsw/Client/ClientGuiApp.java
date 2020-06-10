@@ -23,9 +23,9 @@ public class ClientGuiApp extends Application implements Serializable {
     private static Stage primaryStage;
     private static SceneBuilder sceneBuilder;
     public static int width=800;
-    public static int height=600;
+    public static int height=700;
     private static Scene scene1;
-    private static String ip="",port="",definition="800x600";
+    private static String ip="",port="",definition="800x700";
 
 
     public static ClientGUI getClient() {
@@ -66,9 +66,9 @@ public class ClientGuiApp extends Application implements Serializable {
         TextField serverIp= new TextField(ip);
         TextField portField= new TextField(port);
         ChoiceBox<String> risolution= new ChoiceBox<>();
-        risolution.getItems().add("800x600");
-        risolution.getItems().add("600x450");
-        risolution.getItems().add("1280x720");
+        risolution.getItems().add("640x560");
+        risolution.getItems().add("800x700");
+        risolution.getItems().add("1200x1050");
         risolution.setValue(definition);
         risolution.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)->{
             ip=serverIp.getText();

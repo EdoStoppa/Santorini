@@ -98,7 +98,7 @@ public class SceneBuilder {
         HBox firstLine= new HBox();
         HBox secondLine=new HBox();
         HBox thirdLine=new HBox();
-        HBox fourLine= new HBox(30);
+        HBox fourLine= new HBox(ClientGuiApp.width*0.0375);
         firstLine.setAlignment(Pos.CENTER);
         secondLine.setAlignment(Pos.CENTER);
         thirdLine.setAlignment(Pos.CENTER);
@@ -130,31 +130,40 @@ public class SceneBuilder {
         ImageView IWNine= new ImageView(imageHashMap.get(message.GetGod(8).getGodName()));
         setGodImage(IWNine);
         Text desctripionZero =new Text(message.GetGod(0).getGodPower());
-        desctripionZero.setWrappingWidth(130);
+        desctripionZero.setFont(Font.font(ClientGuiApp.height*0.01714));
+        desctripionZero.setWrappingWidth(ClientGuiApp.width*0.15);
         Text desctripionOne =new Text(message.GetGod(1).getGodPower());
-        desctripionOne.setWrappingWidth(130);
+        desctripionOne.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionOne.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text desctripionTwo =new Text(message.GetGod(2).getGodPower());
-        desctripionTwo.setWrappingWidth(130);
+        desctripionTwo.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionTwo.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text desctripionThree =new Text(message.GetGod(3).getGodPower());
-        desctripionThree.setWrappingWidth(130);
+        desctripionThree.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionThree.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text desctripionFour =new Text(message.GetGod(4).getGodPower());
-        desctripionFour.setWrappingWidth(130);
+        desctripionFour.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionFour.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text descriptionFive =new Text(message.GetGod(5).getGodPower());
-        descriptionFive.setWrappingWidth(130);
+        descriptionFive.setWrappingWidth(ClientGuiApp.width*0.15);
+        descriptionFive.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text desctripionSix =new Text(message.GetGod(6).getGodPower());
-        desctripionSix.setWrappingWidth(130);
+        desctripionSix.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionSix.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text desctripionSeven =new Text(message.GetGod(7).getGodPower());
-        desctripionSeven.setWrappingWidth(130);
+        desctripionSeven.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionSeven.setFont(Font.font(ClientGuiApp.height*0.01714));
         Text desctripionEight =new Text(message.GetGod(8).getGodPower());
-        desctripionEight.setWrappingWidth(130);
+        desctripionEight.setWrappingWidth(ClientGuiApp.width*0.15);
+        desctripionEight.setFont(Font.font(ClientGuiApp.height*0.01714));
         firstLine.getChildren().addAll(zero,IWOne,desctripionZero,one,IWTwo,desctripionOne,two,IWThree,desctripionTwo);
         secondLine.getChildren().addAll(three,IWFour,desctripionThree,four,IWFive,desctripionFour,five,IWSix,descriptionFive);
         thirdLine.getChildren().addAll(six,IWSeven,desctripionSix,seven,IWEight,desctripionSeven,eight,IWNine,desctripionEight);
-        VBox griglia=new VBox(30);
+        VBox griglia=new VBox(ClientGuiApp.width*0.02);
         Button chosenGods=new Button("enter");
         chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),zero,one,two,three,four,five,six,seven,eight));
         Text description= new Text("chose "+message.getNumPlayer()+" gods that will be in the match");
-        description.setFont(Font.font(18));
+        description.setFont(Font.font(ClientGuiApp.height*0.02571));
         fourLine.getChildren().addAll(description,chosenGods);
         fourLine.setAlignment(Pos.CENTER);
         griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
@@ -211,38 +220,46 @@ public class SceneBuilder {
 
     public static void chooseGod(ChosenGodMessage message){
         BorderPane borderPane=new BorderPane();
-        VBox layout=new VBox(10);
+        VBox layout=new VBox(ClientGuiApp.height*0.0142);
         layout.setAlignment(Pos.CENTER);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton third= new RadioButton();
-        HBox firstLine= new HBox(20);
+        HBox firstLine= new HBox(ClientGuiApp.width*0.025);
         RadioButton first= new RadioButton();
         first.setToggleGroup(radioGroup);
         first.setSelected(true);
         ImageView IWFirst = new ImageView(imageHashMap.get(message.getChosenGod(0).getGodName()));
         setGodImage(IWFirst);
         Text firstDescription=new Text(message.getChosenGod(0).getGodPower());
+        firstDescription.setFont(Font.font(ClientGuiApp.height*0.0228));
+        firstDescription.setWrappingWidth(ClientGuiApp.width*0.7);
         firstLine.getChildren().addAll(first,IWFirst,firstDescription);
-        HBox secondLine= new HBox(20);
+        HBox secondLine= new HBox(ClientGuiApp.width*0.025);
         RadioButton second= new RadioButton();
         second.setToggleGroup(radioGroup);
         ImageView IWSecond= new ImageView(imageHashMap.get(message.getChosenGod(1).getGodName()));
         setGodImage(IWSecond);
         Text secondDescription=new Text(message.getChosenGod(1).getGodPower());
+        secondDescription.setFont(Font.font(ClientGuiApp.height*0.0228));
+        secondDescription.setWrappingWidth(ClientGuiApp.width*0.7);
         secondLine.getChildren().addAll(second,IWSecond,secondDescription);
         layout.getChildren().addAll(firstLine,secondLine);
         if(message.getSize()==3){
-            HBox thirdLine= new HBox(20);
+            HBox thirdLine= new HBox(ClientGuiApp.width*0.025);
             third.setToggleGroup(radioGroup);
             ImageView IWThird= new ImageView(imageHashMap.get(message.getChosenGod(2).getGodName()));
             setGodImage(IWThird);
             Text thirdDescription=new Text(message.getChosenGod(2).getGodPower());
+            thirdDescription.setFont(Font.font(ClientGuiApp.height*0.0228));
+            thirdDescription.setWrappingWidth(ClientGuiApp.width*0.7);
             thirdLine.getChildren().addAll(third,IWThird,thirdDescription);
             layout.getChildren().add(thirdLine);
         }
-        HBox fourLine= new HBox();
+        HBox fourLine= new HBox(ClientGuiApp.width*0.0375);
         Button sendMessage= new Button("enter");
-        fourLine.getChildren().add(sendMessage);
+        Text description= new Text("Choose the god you'll use for this match");
+        description.setFont(Font.font(ClientGuiApp.height*0.02571));
+        fourLine.getChildren().addAll(description,sendMessage);
         sendMessage.setOnAction(e->{
             if(first.isSelected())
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("0");
@@ -261,7 +278,7 @@ public class SceneBuilder {
     }
 
     public static void orderGame(OrderGameMessage message){
-        VBox layout=new VBox();
+        VBox layout=new VBox(ClientGuiApp.width*0.02857);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton first=new RadioButton();
         RadioButton second=new RadioButton();
@@ -270,22 +287,30 @@ public class SceneBuilder {
         second.setToggleGroup(radioGroup);
         third.setToggleGroup(radioGroup);
         first.setSelected(true);
-        HBox firstLine=new HBox(10);
+        HBox firstLine=new HBox(ClientGuiApp.width*0.0125);
+        firstLine.setAlignment(Pos.CENTER);
         Text firstName=new Text(message.getPlayerlist().get(0));
+        firstName.setFont(Font.font(ClientGuiApp.height*0.0228));
         firstLine.getChildren().addAll(first,firstName);
-        HBox secondLine=new HBox(10);
+        HBox secondLine=new HBox(ClientGuiApp.width*0.0125);
+        secondLine.setAlignment(Pos.CENTER);
         Text secondName=new Text(message.getPlayerlist().get(1));
+        secondName.setFont(Font.font(ClientGuiApp.height*0.0228));
         secondLine.getChildren().addAll(second,secondName);
         layout.getChildren().addAll(firstLine,secondLine);
         if (message.getPlayerlist().size()==3){
-            HBox thirdLine=new HBox(10);
+            HBox thirdLine=new HBox(ClientGuiApp.width*0.0125);
+            thirdLine.setAlignment(Pos.CENTER);
             Text thirdName=new Text(message.getPlayerlist().get(2));
+            thirdName.setFont(Font.font(ClientGuiApp.height*0.0228));
             thirdLine.getChildren().addAll(third,thirdName);
             layout.getChildren().add(thirdLine);
         }
-        HBox fourLine= new HBox();
+        HBox fourLine= new HBox(ClientGuiApp.width*0.025);
         Button sendMessage= new Button("enter");
-        fourLine.getChildren().add(sendMessage);
+        Text description= new Text("Choose the player which'll move first");
+        description.setFont(Font.font(ClientGuiApp.height*0.02571));
+        fourLine.getChildren().addAll(description,sendMessage);
         fourLine.setAlignment(Pos.CENTER);
         layout.getChildren().add(fourLine);
         sendMessage.setOnAction(e->{
@@ -307,7 +332,7 @@ public class SceneBuilder {
 
 
     public static void setGodImage(ImageView IWGod){
-        IWGod.setFitHeight(ClientGuiApp.height*0.30);
+        IWGod.setFitHeight(ClientGuiApp.height*0.27);
         IWGod.setFitWidth(ClientGuiApp.width*0.15);
     }
 
