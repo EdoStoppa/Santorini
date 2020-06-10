@@ -22,6 +22,11 @@ public class ClientGuiApp extends Application implements Serializable {
     private static ClientGUI  client;
     private static Stage primaryStage;
     private static SceneBuilder sceneBuilder;
+    public static int width=800;
+    public static int height=600;
+    private static Scene scene1;
+    private static String ip="",port="",definition="800x600";
+
 
     public static ClientGUI getClient() {
         return client;
@@ -41,7 +46,7 @@ public class ClientGuiApp extends Application implements Serializable {
         ClientGuiApp.primaryStage =primaryStage;
         sceneBuilder=new SceneBuilder();
 
-        Scene scene1= new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"),810,700);
+        scene1= new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"),width,height);
 
 
 
@@ -54,10 +59,24 @@ public class ClientGuiApp extends Application implements Serializable {
         Text textName= new Text(message);
         HBox firstLine=new HBox(20);
         HBox secondLine=new HBox(20);
+        HBox thirdLine=new HBox(20);
         Text textIp= new Text("insert ip");
         Text textPort= new Text("insert port");
-        TextField serverIp= new TextField();
-        TextField portField= new TextField();
+        Text display=new Text("choose risolution for your game");
+        TextField serverIp= new TextField(ip);
+        TextField portField= new TextField(port);
+        ChoiceBox<String> risolution= new ChoiceBox<>();
+        risolution.getItems().add("800x600");
+        risolution.getItems().add("600x450");
+        risolution.getItems().add("1280x720");
+        risolution.setValue(definition);
+        risolution.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)->{
+            ip=serverIp.getText();
+            port=portField.getText();
+            definition=newValue;
+            changeRisolution(newValue);
+        });
+        thirdLine.getChildren().addAll(display,risolution);
         firstLine.getChildren().addAll(textIp,serverIp);
         secondLine.getChildren().addAll(textPort,portField);
         Button go= new Button("enter");
@@ -67,7 +86,7 @@ public class ClientGuiApp extends Application implements Serializable {
                 try {
                     client.run();
                 } catch (IOException ioException) {
-                    Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),810,700);
+                    Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),width,height);
                     primaryStage.setScene(scene);
                 }
             }else{
@@ -75,7 +94,7 @@ public class ClientGuiApp extends Application implements Serializable {
                 try {
                     client.run();
                 } catch (IOException ioException) {
-                    Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),810,700);
+                    Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),width,height);
                     primaryStage.setScene(scene);
                 }
             }});
@@ -84,9 +103,20 @@ public class ClientGuiApp extends Application implements Serializable {
         layout.setAlignment(Pos.CENTER);
         firstLine.setAlignment(Pos.CENTER);
         secondLine.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(textName,firstLine,secondLine,go);
+        thirdLine.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(textName,firstLine,secondLine,thirdLine,go);
         return layout;
 
+    }
+
+    private static void changeRisolution(String risolution){
+        String[] spitted=risolution.split("x");
+        width=Integer.parseInt(spitted[0]);
+        height=Integer.parseInt(spitted[1]);
+        Scene scene=new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"),width,height);
+        primaryStage.setScene(scene);
+
+        System.out.println(risolution);
     }
 
 

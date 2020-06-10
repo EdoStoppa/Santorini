@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
@@ -62,12 +63,12 @@ public class SceneBuilder {
         Button treePlayer=new Button("3 player");
         twoPlayer.setOnAction(e->{
             ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(ChooseName("enter your name"),800,710);
+            Scene scene=new Scene(ChooseName("enter your name"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         treePlayer.setOnAction(e->{
             ClientGuiApp.getClient().asyncWriteToSocketGUI("3");
-            Scene scene=new Scene(ChooseName("enter your name"),800,710);
+            Scene scene=new Scene(ChooseName("enter your name"),ClientGuiApp.width, ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
@@ -98,6 +99,9 @@ public class SceneBuilder {
         HBox secondLine=new HBox();
         HBox thirdLine=new HBox();
         HBox fourLine= new HBox(30);
+        firstLine.setAlignment(Pos.CENTER);
+        secondLine.setAlignment(Pos.CENTER);
+        thirdLine.setAlignment(Pos.CENTER);
         CheckBox zero=new CheckBox();
         CheckBox one=new CheckBox();
         CheckBox two= new CheckBox();
@@ -155,7 +159,7 @@ public class SceneBuilder {
         fourLine.setAlignment(Pos.CENTER);
         griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
         layout.setCenter(griglia);
-        Scene scene3= new Scene(layout,850,710);
+        Scene scene3= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
         ClientGuiApp.getPrimaryStage().setScene(scene3);
     }
 
@@ -198,7 +202,7 @@ public class SceneBuilder {
             }
             System.out.println(message);
             ClientGuiApp.getClient().asyncWriteToSocketGUI(message.toString());
-            Scene scene=new Scene(handeScene("wait"),810,700);
+            Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         }else{
             AlertBox.displayError("select a correct number of God");
@@ -207,13 +211,14 @@ public class SceneBuilder {
 
     public static void chooseGod(ChosenGodMessage message){
         BorderPane borderPane=new BorderPane();
-        VBox layout=new VBox(20);
+        VBox layout=new VBox(10);
         layout.setAlignment(Pos.CENTER);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton third= new RadioButton();
         HBox firstLine= new HBox(20);
         RadioButton first= new RadioButton();
         first.setToggleGroup(radioGroup);
+        first.setSelected(true);
         ImageView IWFirst = new ImageView(imageHashMap.get(message.getChosenGod(0).getGodName()));
         setGodImage(IWFirst);
         Text firstDescription=new Text(message.getChosenGod(0).getGodPower());
@@ -245,13 +250,13 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("1");
             if(third.isSelected())
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(BoardScene.createContent(),810,700);
+            Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         fourLine.setAlignment(Pos.CENTER);
         layout.getChildren().add(fourLine);
         borderPane.setCenter(layout);
-        Scene scene4= new Scene(borderPane,850,710);
+        Scene scene4= new Scene(borderPane,ClientGuiApp.width,ClientGuiApp.height);
         ClientGuiApp.getPrimaryStage().setScene(scene4);
     }
 
@@ -264,6 +269,7 @@ public class SceneBuilder {
         first.setToggleGroup(radioGroup);
         second.setToggleGroup(radioGroup);
         third.setToggleGroup(radioGroup);
+        first.setSelected(true);
         HBox firstLine=new HBox(10);
         Text firstName=new Text(message.getPlayerlist().get(0));
         firstLine.getChildren().addAll(first,firstName);
@@ -289,11 +295,11 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(1));
             if(third.isSelected())
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(2));
-            Scene scene=new Scene(BoardScene.createContent(),810,700);
+            Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         layout.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(layout,710,800);
+        Scene scene=new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
         ClientGuiApp.getPrimaryStage().setScene(scene);
 
     }
@@ -301,8 +307,8 @@ public class SceneBuilder {
 
 
     public static void setGodImage(ImageView IWGod){
-        IWGod.setFitHeight(190);
-        IWGod.setFitWidth(133.33);
+        IWGod.setFitHeight(ClientGuiApp.height*0.30);
+        IWGod.setFitWidth(ClientGuiApp.width*0.15);
     }
 
     public static Parent handeScene(String message){

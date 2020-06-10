@@ -112,7 +112,7 @@ public class ClientGUI extends Client implements EventHandler{
     private void manageStringGUI(String input){
         if(input.equals(HelpMessage.forcedClose)){
             Platform.runLater(()->{
-                Scene error= new Scene(SceneBuilder.handeScene(input),810,700);
+                Scene error= new Scene(SceneBuilder.handeScene(input),ClientGuiApp.width,ClientGuiApp.height);
                 setActive(false);
                 ClientGuiApp.getPrimaryStage().setScene(error);
             });
@@ -221,7 +221,7 @@ public class ClientGUI extends Client implements EventHandler{
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncCheckConnection();
-            Scene scene= new Scene(SceneBuilder.ChooseGameMode(),810,700);
+            Scene scene= new Scene(SceneBuilder.ChooseGameMode(),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
@@ -231,10 +231,10 @@ public class ClientGUI extends Client implements EventHandler{
     public void checkName(boolean check){
         Platform.runLater(()->{
             if(check) {
-                Scene wait = new Scene(SceneBuilder.handeScene("wait"), 800, 710);
+                Scene wait = new Scene(SceneBuilder.handeScene("wait"), ClientGuiApp.width, ClientGuiApp.height);
                 ClientGuiApp.getPrimaryStage().setScene(wait);
             }else{
-                Scene newName= new Scene(SceneBuilder.ChooseName("this name is already taken"),800,710);
+                Scene newName= new Scene(SceneBuilder.ChooseName("this name is already taken"),ClientGuiApp.width,ClientGuiApp.height);
                 ClientGuiApp.getPrimaryStage().setScene(newName);
             }
         });
@@ -243,10 +243,10 @@ public class ClientGUI extends Client implements EventHandler{
     public  static void winScene(boolean win){
         Platform.runLater(()->{
             if (win){
-                Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),800,710);
+                Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),ClientGuiApp.width,ClientGuiApp.height);
                 ClientGuiApp.getPrimaryStage().setScene(SceneWin);
             }else{
-                Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),800,710);
+                Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),ClientGuiApp.width,ClientGuiApp.height);
                 ClientGuiApp.getPrimaryStage().setScene(SceneLose);
             }
         });
