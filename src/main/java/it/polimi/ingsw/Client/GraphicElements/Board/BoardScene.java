@@ -12,7 +12,6 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -77,11 +76,12 @@ public class BoardScene {
         VBox buttons=new VBox(10);
         buttons.getChildren().addAll(godList,endPhase);
         controller.getChildren().addAll(message,buttons);
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(root);
-        borderPane.setBottom(controller);
-        borderPane.setLeft(left);
-        borderPane.setRight(right);
+        HBox boardLine= new HBox();
+        boardLine.setAlignment(Pos.CENTER);
+        boardLine.getChildren().add(root);
+        VBox layout=new VBox();
+        layout.getChildren().addAll(boardLine,controller);
+
 
 
 
@@ -95,7 +95,7 @@ public class BoardScene {
             }
         }
 
-        return borderPane;
+        return layout;
     }
 
 
