@@ -29,15 +29,15 @@ public class SceneBuilder {
 
     public SceneBuilder(){
         try {
-            Image Apollo = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Apollo.png")));
-            Image Artemis = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Artemis.png")));
-            Image Athena = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Athena.png")));
-            Image Atlas = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Atlas.png")));
-            Image Demeter = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Demeter.png")));
-            Image Hephaestus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Hephaestus.png")));
-            Image Minotaur = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Minotaur.png")));
-            Image Pan = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Pan.png")));
-            Image Prometheus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Prometheus.png")));
+            Image Apollo = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Apollo.png")));
+            Image Artemis = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Artemis.png")));
+            Image Athena = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Athena.png")));
+            Image Atlas = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Atlas.png")));
+            Image Demeter = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Demeter.png")));
+            Image Hephaestus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Hephaestus.png")));
+            Image Minotaur = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Minotaur.png")));
+            Image Pan = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Pan.png")));
+            Image Prometheus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Prometheus.png")));
             imageHashMap.put("Apollo", Apollo);
             imageHashMap.put("Artemis", Artemis);
             imageHashMap.put("Athena", Athena);

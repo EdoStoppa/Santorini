@@ -87,23 +87,29 @@ public class ClientGUI extends Client implements EventHandler{
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 BoardScene.setPhase(inputObject.getPhase());
+                System.out.println(BoardScene.getPhase());
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
+                updatePlaySpaceGUI(inputObject);
+                BoardScene.setInit(false);
             }
-            updatePlaySpaceGUI(inputObject);
-            BoardScene.setInit(false);
             System.out.println(inputObject.getMessage());
+            playSpace.printPlaySpace();
+            return;
         }else if(inputObject instanceof RemovedPlayerMessage) {
             updatePlaySpaceGUI(inputObject);
-            if (isMyTurn)
+            if (isMyTurn){
                 winScene(false);
+                setActive(false);
+                return;}
         } else if(inputObject instanceof WinMessage){
             updatePlaySpaceGUI(inputObject);
             winScene(isMyTurn);
             setActive(false);
+            return;
         }
-
-        inputObject.updateGUI(playSpace);
+        updatePlaySpaceGUI(inputObject);
         playSpace.printPlaySpace();
+
     }
 
     private synchronized void managePing(){
@@ -232,8 +238,6 @@ public class ClientGUI extends Client implements EventHandler{
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncCheckConnection();
-            //Scene scene= new Scene(SceneBuilder.ChooseGameMode(),ClientGuiApp.width,ClientGuiApp.height);
-            //ClientGuiApp.getPrimaryStage().setScene(scene);
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         }

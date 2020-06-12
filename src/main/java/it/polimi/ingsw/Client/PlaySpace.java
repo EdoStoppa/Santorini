@@ -189,7 +189,6 @@ public class PlaySpace {
                 }
             }
         }else{
-            printPlaySpace();
         for(int i=0;i<=4;i++){
             for(int j=0;j<=4;j++){
                  if (constructorMatrix[i][j]!=0 && playSpaceUpdated[i][j]==0){
@@ -197,8 +196,6 @@ public class PlaySpace {
                       for (int k=-1;k<=1;k++){
                           if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4) {
                               if ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0) ){
-                              System.out.println((i + h) + "ciao" + (j + k));
-                              System.out.println(playSpaceUpdated[i + h][j + k] + "," + constructorMatrix[i][j] + "," + constructorMatrix[i + h][j + k]);
                               if (playSpaceUpdated[i + h][j + k] == constructorMatrix[i][j] && constructorMatrix[i + h][j + k] == 0) {
                                   Piece moved = BoardScene.getTile(j, i).getPiece();
                                   BoardScene.animation(moved, k, h);
@@ -218,7 +215,6 @@ public class PlaySpace {
         }
             setConstructorMatrix(playSpaceUpdated);
         }
-        BoardScene.setYourTurn(false);
     }
 
     public void updateBuildingGUI(int[][] updatedBuildingMatrix,boolean dome) {
