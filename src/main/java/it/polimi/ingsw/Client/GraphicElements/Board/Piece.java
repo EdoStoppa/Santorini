@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
 public class Piece extends StackPane {
-    private static final int TILE_SIZE=120;
+
 
 
     private double oldX,oldY;
@@ -49,20 +49,20 @@ public class Piece extends StackPane {
     public Piece(PieceType type, int x, int y){
         move(x,y);
 
-        Ellipse bg= new Ellipse(TILE_SIZE*0.3125,TILE_SIZE*0.26);
+        Ellipse bg= new Ellipse(BoardScene.TILE_SIZE*0.3125,BoardScene.TILE_SIZE*0.26);
         bg.setFill(Color.BLACK);
 
         bg.setStroke(Color.BLACK);
-        bg.setStrokeWidth(TILE_SIZE*0.03);
-        bg.setTranslateX((TILE_SIZE- TILE_SIZE*0.3125*2)/2);
-        bg.setTranslateY((TILE_SIZE- TILE_SIZE*0.26*2)/2+TILE_SIZE*0.07);
+        bg.setStrokeWidth(BoardScene.TILE_SIZE*0.03);
+        bg.setTranslateX((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.3125*2)/2);
+        bg.setTranslateY((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.26*2)/2+BoardScene.TILE_SIZE*0.07);
 
-        Ellipse ellipse= new Ellipse(TILE_SIZE*0.3125,TILE_SIZE*0.26);
+        Ellipse ellipse= new Ellipse(BoardScene.TILE_SIZE*0.3125,BoardScene.TILE_SIZE*0.26);
         ellipse.setFill(type==PieceType.RED? Color.valueOf("#c40003"): type==PieceType.WHITE?Color.valueOf("fff9f4"):Color.valueOf("#45ffff"));
         ellipse.setStroke(Color.BLACK);
-        ellipse.setStrokeWidth(TILE_SIZE*0.03);
-        ellipse.setTranslateX((TILE_SIZE- TILE_SIZE*0.3125*2)/2);
-        ellipse.setTranslateY((TILE_SIZE- TILE_SIZE*0.26*2)/2);
+        ellipse.setStrokeWidth(BoardScene.TILE_SIZE*0.03);
+        ellipse.setTranslateX((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.3125*2)/2);
+        ellipse.setTranslateY((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.26*2)/2);
         getChildren().addAll(bg,ellipse);
 
         setOnMouseClicked(e->{
@@ -79,8 +79,8 @@ public class Piece extends StackPane {
     }
 
     public void move(double x, double y){
-        oldX=x*TILE_SIZE;
-        oldY=y*TILE_SIZE;
+        oldX=x*BoardScene.TILE_SIZE;
+        oldY=y*BoardScene.TILE_SIZE;
         relocate(oldX+translationX,oldY+translationY);
         System.out.println("piece messo "+(oldX)+" "+(oldY));
 

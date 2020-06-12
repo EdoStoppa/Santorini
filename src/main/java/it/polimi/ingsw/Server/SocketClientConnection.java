@@ -100,7 +100,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             //this run a Thread to ping the client
             runPingThread();
 
-            send("Welcome to Santorini!\n2 or 3 player mode?");
+            send(HelpMessage.gameMode);
             while(active){
                 try{
                     read = in.nextLine();
@@ -123,7 +123,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 }
             }
 
-            send("Enter your name:");
+            send(HelpMessage.enterName);
             name = in.nextLine();
             if(gameMode == 2){
                 if(server.getWaitingConnection2P().containsKey(name)){

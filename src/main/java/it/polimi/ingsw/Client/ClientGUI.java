@@ -116,8 +116,20 @@ public class ClientGUI extends Client implements EventHandler{
                 setActive(false);
                 ClientGuiApp.getPrimaryStage().setScene(error);
             });
-            return;
         }
+            if (input.equals(HelpMessage.enterName)){
+                Platform.runLater(()->{
+                    Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
+                    ClientGuiApp.getPrimaryStage().setScene(scene);
+                });
+            }
+            if (input.equals(HelpMessage.gameMode)) {
+                Platform.runLater(() -> {
+                    Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
+                    ClientGuiApp.getPrimaryStage().setScene(scene);
+                });
+            }
+
 
         if(input.startsWith(HelpMessage.noAnswer)){
             System.out.println(input.substring(HelpMessage.noAnswer.length()));
@@ -144,6 +156,7 @@ public class ClientGUI extends Client implements EventHandler{
                 System.out.println(inputObject.getMessage());
             }
             playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
+            Platform.runLater(()->ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
             return;
         }
         if (inputObject instanceof PlaceFirstConstructorMessage){
@@ -221,8 +234,8 @@ public class ClientGUI extends Client implements EventHandler{
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncCheckConnection();
-            Scene scene= new Scene(SceneBuilder.ChooseGameMode(),ClientGuiApp.width,ClientGuiApp.height);
-            ClientGuiApp.getPrimaryStage().setScene(scene);
+            //Scene scene= new Scene(SceneBuilder.ChooseGameMode(),ClientGuiApp.width,ClientGuiApp.height);
+            //ClientGuiApp.getPrimaryStage().setScene(scene);
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         }

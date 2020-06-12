@@ -3,6 +3,7 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import it.polimi.ingsw.Model.PossiblePhases;
@@ -18,7 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 public class BoardScene {
-    public static final int TILE_SIZE=120;
+    public static final int TILE_SIZE= (int) (ClientGuiApp.width*0.1375);
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
     public static TextArea messages= new TextArea();
@@ -53,11 +54,11 @@ public class BoardScene {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
         root.getChildren().addAll(tileGroup,pieceGroup);
-        HBox controller =new HBox(70);
+        HBox controller =new HBox(ClientGuiApp.width*0.0875);
         controller.setAlignment(Pos.BOTTOM_CENTER);
-        controller.prefHeight(100);
+        controller.prefHeight(ClientGuiApp.height*0.142857);
         Pane message= new Pane();
-        messages.setPrefHeight(100);
+        messages.setPrefHeight(ClientGuiApp.height*0.142857);
         message.getChildren().add(messages);
         Button godList= new Button("God List");
         Button endPhase= new Button("End Phase");
@@ -69,17 +70,13 @@ public class BoardScene {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("end");
             }
         });
-        Pane left=new Pane();
-        left.setPrefSize(105,600);
-        Pane right=new Pane();
-        right.setPrefSize(105,600);
-        VBox buttons=new VBox(10);
+        VBox buttons=new VBox(ClientGuiApp.width*0.0125);
         buttons.getChildren().addAll(godList,endPhase);
         controller.getChildren().addAll(message,buttons);
         HBox boardLine= new HBox();
         boardLine.setAlignment(Pos.CENTER);
         boardLine.getChildren().add(root);
-        VBox layout=new VBox();
+        VBox layout=new VBox(ClientGuiApp.width*0.025);
         layout.getChildren().addAll(boardLine,controller);
 
 

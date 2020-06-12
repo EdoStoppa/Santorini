@@ -11,6 +11,8 @@ public class HelpMessage {
     public final static String init = "Starting game initialization!";
     public final static String taken = "This name is already taken. Please enter a new one";
     public final static String forcedClose = "\nSome problem occurred, connection closed!\nIf you want to play again, please close and restart the game!";
+    public final static String gameMode="Welcome to Santorini!\n2 or 3 player mode?";
+    public final static String enterName="Enter your name:";
 
     public final static String noAnswer = ".";
 

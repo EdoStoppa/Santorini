@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
-import it.polimi.ingsw.Client.Client;
-import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
@@ -55,22 +53,14 @@ public class SceneBuilder {
 
     }
 
-    public static Parent ChooseGameMode(){
-        VBox layout1= new VBox(50);
-        Label welcome= new Label("welcome to santorini\n 2 or 3 player mode?");
-        HBox Buttons= new HBox(150);
+    public static Parent ChooseGameMode(String message){
+        VBox layout1= new VBox(ClientGuiApp.height*0.071);
+        Label welcome= new Label(message);
+        HBox Buttons= new HBox(ClientGuiApp.width*0.1875);
         Button twoPlayer= new Button("2 player");
         Button treePlayer=new Button("3 player");
-        twoPlayer.setOnAction(e->{
-            ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(ChooseName("enter your name"),ClientGuiApp.width,ClientGuiApp.height);
-            ClientGuiApp.getPrimaryStage().setScene(scene);
-        });
-        treePlayer.setOnAction(e->{
-            ClientGuiApp.getClient().asyncWriteToSocketGUI("3");
-            Scene scene=new Scene(ChooseName("enter your name"),ClientGuiApp.width, ClientGuiApp.height);
-            ClientGuiApp.getPrimaryStage().setScene(scene);
-        });
+        twoPlayer.setOnAction(e->ClientGuiApp.getClient().asyncWriteToSocketGUI("2"));
+        treePlayer.setOnAction(e->ClientGuiApp.getClient().asyncWriteToSocketGUI("3"));
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
         Buttons.setAlignment(Pos.CENTER);
         layout1.setAlignment(Pos.CENTER);
@@ -81,12 +71,12 @@ public class SceneBuilder {
 
 
     public static Parent ChooseName(String message){
-        VBox layout=new VBox(40);
+        VBox layout=new VBox(ClientGuiApp.height*0.05714);
         Text textName= new Text(message);
         TextField name= new TextField();
         Button go= new Button("go");
         go.setOnAction(e-> ClientGuiApp.getClient().asyncWriteToSocketGUI(name.getText()));
-        name.setMaxWidth(150);
+        name.setMaxWidth(ClientGuiApp.width*0.1875);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
         return layout;
@@ -267,7 +257,7 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("1");
             if(third.isSelected())
                 ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
-            Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);
+            Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         fourLine.setAlignment(Pos.CENTER);
@@ -320,7 +310,7 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(1));
             if(third.isSelected())
                 ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(2));
-            Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);
+            Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         layout.setAlignment(Pos.CENTER);
