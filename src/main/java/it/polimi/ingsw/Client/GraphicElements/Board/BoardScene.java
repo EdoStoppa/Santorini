@@ -3,7 +3,6 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 
 
-import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import it.polimi.ingsw.Model.PossiblePhases;
