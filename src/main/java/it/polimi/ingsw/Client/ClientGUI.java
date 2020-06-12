@@ -76,12 +76,14 @@ public class ClientGUI extends Client implements EventHandler{
         boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
         inputObject.autoSetMessage(isMyTurn, false);
         BoardScene.setYourTurn(isMyTurn);
+
         if(inputObject instanceof ServerMoveMessage) {
             updatePlaySpaceGUI(inputObject);
             System.out.println(inputObject.getMessage());
             System.out.println();
             return;
         }
+
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 BoardScene.setPhase(inputObject.getPhase());
@@ -90,17 +92,16 @@ public class ClientGUI extends Client implements EventHandler{
             updatePlaySpaceGUI(inputObject);
             BoardScene.setInit(false);
             System.out.println(inputObject.getMessage());
-            playSpace.printPlaySpace();
         }else if(inputObject instanceof RemovedPlayerMessage) {
             updatePlaySpaceGUI(inputObject);
             if (isMyTurn)
-            winScene(false);
-            playSpace.printPlaySpace();
+                winScene(false);
         } else if(inputObject instanceof WinMessage){
             updatePlaySpaceGUI(inputObject);
             winScene(isMyTurn);
             setActive(false);
         }
+
         inputObject.updateGUI(playSpace);
         playSpace.printPlaySpace();
     }
@@ -117,27 +118,24 @@ public class ClientGUI extends Client implements EventHandler{
                 ClientGuiApp.getPrimaryStage().setScene(error);
             });
         }
-            if (input.equals(HelpMessage.enterName)){
-                Platform.runLater(()->{
-                    Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
-                    ClientGuiApp.getPrimaryStage().setScene(scene);
-                });
-            }
-            if (input.equals(HelpMessage.gameMode)) {
-                Platform.runLater(() -> {
-                    Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
-                    ClientGuiApp.getPrimaryStage().setScene(scene);
-                });
-            }
+        if (input.equals(HelpMessage.enterName)){
+            Platform.runLater(()->{
+                Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
+                ClientGuiApp.getPrimaryStage().setScene(scene);
+            });
+        }
+        if (input.equals(HelpMessage.gameMode)) {
+            Platform.runLater(() -> {
+                Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
+                ClientGuiApp.getPrimaryStage().setScene(scene);
+            });
+        }
 
 
         if(input.startsWith(HelpMessage.noAnswer)){
             System.out.println(input.substring(HelpMessage.noAnswer.length()));
             System.out.println();
         } else {
-            //This statement is useless, but somehow prevent a hideous bug
-            //(we seriously don't know how or why, but this fixes the problem)
-            System.out.print("");
             if(idPlayer == null) {
                 if (!getName(input)) {
                     this.miniController = new BaseMiniController();
