@@ -26,12 +26,12 @@ public class PlaceFirstConstructorMessage extends ServerMessage {
 
     @Override
     public String getMessage() {
-        return "Choose where to place your constructor typing the position (ex. 2,3)";
+        return "Choose where to place your constructor";
     }
 
     @Override
     public void buildScene() {
-    BoardScene.setInit(true);
-    BoardScene.setYourTurn(true);
+        BoardScene.setInit(true);
+        BoardScene.setYourTurn(true);
     }
 }

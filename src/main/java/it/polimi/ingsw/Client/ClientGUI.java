@@ -28,7 +28,6 @@ import java.time.LocalTime;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-
 public class ClientGUI extends Client implements EventHandler{
     private String idPlayer = null;
     private MiniController miniController;
@@ -78,7 +77,11 @@ public class ClientGUI extends Client implements EventHandler{
         BoardScene.setYourTurn(isMyTurn);
 
         if(inputObject instanceof ServerMoveMessage) {
-            updatePlaySpaceGUI(inputObject);
+            if(!inputObject.getIdPlayer().equals(idPlayer))
+                updatePlaySpaceGUI(inputObject);
+            else
+                Platform.runLater(()->{ inputObject.updateGUI(playSpace); });
+
             System.out.println(inputObject.getMessage());
             System.out.println();
             return;
@@ -91,6 +94,12 @@ public class ClientGUI extends Client implements EventHandler{
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
                 updatePlaySpaceGUI(inputObject);
                 BoardScene.setInit(false);
+            } else {
+                Platform.runLater(()-> {
+                    if (inputObject.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || inputObject.getPhase() == PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR)
+                        BoardScene.newText("\n");
+                    BoardScene.newText(inputObject.getMessage());
+                });
             }
             System.out.println(inputObject.getMessage());
             playSpace.printPlaySpace();
@@ -109,7 +118,6 @@ public class ClientGUI extends Client implements EventHandler{
         }
         updatePlaySpaceGUI(inputObject);
         playSpace.printPlaySpace();
-
     }
 
     private synchronized void managePing(){

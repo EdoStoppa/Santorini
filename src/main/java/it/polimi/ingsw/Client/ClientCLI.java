@@ -149,8 +149,9 @@ public class ClientCLI extends Client{
     private void manageServerMessage(ServerMessage inputObject) {
 
         if (inputObject instanceof GodRecapMessage) {
-            if (!((GodRecapMessage) inputObject).getFirstPlayer().equals(idPlayer)) {
-                System.out.println(inputObject.getMessage());
+            String name = ((GodRecapMessage) inputObject).getFirstPlayer();
+            if (!name.equals(idPlayer)) {
+                System.out.println(inputObject.getMessage() + "\nPlease wait while " + name + " is choosing where to place a constructor");
             }
             this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
             return;
@@ -164,9 +165,9 @@ public class ClientCLI extends Client{
                     System.out.println((new GodRecapMessage(playerGodMap, null)).getMessage());
             }
         }
-        System.out.println(inputObject.getMessage());
-        this.miniController = inputObject.getMiniController();
 
+        System.out.println(inputObject.getMessage() + (inputObject instanceof PlaceFirstConstructorMessage? " typing the position (ex. 2,3)" : ""));
+        this.miniController = inputObject.getMiniController();
     }
 
     private void manageGameMessage(GameMessage inputObject) {
