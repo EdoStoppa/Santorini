@@ -74,15 +74,15 @@ public class AlertBox {
         Map<String, God> playerGodMap=ClientGUI.getPlayerGodMap();
         ArrayList<String> keys = new ArrayList<>(playerGodMap.keySet());
         VBox layout=new VBox(20);
-        Text playerOne= new Text(keys.get(0)+" --->"+playerGodMap.get(keys.get(0)).getGodName()+" : "+playerGodMap.get(keys.get(0)).getGodPower());
+        Text playerOne= new Text(keys.get(0)+" ---> "+playerGodMap.get(keys.get(0)).getGodName()+"\n"+playerGodMap.get(keys.get(0)).getGodPower());
         playerOne.setWrappingWidth(450);
         playerOne.setFont(Font.font(16));
-        Text playerTwo= new Text(keys.get(1)+" --->"+playerGodMap.get(keys.get(1)).getGodName()+" : "+playerGodMap.get(keys.get(1)).getGodPower());
+        Text playerTwo= new Text(keys.get(1)+" ---> "+playerGodMap.get(keys.get(1)).getGodName()+"\n"+playerGodMap.get(keys.get(1)).getGodPower());
         playerTwo.setWrappingWidth(450);
         playerTwo.setFont(Font.font(16));
         layout.getChildren().addAll(playerOne,playerTwo);
         if(keys.size()==3){
-            Text playerThree= new Text(keys.get(2)+" --->"+playerGodMap.get(keys.get(2)).getGodName()+" : "+playerGodMap.get(keys.get(2)).getGodPower());
+            Text playerThree= new Text(keys.get(2)+" ---> "+playerGodMap.get(keys.get(2)).getGodName()+"\n"+playerGodMap.get(keys.get(2)).getGodPower());
             playerThree.setWrappingWidth(450);
             playerThree.setFont(Font.font(16));
             layout.getChildren().add(playerThree);
