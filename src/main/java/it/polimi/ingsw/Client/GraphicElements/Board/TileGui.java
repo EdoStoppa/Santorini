@@ -40,15 +40,21 @@ public class TileGui extends StackPane {
 
 
     public TileGui(boolean light, int x, int y){
-        Rectangle border= new Rectangle(BoardScene.TILE_SIZE, BoardScene.TILE_SIZE);
-        level=0;
+        Rectangle border = new Rectangle(BoardScene.TILE_SIZE, BoardScene.TILE_SIZE);
+        level = 0;
+        //if(light)
+            //this.setId("tile");
+        //else
+            //this.setId("brightTile");
+        //this.getStylesheets().add(getClass().getResource("CSS/TileSheet.css").toExternalForm());
+
+        border.setFill(light ? Color.valueOf("#feb") : Color.valueOf("#582"));
+        getChildren().addAll(border,text);
 
 
         relocate(x*BoardScene.TILE_SIZE,y*BoardScene.TILE_SIZE);
         text.setFont(Font.font(72));
 
-        border.setFill(light ? Color.valueOf("#feb") : Color.valueOf("#582"));
-        getChildren().addAll(border,text);
 
         setOnMouseClicked(e->{
             if(BoardScene.isYourTurn()){
@@ -68,23 +74,27 @@ public class TileGui extends StackPane {
     public void drawDome(){
         switch (this.level) {
             case 0 -> {
+                this.setId("level4");
+                this.text.setText("D");
+                this.level=4;
+
+            }
+            case 1 -> {
+                this.setId("level5");
                 this.text.setText("D");
                 this.level=5;
 
             }
-            case 1 -> {
+            case 2 -> {
+                this.setId("level6");
                 this.text.setText("D");
                 this.level=6;
 
             }
-            case 2 -> {
+            case 3 -> {
+                this.setId("level7");
                 this.text.setText("D");
                 this.level=7;
-
-            }
-            case 3 -> {
-                this.text.setText("D");
-                this.level=4;
 
             }
         }

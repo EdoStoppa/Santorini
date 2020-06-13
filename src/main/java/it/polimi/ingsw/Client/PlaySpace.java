@@ -230,7 +230,6 @@ public class PlaySpace {
             }
         }
         setBuildingMatrix(updatedBuildingMatrix);
-        BoardScene.setYourTurn(false);
     }
 
     public void swapConstructorGUI (int [][]playSpaceUpdated){
@@ -332,6 +331,7 @@ public class PlaySpace {
 
     public void tileToShowGUI (List<Position> tiles){
         setTileToShow(tiles);
+        printPlaySpace();
     }
 
     public void setSpecial(boolean special){

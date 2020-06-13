@@ -1,0 +1,72 @@
+.tile{
+    -fx-background-image: url("../Tile/Tile OK.png");
+    -fx-background-size: 100%,100%;
+}
+
+.brightTile{
+    -fx-background-image: url("../Tile/Bright Tile Better.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level1{
+    -fx-background-image: url("../Tile/level1.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level2{
+    -fx-background-image: url("../Tile/level2.png");
+    -fx-background-size: 100%,100%;
+}
+.level3{
+    -fx-background-image: url("../Tile/level3.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level4tile{
+    -fx-background-image: url("../Tile/Tile OK.png"),url("../Tile/tile-Dome.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level4Bright{
+    -fx-background-image: url("../Tile/Bright Tile Better.png"),url("../Tile/tile-Dome.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level5{
+    -fx-background-image: url("../Tile/level1.png"),url("../Tile/tile-Dome.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level6{
+    -fx-background-image: url("../Tile/level2.png"),url("../Tile/tile-Dome.png");
+    -fx-background-size: 100%,100%;
+}
+.level7 {
+    -fx-background-image: url("../Tile/level3.png"), url("../Tile/tile-Dome.png");
+    -fx-background-size: 100%, 100%;
+}
+
+.tileH{
+    -fx-background-image: url("../Tile/Tile OK.png"),url("../Tile/Highlighted.png");
+    -fx-background-size: 100%,100%;
+}
+
+.brightTileH{
+    -fx-background-image: url("../Tile/Bright Tile Better.png"),url("../Tile/Highlighted.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level1H{
+    -fx-background-image: url("../Tile/level1.png"),url("../Tile/Highlighted.png");
+    -fx-background-size: 100%,100%;
+}
+
+.level2H{
+    -fx-background-image: url("../Tile/level2.png"),url("../Tile/Highlighted.png");
+    -fx-background-size: 100%,100%;
+}
+.level3H{
+    -fx-background-image: url("../Tile/level3.png"),url("../Tile/Highlighted.png");
+    -fx-background-size: 100%,100%;
+}
+

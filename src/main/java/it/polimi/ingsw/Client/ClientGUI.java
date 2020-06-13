@@ -13,7 +13,6 @@ import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
 import it.polimi.ingsw.Message.WinMessage;
-import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.God;
 import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.application.Platform;
@@ -75,12 +74,13 @@ public class ClientGUI extends Client implements EventHandler{
         boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
         inputObject.autoSetMessage(isMyTurn, false);
         BoardScene.setYourTurn(isMyTurn);
+        System.out.println(isMyTurn);
 
         if(inputObject instanceof ServerMoveMessage) {
             if(!inputObject.getIdPlayer().equals(idPlayer))
                 updatePlaySpaceGUI(inputObject);
             else
-                Platform.runLater(()->{ inputObject.updateGUI(playSpace); });
+                Platform.runLater(()-> inputObject.updateGUI(playSpace));
 
             System.out.println(inputObject.getMessage());
             System.out.println();
@@ -168,7 +168,7 @@ public class ClientGUI extends Client implements EventHandler{
                 System.out.println(inputObject.getMessage());
             }
             playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
-            Platform.runLater(()->ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
+            Platform.runLater(()-> ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
             return;
         }
         if (inputObject instanceof PlaceFirstConstructorMessage){

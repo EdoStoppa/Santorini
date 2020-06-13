@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+
 public class BoardScene {
     public static final int TILE_SIZE= (int) (ClientGuiApp.width*0.1375);
     public static final int WIDTH=5;
@@ -49,7 +50,7 @@ public class BoardScene {
         return board[x][y];
     }
 
-    public static Parent createContent(){
+    public static Parent createContent() {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
         root.getChildren().addAll(tileGroup,pieceGroup);
@@ -83,10 +84,10 @@ public class BoardScene {
 
         for (int y=0; y<HEIGHT;y++){
             for (int x=0; x<WIDTH;x++){
-                TileGui tile= new TileGui((x+y)%2==0,x,y);
-                board[x][y]=tile;
+                    TileGui tile= new TileGui((x+y)%2==0,x,y);
+                    board[x][y]=tile;
 
-                tileGroup.getChildren().add(tile);
+                    tileGroup.getChildren().add(tile);
 
             }
         }
@@ -121,20 +122,24 @@ public class BoardScene {
     public static void drawNextLevel(TileGui tile){
         switch (tile.getLevel()) {
             case 0 -> {
+                tile.setId("level1");
                 tile.getText().setText("1");
                 tile.setLevel(1);
             }
             case 1 -> {
+                tile.setId("level2");
                 tile.getText().setText("2");
                 tile.setLevel(2);
             }
             case 2 -> {
+                tile.setId("level3");
                 tile.getText().setText("3");
                 tile.setLevel(3);
             }
             case 3 -> {
+                tile.setId("level7");
                 tile.getText().setText("D");
-                tile.setLevel(4);
+                tile.setLevel(7);
             }
         }
     }
