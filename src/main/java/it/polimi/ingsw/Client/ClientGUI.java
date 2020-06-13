@@ -224,11 +224,12 @@ public class ClientGUI extends Client implements EventHandler{
         StringBuilder sBuilder = new StringBuilder();
         if (this.miniController != null) {
             if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {
-                socketOut.println(this.miniController.getMessageGui(message));
-                socketOut.flush();
-                System.out.println();
-                playSpace.reset();
+                String out = this.miniController.getMessageGui(message);
                 miniController = null;
+                playSpace.reset();
+                System.out.println();
+                socketOut.println(out);
+                socketOut.flush();
             } else {
                 System.out.println(sBuilder);
             }

@@ -43,11 +43,12 @@ public class ClientCLI extends Client{
                             sBuilder.delete(0, 100);
                             sBuilder.append("Sorry, your choice is invalid. Please try again");
                             if (this.miniController.checkPos(inputLine, playSpace, sBuilder)) {
-                                socketOut.println(this.miniController.getMessage(inputLine));
-                                socketOut.flush();
-                                System.out.println();
-                                playSpace.reset();
+                                String out = this.miniController.getMessage(inputLine);
                                 miniController = null;
+                                playSpace.reset();
+                                System.out.println();
+                                socketOut.println(out);
+                                socketOut.flush();
                             } else {
                                 System.out.println(sBuilder);
                             }
