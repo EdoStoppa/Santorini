@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
+import it.polimi.ingsw.Model.God;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,33 +28,14 @@ public class SceneBuilder {
 
     public  static final HashMap<String,Image> imageHashMap= new HashMap<>();
 
-    public static void initImage(){
-        try {
-            Image Apollo = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Apollo.png")));
-            Image Artemis = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Artemis.png")));
-            Image Athena = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Athena.png")));
-            Image Atlas = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Atlas.png")));
-            Image Demeter = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Demeter.png")));
-            Image Hephaestus = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Hephaestus.png")));
-            Image Minotaur = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Minotaur.png")));
-            Image Pan = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Pan.png")));
-            Image Prometheus = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Prometheus.png")));
-            imageHashMap.put("Apollo", Apollo);
-            imageHashMap.put("Artemis", Artemis);
-            imageHashMap.put("Athena", Athena);
-            imageHashMap.put("Atlas", Atlas);
-            imageHashMap.put("Demeter", Demeter);
-            imageHashMap.put("Hephaestus", Hephaestus);
-            imageHashMap.put("Minotaur", Minotaur);
-            imageHashMap.put("Pan", Pan);
-            imageHashMap.put("Prometheus", Prometheus);
-            
-        }catch (Exception e){
-            System.err.println(e.getMessage());
-        }
-
+    public static void initImages(){
+        setBackgroundImagesMap();
+        setGodImagesMap();
+        setConstructionImagesMap();
+        setHighlightedImagesMap();
     }
 
+    //-------- Methods used to create different scenes --------
     public static Parent ChooseGameMode(String message){
         VBox layout1= new VBox(ClientGuiApp.height*0.071);
         Label welcome= new Label(message);
@@ -70,7 +52,6 @@ public class SceneBuilder {
 
     }
 
-
     public static Parent ChooseName(String message){
         VBox layout=new VBox(ClientGuiApp.height*0.05714);
         Text textName= new Text(message);
@@ -82,7 +63,6 @@ public class SceneBuilder {
         layout.getChildren().addAll(textName,name,go);
         return layout;
     }
-
 
     public static void PickGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
@@ -320,13 +300,6 @@ public class SceneBuilder {
 
     }
 
-
-
-    public static void setGodImage(ImageView IWGod){
-        IWGod.setFitHeight(ClientGuiApp.height*0.27);
-        IWGod.setFitWidth(ClientGuiApp.width*0.15);
-    }
-
     public static Parent handeScene(String message){
         Label label= new Label(message);
         VBox layout=new VBox(10);
@@ -335,5 +308,31 @@ public class SceneBuilder {
         layout.getChildren().add(label);
         return layout;
 
+    }
+
+    //-------- Methods used to initialize and manipulate all the images --------
+    public static void setBackgroundImagesMap(){}
+
+    public static void setGodImagesMap(){
+        for(God god : God.getAllGod()){
+            String path = "God/" + god.getGodName() + ".png";
+            try{
+                Image godImage = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream(path)));
+                imageHashMap.put(god.getGodName(), godImage);
+            } catch (Exception e){
+                System.out.println("Image not found for " + god.getGodName());
+            }
+        }
+    }
+
+    private static void setConstructionImagesMap() {
+    }
+
+    private static void setHighlightedImagesMap() {
+    }
+
+    public static void setGodImage(ImageView IWGod){
+        IWGod.setFitHeight(ClientGuiApp.height*0.27);
+        IWGod.setFitWidth(ClientGuiApp.width*0.15);
     }
 }
