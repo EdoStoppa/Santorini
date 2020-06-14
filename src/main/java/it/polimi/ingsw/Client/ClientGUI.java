@@ -116,26 +116,7 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     private void manageStringGUI(String input){
-        if(input.equals(HelpMessage.forcedClose)){
-            Platform.runLater(()->{
-                Scene error= new Scene(SceneBuilder.handeScene(input),ClientGuiApp.width,ClientGuiApp.height);
-                setActive(false);
-                ClientGuiApp.getPrimaryStage().setScene(error);
-            });
-        }
-        if (input.equals(HelpMessage.enterName)){
-            Platform.runLater(()->{
-                Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
-                ClientGuiApp.getPrimaryStage().setScene(scene);
-            });
-        }
-        if (input.equals(HelpMessage.gameMode)) {
-            Platform.runLater(() -> {
-                Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
-                ClientGuiApp.getPrimaryStage().setScene(scene);
-            });
-        }
-
+        executeSpecialString(input);
 
         if(input.startsWith(HelpMessage.noAnswer)){
             System.out.println(input.substring(HelpMessage.noAnswer.length()));
@@ -151,6 +132,36 @@ public class ClientGUI extends Client implements EventHandler{
                 System.out.println(input);
             }
         }
+    }
+
+    private void executeSpecialString(String input){
+        if(input.equals(HelpMessage.forcedClose)){
+            Platform.runLater(()->{
+                Scene error= new Scene(SceneBuilder.handeScene(input),ClientGuiApp.width,ClientGuiApp.height);
+                setActive(false);
+                ClientGuiApp.getPrimaryStage().setScene(error);
+            });
+            return;
+        }
+
+        if (input.equals(HelpMessage.enterName)){
+            Platform.runLater(()->{
+                Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
+                ClientGuiApp.getPrimaryStage().setScene(scene);
+            });
+            return;
+        }
+
+        if (input.equals(HelpMessage.gameMode)) {
+            Platform.runLater(() -> {
+                Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
+                ClientGuiApp.getPrimaryStage().setScene(scene);
+            });
+            return;
+        }
+
+        if(input.startsWith(HelpMessage.noAnswer + "Please wait while"))
+            BoardScene.newText(input.substring(HelpMessage.noAnswer.length()));
     }
 
     private void manageServerMessageGUI(ServerMessage inputObject){

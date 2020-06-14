@@ -13,7 +13,7 @@ public enum PossiblePhases {
     CHOOSE_CONSTRUCTOR("Choose which constructor you'll use among the highlighted ones", " is choosing which constructor to use"),
     MOVE("Choose where to move among the highlighted tiles", " is choosing where to move"),
     BUILD("Choose where to build among the highlighted tiles", " is choosing where to build"),
-    SPECIAL_CHOOSE_CONSTRUCTOR("Choose your constructor", " is choosing which constructor to use"),
+    SPECIAL_CHOOSE_CONSTRUCTOR("Choose which constructor you'll use among the highlighted ones", " is choosing which constructor to use"),
     SPECIAL_MOVE("Choose where to move among the highlighted tiles", " is choosing where to move"),
     SPECIAL_BUILD("Choose where to build among the highlighted tiles", " is choosing where to build");
     private final String message1;

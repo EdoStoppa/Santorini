@@ -406,6 +406,13 @@ public class Server {
 
         Position pos;
         for(Player p : pList){
+            if(!isFirst){
+                for(Player opponent : pList){
+                    if(!p.getIdPlayer().equals(opponent.getIdPlayer()))
+                        connectionMap.get(opponent.getIdPlayer()).send(HelpMessage.noAnswer + "Please wait while " + p.getIdPlayer() + " is choosing where to place a constructor");
+                }
+            }
+
             connection = connectionMap.get(p.getIdPlayer());
 
             pos = connection.firstPlaceConstructor(isFirst);
