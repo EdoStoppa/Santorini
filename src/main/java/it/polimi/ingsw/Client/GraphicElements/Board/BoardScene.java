@@ -128,6 +128,9 @@ public class BoardScene {
 
     }
 
+    public static void clearText(){
+        messages.clear();
+    }
 
     public static PossiblePhases getPhase() {
         return phase;

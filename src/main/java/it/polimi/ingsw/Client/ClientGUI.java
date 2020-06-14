@@ -80,30 +80,33 @@ public class ClientGUI extends Client implements EventHandler{
                 BoardScene.setPhase(inputObject.getPhase());
                 System.out.println(BoardScene.getPhase());
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
+                updateText(inputObject);
                 updatePlaySpaceGUI(inputObject);
                 BoardScene.setInit(false);
             } else {
-                Platform.runLater(()-> {
-                    if (inputObject.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || inputObject.getPhase() == PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR)
-                        BoardScene.newText("\n");
-                    BoardScene.newText(inputObject.getMessage());
-                });
+                updateText(inputObject);
             }
-            System.out.println(inputObject.getMessage());
             playSpace.printPlaySpace();
+            System.out.println(inputObject.getMessage());
             return;
         }else if(inputObject instanceof RemovedPlayerMessage) {
+            updateText(inputObject);
             updatePlaySpaceGUI(inputObject);
             if (isMyTurn){
                 winScene(false);
                 setActive(false);
-                return;}
+            }
+            return;
         } else if(inputObject instanceof WinMessage){
+            updateText(inputObject);
             updatePlaySpaceGUI(inputObject);
             winScene(isMyTurn);
             setActive(false);
             return;
         }
+
+        /*if(!isMyTurn)
+            updateText(inputObject);*/
         updatePlaySpaceGUI(inputObject);
         playSpace.printPlaySpace();
     }
@@ -273,14 +276,17 @@ public class ClientGUI extends Client implements EventHandler{
         Platform.runLater(message::buildScene);
     }
 
+    public void updateText(GameMessage message){
+        Platform.runLater(()-> {
+            if (message.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || message.getPhase() == PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR)
+                BoardScene.clearText();
+            BoardScene.newText(message.getMessage());
+        });
+    }
+
     @Override
     public void updatePlaySpaceGUI(GameMessage message) {
-        Platform.runLater(()->{
-            if (message.getPhase()==PossiblePhases.CHOOSE_CONSTRUCTOR || message.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR)
-                BoardScene.newText("\n");
-            BoardScene.newText(message.getMessage());
-            message.updateGUI(playSpace);
-        });
+        Platform.runLater(()->{ message.updateGUI(playSpace); });
     }
 
     public static Map<String, God> getPlayerGodMap() {
