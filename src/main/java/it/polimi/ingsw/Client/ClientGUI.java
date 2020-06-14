@@ -244,6 +244,7 @@ public class ClientGUI extends Client implements EventHandler{
         Socket socket = new Socket(ip, port);
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         socketOut = new PrintWriter(socket.getOutputStream());
+        SceneBuilder.initImage();
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncCheckConnection();

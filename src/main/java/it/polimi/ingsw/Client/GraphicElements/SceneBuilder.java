@@ -27,17 +27,17 @@ public class SceneBuilder {
 
     public  static final HashMap<String,Image> imageHashMap= new HashMap<>();
 
-    public SceneBuilder(){
+    public static void initImage(){
         try {
-            Image Apollo = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Apollo.png")));
-            Image Artemis = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Artemis.png")));
-            Image Athena = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Athena.png")));
-            Image Atlas = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Atlas.png")));
-            Image Demeter = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Demeter.png")));
-            Image Hephaestus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Hephaestus.png")));
-            Image Minotaur = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Minotaur.png")));
-            Image Pan = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Pan.png")));
-            Image Prometheus = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("God/Prometheus.png")));
+            Image Apollo = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Apollo.png")));
+            Image Artemis = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Artemis.png")));
+            Image Athena = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Athena.png")));
+            Image Atlas = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Atlas.png")));
+            Image Demeter = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Demeter.png")));
+            Image Hephaestus = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Hephaestus.png")));
+            Image Minotaur = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Minotaur.png")));
+            Image Pan = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Pan.png")));
+            Image Prometheus = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream("God/Prometheus.png")));
             imageHashMap.put("Apollo", Apollo);
             imageHashMap.put("Artemis", Artemis);
             imageHashMap.put("Athena", Athena);
@@ -47,6 +47,7 @@ public class SceneBuilder {
             imageHashMap.put("Minotaur", Minotaur);
             imageHashMap.put("Pan", Pan);
             imageHashMap.put("Prometheus", Prometheus);
+            
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
