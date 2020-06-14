@@ -1,10 +1,12 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Model.God;
+import it.polimi.ingsw.Model.Tile;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -326,9 +328,35 @@ public class SceneBuilder {
     }
 
     private static void setConstructionImagesMap() {
+        for (int i=0;i<=7;i++){
+            String pathLight="Tile/light/" +i+ "light.png";
+            String pathDark="Tile/dark/" +i+ "dark.png";
+            try {
+                Image lightTile = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream(pathLight)));
+                Image darkTile= new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream(pathDark)));
+                BoardScene.lightTileHashMap.put(i,lightTile);
+                BoardScene.darkTileHashMap.put(i,darkTile);
+            }catch (Exception e){
+                System.out.println("Image not found for tile" +i);
+            }
+
+        }
     }
 
     private static void setHighlightedImagesMap() {
+        for (int i=0;i<=3;i++){
+            String pathLight="Tile/highlighted/"+i+"showLight.png";
+            String pathDark="Tile/highlighted/"+i+"showDark.png";
+            try {
+                Image showLightTile = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream(pathLight)));
+                Image showDarkTile= new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream(pathDark)));
+                BoardScene.HighlightedLightTileHashMap.put(i,showLightTile);
+                BoardScene.HighlightedDarkTileHashMap.put(i,showDarkTile);
+            }catch (Exception e){
+                System.out.println("Image not found for  Show tile" +i);
+            }
+
+        }
     }
 
     public static void setGodImage(ImageView IWGod){

@@ -7,7 +7,6 @@ import it.polimi.ingsw.Controller.MiniController.MiniController;
 import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
-import it.polimi.ingsw.Message.MoveMessages.ServerMoveMessage;
 import it.polimi.ingsw.Message.ServerMessage.GodRecapMessage;
 import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
 import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
@@ -75,17 +74,6 @@ public class ClientGUI extends Client implements EventHandler{
         inputObject.autoSetMessage(isMyTurn, false);
         BoardScene.setYourTurn(isMyTurn);
         System.out.println(isMyTurn);
-
-        if(inputObject instanceof ServerMoveMessage) {
-            if(!inputObject.getIdPlayer().equals(idPlayer))
-                updatePlaySpaceGUI(inputObject);
-            else
-                Platform.runLater(()-> inputObject.updateGUI(playSpace));
-
-            System.out.println(inputObject.getMessage());
-            System.out.println();
-            return;
-        }
 
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
@@ -164,10 +152,11 @@ public class ClientGUI extends Client implements EventHandler{
 
     private void manageServerMessageGUI(ServerMessage inputObject){
         if (inputObject instanceof GodRecapMessage) {
-            if (!((GodRecapMessage) inputObject).getFirstPlayer().equals(idPlayer)) {
-                System.out.println(inputObject.getMessage());
+            String name = ((GodRecapMessage) inputObject).getFirstPlayer();
+            if (!name.equals(idPlayer)) {
+                BoardScene.newText("Please wait while " + name + " is choosing where to place a constructor");
             }
-            playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
+            this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
             Platform.runLater(()-> ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
             return;
         }
@@ -226,6 +215,7 @@ public class ClientGUI extends Client implements EventHandler{
             if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {
                 String out = this.miniController.getMessageGui(message);
                 miniController = null;
+                playSpace.disHighlightsTile();
                 playSpace.reset();
                 System.out.println();
                 socketOut.println(out);

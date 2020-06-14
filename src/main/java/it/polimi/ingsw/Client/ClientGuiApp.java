@@ -1,13 +1,14 @@
 package it.polimi.ingsw.Client;
 
 
-
-import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -21,10 +22,8 @@ public class ClientGuiApp extends Application implements Serializable {
     private static final long serialVersionUID = 1L;
     private static ClientGUI  client;
     private static Stage primaryStage;
-    private static SceneBuilder sceneBuilder;
     public static int width=800;
     public static int height=700;
-    private static Scene scene1;
     private static String ip="",port="",definition="800x700";
 
 
@@ -44,14 +43,17 @@ public class ClientGuiApp extends Application implements Serializable {
     @Override
     public void start(Stage primaryStage) {
         ClientGuiApp.primaryStage =primaryStage;
-        sceneBuilder=new SceneBuilder();
 
-        scene1= new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"),width,height);
+        Scene scene1 = new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"), width, height);
 
 
 
         primaryStage.setScene(scene1);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(e->{
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     public static Parent CreateContent (String message){

@@ -12,10 +12,13 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.util.HashMap;
 
 
 public class BoardScene {
@@ -28,6 +31,11 @@ public class BoardScene {
     private static  boolean init=true;
     private static boolean special=false;
     private static boolean checkDome=false;
+
+    public  static final HashMap<Integer, Image> lightTileHashMap= new HashMap<>();
+    public  static final HashMap<Integer,Image> darkTileHashMap= new HashMap<>();
+    public  static final HashMap<Integer, Image> HighlightedLightTileHashMap= new HashMap<>();
+    public  static final HashMap<Integer,Image> HighlightedDarkTileHashMap= new HashMap<>();
 
 
 
@@ -118,30 +126,6 @@ public class BoardScene {
     public static void newText(String message){
         messages.appendText(message+"\n");
 
-    }
-    public static void drawNextLevel(TileGui tile){
-        switch (tile.getLevel()) {
-            case 0 -> {
-                tile.setId("level1");
-                tile.getText().setText("1");
-                tile.setLevel(1);
-            }
-            case 1 -> {
-                tile.setId("level2");
-                tile.getText().setText("2");
-                tile.setLevel(2);
-            }
-            case 2 -> {
-                tile.setId("level3");
-                tile.getText().setText("3");
-                tile.setLevel(3);
-            }
-            case 3 -> {
-                tile.setId("level7");
-                tile.getText().setText("D");
-                tile.setLevel(7);
-            }
-        }
     }
 
 

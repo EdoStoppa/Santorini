@@ -35,7 +35,7 @@ public class CanEndTileMessage extends TileToShowMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-        playSpace.setTileToShow(getTileToShow());
+        playSpace.tileToShowGUI(getTileToShow());
         playSpace.setSpecial(true);
     }
 }

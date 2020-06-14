@@ -20,7 +20,7 @@ public class CheckDomeMessage  extends TileToShowMessage {
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-        playSpace.setTileToShow(getTileToShow());
+        playSpace.tileToShowGUI(getTileToShow());
         playSpace.setCheckDome(true);
     }
 }

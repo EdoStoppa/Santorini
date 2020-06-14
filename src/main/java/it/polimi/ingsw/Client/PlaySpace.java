@@ -3,7 +3,11 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.GraphicElements.Board.Piece;
 import it.polimi.ingsw.Client.GraphicElements.Board.PieceType;
+import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
+import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Position;
+import javafx.scene.paint.ImagePattern;
+
 
 import java.util.List;
 
@@ -222,7 +226,7 @@ public class PlaySpace {
             for (int j=0;j<=4;j++){
                 if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && !dome){
                     System.out.println(i+","+j);
-                    BoardScene.drawNextLevel(BoardScene.getTile(j,i));
+                    BoardScene.getTile(j,i).drawNextLevel();
                 }else if(buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && dome){
                     System.out.println(i+","+j);
                     BoardScene.getTile(j,i).drawDome();
@@ -330,8 +334,21 @@ public class PlaySpace {
     }
 
     public void tileToShowGUI (List<Position> tiles){
+        for(Position position:tiles)
+            BoardScene.getTile(position.getCol(),position.getRow()).highlightsTile();
         setTileToShow(tiles);
         printPlaySpace();
+    }
+
+    public void disHighlightsTile(){
+        if (tileToShow!=null)
+        for (Position position: tileToShow) {
+            TileGui highlight = BoardScene.getTile(position.getCol(), position.getRow());
+            if (highlight.isLight())
+                highlight.getTile().setFill(new ImagePattern(BoardScene.lightTileHashMap.get(highlight.getLevel())));
+            else
+                highlight.getTile().setFill(new ImagePattern(BoardScene.darkTileHashMap.get(highlight.getLevel())));
+        }
     }
 
     public void setSpecial(boolean special){
