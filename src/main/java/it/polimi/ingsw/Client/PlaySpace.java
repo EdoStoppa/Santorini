@@ -4,7 +4,6 @@ import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.GraphicElements.Board.Piece;
 import it.polimi.ingsw.Client.GraphicElements.Board.PieceType;
 import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
-import it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Position;
 import javafx.scene.paint.ImagePattern;
 
@@ -322,10 +321,14 @@ public class PlaySpace {
 
 
     public void removeConstructorGUI (int[][] playSpaceUpdated){
+        int count=0;
+
         for(int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
+                if (playSpaceUpdated[i][j]!=0)
+                    count++;
                 if (playSpaceUpdated[i][j]==0 && constructorMatrix[i][j]!=0){
-                    BoardScene.pieceGroup.getChildren().remove(BoardScene.getTile(i,j).getPiece());
+                    BoardScene.pieceGroup.getChildren().remove(BoardScene.getTile(j,i).getPiece());
                     BoardScene.getTile(i,j).setPiece(null);
                 }
             }
@@ -359,6 +362,15 @@ public class PlaySpace {
         BoardScene.setCheckDome(checkDome);
     }
 
-
+    public int CountPlayerRemains(int[][] playSpaceUpdated){
+        int count=0;
+        for(int i=0;i<=4;i++){
+            for (int j=0;j<=4;j++){
+                if (playSpaceUpdated[i][j]!=0)
+                    count++;
+    }
+        }
+        System.out.println(count+"saad");
+        return count;}
 
 }

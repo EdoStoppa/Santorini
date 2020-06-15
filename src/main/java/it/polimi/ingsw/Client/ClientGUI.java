@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
@@ -25,6 +26,7 @@ import java.net.Socket;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientGUI extends Client implements EventHandler{
     private String idPlayer = null;
@@ -37,6 +39,7 @@ public class ClientGUI extends Client implements EventHandler{
     public ClientGUI(String ip, int port){
         super(ip, port);
     }
+
 
     @Override
     public void run() throws IOException {
@@ -154,7 +157,16 @@ public class ClientGUI extends Client implements EventHandler{
         }else if(inputObject instanceof RemovedPlayerMessage) {
             updateText(inputObject);
             updatePlaySpaceGUI(inputObject);
-            if (isMyTurn){
+            System.out.println();
+            if (isMyTurn && playSpace.CountPlayerRemains(((RemovedPlayerMessage) inputObject).getConstructorMatrix())==4){
+                Platform.runLater(()->{
+                    boolean answer=AlertBox.CheckDome("do you want continue watch the game");
+                    if (!answer){
+                        SceneBuilder.endGameTransition(false);
+                        setActive(false);
+                    }
+                }); }
+            else if(isMyTurn){
                 SceneBuilder.endGameTransition(false);
                 setActive(false);
             }
@@ -293,4 +305,6 @@ public class ClientGUI extends Client implements EventHandler{
     public static Map<String, God> getPlayerGodMap() {
         return playerGodMap;
     }
+
+
 }

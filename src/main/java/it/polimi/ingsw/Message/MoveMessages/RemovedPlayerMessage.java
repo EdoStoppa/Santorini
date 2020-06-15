@@ -21,7 +21,7 @@ public class RemovedPlayerMessage extends MoveMessage {
         setMessage(text);
     }
 
-    public void updateGUI(PlaySpace playSpace,boolean isMyTurn) {
+    public void updateGUI(PlaySpace playSpace) {
         playSpace.removeConstructorGUI(getConstructorMatrix());
     }
 
