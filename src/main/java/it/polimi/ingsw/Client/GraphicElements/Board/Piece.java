@@ -70,11 +70,11 @@ public class Piece extends StackPane {
             if (BoardScene.isYourTurn()){
             if(BoardScene.getPhase()== PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR ){
                 System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+                ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
             }
             if(BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE){
                 System.out.println("sono qui");
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+                ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
             }
         }});
     }

@@ -75,7 +75,7 @@ public class BoardScene {
             System.out.println(special+","+yourTurn);
             if(special && yourTurn){
                 System.out.println("end");
-                ClientGuiApp.getClient().asyncWriteToSocketGUI("end");
+                ClientGuiApp.getClient().writeToSocketGUI("end");
             }
         });
         VBox buttons=new VBox(ClientGuiApp.width*0.0125);

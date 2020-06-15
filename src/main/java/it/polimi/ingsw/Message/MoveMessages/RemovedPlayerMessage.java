@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Message.MoveMessages;
 
-import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Model.PossiblePhases;
 
@@ -24,9 +23,6 @@ public class RemovedPlayerMessage extends MoveMessage {
 
     public void updateGUI(PlaySpace playSpace,boolean isMyTurn) {
         playSpace.removeConstructorGUI(getConstructorMatrix());
-        if (isMyTurn){
-            ClientGUI.winScene(false);
-        }
     }
 
 }

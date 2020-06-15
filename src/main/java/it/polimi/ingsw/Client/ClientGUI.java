@@ -39,6 +39,40 @@ public class ClientGUI extends Client implements EventHandler{
     }
 
     @Override
+    public void run() throws IOException {
+        Socket socket = new Socket(ip, port);
+        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
+        socketOut = new PrintWriter(socket.getOutputStream());
+        SceneBuilder.initImages();
+        try {
+            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t1 = asyncManagePing();
+        }catch (NoSuchElementException e){
+            System.out.println("Connection closed from the client side");
+        }
+    }
+
+    public void writeToSocketGUI(String message) {
+        StringBuilder sBuilder = new StringBuilder();
+        if (this.miniController != null) {
+            if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {
+                String out = this.miniController.getMessageGui(message);
+                miniController = null;
+                playSpace.disHighlightsTile();
+                playSpace.reset();
+                System.out.println();
+                socketOut.println(out);
+                socketOut.flush();
+            } else {
+                System.out.println(sBuilder);
+            }
+        } else {
+            System.out.println("Now you can't make a move. Please wait");
+        }
+
+    }
+
+    @Override
     public Thread asyncReadFromSocket(ObjectInputStream socketIn) {
         Thread t= new Thread(() -> {
             try {
@@ -47,7 +81,7 @@ public class ClientGUI extends Client implements EventHandler{
 
                     if(inputObject.equals(true)){
                         synchronized (ipLock){
-                            managePing();
+                            updatePing();
                         }
                     } synchronized(this){
                         if(inputObject instanceof String) {
@@ -64,6 +98,34 @@ public class ClientGUI extends Client implements EventHandler{
                 setActive(false);
             }
 
+        });
+        t.start();
+        return t;
+    }
+
+    public Thread asyncManagePing(){
+        Thread t = new Thread(() ->{
+            LocalTime lastThreadTime = LocalTime.now();
+            while(isActive()){
+                try{
+                    Thread.sleep(7000);
+                } catch(InterruptedException e){
+                    setActive(false);
+                    System.out.println("\n\nSomething went horribly wrong, please restart the game");
+                }
+
+                synchronized(ipLock){
+                    //System.out.println("Checking Ping, Thread time = " + lastThreadTime.toString() + " and Ping time = " + lastPingTime.toString());
+                    if(lastThreadTime.equals(lastPingTime)){
+                        if(isActive())
+                            System.out.println("The Server connection was lost, please restart the game");
+                        setActive(false);
+                    } else {
+                        lastThreadTime = lastPingTime;
+                    }
+                }
+
+            }
         });
         t.start();
         return t;
@@ -93,14 +155,14 @@ public class ClientGUI extends Client implements EventHandler{
             updateText(inputObject);
             updatePlaySpaceGUI(inputObject);
             if (isMyTurn){
-                winScene(false);
+                SceneBuilder.endGameTransition(false);
                 setActive(false);
             }
             return;
         } else if(inputObject instanceof WinMessage){
             updateText(inputObject);
             updatePlaySpaceGUI(inputObject);
-            winScene(isMyTurn);
+            SceneBuilder.endGameTransition(isMyTurn);
             setActive(false);
             return;
         }
@@ -109,10 +171,6 @@ public class ClientGUI extends Client implements EventHandler{
             updateText(inputObject);*/
         updatePlaySpaceGUI(inputObject);
         playSpace.printPlaySpace();
-    }
-
-    private synchronized void managePing(){
-        lastPingTime = LocalTime.now();
     }
 
     private void manageStringGUI(String input){
@@ -134,6 +192,28 @@ public class ClientGUI extends Client implements EventHandler{
         }
     }
 
+    private void manageServerMessageGUI(ServerMessage inputObject){
+        if (inputObject instanceof GodRecapMessage) {
+            String name = ((GodRecapMessage) inputObject).getFirstPlayer();
+            if (!name.equals(idPlayer)) {
+                BoardScene.newText("Please wait while " + name + " is choosing where to place a constructor");
+            }
+            playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
+            Platform.runLater(()-> ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
+            return;
+        }
+        if (inputObject instanceof PlaceFirstConstructorMessage){
+            BoardScene.newText(inputObject.getMessage());
+        }
+        this.miniController=inputObject.getMiniController();
+        update(inputObject);
+    }
+
+    private synchronized void updatePing(){
+        lastPingTime = LocalTime.now();
+    }
+
+    //---------- Methods to manage all the String messages ----------
     private void executeSpecialString(String input){
         if(input.equals(HelpMessage.forcedClose)){
             Platform.runLater(()->{
@@ -164,23 +244,6 @@ public class ClientGUI extends Client implements EventHandler{
             BoardScene.newText(input.substring(HelpMessage.noAnswer.length()));
     }
 
-    private void manageServerMessageGUI(ServerMessage inputObject){
-        if (inputObject instanceof GodRecapMessage) {
-            String name = ((GodRecapMessage) inputObject).getFirstPlayer();
-            if (!name.equals(idPlayer)) {
-                BoardScene.newText("Please wait while " + name + " is choosing where to place a constructor");
-            }
-            this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
-            Platform.runLater(()-> ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
-            return;
-        }
-        if (inputObject instanceof PlaceFirstConstructorMessage){
-            BoardScene.newText(inputObject.getMessage());
-        }
-        this.miniController=inputObject.getMiniController();
-        update(inputObject);
-    }
-
     private boolean getName(String s){
         String[] splitted = s.split(" ");
 
@@ -195,68 +258,6 @@ public class ClientGUI extends Client implements EventHandler{
         return false;
     }
 
-    public Thread asyncCheckConnection(){
-        Thread t = new Thread(() ->{
-            LocalTime lastThreadTime = LocalTime.now();
-            while(isActive()){
-                try{
-                    Thread.sleep(7000);
-                } catch(InterruptedException e){
-                    setActive(false);
-                    System.out.println("\n\nSomething went horribly wrong, please restart the game");
-                }
-
-                synchronized(ipLock){
-                    //System.out.println("Checking Ping, Thread time = " + lastThreadTime.toString() + " and Ping time = " + lastPingTime.toString());
-                    if(lastThreadTime.equals(lastPingTime)){
-                        if(isActive())
-                            System.out.println("The Server connection was lost, please restart the game");
-                        setActive(false);
-                    } else {
-                        lastThreadTime = lastPingTime;
-                    }
-                }
-
-            }
-        });
-        t.start();
-        return t;
-    }
-
-    public void asyncWriteToSocketGUI(String message) {
-        StringBuilder sBuilder = new StringBuilder();
-        if (this.miniController != null) {
-            if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {
-                String out = this.miniController.getMessageGui(message);
-                miniController = null;
-                playSpace.disHighlightsTile();
-                playSpace.reset();
-                System.out.println();
-                socketOut.println(out);
-                socketOut.flush();
-            } else {
-                System.out.println(sBuilder);
-            }
-        } else {
-            System.out.println("Now you can't make a move. Please wait");
-        }
-
-    }
-
-    @Override
-    public void run() throws IOException {
-        Socket socket = new Socket(ip, port);
-        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        socketOut = new PrintWriter(socket.getOutputStream());
-        SceneBuilder.initImages();
-        try {
-            Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncCheckConnection();
-        }catch (NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
-        }
-    }
-
     public void checkName(boolean check){
         Platform.runLater(()->{
             if(check) {
@@ -269,22 +270,15 @@ public class ClientGUI extends Client implements EventHandler{
         });
     }
 
-    public  static void winScene(boolean win){
-        Platform.runLater(()->{
-            if (win){
-                Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),ClientGuiApp.width,ClientGuiApp.height);
-                ClientGuiApp.getPrimaryStage().setScene(SceneWin);
-            }else{
-                Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),ClientGuiApp.width,ClientGuiApp.height);
-                ClientGuiApp.getPrimaryStage().setScene(SceneLose);
-            }
-        });
-
-    }
-
+    //---------- Methods to update and change the client GUI ----------
     @Override
     public void update(ServerMessage message) {
         Platform.runLater(message::buildScene);
+    }
+
+    @Override
+    public void updatePlaySpaceGUI(GameMessage message) {
+        Platform.runLater(()->{ message.updateGUI(playSpace); });
     }
 
     public void updateText(GameMessage message){
@@ -295,11 +289,7 @@ public class ClientGUI extends Client implements EventHandler{
         });
     }
 
-    @Override
-    public void updatePlaySpaceGUI(GameMessage message) {
-        Platform.runLater(()->{ message.updateGUI(playSpace); });
-    }
-
+    //---------- Miscellaneous ----------
     public static Map<String, God> getPlayerGodMap() {
         return playerGodMap;
     }

@@ -6,7 +6,7 @@ import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
 import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Model.God;
-import it.polimi.ingsw.Model.Tile;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -44,8 +44,8 @@ public class SceneBuilder {
         HBox Buttons= new HBox(ClientGuiApp.width*0.1875);
         Button twoPlayer= new Button("2 player");
         Button treePlayer=new Button("3 player");
-        twoPlayer.setOnAction(e->ClientGuiApp.getClient().asyncWriteToSocketGUI("2"));
-        treePlayer.setOnAction(e->ClientGuiApp.getClient().asyncWriteToSocketGUI("3"));
+        twoPlayer.setOnAction(e->ClientGuiApp.getClient().writeToSocketGUI("2"));
+        treePlayer.setOnAction(e->ClientGuiApp.getClient().writeToSocketGUI("3"));
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
         Buttons.setAlignment(Pos.CENTER);
         layout1.setAlignment(Pos.CENTER);
@@ -59,7 +59,7 @@ public class SceneBuilder {
         Text textName= new Text(message);
         TextField name= new TextField();
         Button go= new Button("go");
-        go.setOnAction(e-> ClientGuiApp.getClient().asyncWriteToSocketGUI(name.getText()));
+        go.setOnAction(e-> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
         name.setMaxWidth(ClientGuiApp.width*0.1875);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName,name,go);
@@ -183,7 +183,7 @@ public class SceneBuilder {
                 }
             }
             System.out.println(message);
-            ClientGuiApp.getClient().asyncWriteToSocketGUI(message.toString());
+            ClientGuiApp.getClient().writeToSocketGUI(message.toString());
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         }else{
@@ -235,11 +235,11 @@ public class SceneBuilder {
         fourLine.getChildren().addAll(description,sendMessage);
         sendMessage.setOnAction(e->{
             if(first.isSelected())
-                ClientGuiApp.getClient().asyncWriteToSocketGUI("0");
+                ClientGuiApp.getClient().writeToSocketGUI("0");
             if(second.isSelected())
-                ClientGuiApp.getClient().asyncWriteToSocketGUI("1");
+                ClientGuiApp.getClient().writeToSocketGUI("1");
             if(third.isSelected())
-                ClientGuiApp.getClient().asyncWriteToSocketGUI("2");
+                ClientGuiApp.getClient().writeToSocketGUI("2");
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
@@ -288,11 +288,11 @@ public class SceneBuilder {
         layout.getChildren().add(fourLine);
         sendMessage.setOnAction(e->{
             if(first.isSelected())
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(0));
+                ClientGuiApp.getClient().writeToSocketGUI(message.getPlayerlist().get(0));
             if(second.isSelected())
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(1));
+                ClientGuiApp.getClient().writeToSocketGUI(message.getPlayerlist().get(1));
             if(third.isSelected())
-                ClientGuiApp.getClient().asyncWriteToSocketGUI(message.getPlayerlist().get(2));
+                ClientGuiApp.getClient().writeToSocketGUI(message.getPlayerlist().get(2));
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
@@ -309,6 +309,19 @@ public class SceneBuilder {
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().add(label);
         return layout;
+
+    }
+
+    public  static void endGameTransition(boolean win){
+        Platform.runLater(()->{
+            if (win){
+                Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),ClientGuiApp.width,ClientGuiApp.height);
+                ClientGuiApp.getPrimaryStage().setScene(SceneWin);
+            }else{
+                Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),ClientGuiApp.width,ClientGuiApp.height);
+                ClientGuiApp.getPrimaryStage().setScene(SceneLose);
+            }
+        });
 
     }
 

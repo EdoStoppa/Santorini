@@ -71,10 +71,10 @@ public class TileGui extends StackPane {
                 if(BoardScene.isInit() || BoardScene.getPhase()==PossiblePhases.MOVE || BoardScene.getPhase()==PossiblePhases.BUILD
                         || BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE || BoardScene.getPhase()==PossiblePhases.SPECIAL_BUILD){
 
-                    ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
+                    ClientGuiApp.getClient().writeToSocketGUI(y+","+x);
                 }
                 if(BoardScene.isCheckDome() && BoardScene.getPhase()==PossiblePhases.SPECIAL_BUILD){
-                    ClientGuiApp.getClient().asyncWriteToSocketGUI(y+","+x);
+                    ClientGuiApp.getClient().writeToSocketGUI(y+","+x);
                 }
             }
         });
