@@ -201,6 +201,9 @@ public class PlaySpace {
                               if ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0) ){
                               if (playSpaceUpdated[i + h][j + k] == constructorMatrix[i][j] && constructorMatrix[i + h][j + k] == 0) {
                                   Piece moved = BoardScene.getTile(j, i).getPiece();
+                                  System.out.println(j+" "+i);
+                                  if (moved==null)
+                                      System.out.println("non ho trovato il pezzo da spostare");
                                   BoardScene.animation(moved, k, h);
                                   BoardScene.getTile(j, i).setPiece(null);
                                   BoardScene.getTile(j + k, i + h).setPiece(moved);
@@ -329,7 +332,7 @@ public class PlaySpace {
                     count++;
                 if (playSpaceUpdated[i][j]==0 && constructorMatrix[i][j]!=0){
                     BoardScene.pieceGroup.getChildren().remove(BoardScene.getTile(j,i).getPiece());
-                    BoardScene.getTile(i,j).setPiece(null);
+                    BoardScene.getTile(j,i).setPiece(null);
                 }
             }
         }

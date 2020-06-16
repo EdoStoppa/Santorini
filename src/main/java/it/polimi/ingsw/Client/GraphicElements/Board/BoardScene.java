@@ -116,6 +116,8 @@ public class BoardScene {
         TranslateTransition transition= new TranslateTransition(Duration.seconds(0.5),piece);
         transition.setByY(y*TILE_SIZE);
         transition.setByX(x*TILE_SIZE);
+        if(piece!=null)
+            System.out.println(x+" "+y);
         //piece.setTranslationY(-y*TILE_SIZE);
         //piece.setTranslationX(-x*TILE_SIZE);
         //System.out.println("translate: "+piece.getTranslationX()+"  "+piece.getTranslationY());
