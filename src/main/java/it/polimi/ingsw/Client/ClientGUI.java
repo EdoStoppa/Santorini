@@ -26,7 +26,6 @@ import java.net.Socket;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClientGUI extends Client implements EventHandler{
     private String idPlayer = null;
@@ -211,7 +210,12 @@ public class ClientGUI extends Client implements EventHandler{
                 BoardScene.newText("Please wait while " + name + " is choosing where to place a constructor");
             }
             playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
-            Platform.runLater(()-> ClientGuiApp.getPrimaryStage().setScene(new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height)));
+            Platform.runLater(()->{
+                Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                ClientGuiApp.getPrimaryStage().setScene(scene);
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+            });
             return;
         }
         if (inputObject instanceof PlaceFirstConstructorMessage){
@@ -239,6 +243,7 @@ public class ClientGUI extends Client implements EventHandler{
         if (input.equals(HelpMessage.enterName)){
             Platform.runLater(()->{
                 Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(scene);
             });
             return;
@@ -247,6 +252,7 @@ public class ClientGUI extends Client implements EventHandler{
         if (input.equals(HelpMessage.gameMode)) {
             Platform.runLater(() -> {
                 Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(scene);
             });
             return;
@@ -274,9 +280,11 @@ public class ClientGUI extends Client implements EventHandler{
         Platform.runLater(()->{
             if(check) {
                 Scene wait = new Scene(SceneBuilder.handeScene("wait"), ClientGuiApp.width, ClientGuiApp.height);
+                wait.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(wait);
             }else{
                 Scene newName= new Scene(SceneBuilder.ChooseName("this name is already taken"),ClientGuiApp.width,ClientGuiApp.height);
+                newName.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(newName);
             }
         });

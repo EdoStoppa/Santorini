@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 
+import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -45,9 +46,10 @@ public class ClientGuiApp extends Application implements Serializable {
         ClientGuiApp.primaryStage =primaryStage;
 
         Scene scene1 = new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"), width, height);
+        scene1.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
 
-
-
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Santorini");
         primaryStage.setScene(scene1);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e->{
@@ -58,13 +60,15 @@ public class ClientGuiApp extends Application implements Serializable {
 
     public static Parent CreateContent (String message){
         VBox layout=new VBox(20);
+        layout.setId("start");
+        layout.setBackground(SceneBuilder.backgroundImageHashMap.get("start"));
         Text textName= new Text(message);
         HBox firstLine=new HBox(20);
         HBox secondLine=new HBox(20);
         HBox thirdLine=new HBox(20);
         Text textIp= new Text("insert ip");
         Text textPort= new Text("insert port");
-        Text display=new Text("choose risolution for your game");
+        Text display=new Text("choose the resolution for your game");
         TextField serverIp= new TextField(ip);
         TextField portField= new TextField(port);
         ChoiceBox<String> risolution= new ChoiceBox<>();
@@ -89,6 +93,7 @@ public class ClientGuiApp extends Application implements Serializable {
                     client.run();
                 } catch (IOException ioException) {
                     Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),width,height);
+                    scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                     primaryStage.setScene(scene);
                 }
             }else{
@@ -97,6 +102,7 @@ public class ClientGuiApp extends Application implements Serializable {
                     client.run();
                 } catch (IOException ioException) {
                     Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),width,height);
+                    scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                     primaryStage.setScene(scene);
                 }
             }});
@@ -116,6 +122,7 @@ public class ClientGuiApp extends Application implements Serializable {
         width=Integer.parseInt(spitted[0]);
         height=Integer.parseInt(spitted[1]);
         Scene scene=new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"),width,height);
+        scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
         primaryStage.setScene(scene);
 
         System.out.println(risolution);

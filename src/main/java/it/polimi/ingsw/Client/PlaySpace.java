@@ -268,7 +268,7 @@ public class PlaySpace {
                                         System.out.println(swapped.getOldX()+","+swapped.getOldY());
                                     }
                                     setConstructorMatrix(playSpaceUpdated);
-                                    break;
+                                    return;
 
 
             }
@@ -324,12 +324,9 @@ public class PlaySpace {
 
 
     public void removeConstructorGUI (int[][] playSpaceUpdated){
-        int count=0;
 
-        for(int i=0;i<=4;i++){
+               for(int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
-                if (playSpaceUpdated[i][j]!=0)
-                    count++;
                 if (playSpaceUpdated[i][j]==0 && constructorMatrix[i][j]!=0){
                     BoardScene.pieceGroup.getChildren().remove(BoardScene.getTile(j,i).getPiece());
                     BoardScene.getTile(j,i).setPiece(null);
@@ -373,7 +370,6 @@ public class PlaySpace {
                     count++;
     }
         }
-        System.out.println(count+"saad");
         return count;}
 
 }

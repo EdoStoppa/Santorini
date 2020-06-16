@@ -49,21 +49,21 @@ public class Piece extends StackPane {
     public Piece(PieceType type, int x, int y){
         move(x,y);
 
-        Ellipse bg= new Ellipse(BoardScene.TILE_SIZE*0.3125,BoardScene.TILE_SIZE*0.26);
+        /*Ellipse bg= new Ellipse(BoardScene.TILE_SIZE*0.3125,BoardScene.TILE_SIZE*0.26);
         bg.setFill(Color.BLACK);
 
         bg.setStroke(Color.BLACK);
         bg.setStrokeWidth(BoardScene.TILE_SIZE*0.03);
         bg.setTranslateX((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.3125*2)/2);
-        bg.setTranslateY((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.26*2)/2+BoardScene.TILE_SIZE*0.07);
+        bg.setTranslateY((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.26*2)/2+BoardScene.TILE_SIZE*0.07);*/
 
-        Ellipse ellipse= new Ellipse(BoardScene.TILE_SIZE*0.3125,BoardScene.TILE_SIZE*0.26);
+        Ellipse ellipse= new Ellipse(BoardScene.TILE_SIZE*0.26,BoardScene.TILE_SIZE*0.26);
         ellipse.setFill(type==PieceType.RED? Color.valueOf("#c40003"): type==PieceType.WHITE?Color.valueOf("fff9f4"):Color.valueOf("#45ffff"));
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(BoardScene.TILE_SIZE*0.03);
-        ellipse.setTranslateX((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.3125*2)/2);
+        ellipse.setTranslateX((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.26*2)/2);
         ellipse.setTranslateY((BoardScene.TILE_SIZE- BoardScene.TILE_SIZE*0.26*2)/2);
-        getChildren().addAll(bg,ellipse);
+        getChildren().add(ellipse);
 
         setOnMouseClicked(e->{
             System.out.println(BoardScene.isYourTurn()+" "+BoardScene.getPhase());

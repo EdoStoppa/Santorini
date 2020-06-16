@@ -86,6 +86,7 @@ public class BoardScene {
         boardLine.getChildren().add(root);
         VBox layout=new VBox(ClientGuiApp.width*0.025);
         layout.getChildren().addAll(boardLine,controller);
+        layout.setId("board");
 
 
 

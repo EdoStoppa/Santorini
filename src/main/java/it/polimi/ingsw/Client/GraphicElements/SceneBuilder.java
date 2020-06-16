@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
+import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
@@ -13,9 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -29,9 +28,9 @@ public class SceneBuilder {
 
 
     public  static final HashMap<String,Image> imageHashMap= new HashMap<>();
+    public static final HashMap<String, Background> backgroundImageHashMap= new HashMap<String, Background>();
 
     public static void initImages(){
-        setBackgroundImagesMap();
         setGodImagesMap();
         setConstructionImagesMap();
         setHighlightedImagesMap();
@@ -39,7 +38,8 @@ public class SceneBuilder {
 
     //-------- Methods used to create different scenes --------
     public static Parent ChooseGameMode(String message){
-        VBox layout1= new VBox(ClientGuiApp.height*0.071);
+        VBox layout= new VBox(ClientGuiApp.height*0.071);
+        layout.setId("init");
         Label welcome= new Label(message);
         HBox Buttons= new HBox(ClientGuiApp.width*0.1875);
         Button twoPlayer= new Button("2 player");
@@ -48,14 +48,15 @@ public class SceneBuilder {
         treePlayer.setOnAction(e->ClientGuiApp.getClient().writeToSocketGUI("3"));
         Buttons.getChildren().addAll(twoPlayer,treePlayer);
         Buttons.setAlignment(Pos.CENTER);
-        layout1.setAlignment(Pos.CENTER);
-        layout1.getChildren().addAll(welcome,Buttons);
-        return layout1;
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(welcome,Buttons);
+        return layout;
 
     }
 
     public static Parent ChooseName(String message){
         VBox layout=new VBox(ClientGuiApp.height*0.05714);
+        layout.setId("init");
         Text textName= new Text(message);
         TextField name= new TextField();
         Button go= new Button("go");
@@ -68,6 +69,7 @@ public class SceneBuilder {
 
     public static void PickGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
+        layout.setId("init");
         HBox firstLine= new HBox();
         HBox secondLine=new HBox();
         HBox thirdLine=new HBox();
@@ -141,8 +143,9 @@ public class SceneBuilder {
         fourLine.setAlignment(Pos.CENTER);
         griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
         layout.setCenter(griglia);
-        Scene scene3= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
-        ClientGuiApp.getPrimaryStage().setScene(scene3);
+        Scene scene= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
+        scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        ClientGuiApp.getPrimaryStage().setScene(scene);
     }
 
     private static void handleOptions(int numPlayer, CheckBox zero, CheckBox one, CheckBox two, CheckBox three, CheckBox four, CheckBox five, CheckBox six, CheckBox seven, CheckBox eight) {
@@ -185,6 +188,7 @@ public class SceneBuilder {
             System.out.println(message);
             ClientGuiApp.getClient().writeToSocketGUI(message.toString());
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
+            scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
             ClientGuiApp.getPrimaryStage().setScene(scene);
         }else{
             AlertBox.displayError("select a correct number of God");
@@ -192,8 +196,8 @@ public class SceneBuilder {
     }
 
     public static void chooseGod(ChosenGodMessage message){
-        BorderPane borderPane=new BorderPane();
         VBox layout=new VBox(ClientGuiApp.height*0.0142);
+        layout.setId("init");
         layout.setAlignment(Pos.CENTER);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton third= new RadioButton();
@@ -241,17 +245,19 @@ public class SceneBuilder {
             if(third.isSelected())
                 ClientGuiApp.getClient().writeToSocketGUI("2");
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
+            scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         fourLine.setAlignment(Pos.CENTER);
         layout.getChildren().add(fourLine);
-        borderPane.setCenter(layout);
-        Scene scene4= new Scene(borderPane,ClientGuiApp.width,ClientGuiApp.height);
+        Scene scene4= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
+        scene4.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene4);
     }
 
     public static void orderGame(OrderGameMessage message){
         VBox layout=new VBox(ClientGuiApp.width*0.02857);
+        layout.setId("init");
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton first=new RadioButton();
         RadioButton second=new RadioButton();
@@ -294,10 +300,12 @@ public class SceneBuilder {
             if(third.isSelected())
                 ClientGuiApp.getClient().writeToSocketGUI(message.getPlayerlist().get(2));
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
+            scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
             ClientGuiApp.getPrimaryStage().setScene(scene);
         });
         layout.setAlignment(Pos.CENTER);
         Scene scene=new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
+        scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene);
 
     }
@@ -305,7 +313,10 @@ public class SceneBuilder {
     public static Parent handeScene(String message){
         Label label= new Label(message);
         VBox layout=new VBox(10);
-
+        if(message.equals("wait"))
+        layout.setId("init");
+        else
+        layout.setId("win");
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().add(label);
         return layout;
@@ -316,9 +327,11 @@ public class SceneBuilder {
         Platform.runLater(()->{
             if (win){
                 Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),ClientGuiApp.width,ClientGuiApp.height);
+                SceneWin.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(SceneWin);
             }else{
                 Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),ClientGuiApp.width,ClientGuiApp.height);
+                SceneLose.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(SceneLose);
             }
         });
@@ -326,7 +339,6 @@ public class SceneBuilder {
     }
 
     //-------- Methods used to initialize and manipulate all the images --------
-    public static void setBackgroundImagesMap(){}
 
     public static void setGodImagesMap(){
         for(God god : God.getAllGod()){
