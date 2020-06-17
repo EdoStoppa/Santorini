@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
-import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
@@ -188,9 +187,7 @@ public class SceneBuilder {
                 }
             }
             ClientGuiApp.getClient().writeToSocketGUI(message.toString());
-            Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
-            scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
-            ClientGuiApp.getPrimaryStage().setScene(scene);
+            waitScene();
         }else{
             AlertBox.displayError("select a correct number of God");
         }
@@ -246,9 +243,8 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().writeToSocketGUI("1");
             if(third.isSelected())
                 ClientGuiApp.getClient().writeToSocketGUI("2");
-            Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
-            scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
-            ClientGuiApp.getPrimaryStage().setScene(scene);
+
+            waitScene();
         });
         fourLine.setAlignment(Pos.CENTER);
         layout.getChildren().add(fourLine);
@@ -302,9 +298,8 @@ public class SceneBuilder {
                 ClientGuiApp.getClient().writeToSocketGUI(message.getPlayerlist().get(1));
             if(third.isSelected())
                 ClientGuiApp.getClient().writeToSocketGUI(message.getPlayerlist().get(2));
-            Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
-            scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
-            ClientGuiApp.getPrimaryStage().setScene(scene);
+
+            waitScene();
         });
         layout.setAlignment(Pos.CENTER);
         Scene scene=new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
@@ -313,10 +308,19 @@ public class SceneBuilder {
 
     }
 
-    public static Parent handeScene(String message){
+    public static void waitScene(){
+        Label label = new Label("Wait...");
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setBackground(getBackground("initBackground"));
+        layout.getChildren().add(label);
+        ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
+    }
+
+    public static Parent endScene(String message){
         Label label= new Label(message);
         VBox layout=new VBox(10);
-        if(message.equals("wait")) {
+        if(message.equals("Wait")) {
             //layout.setId("init");
             layout.setBackground(getBackground("initBackground"));
         } else {
@@ -329,14 +333,27 @@ public class SceneBuilder {
 
     }
 
-    public  static void endGameTransition(boolean win){
+    public static void loseScene(String message){
+        Label label;
+        if(message == null)
+            label = new Label("Thanks for playing!\nIf you want to play another match, please restart the application");
+        else
+            label = new Label(message);
+        VBox layout=new VBox(10);
+        layout.setBackground(getBackground("initBackground"));
+        layout.setAlignment(Pos.CENTER);
+        layout.getChildren().add(label);
+        ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
+    }
+
+    public  static void endGameTransition(boolean win, String winner){
         Platform.runLater(()->{
             if (win){
-                Scene SceneWin =new Scene(SceneBuilder.handeScene("you win"),ClientGuiApp.width,ClientGuiApp.height);
+                Scene SceneWin = new Scene(SceneBuilder.endScene("You!"),ClientGuiApp.width,ClientGuiApp.height);
                 SceneWin.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(SceneWin);
             }else{
-                Scene SceneLose =new Scene(SceneBuilder.handeScene("you lose"),ClientGuiApp.width,ClientGuiApp.height);
+                Scene SceneLose = new Scene(SceneBuilder.endScene(winner),ClientGuiApp.width,ClientGuiApp.height);
                 SceneLose.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(SceneLose);
             }

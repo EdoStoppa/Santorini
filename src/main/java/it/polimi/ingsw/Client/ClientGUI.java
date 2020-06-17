@@ -159,21 +159,19 @@ public class ClientGUI extends Client implements EventHandler{
             System.out.println();
             if (isMyTurn && playSpace.CountPlayerRemains(((RemovedPlayerMessage) inputObject).getConstructorMatrix())==4){
                 Platform.runLater(()->{
-                    boolean answer=AlertBox.CheckDome("do you want continue watch the game");
+                    boolean answer = AlertBox.CheckDome("You lost!\nDo you want to continue to watch the game?");
                     if (!answer){
-                        SceneBuilder.endGameTransition(false);
+                        SceneBuilder.loseScene(null);
                         setActive(false);
                     }
                 }); }
             else if(isMyTurn){
-                SceneBuilder.endGameTransition(false);
+                Platform.runLater(() -> SceneBuilder.loseScene(null));
                 setActive(false);
             }
             return;
         } else if(inputObject instanceof WinMessage){
-            updateText(inputObject);
-            updatePlaySpaceGUI(inputObject);
-            SceneBuilder.endGameTransition(isMyTurn);
+            SceneBuilder.endGameTransition(isMyTurn, inputObject.getIdPlayer());
             setActive(false);
             return;
         }
@@ -233,9 +231,8 @@ public class ClientGUI extends Client implements EventHandler{
     private void executeSpecialString(String input){
         if(input.equals(HelpMessage.forcedClose)){
             Platform.runLater(()->{
-                Scene error= new Scene(SceneBuilder.handeScene(input),ClientGuiApp.width,ClientGuiApp.height);
+                SceneBuilder.loseScene(input);
                 setActive(false);
-                ClientGuiApp.getPrimaryStage().setScene(error);
             });
             return;
         }
@@ -279,11 +276,9 @@ public class ClientGUI extends Client implements EventHandler{
     public void checkName(boolean check){
         Platform.runLater(()->{
             if(check) {
-                Scene wait = new Scene(SceneBuilder.handeScene("wait"), ClientGuiApp.width, ClientGuiApp.height);
-                wait.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
-                ClientGuiApp.getPrimaryStage().setScene(wait);
+                SceneBuilder.waitScene();
             }else{
-                Scene newName= new Scene(SceneBuilder.ChooseName("this name is already taken"),ClientGuiApp.width,ClientGuiApp.height);
+                Scene newName= new Scene(SceneBuilder.ChooseName("This name is already taken, please choose another one"),ClientGuiApp.width,ClientGuiApp.height);
                 newName.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(newName);
             }

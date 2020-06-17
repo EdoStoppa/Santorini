@@ -34,8 +34,4 @@ public class WinMessage extends GameMessage {
 
     }
 
-
-    public void updateGUI(PlaySpace playSpace,boolean isMyTurn) {
-        SceneBuilder.endGameTransition(isMyTurn);
-    }
 }
