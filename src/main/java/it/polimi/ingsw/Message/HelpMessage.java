@@ -1,6 +1,9 @@
 package it.polimi.ingsw.Message;
 
 public class HelpMessage {
+    public final static String askIpPort = "Please enter the server ip and connection port\n(If you want to play locally, just hit enter)";
+    public final static String noConnection = "The connection couldn't be established, please try again!\n";
+
     public final static String endedPhase = "Phase ended";
     public final static String yesOrNo = "[y/n]";
 

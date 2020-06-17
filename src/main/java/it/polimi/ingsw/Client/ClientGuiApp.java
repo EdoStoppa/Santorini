@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 
 import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
+import it.polimi.ingsw.Message.HelpMessage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -45,12 +46,12 @@ public class ClientGuiApp extends Application implements Serializable {
     public void start(Stage primaryStage) {
         ClientGuiApp.primaryStage =primaryStage;
 
-        Scene scene1 = new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"), width, height);
-        scene1.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        Scene scene = new Scene(CreateContent(HelpMessage.askIpPort), width, height);
+        scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Santorini");
-        primaryStage.setScene(scene1);
+        primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e->{
             Platform.exit();
@@ -60,48 +61,48 @@ public class ClientGuiApp extends Application implements Serializable {
 
     public static Parent CreateContent (String message){
         VBox layout=new VBox(20);
-        layout.setId("start");
-        layout.setBackground(SceneBuilder.backgroundImageHashMap.get("start"));
-        Text textName= new Text(message);
-        HBox firstLine=new HBox(20);
-        HBox secondLine=new HBox(20);
-        HBox thirdLine=new HBox(20);
-        Text textIp= new Text("insert ip");
-        Text textPort= new Text("insert port");
-        Text display=new Text("choose the resolution for your game");
-        TextField serverIp= new TextField(ip);
-        TextField portField= new TextField(port);
-        ChoiceBox<String> risolution= new ChoiceBox<>();
-        risolution.getItems().add("640x560");
-        risolution.getItems().add("800x700");
-        risolution.getItems().add("1200x1050");
-        risolution.setValue(definition);
-        risolution.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)->{
-            ip=serverIp.getText();
-            port=portField.getText();
-            definition=newValue;
-            changeRisolution(newValue);
+        //layout.setId("start");
+        layout.setBackground(SceneBuilder.getBackground("startBackground"));
+        Text textName = new Text(message);
+        HBox firstLine =new HBox(20);
+        HBox secondLine =new HBox(20);
+        HBox thirdLine =new HBox(20);
+        Text textIp = new Text("Insert ip");
+        Text textPort = new Text("Insert port");
+        Text display =new Text("Choose the resolution for your game");
+        TextField serverIp = new TextField(ip);
+        TextField portField = new TextField(port);
+        ChoiceBox<String> resolution= new ChoiceBox<>();
+        resolution.getItems().add("640x560");
+        resolution.getItems().add("800x700");
+        resolution.getItems().add("1200x1050");
+        resolution.setValue(definition);
+        resolution.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)->{
+            ip = serverIp.getText();
+            port = portField.getText();
+            definition = newValue;
+            changeResolution(newValue);
         });
-        thirdLine.getChildren().addAll(display,risolution);
+        thirdLine.getChildren().addAll(display,resolution);
         firstLine.getChildren().addAll(textIp,serverIp);
         secondLine.getChildren().addAll(textPort,portField);
-        Button go= new Button("enter");
+        Button go= new Button("Start");
         go.setOnAction(e->{
             if(serverIp.getText().equals("") && portField.getText().equals("")){
-                client=new ClientGUI("127.0.0.1", 54321);
+                client = new ClientGUI("127.0.0.1", 54321);
                 try {
                     client.run();
                 } catch (IOException ioException) {
-                    Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),width,height);
+                    Scene scene=new Scene(CreateContent(HelpMessage.noConnection),width,height);
                     scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                     primaryStage.setScene(scene);
                 }
             }else{
-                client= new ClientGUI(serverIp.getText(),Integer.parseInt(portField.getText()));
+                client = new ClientGUI(serverIp.getText(),Integer.parseInt(portField.getText()));
                 try {
                     client.run();
                 } catch (IOException ioException) {
-                    Scene scene=new Scene(CreateContent("The connection couldn't be established, please try again!\n"),width,height);
+                    Scene scene=new Scene(CreateContent(HelpMessage.noConnection),width,height);
                     scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
                     primaryStage.setScene(scene);
                 }
@@ -117,19 +118,13 @@ public class ClientGuiApp extends Application implements Serializable {
 
     }
 
-    private static void changeRisolution(String risolution){
-        String[] spitted=risolution.split("x");
-        width=Integer.parseInt(spitted[0]);
-        height=Integer.parseInt(spitted[1]);
-        Scene scene=new Scene(CreateContent("Please enter the server ip and connection port(If you want to play locally, just hit enter)"),width,height);
+    private static void changeResolution(String resolution){
+        String[] spitted = resolution.split("x");
+        width = Integer.parseInt(spitted[0]);
+        height = Integer.parseInt(spitted[1]);
+        Scene scene = new Scene(CreateContent(HelpMessage.askIpPort),width,height);
         scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
         primaryStage.setScene(scene);
-
-        System.out.println(risolution);
     }
-
-
-
-
 
 }

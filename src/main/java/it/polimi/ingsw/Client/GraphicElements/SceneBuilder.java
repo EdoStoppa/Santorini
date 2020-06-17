@@ -28,7 +28,6 @@ public class SceneBuilder {
 
 
     public  static final HashMap<String,Image> imageHashMap= new HashMap<>();
-    public static final HashMap<String, Background> backgroundImageHashMap= new HashMap<String, Background>();
 
     public static void initImages(){
         setGodImagesMap();
@@ -39,7 +38,8 @@ public class SceneBuilder {
     //-------- Methods used to create different scenes --------
     public static Parent ChooseGameMode(String message){
         VBox layout= new VBox(ClientGuiApp.height*0.071);
-        layout.setId("init");
+        //layout.setId("init");
+        layout.setBackground(getBackground("initBackground"));
         Label welcome= new Label(message);
         HBox Buttons= new HBox(ClientGuiApp.width*0.1875);
         Button twoPlayer= new Button("2 player");
@@ -56,7 +56,8 @@ public class SceneBuilder {
 
     public static Parent ChooseName(String message){
         VBox layout=new VBox(ClientGuiApp.height*0.05714);
-        layout.setId("init");
+        //layout.setId("init");
+        layout.setBackground(getBackground("initBackground"));
         Text textName= new Text(message);
         TextField name= new TextField();
         Button go= new Button("go");
@@ -69,7 +70,8 @@ public class SceneBuilder {
 
     public static void PickGod(PickGodMessage message){
         BorderPane layout=new BorderPane();
-        layout.setId("init");
+        //layout.setId("init");
+        layout.setBackground(getBackground("initBackground"));
         HBox firstLine= new HBox();
         HBox secondLine=new HBox();
         HBox thirdLine=new HBox();
@@ -185,7 +187,6 @@ public class SceneBuilder {
                     message.append(",");
                 }
             }
-            System.out.println(message);
             ClientGuiApp.getClient().writeToSocketGUI(message.toString());
             Scene scene=new Scene(handeScene("wait"),ClientGuiApp.width,ClientGuiApp.height);
             scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
@@ -197,7 +198,8 @@ public class SceneBuilder {
 
     public static void chooseGod(ChosenGodMessage message){
         VBox layout=new VBox(ClientGuiApp.height*0.0142);
-        layout.setId("init");
+        //layout.setId("init");
+        layout.setBackground(getBackground("initBackground"));
         layout.setAlignment(Pos.CENTER);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton third= new RadioButton();
@@ -257,7 +259,8 @@ public class SceneBuilder {
 
     public static void orderGame(OrderGameMessage message){
         VBox layout=new VBox(ClientGuiApp.width*0.02857);
-        layout.setId("init");
+        //layout.setId("init");
+        layout.setBackground(getBackground("initBackground"));
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton first=new RadioButton();
         RadioButton second=new RadioButton();
@@ -313,10 +316,13 @@ public class SceneBuilder {
     public static Parent handeScene(String message){
         Label label= new Label(message);
         VBox layout=new VBox(10);
-        if(message.equals("wait"))
-        layout.setId("init");
-        else
-        layout.setId("win");
+        if(message.equals("wait")) {
+            //layout.setId("init");
+            layout.setBackground(getBackground("initBackground"));
+        } else {
+            //layout.setId("win");
+            layout.setBackground(getBackground("endBackground"));
+        }
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().add(label);
         return layout;
@@ -387,5 +393,13 @@ public class SceneBuilder {
     public static void setGodImage(ImageView IWGod){
         IWGod.setFitHeight(ClientGuiApp.height*0.27);
         IWGod.setFitWidth(ClientGuiApp.width*0.15);
+    }
+
+    public static Background getBackground(String nameBackground){
+        String path = "Background/" + nameBackground + ".png";
+        Image img = new Image(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResourceAsStream(path)));
+        BackgroundSize bkgSize = new BackgroundSize(100.0, 100.0, true, true, true, true);
+        BackgroundImage bkgImg = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bkgSize);
+        return new Background(bkgImg);
     }
 }

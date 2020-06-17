@@ -47,8 +47,8 @@ public class ClientGUI extends Client implements EventHandler{
         socketOut = new PrintWriter(socket.getOutputStream());
         SceneBuilder.initImages();
         try {
-            Thread t0 = asyncReadFromSocket(socketIn);
-            Thread t1 = asyncManagePing();
+            asyncReadFromSocket(socketIn);
+            asyncManagePing();
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         }

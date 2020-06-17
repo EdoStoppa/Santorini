@@ -5,6 +5,7 @@ package it.polimi.ingsw.Client.GraphicElements.Board;
 
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.AlertBox;
+import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
@@ -13,9 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.util.HashMap;
@@ -72,9 +71,7 @@ public class BoardScene {
         Button endPhase= new Button("End Phase");
         godList.setOnAction(e-> AlertBox.displayGod());
         endPhase.setOnAction(e->{
-            System.out.println(special+","+yourTurn);
             if(special && yourTurn){
-                System.out.println("end");
                 ClientGuiApp.getClient().writeToSocketGUI("end");
             }
         });
@@ -86,9 +83,8 @@ public class BoardScene {
         boardLine.getChildren().add(root);
         VBox layout=new VBox(ClientGuiApp.width*0.025);
         layout.getChildren().addAll(boardLine,controller);
-        layout.setId("board");
-
-
+        //layout.setId("board");
+        layout.setBackground(SceneBuilder.getBackground("boardBackground"));
 
 
         for (int y=0; y<HEIGHT;y++){
@@ -117,8 +113,8 @@ public class BoardScene {
         TranslateTransition transition= new TranslateTransition(Duration.seconds(0.5),piece);
         transition.setByY(y*TILE_SIZE);
         transition.setByX(x*TILE_SIZE);
-        if(piece!=null)
-            System.out.println(x+" "+y);
+        //if(piece!=null)
+            //System.out.println(x+" "+y);
         //piece.setTranslationY(-y*TILE_SIZE);
         //piece.setTranslationX(-x*TILE_SIZE);
         //System.out.println("translate: "+piece.getTranslationX()+"  "+piece.getTranslationY());
