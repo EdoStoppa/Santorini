@@ -45,8 +45,6 @@ public abstract class TileToShowMessage extends GameMessage implements Serializa
         playSpace.setTileToShow(getTileToShow());
     }
 
-
-
     @Override
     public void updateGUI(PlaySpace playSpace) {
         playSpace.tileToShowGUI(getTileToShow());

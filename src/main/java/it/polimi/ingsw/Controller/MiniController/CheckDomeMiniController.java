@@ -21,7 +21,7 @@ public class CheckDomeMiniController implements MiniController, Serializable {
             int col = Integer.parseInt(rowAndCol[1]);
 
             if(0<=row && row<=4 && 0<=col && col<=4)
-                return playSpace.printTileToShow(row, col);
+                return playSpace.isTileToShow(row, col);
             else
                 return false;
 

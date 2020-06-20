@@ -13,10 +13,13 @@ public class MoreCheckMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
     List<Position> toCheck;
 
+    public MoreCheckMiniController(List<Position> toCheck){
+        this.toCheck = toCheck;
+    }
+
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
-            toCheck = playSpace.getTileToCheck();
             if(input.length() != 3)
                 return false;
 
@@ -25,7 +28,7 @@ public class MoreCheckMiniController implements MiniController, Serializable {
             int col = Integer.parseInt(rowAndCol[1]);
 
             if(0<=row && row<=4 && 0<=col && col<=4){
-                if(playSpace.printTileToShow(row, col)){
+                if(playSpace.isTileToShow(row, col)){
                     if(moreCheck(new Position(row, col), toCheck)){
                         Scanner in = new Scanner(System.in);
                         System.out.println("If you choose this constructor you won't be able to use your special power, do you want to continue? "+ HelpMessage.yesOrNo);
@@ -77,7 +80,6 @@ public class MoreCheckMiniController implements MiniController, Serializable {
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
-            toCheck = playSpace.getTileToCheck();
             if(input.length() != 3)
                 return false;
 
@@ -86,23 +88,7 @@ public class MoreCheckMiniController implements MiniController, Serializable {
             int col = Integer.parseInt(rowAndCol[1]);
 
             if(0<=row && row<=4 && 0<=col && col<=4){
-                if(playSpace.printTileToShow(row, col)){
-                    if(moreCheck(new Position(row, col), toCheck)){
-                        Boolean answer= AlertBox.CheckDome("If you choose this constructor you won't be able to use your special power, do you want to continue? ");
-                        if (answer){
-                            return true;
-                        }else {
-                            stringBuilder.delete(0,200);
-                            stringBuilder.append("Please, choose another constructor to continue");
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-
-                } else {
-                    return false;
-                }
+                return playSpace.isTileToShow(row, col);
             } else
                 return false;
 
@@ -112,16 +98,14 @@ public class MoreCheckMiniController implements MiniController, Serializable {
     }
 
     boolean moreCheck(Position pos, List<Position> checkList){
-        for(Position p : checkList){
-            if(pos.equals(p)){
-                return true;
+        if (checkList != null){
+            for(Position p : checkList){
+                if(pos.equals(p)){
+                    return true;
+                }
             }
         }
 
         return false;
-    }
-
-    void setToCheck(List<Position> toCheck) {
-        this.toCheck = toCheck;
     }
 }

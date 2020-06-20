@@ -13,7 +13,7 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
     public MoreTileToCheckMessage(String player, PossiblePhases phase, List<Position> list, List<Position> specialList) {
         super(player, phase, list);
         this.specialList = specialList;
-        this.miniController = new MoreCheckMiniController();
+        this.miniController = new MoreCheckMiniController(specialList);
     }
 
     public List<Position> getSpecialList() {
@@ -35,12 +35,12 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
 
     @Override
     public void updatePlaySpace(PlaySpace playSpace)    {
-        playSpace.tileToShowGUI(getTileToShow());
+        playSpace.setTileToShow(getTileToShow());
         playSpace.setTileToCheck(getSpecialList());
     }
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-
+        playSpace.tileToShowGUI(getTileToShow());
     }
 }

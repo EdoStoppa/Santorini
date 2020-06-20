@@ -67,7 +67,7 @@ public class PlaySpace {
      * @param j column pf the position to check
      * @return true is the position is contain in TileToShow
      */
-    public boolean printTileToShow(int i, int j){
+    public boolean isTileToShow(int i, int j){
         if(this.tileToShow != null){
             for (int k=0;k<this.tileToShow.size();k++){
                 if (this.tileToShow.get(k).getRow()==i && this.tileToShow.get(k).getCol()==j){
@@ -97,28 +97,28 @@ public class PlaySpace {
                 for (int j=0;j<5;j++){
                     switch (constructorMatrix[k][j]) {
                         case 1:
-                            if (this.printTileToShow(k, j)) {
+                            if (this.isTileToShow(k, j)) {
                                 line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + Color.ANSI_RED+ buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
                             } else {
                                 line += (Color.ANSI_RED + "    " + buildingMatrix[k][j] + "    ");
                             }
                             break;
                         case 2:
-                            if (this.printTileToShow(k, j)) {
+                            if (this.isTileToShow(k, j)) {
                                 line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + Color.ANSI_YELLOW+ buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
                             } else {
                                 line += (Color.ANSI_YELLOW + "    " + buildingMatrix[k][j] + "    ");
                             }
                             break;
                         case 3:
-                            if (this.printTileToShow(k, j)) {
+                            if (this.isTileToShow(k, j)) {
                                 line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + Color.ANSI_PURPLE+ buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
                             } else {
                                 line += (Color.ANSI_PURPLE + "    " + buildingMatrix[k][j] + "    ");
                             }
                             break;
                         case 0:
-                            if (this.printTileToShow(k, j) && buildingMatrix[k][j] < 4) {
+                            if (this.isTileToShow(k, j) && buildingMatrix[k][j] < 4) {
                                 line += (Color.CYAN_BACKGROUND_BRIGHT + "   " + Color.RESET + " " + buildingMatrix[k][j] + Color.RESET + " " + Color.CYAN_BACKGROUND_BRIGHT + "   ");
                             } else if (buildingMatrix[k][j] != 0 && buildingMatrix[k][j] < 4) {
                                 line += (Color.RESET + "    " + buildingMatrix[k][j] + "    ");
@@ -138,7 +138,7 @@ public class PlaySpace {
             } else {
                 line += "  "+VERT;
                 for(int l=0; l< 5; l++){
-                    if(printTileToShow(i/3,l)){
+                    if(isTileToShow(i/3,l)){
                         line += Color.CYAN_BACKGROUND_BRIGHT + "         ";
                     } else {
                         line += "         ";
