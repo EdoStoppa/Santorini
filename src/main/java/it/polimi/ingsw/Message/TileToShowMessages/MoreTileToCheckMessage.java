@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.MoreCheckMiniController;
 import it.polimi.ingsw.Model.Position;
@@ -42,5 +43,6 @@ public class MoreTileToCheckMessage extends TileToShowMessage {
     @Override
     public void updateGUI(PlaySpace playSpace) {
         playSpace.tileToShowGUI(getTileToShow());
+        BoardScene.setEndPhaseButton(true);
     }
 }

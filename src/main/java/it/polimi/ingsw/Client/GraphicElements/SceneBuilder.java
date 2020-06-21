@@ -196,11 +196,11 @@ public class SceneBuilder {
     public static void chooseGod(ChosenGodMessage message){
         VBox layout=new VBox(ClientGuiApp.height*0.0142);
         //layout.setId("init");
-        layout.setBackground(getBackground("initBackground"));
         layout.setAlignment(Pos.CENTER);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton third= new RadioButton();
         HBox firstLine= new HBox(ClientGuiApp.width*0.025);
+        firstLine.setAlignment(Pos.CENTER);
         RadioButton first= new RadioButton();
         first.setToggleGroup(radioGroup);
         first.setSelected(true);
@@ -211,6 +211,7 @@ public class SceneBuilder {
         firstDescription.setWrappingWidth(ClientGuiApp.width*0.7);
         firstLine.getChildren().addAll(first,IWFirst,firstDescription);
         HBox secondLine= new HBox(ClientGuiApp.width*0.025);
+        secondLine.setAlignment(Pos.CENTER);
         RadioButton second= new RadioButton();
         second.setToggleGroup(radioGroup);
         ImageView IWSecond= new ImageView(imageHashMap.get(message.getChosenGod(1).getGodName()));
@@ -222,6 +223,7 @@ public class SceneBuilder {
         layout.getChildren().addAll(firstLine,secondLine);
         if(message.getSize()==3){
             HBox thirdLine= new HBox(ClientGuiApp.width*0.025);
+            thirdLine.setAlignment(Pos.CENTER);
             third.setToggleGroup(radioGroup);
             ImageView IWThird= new ImageView(imageHashMap.get(message.getChosenGod(2).getGodName()));
             setGodImage(IWThird);
@@ -247,15 +249,17 @@ public class SceneBuilder {
             waitScene();
         });
         fourLine.setAlignment(Pos.CENTER);
-        layout.getChildren().add(fourLine);
-        Scene scene4= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
+        BorderPane borderPane=new BorderPane();
+        borderPane.setCenter(layout);
+        borderPane.setBottom(fourLine);
+        borderPane.setBackground(getBackground("initBackground"));
+        Scene scene4= new Scene(borderPane,ClientGuiApp.width,ClientGuiApp.height);
         scene4.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene4);
     }
 
     public static void orderGame(OrderGameMessage message){
         VBox layout=new VBox(ClientGuiApp.width*0.02857);
-        //layout.setId("init");
         layout.setBackground(getBackground("initBackground"));
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton first=new RadioButton();
@@ -310,6 +314,7 @@ public class SceneBuilder {
 
     public static void waitScene(){
         Label label = new Label("Wait...");
+        label.setFont(Font.font(ClientGuiApp.height*0.034));
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         layout.setBackground(getBackground("initBackground"));

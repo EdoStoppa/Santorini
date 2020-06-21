@@ -59,6 +59,7 @@ public class ClientGUI extends Client implements EventHandler{
         if (this.miniController != null) {
             if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {
                 String out = this.miniController.getMessageGui(message);
+                BoardScene.setEndPhaseButton(false);
                 miniController = null;
                 playSpace.disHighlightsTile();
                 playSpace.reset();

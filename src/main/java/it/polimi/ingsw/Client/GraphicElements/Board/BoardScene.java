@@ -30,6 +30,7 @@ public class BoardScene {
     private static  boolean init=true;
     private static boolean special=false;
     private static boolean checkDome=false;
+    private static Button endPhase= new Button("End Phase");
 
     public  static final HashMap<Integer, Image> lightTileHashMap= new HashMap<>();
     public  static final HashMap<Integer,Image> darkTileHashMap= new HashMap<>();
@@ -61,23 +62,22 @@ public class BoardScene {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
         root.getChildren().addAll(tileGroup,pieceGroup);
-        HBox controller =new HBox(ClientGuiApp.width*0.0875);
+        HBox controller =new HBox(ClientGuiApp.width*0.03);
         controller.setAlignment(Pos.BOTTOM_CENTER);
         controller.prefHeight(ClientGuiApp.height*0.142857);
         Pane message= new Pane();
         messages.setPrefHeight(ClientGuiApp.height*0.142857);
         message.getChildren().add(messages);
         Button godList= new Button("God List");
-        Button endPhase= new Button("End Phase");
+
         godList.setOnAction(e-> AlertBox.displayGod());
         endPhase.setOnAction(e->{
             if(special && yourTurn){
                 ClientGuiApp.getClient().writeToSocketGUI("end");
             }
         });
-        VBox buttons=new VBox(ClientGuiApp.width*0.0125);
-        buttons.getChildren().addAll(godList,endPhase);
-        controller.getChildren().addAll(message,buttons);
+        controller.getChildren().addAll(godList,message,endPhase);
+        endPhase.setVisible(false);
         HBox boardLine= new HBox();
         boardLine.setAlignment(Pos.CENTER);
         boardLine.getChildren().add(root);
@@ -147,7 +147,6 @@ public class BoardScene {
         BoardScene.init = init;
     }
 
-
     public static void setSpecial(boolean special) {
         BoardScene.special = special;
     }
@@ -158,5 +157,9 @@ public class BoardScene {
 
     public static void setCheckDome(boolean checkDome) {
         BoardScene.checkDome = checkDome;
+    }
+
+    public static void setEndPhaseButton(boolean visible){
+        endPhase.setVisible(visible);
     }
 }

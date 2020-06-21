@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Message.TileToShowMessages;
 
+import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Controller.MiniController.CanEndMiniController;
 import it.polimi.ingsw.Message.HelpMessage;
@@ -37,5 +38,6 @@ public class CanEndTileMessage extends TileToShowMessage {
     public void updateGUI(PlaySpace playSpace) {
         playSpace.tileToShowGUI(getTileToShow());
         playSpace.setSpecial(true);
+        BoardScene.setEndPhaseButton(true);
     }
 }
