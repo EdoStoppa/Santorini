@@ -47,7 +47,7 @@ public class ClientGuiApp extends Application implements Serializable {
         ClientGuiApp.primaryStage =primaryStage;
 
         Scene scene = new Scene(CreateContent(HelpMessage.askIpPort), width, height);
-        scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
 
         primaryStage.setResizable(false);
         primaryStage.setTitle("Santorini");
@@ -94,7 +94,7 @@ public class ClientGuiApp extends Application implements Serializable {
                     client.run();
                 } catch (IOException ioException) {
                     Scene scene=new Scene(CreateContent(HelpMessage.noConnection),width,height);
-                    scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                    scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
                     primaryStage.setScene(scene);
                 }
             }else{
@@ -103,7 +103,7 @@ public class ClientGuiApp extends Application implements Serializable {
                     client.run();
                 } catch (IOException ioException) {
                     Scene scene=new Scene(CreateContent(HelpMessage.noConnection),width,height);
-                    scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                    scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
                     primaryStage.setScene(scene);
                 }
             }});
@@ -123,7 +123,7 @@ public class ClientGuiApp extends Application implements Serializable {
         width = Integer.parseInt(spitted[0]);
         height = Integer.parseInt(spitted[1]);
         Scene scene = new Scene(CreateContent(HelpMessage.askIpPort),width,height);
-        scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        scene.getStylesheets().add(ClientGuiApp.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
         primaryStage.setScene(scene);
     }
 

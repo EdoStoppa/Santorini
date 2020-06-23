@@ -62,7 +62,7 @@ public class BoardScene {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
         root.getChildren().addAll(tileGroup,pieceGroup);
-        HBox controller =new HBox(ClientGuiApp.width*0.03);
+        HBox controller =new HBox(ClientGuiApp.width*0.01);
         controller.setAlignment(Pos.BOTTOM_CENTER);
         controller.prefHeight(ClientGuiApp.height*0.142857);
         Pane message= new Pane();
@@ -78,12 +78,12 @@ public class BoardScene {
         });
         controller.getChildren().addAll(godList,message,endPhase);
         endPhase.setVisible(false);
+        endPhase.setId("endPhase");
         HBox boardLine= new HBox();
         boardLine.setAlignment(Pos.CENTER);
         boardLine.getChildren().add(root);
         VBox layout=new VBox(ClientGuiApp.width*0.025);
-        layout.getChildren().addAll(boardLine,controller);
-        //layout.setId("board");
+        layout.getChildren().addAll(boardLine,controller);;
         layout.setBackground(SceneBuilder.getBackground("boardBackground"));
 
 

@@ -7,6 +7,7 @@ import it.polimi.ingsw.Message.ServerMessage.OrderGameMessage;
 import it.polimi.ingsw.Message.ServerMessage.PickGodMessage;
 import it.polimi.ingsw.Model.God;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -55,11 +56,11 @@ public class SceneBuilder {
 
     public static Parent ChooseName(String message){
         VBox layout=new VBox(ClientGuiApp.height*0.05714);
-        //layout.setId("init");
         layout.setBackground(getBackground("initBackground"));
         Text textName= new Text(message);
         TextField name= new TextField();
         Button go= new Button("go");
+        go.setId("button");
         go.setOnAction(e-> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
         name.setMaxWidth(ClientGuiApp.width*0.1875);
         layout.setAlignment(Pos.CENTER);
@@ -137,6 +138,7 @@ public class SceneBuilder {
         thirdLine.getChildren().addAll(six,IWSeven,desctripionSix,seven,IWEight,desctripionSeven,eight,IWNine,desctripionEight);
         VBox griglia=new VBox(ClientGuiApp.width*0.02);
         Button chosenGods=new Button("enter");
+        chosenGods.setId("button");
         chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),zero,one,two,three,four,five,six,seven,eight));
         Text description= new Text("chose "+message.getNumPlayer()+" gods that will be in the match");
         description.setFont(Font.font(ClientGuiApp.height*0.02571));
@@ -145,7 +147,7 @@ public class SceneBuilder {
         griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
         layout.setCenter(griglia);
         Scene scene= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
-        scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene);
     }
 
@@ -252,9 +254,10 @@ public class SceneBuilder {
         BorderPane borderPane=new BorderPane();
         borderPane.setCenter(layout);
         borderPane.setBottom(fourLine);
+        borderPane.setPadding(new Insets(0,0,10,0));
         borderPane.setBackground(getBackground("initBackground"));
         Scene scene4= new Scene(borderPane,ClientGuiApp.width,ClientGuiApp.height);
-        scene4.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        scene4.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene4);
     }
 
@@ -307,7 +310,7 @@ public class SceneBuilder {
         });
         layout.setAlignment(Pos.CENTER);
         Scene scene=new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
-        scene.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene);
 
     }
@@ -355,11 +358,11 @@ public class SceneBuilder {
         Platform.runLater(()->{
             if (win){
                 Scene SceneWin = new Scene(SceneBuilder.endScene("You!"),ClientGuiApp.width,ClientGuiApp.height);
-                SceneWin.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                SceneWin.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(SceneWin);
             }else{
                 Scene SceneLose = new Scene(SceneBuilder.endScene(winner),ClientGuiApp.width,ClientGuiApp.height);
-                SceneLose.getStylesheets().add(SceneBuilder.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                SceneLose.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(SceneLose);
             }
         });

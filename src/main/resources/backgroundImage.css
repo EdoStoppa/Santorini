@@ -1,0 +1,12 @@
+.button{
+    -fx-transition-duration: 0.4s;
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(red,orange);
+}
+
+#endPhase{
+    -fx-background-color: red;
+}
+

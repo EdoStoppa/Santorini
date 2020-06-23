@@ -211,9 +211,9 @@ public class ClientGUI extends Client implements EventHandler{
             playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
             Platform.runLater(()->{
                 Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);
-                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(scene);
-                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
             });
             return;
         }
@@ -241,7 +241,7 @@ public class ClientGUI extends Client implements EventHandler{
         if (input.equals(HelpMessage.enterName)){
             Platform.runLater(()->{
                 Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);
-                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(scene);
             });
             return;
@@ -250,7 +250,7 @@ public class ClientGUI extends Client implements EventHandler{
         if (input.equals(HelpMessage.gameMode)) {
             Platform.runLater(() -> {
                 Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);
-                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                scene.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(scene);
             });
             return;
@@ -280,7 +280,7 @@ public class ClientGUI extends Client implements EventHandler{
                 SceneBuilder.waitScene();
             }else{
                 Scene newName= new Scene(SceneBuilder.ChooseName("This name is already taken, please choose another one"),ClientGuiApp.width,ClientGuiApp.height);
-                newName.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("Background/backgroundImage.css").toExternalForm());
+                newName.getStylesheets().add(ClientGUI.class.getClassLoader().getResource("backgroundImage.css").toExternalForm());
                 ClientGuiApp.getPrimaryStage().setScene(newName);
             }
         });
