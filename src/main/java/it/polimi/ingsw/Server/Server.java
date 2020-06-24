@@ -146,6 +146,7 @@ public class Server {
     }
 
     public void run(){
+        System.out.println("Server running! Listening on port: " + PORT);
         while (true){
             try {
                 Socket newSocket = serverSocket.accept();
