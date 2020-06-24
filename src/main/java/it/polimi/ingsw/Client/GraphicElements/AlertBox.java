@@ -35,7 +35,7 @@ public class AlertBox {
 
     static  boolean answer;
 
-    public static boolean checkDom(String message){
+    public static boolean checkDome(String message){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(message);
 
@@ -49,36 +49,6 @@ else if(result.get() == ButtonType.CANCEL){
              answer=false;
              alert.close();
              }
-
-        return answer;
-    }
-
-    public static boolean CheckDome(String message){
-        Stage window= new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.initOwner(ClientGuiApp.getPrimaryStage());
-        window.isAlwaysOnTop();
-        window.setMinWidth(250);
-        Label label=new Label(message);
-        Button yes= new Button("yes");
-        yes.setOnAction(e->{
-           answer=true;
-           window.close();
-        });
-        Button no= new Button("no");
-        no.setOnAction(e->{
-            answer=false;
-            window.close();
-        });
-
-        VBox layout=new VBox(10);
-        HBox Answers= new HBox(50);
-        Answers.getChildren().addAll(yes,no);
-        layout.getChildren().addAll(label,Answers);
-        layout.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(layout);
-        window.setScene(scene);
-        window.showAndWait();
 
         return answer;
     }

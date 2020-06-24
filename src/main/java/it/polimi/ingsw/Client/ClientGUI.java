@@ -160,7 +160,7 @@ public class ClientGUI extends Client implements EventHandler{
             System.out.println();
             if (isMyTurn && playSpace.CountPlayerRemains(((RemovedPlayerMessage) inputObject).getConstructorMatrix())==4){
                 Platform.runLater(()->{
-                    boolean answer = AlertBox.CheckDome("You lost!\nDo you want to continue to watch the game?");
+                    boolean answer = AlertBox.checkDome("You lost!\nDo you want to continue to watch the game?");
                     if (!answer){
                         SceneBuilder.loseScene(null);
                         setActive(false);
