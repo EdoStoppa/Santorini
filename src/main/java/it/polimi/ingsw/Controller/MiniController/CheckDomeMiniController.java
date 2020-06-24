@@ -50,7 +50,7 @@ public class CheckDomeMiniController implements MiniController, Serializable {
 
     public String getMessageGui(String input){
         Boolean answer=null;
-        answer= AlertBox.CheckDome("Instead of a normal construction, do you want to place a dome? ");
+        answer= AlertBox.checkDom("Instead of a normal construction, do you want to place a dome? ");
         if(answer){
             return "dome " + input;
         }else{

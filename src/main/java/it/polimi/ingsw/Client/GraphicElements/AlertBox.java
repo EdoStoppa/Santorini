@@ -1,12 +1,15 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.ClientGUI;
+import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Model.God;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -16,31 +19,45 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class AlertBox {
 
     public static void displayError(String message){
-        Stage window= new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setMinWidth(250);
-        Label label=new Label(message);
-        Button closeButton= new Button("ok");
-        closeButton.setOnAction(e->window.close());
-        VBox layout=new VBox(10);
-        layout.getChildren().addAll(label,closeButton);
-        layout.setAlignment(Pos.CENTER);
-        Scene scene=new Scene(layout);
-        window.setScene(scene);
-        window.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(message);
+
+        alert.initOwner(ClientGuiApp.getPrimaryStage());
+        alert.showAndWait();
+
     }
 
     static  boolean answer;
 
+    public static boolean checkDom(String message){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(message);
+
+        alert.initOwner(ClientGuiApp.getPrimaryStage());
+        Optional<ButtonType> result = alert.showAndWait();
+         if(result.get() == ButtonType.OK){
+             answer=true;
+             alert.close();
+         }
+else if(result.get() == ButtonType.CANCEL){
+             answer=false;
+             alert.close();
+             }
+
+        return answer;
+    }
+
     public static boolean CheckDome(String message){
         Stage window= new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
+        window.initOwner(ClientGuiApp.getPrimaryStage());
+        window.isAlwaysOnTop();
         window.setMinWidth(250);
         Label label=new Label(message);
         Button yes= new Button("yes");
@@ -69,6 +86,8 @@ public class AlertBox {
     public static void displayGod() {
         Stage window= new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
+        window.initOwner(ClientGuiApp.getPrimaryStage());
+        window.isAlwaysOnTop();
         window.setMinWidth(500);
         BorderPane borderPane=new BorderPane();
         Map<String, God> playerGodMap=ClientGUI.getPlayerGodMap();
