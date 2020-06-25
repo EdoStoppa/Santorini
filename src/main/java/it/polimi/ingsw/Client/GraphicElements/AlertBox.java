@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class AlertBox {
+    static  boolean answer;
 
     public static void displayError(String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -23,22 +24,19 @@ public class AlertBox {
 
     }
 
-    static  boolean answer;
-
     public static boolean checkDome(String message){
         Alert alert = new Alert(Alert.AlertType.NONE);
         alert.getButtonTypes().addAll(ButtonType.YES,ButtonType.NO);
         alert.setHeaderText(message);
         alert.initOwner(ClientGuiApp.getPrimaryStage());
         Optional<ButtonType> result = alert.showAndWait();
-         if(result.get() == ButtonType.YES){
-             answer=true;
-             alert.close();
-         }
-else if(result.get() == ButtonType.NO){
-             answer=false;
-             alert.close();
-             }
+        if(result.get() == ButtonType.YES){
+            answer=true;
+            alert.close();
+        } else if(result.get() == ButtonType.NO){
+            answer=false;
+            alert.close();
+        }
 
         return answer;
     }
@@ -68,5 +66,4 @@ else if(result.get() == ButtonType.NO){
         }
 
     }
-
 }
