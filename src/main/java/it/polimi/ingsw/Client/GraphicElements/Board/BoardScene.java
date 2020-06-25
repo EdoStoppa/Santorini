@@ -8,6 +8,7 @@ import it.polimi.ingsw.Client.GraphicElements.AlertBox;
 import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
 import it.polimi.ingsw.Model.PossiblePhases;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -30,7 +31,7 @@ public class BoardScene {
     private static  boolean init=true;
     private static boolean special=false;
     private static boolean checkDome=false;
-    private static Button endPhase= new Button("End Phase");
+    private static final Button endPhase= new Button("End Phase");
 
     public  static final HashMap<Integer, Image> lightTileHashMap= new HashMap<>();
     public  static final HashMap<Integer,Image> darkTileHashMap= new HashMap<>();
@@ -70,7 +71,7 @@ public class BoardScene {
         message.getChildren().add(messages);
         Button godList= new Button("God List");
 
-        godList.setOnAction(e-> AlertBox.displayGod());
+        godList.setOnAction(e->AlertBox.displayGod());
         endPhase.setOnAction(e->{
             if(special && yourTurn){
                 ClientGuiApp.getClient().writeToSocketGUI("end");
@@ -83,7 +84,7 @@ public class BoardScene {
         boardLine.setAlignment(Pos.CENTER);
         boardLine.getChildren().add(root);
         VBox layout=new VBox(ClientGuiApp.width*0.025);
-        layout.getChildren().addAll(boardLine,controller);;
+        layout.getChildren().addAll(boardLine,controller);
         layout.setBackground(SceneBuilder.getBackground("boardBackground"));
 
 
@@ -96,7 +97,7 @@ public class BoardScene {
 
             }
         }
-
+        layout.setPadding(new Insets(10,0,10,0));
         return layout;
     }
 
@@ -113,11 +114,6 @@ public class BoardScene {
         TranslateTransition transition= new TranslateTransition(Duration.seconds(0.5),piece);
         transition.setByY(y*TILE_SIZE);
         transition.setByX(x*TILE_SIZE);
-        //if(piece!=null)
-            //System.out.println(x+" "+y);
-        //piece.setTranslationY(-y*TILE_SIZE);
-        //piece.setTranslationX(-x*TILE_SIZE);
-        //System.out.println("translate: "+piece.getTranslationX()+"  "+piece.getTranslationY());
         transition.play();
 
     }

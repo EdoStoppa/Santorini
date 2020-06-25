@@ -10,3 +10,8 @@
     -fx-background-color: red;
 }
 
+#displayGod{
+    -fx-font-size: 10px;
+    -fx-wrap-text: true;
+}
+

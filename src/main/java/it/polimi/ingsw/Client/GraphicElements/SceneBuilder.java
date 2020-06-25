@@ -325,6 +325,16 @@ public class SceneBuilder {
         ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
     }
 
+    public static void errorScene(){
+        Label label = new Label("Wait...");
+        label.setFont(Font.font(ClientGuiApp.height*0.034));
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        layout.setBackground(getBackground("initBackground"));
+        layout.getChildren().add(label);
+        ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
+    }
+
     public static Parent endScene(String message){
         Label label= new Label(message);
         VBox layout=new VBox(10);
