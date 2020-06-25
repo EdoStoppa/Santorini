@@ -15,7 +15,6 @@ import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -31,6 +30,16 @@ public class ClientCLI extends Client{
         super(ip, port);
     }
 
+    /**
+     * This method initialize a new thread that will be used to process the user input, using as a support
+     * the current miniController (if present). In general is able to respond to a wrong (o when is not the
+     * turn of the player) input without checking the server.
+     *
+     * @param stdin The Scanner used to process the input from the user
+     * @param socketOut The printWriter used to send to the server the user input
+     *
+     * @return The actual thread
+     */
     public Thread asyncWriteToSocket(final Scanner stdin, final PrintWriter socketOut){
         Thread t=new Thread(() -> {
             try{
@@ -74,7 +83,7 @@ public class ClientCLI extends Client{
 
                     if(inputObject.equals(true)){
                         synchronized (ipLock){
-                            managePing();
+                            updatePing();
                         }
                     } else {
                         synchronized(this){
@@ -97,7 +106,14 @@ public class ClientCLI extends Client{
         return t;
     }
 
-    public Thread asyncCheckConnection(){
+    /**
+     * This method creates a thread used to check if the connection is still alive between client and server.
+     * Every 7 seconds the thread wakes up and check if while it was sleeping another ping was received.
+     * If no ping was received it means that the connection was lost, and proceed to end the game.
+     *
+     * @return The actual thread
+     */
+    public Thread asyncManagePing(){
         Thread t = new Thread(() ->{
             LocalTime lastThreadTime = LocalTime.now();
             while(isActive()){
@@ -125,11 +141,15 @@ public class ClientCLI extends Client{
         return t;
     }
 
-    private synchronized void managePing(){
+    /**
+     * Method used to update the last ping received
+     */
+    private synchronized void updatePing(){
         lastPingTime = LocalTime.now();
     }
 
-    private void manageString(String input){
+    @Override
+    public void manageString(String input){
 
         if(input.startsWith(HelpMessage.noAnswer)){
             System.out.println(input.substring(HelpMessage.noAnswer.length()));
@@ -147,7 +167,8 @@ public class ClientCLI extends Client{
         }
     }
 
-    private void manageServerMessage(ServerMessage inputObject) {
+    @Override
+    public void manageServerMessage(ServerMessage inputObject) {
 
         if (inputObject instanceof GodRecapMessage) {
             String name = ((GodRecapMessage) inputObject).getFirstPlayer();
@@ -171,7 +192,8 @@ public class ClientCLI extends Client{
         this.miniController = inputObject.getMiniController();
     }
 
-    private void manageGameMessage(GameMessage inputObject) {
+    @Override
+    public void manageGameMessage(GameMessage inputObject) {
         boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
         inputObject.autoSetMessage(isMyTurn, true);
 
@@ -205,6 +227,13 @@ public class ClientCLI extends Client{
 
     }
 
+    /**
+     * Method used to get the accepted name for the player
+     *
+     * @param s String returned by the Server
+     *
+     * @return Boolean that indicates if the name is accepted ora not
+     */
     private boolean getName(String s){
         String[] splitted = s.split(" ");
 
@@ -254,7 +283,7 @@ public class ClientCLI extends Client{
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
-            Thread t2 = asyncCheckConnection();
+            Thread t2 = asyncManagePing();
             t0.join();
             t1.join();
             t2.join();

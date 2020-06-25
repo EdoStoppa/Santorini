@@ -88,11 +88,11 @@ public class ClientGUI extends Client implements EventHandler{
                         }
                     } synchronized(this){
                         if(inputObject instanceof String) {
-                            manageStringGUI((String) inputObject);
+                            manageString((String) inputObject);
                         }else if (inputObject instanceof ServerMessage){
-                            manageServerMessageGUI((ServerMessage)inputObject);
+                            manageServerMessage((ServerMessage)inputObject);
                         }else if (inputObject instanceof GameMessage){
-                            manageGameMessageGUI((GameMessage)inputObject);
+                            manageGameMessage((GameMessage)inputObject);
                         }
 
                     }
@@ -134,7 +134,8 @@ public class ClientGUI extends Client implements EventHandler{
         return t;
     }
 
-    private void manageGameMessageGUI(GameMessage inputObject) {
+    @Override
+    public void manageGameMessage(GameMessage inputObject) {
         boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
         inputObject.autoSetMessage(isMyTurn, false);
         BoardScene.setYourTurn(isMyTurn);
@@ -183,7 +184,8 @@ public class ClientGUI extends Client implements EventHandler{
         playSpace.printPlaySpace();
     }
 
-    private void manageStringGUI(String input){
+    @Override
+    public void manageString(String input){
         executeSpecialString(input);
 
         if(input.startsWith(HelpMessage.noAnswer)){
@@ -202,7 +204,8 @@ public class ClientGUI extends Client implements EventHandler{
         }
     }
 
-    private void manageServerMessageGUI(ServerMessage inputObject){
+    @Override
+    public void manageServerMessage(ServerMessage inputObject){
         if (inputObject instanceof GodRecapMessage) {
             String name = ((GodRecapMessage) inputObject).getFirstPlayer();
             if (!name.equals(idPlayer)) {
