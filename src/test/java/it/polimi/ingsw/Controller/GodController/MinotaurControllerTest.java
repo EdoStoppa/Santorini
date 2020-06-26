@@ -259,6 +259,61 @@ class MinotaurControllerTest {
         minotaurController.handleSpecialMove(model, controller, message);
     }
 
+    @Test
+    void handleSpecialChooseConstructorTest()   {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,0));
+        posList.add(new Position(0,1));
+        posList.add(new Position(1,0));
+        posList.add(new Position(1,1));
+
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(1));
+
+        model.startGame();
+        PosMessage posMessage = new PosMessage("shish", pList.get(0).getIdPlayer(), null, new Position(0,0));
+        MinotaurController minotaurController = (MinotaurController) model.getCurrentGod().getGodController();
+        minotaurController.handleSpecialChooseConstructor(model, controller, posMessage);
+
+        assertEquals(pList.get(0).getAllConstructors().get(0), model.getCurrentConstructor());
+    }
+
+    @Test
+    void prepareSpecialMove()   {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,0));
+        posList.add(new Position(0,1));
+        posList.add(new Position(1,0));
+        posList.add(new Position(1,1));
+
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+
+        MinotaurController minotaurController = (MinotaurController) model.getCurrentGod().getGodController();
+        minotaurController.prepareSpecialMove(model, controller);
+        Minotaur minotaur = (Minotaur) model.getCurrentGod();
+
+        assertTrue(minotaur.getMoveAddList(model).size() == 2);
+        assertTrue(r.receivedMessage instanceof StandardTileMessage);
+    }
     // ----------------           Helper methods           ----------------
     private List<Player> createPlayer(God p1God, God p2God) {
         Player p1 = new Player("uno", 1);

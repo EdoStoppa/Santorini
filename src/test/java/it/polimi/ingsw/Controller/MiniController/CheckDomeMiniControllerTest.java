@@ -49,4 +49,41 @@ class CheckDomeMiniControllerTest {
             //controlla eccezione
         }
     }
+
+    @RepeatedTest(7)
+    void checkPosGuiTest(RepetitionInfo repetitionInfo)    {
+        String input;
+        if(repetitionInfo.getCurrentRepetition() == 1)  {
+            input = "1";
+            assertFalse(checkDomeMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 2) {
+            input = "-1,2";
+            assertFalse(checkDomeMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 3) {
+            input = "5,2";
+            assertFalse(checkDomeMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 4) {
+            input = "2,-1";
+            assertFalse(checkDomeMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 5) {
+            input = "2,5";
+            assertFalse(checkDomeMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 6) {
+            input = "2,2";
+            PlaySpace playSpace = new PlaySpace();
+            List<Position> tileToShow = new ArrayList<>();
+            tileToShow.add(new Position(2,2));
+            playSpace.setTileToShow(tileToShow);
+
+            assertTrue(checkDomeMiniController.checkPosGui(input, playSpace, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 7) {
+            //controlla eccezione
+        }
+    }
 }

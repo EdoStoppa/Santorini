@@ -45,4 +45,36 @@ class StandardMiniControllerTest {
         String input = "1,2";
         assertEquals("standard 1,2", standardMiniController.getMessage(input));
     }
+
+    @RepeatedTest(7)
+    void checkPosGuiTest(RepetitionInfo repetitionInfo)    {
+        String input;
+        if(repetitionInfo.getCurrentRepetition() == 1)  {
+            input ="3";
+            assertFalse(standardMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 2) {
+            input = "5,2";
+            assertFalse(standardMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 3) {
+            input = "1,5";
+            assertFalse(standardMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 4) {
+            PlaySpace playSpace = new PlaySpace();
+            List<Position> tileToShow = new ArrayList<>();
+            tileToShow.add(new Position(1,2));
+            tileToShow.add(new Position(3,4));
+            playSpace.setTileToShow(tileToShow);
+            input = "1,2";
+            assertTrue(standardMiniController.checkPosGui(input, playSpace, null));
+        }
+    }
+
+    @Test
+    void getMessageGuiTest()   {
+        String input = "1,2";
+        assertEquals("standard 1,2", standardMiniController.getMessageGui(input));
+    }
 }

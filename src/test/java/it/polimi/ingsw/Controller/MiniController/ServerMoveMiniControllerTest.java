@@ -45,6 +45,40 @@ class ServerMoveMiniControllerTest {
         assertEquals("1,2", serverMoveMiniController.getMessage(input));
     }
 
+    @RepeatedTest(7)
+    void checkPosGuiTest(RepetitionInfo repetitionInfo) {
+        String input;
+        PlaySpace playSpace = new PlaySpace();
+        playSpace.setConstructorMatrix(createConstructorMatrix());
+        if (repetitionInfo.getCurrentRepetition() == 1) {
+            input = "3";
+            assertFalse(serverMoveMiniController.checkPosGui(input, null, null));
+        } else if (repetitionInfo.getCurrentRepetition() == 2) {
+            input = "-1,2";
+            assertFalse(serverMoveMiniController.checkPosGui(input, playSpace, null));
+        } else if (repetitionInfo.getCurrentRepetition() == 3) {
+            input = "5,2";
+            assertFalse(serverMoveMiniController.checkPosGui(input, playSpace, null));
+        } else if (repetitionInfo.getCurrentRepetition() == 4) {
+            input = "1,-1";
+            assertFalse(serverMoveMiniController.checkPosGui(input, playSpace, null));
+        } else if (repetitionInfo.getCurrentRepetition() == 5) {
+            input = "1,5";
+            assertFalse(serverMoveMiniController.checkPosGui(input, playSpace, null));
+        } else if (repetitionInfo.getCurrentRepetition() == 6) {
+            input = "1,2";
+            assertFalse(serverMoveMiniController.checkPosGui(input, playSpace, null));
+        } else if (repetitionInfo.getCurrentRepetition() == 7) {
+            input = "1,3";
+            assertTrue(serverMoveMiniController.checkPosGui(input, playSpace, null));
+        }
+    }
+
+    @Test
+    void getMessageGuiTest()   {
+        String input = "1,2";
+        assertEquals("1,2", serverMoveMiniController.getMessageGui(input));
+    }
 
     private int[][] createConstructorMatrix() {
         int[][] m = new int[5][5];

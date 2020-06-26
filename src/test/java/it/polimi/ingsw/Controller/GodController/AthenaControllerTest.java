@@ -153,7 +153,16 @@ class AthenaControllerTest {
         }
     }
 
+    @Test
+    void prepareSpecialMoveTest()   {
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+        AthenaController athenaController = (AthenaController) model.getCurrentGod().getGodController();
+        athenaController.prepareSpecialMove(model, controller);
 
+        assertTrue(model.getCanGoUp(), "CanGoUp should be True");
+        assertTrue(r.receivedMessage instanceof StandardTileMessage);
+    }
 
     //          -----------     HELPER METHODS      ----------------
     private List<Player> createPlayer(God p1God, God p2God) {

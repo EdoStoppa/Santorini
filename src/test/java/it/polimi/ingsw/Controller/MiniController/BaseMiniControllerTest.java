@@ -27,4 +27,23 @@ class BaseMiniControllerTest {
         String input = "3,4";
         assertEquals("3,4", baseMiniController.getMessage(input), "The string should be the same");
     }
+
+    @Test
+    void getMessageGuiTest()    {
+        String input = "Ciao";
+        assertEquals(input, baseMiniController.getMessageGui(input), "The string should be the same");
+    }
+
+    @RepeatedTest(2)
+    void checkPosGuiTest(RepetitionInfo repetitionInfo)  {
+        if(repetitionInfo.getCurrentRepetition() == 1)  {
+            String input = "";
+            assertFalse(baseMiniController.checkPosGui(input, null, null));
+        }
+
+        else if(repetitionInfo.getCurrentRepetition() == 2) {
+            String input = "2,3";
+            assertTrue(baseMiniController.checkPosGui(input, null, null));
+        }
+    }
 }

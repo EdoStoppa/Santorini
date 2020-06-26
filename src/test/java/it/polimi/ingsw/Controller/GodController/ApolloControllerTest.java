@@ -7,9 +7,12 @@ import it.polimi.ingsw.Message.MoveMessages.StandardMoveMessage;
 import it.polimi.ingsw.Message.MoveMessages.SwapMessage;
 import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
+import it.polimi.ingsw.Message.WinMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ class ApolloControllerTest {
     }
 
     // -----------------      prepareSpecialChooseConstructor TESTS      -----------------
-    // TO DO: TESTS ON isLastStanding == true OR isLosing == true FOR PREPARE SPECIAL CHOOSE CONSTRUCTOR
+
     @Test
     void standardPrepareConstructor(){
         List<Position> posList = new ArrayList<>();
@@ -141,6 +144,65 @@ class ApolloControllerTest {
 
         assertEquals(1, toShow.size(), "Should only be the second constructor (size == 1)");
         assertTrue(toShow.get(0).equals(posList.get(1)), "This should be " + posList.get(1).toString() + " and instead is " + toShow.get(0).toString());
+    }
+
+    @RepeatedTest(2)
+    void specialChooseConstructorTest(RepetitionInfo repetitionInfo)    {
+        if(repetitionInfo.getCurrentRepetition() == 1)  {//isLosing == TRUE
+            List<Position> posList = new ArrayList<>();
+            posList.add(new Position(0,0));
+            posList.add(new Position(0,1));
+            posList.add(new Position(3,3));
+            posList.add(new Position(4,4));
+
+            int n = 0;
+            System.out.println(pList.get(0).getGod().getGodName());
+            for(Player p : pList){
+                for(int i = 0; i < 2; i++){
+                    model.setCurrentConstructor(p.getAllConstructors().get(i));
+                    model.performMove(posList.get(i + n));
+                }
+                n = 2;
+            }
+
+            increaseConstrLevel(new Position(1,0), 2);
+            increaseConstrLevel(new Position(1,1), 2);
+            increaseConstrLevel(new Position(1,2), 2);
+            increaseConstrLevel(new Position(0,2), 2);
+
+            model.startGame();
+
+            ApolloController apolloController = new ApolloController();
+            apolloController.prepareSpecialChooseConstructor(model, controller);
+
+            assertTrue(pList.size() == 1);
+        }
+
+        else if(repetitionInfo.getCurrentRepetition() == 2) {
+            List<Position> posList = new ArrayList<>();
+            posList.add(new Position(0,0));
+            posList.add(new Position(0,1));
+            posList.add(new Position(3,3));
+            posList.add(new Position(4,4));
+
+            int n = 0;
+            System.out.println(pList.get(0).getGod().getGodName());
+            for(Player p : pList){
+                for(int i = 0; i < 2; i++){
+                    model.setCurrentConstructor(p.getAllConstructors().get(i));
+                    model.performMove(posList.get(i + n));
+                }
+                n = 2;
+            }
+            model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+            model.removePlayer("due");
+            model.startGame();
+
+            ApolloController apolloController = new ApolloController();
+            apolloController.prepareSpecialChooseConstructor(model, controller);
+
+            assertTrue(r.receivedMessage instanceof WinMessage);
+        }
     }
 
     // -----------------            prepareSpecialMove TESTS            -----------------
@@ -283,6 +345,61 @@ class ApolloControllerTest {
         SwapMessage m = (SwapMessage) r.receivedMessage;
         assertEquals(1, m.getConstructorMatrix()[1][0], "(1,0) Should be occupied by a Player 1 constructor");
         assertEquals(2, m.getConstructorMatrix()[0][0], "(0,0) Should be occupied by a Player 2 constructor");
+    }
+
+    @Test
+    void handleSpecialMoveExecuteWinTest()  {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,0));
+        posList.add(new Position(0,1));
+        posList.add(new Position(1,0));
+        posList.add(new Position(1,1));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        increaseConstrLevel(new Position(1,0), 3);
+        increaseConstrLevel(new Position(0,0), 2);
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+
+        ApolloController apolloController = (ApolloController)model.getCurrentGod().getGodController();
+        PosMessage message = new PosMessage("shish", "uno", null, new Position(1,0));
+        apolloController.handleSpecialMove(model, controller, message);
+
+        assertTrue(r.receivedMessage instanceof WinMessage, "This should be a WinMessage");
+    }
+
+    @Test
+    void handleSpecialChooseConstructor()   {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,0));
+        posList.add(new Position(0,1));
+        posList.add(new Position(1,0));
+        posList.add(new Position(1,1));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+        ApolloController apolloController = (ApolloController) model.getCurrentGod().getGodController();
+        PosMessage posMessage = new PosMessage("Shish", pList.get(0).getIdPlayer(), null, new Position(0,0));
+        apolloController.handleSpecialChooseConstructor(model, controller, posMessage);
+
+        assertEquals(pList.get(0).getAllConstructors().get(0), model.getCurrentConstructor());
     }
 
     // ----------------           Helper methods           ----------------

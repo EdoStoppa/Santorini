@@ -304,6 +304,39 @@ class PrometheusControllerTest {
         assertEquals(1, toShow.size(), "Only the tile at level one should be here");
     }
 
+    @Test
+    void prepareSpecialMoveANDhandleSpecialBuildTest()   {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(0,0));
+        posList.add(new Position(4,0));
+        posList.add(new Position(1,0));
+        posList.add(new Position(2,1));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+
+        PrometheusController prometheusController = (PrometheusController) model.getCurrentGod().getGodController();
+        Prometheus prometheus = (Prometheus) model.getCurrentGod();
+        PosMessage posMessage = new PosMessage("Shish", model.getCurrentPlayerId(), null, new Position(0,1));
+        prometheusController.handleSpecialBuild(model,controller, posMessage);
+
+        assertFalse(prometheus.getCanGoUp());
+        assertEquals(1, model.getConstructionLevel(new Position(0,1)));
+
+        prometheusController.prepareSpecialMove(model, controller);
+
+        assertTrue(r.receivedMessage instanceof StandardTileMessage);
+        assertTrue(prometheus.getWrongPos(model).size() == 1);
+    }
 
 
     // ----------------           Helper methods           ----------------

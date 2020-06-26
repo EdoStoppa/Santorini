@@ -293,9 +293,9 @@ class ControllerTest {
                 message = new PosMessage("standard", player.getIdPlayer(), null, pos);
                 s.forceNotify(message);
                 possiblePhases = PossiblePhases.MOVE;
-                assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be SPECIAL_CHOOSE_CONSTRUCTOR");
+                assertEquals(possiblePhases, controller.getModel().getCurrentPhase(), "The phase should be MOVE");
                 assertEquals(pos.getRow(), controller.getModel().getCurrentConstructor().getPos().getRow(), "The row should be the same");
-                assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col shoul be the same");
+                assertEquals(pos.getCol(), controller.getModel().getCurrentConstructor().getPos().getCol(), "The col should be the same");
             }
             if(miavar == 1)  {//MOVE
                 controller.getModel().nextPhase();

@@ -31,6 +31,25 @@ class OrderMiniControllerTest {
         assertEquals("uno", orderMiniController.getMessage(input));
     }
 
+    @RepeatedTest(2)
+    void checkPosGuiTest(RepetitionInfo repetitionInfo)    {
+        String input;
+        if(repetitionInfo.getCurrentRepetition() == 1)  {
+            input = "uno";
+            assertTrue(orderMiniController.checkPosGui(input, null, null));
+        }
+        else if(repetitionInfo.getCurrentRepetition() == 2) {
+            input = "tre";
+            assertFalse(orderMiniController.checkPosGui(input, null, null));
+        }
+    }
+
+    @Test
+    void getMessageGuiTest()   {
+        String input = "uno";
+        assertEquals("uno", orderMiniController.getMessageGui(input));
+    }
+
     private List<String> createPlayerList() {
         List<String> pList = new ArrayList<>();
         pList.add("uno");

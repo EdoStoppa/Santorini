@@ -5,6 +5,7 @@ import it.polimi.ingsw.Message.GameMessage;
 import it.polimi.ingsw.Message.MoveMessages.MoveMessage;
 import it.polimi.ingsw.Message.MoveMessages.StandardMoveMessage;
 import it.polimi.ingsw.Message.PosMessage;
+import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,6 +132,32 @@ class PanControllerTest {
         PanController panController = (PanController) model.getCurrentGod().getGodController();
         panController.handleSpecialMove(model, controller, message);
         //Should output "Win" on console
+    }
+
+    @Test
+    void prepareSpecialMoveTest()   {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(1,2));
+        posList.add(new Position(2,0));
+        posList.add(new Position(3,2));
+        posList.add(new Position(3,4));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.startGame();
+
+        PanController panController = (PanController) model.getCurrentGod().getGodController();
+        panController.prepareSpecialMove(model, controller);
+
+        assertTrue(r.receivedMessage instanceof StandardTileMessage);
     }
 
     // ----------------           Helper methods           ----------------

@@ -2,11 +2,14 @@ package it.polimi.ingsw.Controller.GodController;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Message.GameMessage;
+import it.polimi.ingsw.Message.PosMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.CanEndTileMessage;
 import it.polimi.ingsw.Message.TileToShowMessages.StandardTileMessage;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -115,6 +118,35 @@ class ArtemisControllerTest {
         assertEquals(PossiblePhases.BUILD, message.getPhase(), "Should be a Build phase");
         assertEquals(1, toShow.size(), "Should only be one tile");
         assertEquals("0,1", toShow.get(0).toString(), "Should be at position 0,1, but is at " + toShow.get(0).toString());
+    }
+
+    @Test
+    void handleSpecialMove()   {
+        List<Position> posList = new ArrayList<>();
+        posList.add(new Position(1,2));
+        posList.add(new Position(2,0));
+        posList.add(new Position(3,2));
+        posList.add(new Position(3,4));
+
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+        model.performMove(new Position(1,1));
+
+        int n = 0;
+        for(Player p : pList){
+            for(int i = 0; i < 2; i++){
+                model.setCurrentConstructor(p.getAllConstructors().get(i));
+                model.performMove(posList.get(i + n));
+            }
+            n = 2;
+        }
+        ArtemisController artemisController = new ArtemisController();
+        model.setCurrentConstructor(pList.get(0).getAllConstructors().get(0));
+
+        PosMessage posMessage = new PosMessage("boh", null, null, new Position(1,3));
+        artemisController.handleSpecialMove(model, controller, posMessage);
+        assertEquals(1, model.getCurrentConstructor().getPos().getRow());
+        assertEquals(3, model.getCurrentConstructor().getPos().getCol());
+
     }
 
     // ----------------           Helper methods           ----------------
