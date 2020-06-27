@@ -20,45 +20,46 @@ import javafx.util.Duration;
 
 import java.util.HashMap;
 
-
+/**
+ * this class create a scene with the board and the button God List
+ * where every player can read the name and the power of the god in the game.
+ * another button "endPhase" is present in the scene and is made visible only when necessary.
+ */
 public class BoardScene {
+
+    //-------------------------- graphic element of the scene ---------------------------
     public static final int TILE_SIZE= (int) (ClientGuiApp.width*0.1375);
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
     public static TextArea messages= new TextArea();
+    private static final Button end= new Button("End Phase");
+
+
     private static boolean yourTurn=false;
     private static PossiblePhases phase;
     private static  boolean init=true;
-    private static boolean special=false;
+    private static boolean endPhase =false;
     private static boolean checkDome=false;
-    private static final Button endPhase= new Button("End Phase");
 
+
+    //------------------------- this HashMap contains all the image that can be loaded into the tile--------------
     public  static final HashMap<Integer, Image> lightTileHashMap= new HashMap<>();
     public  static final HashMap<Integer,Image> darkTileHashMap= new HashMap<>();
     public  static final HashMap<Integer, Image> HighlightedLightTileHashMap= new HashMap<>();
     public  static final HashMap<Integer,Image> HighlightedDarkTileHashMap= new HashMap<>();
 
-
-
-    public static void setYourTurn(boolean yourTurn) {
-        BoardScene.yourTurn = yourTurn;
-    }
-
-
-    public static boolean isYourTurn() {
-        return yourTurn;
-    }
-
     public static final TileGui[][] board= new TileGui[WIDTH][HEIGHT];
-
     private static final Group tileGroup = new Group();
     public static final Group pieceGroup= new Group();
 
 
-    public static TileGui getTile(int x,int y) {
-        return board[x][y];
-    }
+    //-------------------------- Fundamental methods ---------------------------
 
+    /**
+     * this method create the scene
+     *
+     * @return the parent necessary to build the scene
+     */
     public static Parent createContent() {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
@@ -72,21 +73,20 @@ public class BoardScene {
         Button godList= new Button("God List");
 
         godList.setOnAction(e->AlertBox.displayGod());
-        endPhase.setOnAction(e->{
-            if(special && yourTurn){
+        end.setOnAction(e->{
+            if(endPhase && yourTurn){
                 ClientGuiApp.getClient().writeToSocketGUI("end");
             }
         });
-        controller.getChildren().addAll(godList,message,endPhase);
-        endPhase.setVisible(false);
-        endPhase.setId("endPhase");
+        controller.getChildren().addAll(godList,message, end);
+        end.setVisible(false);
+        end.setId("endPhase");
         HBox boardLine= new HBox();
         boardLine.setAlignment(Pos.CENTER);
         boardLine.getChildren().add(root);
         VBox layout=new VBox(ClientGuiApp.width*0.025);
         layout.getChildren().addAll(boardLine,controller);
         layout.setBackground(SceneBuilder.getBackground("boardBackground"));
-
 
         for (int y=0; y<HEIGHT;y++){
             for (int x=0; x<WIDTH;x++){
@@ -101,15 +101,32 @@ public class BoardScene {
         return layout;
     }
 
-
+    /**
+     * this metod cast from the position of the piece to integer
+     * @param pixel coordinate of the point
+     * @return the value of the related tile
+     */
     static int toBoard(double pixel){
         return (int)(pixel+TILE_SIZE/2)/TILE_SIZE;
     }
 
+    /**
+     * this method make the piece
+     * @param type the type of the piece (color of the piece)
+     * @param x coordinate X in the tile
+     * @param y coordinate Y in the tile
+     * @return the piece made
+     */
     public static Piece makePiece(PieceType type, int x, int y){
         return new Piece(type,x,y);
     }
 
+    /**
+     * this method performs the animation of the pieces
+     * @param piece the piece to move
+     * @param x horizontal transition of X tile
+     * @param y vertical transition of Y tile
+     */
     public static synchronized void animation(Piece piece, int x, int y){
         TranslateTransition transition= new TranslateTransition(Duration.seconds(0.5),piece);
         transition.setByY(y*TILE_SIZE);
@@ -118,13 +135,27 @@ public class BoardScene {
 
     }
 
+    /**
+     * this method append the message in the TextArea messages
+     * @param message is the string to append
+     */
     public static void newText(String message){
         messages.appendText(message+"\n");
 
     }
 
+    /**
+     * this method clean up the TextArea messages
+     */
     public static void clearText(){
         messages.clear();
+    }
+
+
+    //-------------------------- getter and setter methods for variables ---------------------------
+
+    public static TileGui getTile(int x,int y) {
+        return board[x][y];
     }
 
     public static PossiblePhases getPhase() {
@@ -143,8 +174,8 @@ public class BoardScene {
         BoardScene.init = init;
     }
 
-    public static void setSpecial(boolean special) {
-        BoardScene.special = special;
+    public static void setEndPhase(boolean endPhase) {
+        BoardScene.endPhase = endPhase;
     }
 
     public static boolean isCheckDome() {
@@ -156,6 +187,14 @@ public class BoardScene {
     }
 
     public static void setEndPhaseButton(boolean visible){
-        endPhase.setVisible(visible);
+        end.setVisible(visible);
+    }
+
+    public static void setYourTurn(boolean yourTurn) {
+        BoardScene.yourTurn = yourTurn;
+    }
+
+    public static boolean isYourTurn() {
+        return yourTurn;
     }
 }

@@ -9,7 +9,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 
-
+/**
+ * this class is responsible for creating and updating the tiles on the <\em>BoardScene</\em>
+ */
 public class TileGui extends StackPane {
 
     private final Text text=new Text();
@@ -18,38 +20,14 @@ public class TileGui extends StackPane {
     private final boolean light;
     private final Rectangle tile;
 
+    //-------------------------- Fundamental methods ---------------------------
 
-    public boolean isLight() {
-        return light;
-    }
-
-
-    public Rectangle getTile() {
-        return tile;
-    }
-
-    public  int getLevel() {
-        return level;
-    }
-
-    public  void setLevel(int level) {
-        this.level = level;
-    }
-
-    public  Text getText() {
-        return text;
-    }
-
-
-    public void setPiece(Piece piece) {
-        this.piece = piece;
-    }
-
-    public Piece getPiece() {
-        return piece;
-    }
-
-
+    /**
+     * this method create the tile
+     * @param light select if the tile have a light or dark background
+     * @param x Coordinate X in the board
+     * @param y Coordinate Y in the board
+     */
     public TileGui(boolean light, int x, int y){
         tile = new Rectangle(BoardScene.TILE_SIZE, BoardScene.TILE_SIZE);
         this.light=light;
@@ -81,7 +59,9 @@ public class TileGui extends StackPane {
     }
 
 
-
+    /**
+     * this method update the tile drawing a dome in any level
+     */
     public void drawDome(){
         switch (this.level) {
             case 0 -> {
@@ -120,6 +100,10 @@ public class TileGui extends StackPane {
 
     }
 
+
+    /**
+     * this method update the tile drawing the next level
+     */
     public void drawNextLevel(){
         switch (this.level) {
             case 0 -> {
@@ -153,12 +137,47 @@ public class TileGui extends StackPane {
         }
     }
 
+    /**
+     * this method update the tile to highlight
+     */
     public void highlightsTile(){
         if (this.light)
             this.tile.setFill(new ImagePattern(BoardScene.HighlightedLightTileHashMap.get(this.level)));
         else
             this.tile.setFill(new ImagePattern(BoardScene.HighlightedDarkTileHashMap.get(this.level)));
 
+    }
+
+    //-------------------------- getter and setter methods for variables ---------------------------
+
+    public boolean isLight() {
+        return light;
+    }
+
+
+    public Rectangle getTile() {
+        return tile;
+    }
+
+    public  int getLevel() {
+        return level;
+    }
+
+    public  void setLevel(int level) {
+        this.level = level;
+    }
+
+    public  Text getText() {
+        return text;
+    }
+
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+
+    public Piece getPiece() {
+        return piece;
     }
 
 

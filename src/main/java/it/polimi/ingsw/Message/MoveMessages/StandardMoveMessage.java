@@ -27,7 +27,6 @@ public class StandardMoveMessage extends MoveMessage {
     @Override
     public void updateGUI(PlaySpace playSpace) {
         BoardScene.setInit(false);
-        System.out.println("ciao");
         playSpace.updateConstructorGUI(getConstructorMatrix());
     }
 }

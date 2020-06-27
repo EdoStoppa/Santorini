@@ -8,30 +8,31 @@ import javafx.scene.shape.Ellipse;
 
 public class Piece extends StackPane {
 
+    private double posX, posY;
 
 
-    private double oldX,oldY;
-
-
-    public void setOldX(double oldX) {
-        this.oldX = oldX;
+    public void setPosX(double posX) {
+        this.posX = posX;
     }
 
-    public void setOldY(double oldY) {
-        this.oldY = oldY;
+    public void setPosY(double posY) {
+        this.posY = posY;
     }
 
-    public double getOldX() {
-        return oldX;
+    public double getPosX() {
+        return posX;
     }
 
-    public double getOldY() {
-        return oldY;
+    public double getPosY() {
+        return posY;
     }
 
 
+    /**
+     * This method create the piece and set the eventHandler when you click on the piece
+     */
     public Piece(PieceType type, int x, int y){
-        move(x,y);
+        placePiece(x,y);
 
 
         Ellipse ellipse= new Ellipse(BoardScene.TILE_SIZE*0.26,BoardScene.TILE_SIZE*0.26);
@@ -46,21 +47,19 @@ public class Piece extends StackPane {
             System.out.println(BoardScene.isYourTurn()+" "+BoardScene.getPhase());
             if (BoardScene.isYourTurn()){
             if(BoardScene.getPhase()== PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase()==PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR ){
-                System.out.println(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
-                ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+                System.out.println(BoardScene.toBoard(posY)+","+BoardScene.toBoard(posX));
+                ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(posY)+","+BoardScene.toBoard(posX));
             }
             if(BoardScene.getPhase()==PossiblePhases.SPECIAL_MOVE){
-                System.out.println("sono qui");
-                ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(oldY)+","+BoardScene.toBoard(oldX));
+                ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(posY)+","+BoardScene.toBoard(posX));
             }
         }});
     }
 
-    public void move(double x, double y){
-        oldX=x*BoardScene.TILE_SIZE;
-        oldY=y*BoardScene.TILE_SIZE;
-        relocate(oldX,oldY);
-        System.out.println("piece messo "+(oldX)+" "+(oldY));
+    public void placePiece(double x, double y){
+        posX =x*BoardScene.TILE_SIZE;
+        posY =y*BoardScene.TILE_SIZE;
+        relocate(posX, posY);
 
     }
 

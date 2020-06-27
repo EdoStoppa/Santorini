@@ -208,8 +208,8 @@ public class PlaySpace {
                                   BoardScene.getTile(j, i).setPiece(null);
                                   BoardScene.getTile(j + k, i + h).setPiece(moved);
                                   if (moved!=null){
-                                  moved.setOldX((j + k)*BoardScene.TILE_SIZE);
-                                  moved.setOldY((i + h)*BoardScene.TILE_SIZE);
+                                  moved.setPosX((j + k)*BoardScene.TILE_SIZE);
+                                  moved.setPosY((i + h)*BoardScene.TILE_SIZE);
                               }}
 
                           }
@@ -259,13 +259,13 @@ public class PlaySpace {
                                     BoardScene.getTile(j,i).setPiece(swapped);
                                     System.out.println(j+"fs"+i+"ss"+k+"aa"+h+"xs");
                                     if (moved!=null){
-                                        moved.setOldX((j+k)*BoardScene.TILE_SIZE);
-                                        moved.setOldY((i+h)*BoardScene.TILE_SIZE);
+                                        moved.setPosX((j+k)*BoardScene.TILE_SIZE);
+                                        moved.setPosY((i+h)*BoardScene.TILE_SIZE);
                                     }
                                     if (swapped!=null){
-                                        swapped.setOldX(j*BoardScene.TILE_SIZE);
-                                        swapped.setOldY(i*BoardScene.TILE_SIZE);
-                                        System.out.println(swapped.getOldX()+","+swapped.getOldY());
+                                        swapped.setPosX(j*BoardScene.TILE_SIZE);
+                                        swapped.setPosY(i*BoardScene.TILE_SIZE);
+                                        System.out.println(swapped.getPosX()+","+swapped.getPosY());
                                     }
                                     setConstructorMatrix(playSpaceUpdated);
                                     return;
@@ -303,12 +303,12 @@ public class PlaySpace {
                                    BoardScene.getTile(j+k,i+h).setPiece(minotaur);
                                    BoardScene.getTile(j,i).setPiece(null);
                                     if (pushed!=null){
-                                        pushed.setOldX((j+k*2)*BoardScene.TILE_SIZE);
-                                        pushed.setOldY((i+h*2)*BoardScene.TILE_SIZE);
+                                        pushed.setPosX((j+k*2)*BoardScene.TILE_SIZE);
+                                        pushed.setPosY((i+h*2)*BoardScene.TILE_SIZE);
                                     }
                                     if (minotaur!=null){
-                                        minotaur.setOldX((j+k)*BoardScene.TILE_SIZE);
-                                        minotaur.setOldY((i+h)*BoardScene.TILE_SIZE);
+                                        minotaur.setPosX((j+k)*BoardScene.TILE_SIZE);
+                                        minotaur.setPosY((i+h)*BoardScene.TILE_SIZE);
                                     }
                                     setConstructorMatrix(playSpaceUpdated);
                                 }
@@ -355,7 +355,7 @@ public class PlaySpace {
     }
 
     public void setSpecial(boolean special){
-        BoardScene.setSpecial(special);
+        BoardScene.setEndPhase(special);
     }
 
     public void setCheckDome(boolean checkDome){
