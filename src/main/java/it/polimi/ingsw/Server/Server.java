@@ -19,122 +19,22 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
-
     private static int PORT = 54321;
     private ServerSocket serverSocket;
+
     private ExecutorService executor = Executors.newFixedThreadPool(128);
+
     private Map<String, SocketClientConnection> waitingConnection2P = new HashMap<>();
     private Map<String, SocketClientConnection> waitingConnection3P = new HashMap<>();
     private Map<SocketClientConnection,SocketClientConnection> playingConnection2P = new HashMap<>();
     private Map<SocketClientConnection,SocketClientConnection> playingConnection3P = new HashMap<>();
-
     public Map<String, SocketClientConnection> getWaitingConnection2P(){
         return waitingConnection2P;
     }
-
     public Map<String, SocketClientConnection> getWaitingConnection3P(){
         return waitingConnection3P;
     }
 
-    /**
-     * when the game is and this function close the connection and deregister ClientConnetion
-     * from the hashmap playingconnetion2P
-     * @param c is the connection that have to close
-     */
-    public synchronized void deregisterConnection2P(SocketClientConnection c){
-        SocketClientConnection opponent=playingConnection2P.get(c);
-        if (opponent!= null){
-            opponent.closeConnection();
-        }
-        playingConnection2P.remove(c);
-        playingConnection2P.remove(opponent);
-        waitingConnection2P.keySet().removeIf(s -> waitingConnection2P.get(s) == c);
-    }
-
-    /**
-     * when the game is ending and this function close the connection and deregister SocketClientConnection
-     * from the hashmap playingConnection3P
-     * @param c is the connection that have to close
-     */
-    public synchronized void deregisterConnection3P(SocketClientConnection c){
-        SocketClientConnection opponent1 = playingConnection3P.get(c);
-        SocketClientConnection opponent2 = playingConnection3P.get(opponent1);
-        if (opponent1 != null){
-            opponent1.closeConnection();
-        }
-        if (opponent2 != null){
-            opponent2.closeConnection();
-        }
-        playingConnection3P.remove(c);
-        playingConnection3P.remove(opponent1);
-        playingConnection3P.remove(opponent2);
-        waitingConnection3P.keySet().removeIf(s -> waitingConnection3P.get(s) == c);
-    }
-
-    /**
-     * add a name to the list waitingconnection2p and is the size of this list is 2 start a game
-     * @param c SocketClientConnection of the player
-
-     */
-    public synchronized void lobby2P(SocketClientConnection c,String name){
-        System.out.println("Registering in 2P lobby...");
-        if (waitingConnection2P.containsKey(name)){
-            System.out.println("Name already taken");
-            name=c.enterNewName(waitingConnection2P);
-        }
-        waitingConnection2P.put(name,c);
-        System.out.println("Accepted " + name);
-        c.asyncSend("Accepted " + name);
-        if (waitingConnection2P.size() == 2 && areOthersAlive(waitingConnection2P, name)) {
-            System.out.println("Launching initGame2P");
-            initGame2P();
-        } else {
-            c.asyncSend(HelpMessage.noAnswer + "Please, wait for other players to connect...");
-        }
-    }
-
-    /**
-     * add a name to the list waitingconnection3P and is the size of this list is 3 start a game
-     * @param c SocketClientConnection of the player
-     * @param name is the name choose from the player
-     */
-    public synchronized void lobby3P(SocketClientConnection c,String name){
-        System.out.println("Registering in 3P lobby...");
-        if (waitingConnection3P.containsKey(name)){
-            System.out.println("Name already taken");
-            name=c.enterNewName(waitingConnection2P);
-        }
-        waitingConnection3P.put(name,c);
-        System.out.println("Accepted " +name);
-        c.asyncSend("Accepted " +name);
-        if (waitingConnection3P.size() == 3 && areOthersAlive(waitingConnection3P, name)) {
-            System.out.println("Launching initGame3P");
-            initGame3P();
-        } else {
-            c.asyncSend(HelpMessage.noAnswer + "Please, wait for other players to connect...");
-        }
-    }
-
-    private boolean areOthersAlive(Map<String, SocketClientConnection> waitingConnection, String callerName){
-        boolean answ = true;
-        List<String> names = new ArrayList<>(waitingConnection.keySet());
-        for(String name : names){
-            if(!name.equals(callerName)){
-                SocketClientConnection connection = waitingConnection.get(name);
-                if(!connection.ping()){
-                    System.out.println("Removing lock on Connection run() to end associated thread");
-                    synchronized (connection.lock){
-                        connection.lock.notify();
-                    }
-                    waitingConnection.remove(name);
-                    answ = false;
-                }
-            }
-
-        }
-
-        return answ;
-    }
 
     public Server() throws IOException{
         this.serverSocket = new ServerSocket(PORT);
@@ -156,6 +56,91 @@ public class Server {
                 System.out.println("Connection Error!");
                 e.printStackTrace();
             }
+        }
+    }
+
+
+    //------------------------------ Methods used to remove an ongoing match ------------------------------
+
+    /**
+     * When the game is running this function close the connection and deregister ClientConnection
+     * from the hashmap playingConnection2P
+     * @param c is the connection that have to be closed/removed
+     */
+    public synchronized void deregisterConnection2P(SocketClientConnection c){
+        SocketClientConnection opponent=playingConnection2P.get(c);
+        if (opponent!= null){
+            opponent.closeConnection();
+        }
+        playingConnection2P.remove(c);
+        playingConnection2P.remove(opponent);
+        waitingConnection2P.keySet().removeIf(s -> waitingConnection2P.get(s) == c);
+    }
+
+    /**
+     * When the game is running this function close the connection and deregister ClientConnection
+     * from the hashmap playingConnection3P
+     * @param c is the connection that have to be closed/removed
+     */
+    public synchronized void deregisterConnection3P(SocketClientConnection c){
+        SocketClientConnection opponent1 = playingConnection3P.get(c);
+        SocketClientConnection opponent2 = playingConnection3P.get(opponent1);
+        if (opponent1 != null){
+            opponent1.closeConnection();
+        }
+        if (opponent2 != null){
+            opponent2.closeConnection();
+        }
+        playingConnection3P.remove(c);
+        playingConnection3P.remove(opponent1);
+        playingConnection3P.remove(opponent2);
+        waitingConnection3P.keySet().removeIf(s -> waitingConnection3P.get(s) == c);
+    }
+
+
+    //------------------------------ Methods used to add player to lobby or start the actual match ------------------------------
+
+    /**
+     * add a name to the list waitingConnection2p and is the size of this list is 2 start a game
+     * @param c SocketClientConnection of the player
+
+     */
+    public synchronized void lobby2P(SocketClientConnection c,String name){
+        System.out.println("Registering in 2P lobby...");
+        if (waitingConnection2P.containsKey(name)){
+            System.out.println("Name already taken");
+            name=c.enterNewName(waitingConnection2P);
+        }
+        waitingConnection2P.put(name,c);
+        System.out.println("Accepted " + name);
+        c.asyncSend("Accepted " + name);
+        if (waitingConnection2P.size() == 2 && areOthersAlive(waitingConnection2P, name)) {
+            System.out.println("Launching initGame2P");
+            initGame2P();
+        } else {
+            c.asyncSend(HelpMessage.noAnswer + "Please, wait for other players to connect...");
+        }
+    }
+
+    /**
+     * add a name to the list waitingConnection3P and is the size of this list is 3 start a game
+     * @param c SocketClientConnection of the player
+     * @param name is the name choose from the player
+     */
+    public synchronized void lobby3P(SocketClientConnection c,String name){
+        System.out.println("Registering in 3P lobby...");
+        if (waitingConnection3P.containsKey(name)){
+            System.out.println("Name already taken");
+            name=c.enterNewName(waitingConnection2P);
+        }
+        waitingConnection3P.put(name,c);
+        System.out.println("Accepted " +name);
+        c.asyncSend("Accepted " +name);
+        if (waitingConnection3P.size() == 3 && areOthersAlive(waitingConnection3P, name)) {
+            System.out.println("Launching initGame3P");
+            initGame3P();
+        } else {
+            c.asyncSend(HelpMessage.noAnswer + "Please, wait for other players to connect...");
         }
     }
 
@@ -396,6 +381,9 @@ public class Server {
         thread3P.start();
     }
 
+
+    //--------------- Helper Methods ---------------
+
     private void setLastGod(Player playerGodLike, HashMap<String, God> mapPlayerGod, ArrayList<God> pickedGod, God chosenGod) {
         if (chosenGod.getGodName().equals(pickedGod.get(0).getGodName())) {
             playerGodLike.setGod(pickedGod.get(1));
@@ -445,5 +433,26 @@ public class Server {
 
         return true;
 
+    }
+
+    private boolean areOthersAlive(Map<String, SocketClientConnection> waitingConnection, String callerName){
+        boolean answ = true;
+        List<String> names = new ArrayList<>(waitingConnection.keySet());
+        for(String name : names){
+            if(!name.equals(callerName)){
+                SocketClientConnection connection = waitingConnection.get(name);
+                if(!connection.ping()){
+                    System.out.println("Removing lock on Connection run() to end associated thread");
+                    synchronized (connection.lock){
+                        connection.lock.notify();
+                    }
+                    waitingConnection.remove(name);
+                    answ = false;
+                }
+            }
+
+        }
+
+        return answ;
     }
 }

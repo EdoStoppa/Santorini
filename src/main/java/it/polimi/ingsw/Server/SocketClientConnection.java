@@ -22,6 +22,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     private ObjectOutputStream out;
     private int gameMode;
     public final Object lock = new Object();
+
     private boolean active=true;
     private boolean playing = true;
 
@@ -29,96 +30,11 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     private boolean isInit = true;
     private String asyncAnswer;
 
+
     public SocketClientConnection(Socket socket,Server server){
         this.server=server;
         this.socket=socket;
     }
-
-    private synchronized boolean isActive(){
-        return active;
-    }
-
-    public synchronized void send(Object message){
-        try {
-            out.reset();
-            out.writeObject(message);
-            out.flush();
-        } catch (IOException e){
-            if(playing && active){
-                System.err.println(e.getMessage() + " while playing == true");
-                //e.printStackTrace();
-                playing = false;
-                close(gameMode);
-            } else {
-                System.out.println("Connection already closed");
-            }
-            active = false;
-        }
-    }
-
-    public void close(int gameMode) {
-        closeConnection();
-        System.out.println("Deregistering client...");
-        if (gameMode==2) {
-            server.deregisterConnection2P(this);
-        }
-        if(gameMode==3){
-            server.deregisterConnection3P(this);
-        }
-        System.out.println("done");
-    }
-
-    public void closeConnection() {
-        if(!socket.isClosed()){
-            send(HelpMessage.forcedClose);
-            try {
-                socket.close();
-            } catch (IOException e){
-                System.err.println("Error when closing socket");
-            }
-        }
-        playing = false;
-        active=false;
-    }
-
-    public void initReadThread(Scanner in){
-        new Thread(() -> {
-            String read;
-
-            try {
-                while (isActive()) {
-                    read = in.nextLine();
-
-                    if (read.equals("pong"))
-                        updatePong();
-                    else {
-                        if (!isInit) {
-                            notify(read);
-                        } else {
-                            asyncAnswer = read;
-                            synchronized (lock) { lock.notify(); }
-                        }
-
-                    }
-                    //notify(read);
-                }
-            } catch(Exception e){
-                if(active){
-                    if(playing){
-                        close(gameMode);
-                    }
-                    playing = false;
-                    active = false;
-                    System.out.println(e.getMessage() + " closed SocketClientConnection");
-                } else {
-                    System.out.println("SocketClientConnection already closed");
-                }
-            }
-
-        }).start();
-    }
-
-    public void setIsInit(boolean b){ isInit = b; }
 
     @Override
     public void run() {
@@ -188,38 +104,81 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
             initReadThread(in);
 
-            //synchronized (lock){
-                if (gameMode == 2) {
-                    System.out.println("Starting lobby2P...");
-                    server.lobby2P(this, name);
-                } else {
-                    System.out.println("Starting lobby3P...");
-                    server.lobby3P(this, name);
-                }
-
-                /*try{
-                    lock.wait();
-                } catch (Exception e){
-                    e.printStackTrace();
-                }*/
-            //}
-
-            /*while (isActive()) {
-                read = in.nextLine();
-                notify(read);
-            }*/
+            if (gameMode == 2) {
+                System.out.println("Starting lobby2P...");
+                server.lobby2P(this, name);
+            } else {
+                System.out.println("Starting lobby3P...");
+                server.lobby3P(this, name);
+            }
 
         }catch (IOException | NoSuchElementException e){
-            if(active){
-                if(playing){
-                    close(gameMode);
-                }
-                System.out.println(e.getMessage() + " closed SocketClientConnection");
-            } else {
-                System.out.println("SocketClientConnection already closed");
-            }
+            endGame(e);
         }
     }
+
+
+    //-------------------------- Fundamental methods ---------------------------
+
+    public synchronized void send(Object message){
+        try {
+            out.reset();
+            out.writeObject(message);
+            out.flush();
+        } catch (IOException e){
+            if(playing && active){
+                System.err.println(e.getMessage() + " while playing == true");
+                //e.printStackTrace();
+                playing = false;
+                close(gameMode);
+            } else {
+                System.out.println("Connection already closed");
+            }
+            active = false;
+        }
+    }
+
+    /**
+     * send of the message only to the client selected
+     * @param message message to send
+     */
+    public void asyncSend(final Object message) {
+        Thread thread = new Thread(() -> {
+            send(message);
+        });
+        thread.start();
+    }
+
+    public void initReadThread(Scanner in){
+        new Thread(() -> {
+            String read;
+
+            try {
+                while (isActive()) {
+                    read = in.nextLine();
+
+                    if (read.equals("pong"))
+                        updatePong();
+                    else {
+                        if (!isInit) {
+                            notify(read);
+                        } else {
+                            asyncAnswer = read;
+                            synchronized (lock) { lock.notify(); }
+                        }
+
+                    }
+                    //notify(read);
+                }
+            } catch(Exception e){
+                endGame(e);
+            }
+
+        }).start();
+    }
+
+
+    //--------------- Methods used to check the connection between server and client ---------------
 
     private void asyncManagePing(){
         new Thread(() ->{
@@ -241,18 +200,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 }
             }
         }).start();
-    }
-
-    public synchronized boolean ping(){
-        try {
-            out.reset();
-            out.writeObject(true);
-            out.flush();
-            return true;
-        } catch (IOException e){
-            System.out.println("Failed ping");
-            return false;
-        }
     }
 
     private void asyncManagePong(){
@@ -293,20 +240,66 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         }).start();
     }
 
+    public synchronized boolean ping(){
+        try {
+            out.reset();
+            out.writeObject(true);
+            out.flush();
+            return true;
+        } catch (IOException e){
+            System.out.println("Failed ping");
+            return false;
+        }
+    }
+
     private void updatePong(){
         lastPong = LocalTime.now();
     }
 
-    /**
-     * send of the message only to the client selected
-     * @param message message to send
-     */
-    public void asyncSend(final Object message) {
-        Thread thread = new Thread(() -> {
-            send(message);
-        });
-        thread.start();
+
+    //----------------------- Methods used to manage the (sometimes forced) end game ---------------------
+
+    public void close(int gameMode) {
+        closeConnection();
+        System.out.println("Deregistering client...");
+        if (gameMode==2) {
+            server.deregisterConnection2P(this);
+        }
+        if(gameMode==3){
+            server.deregisterConnection3P(this);
+        }
+        System.out.println("done");
     }
+
+    public void closeConnection() {
+        if(!socket.isClosed()){
+            send(HelpMessage.forcedClose);
+            try {
+                socket.close();
+            } catch (IOException e){
+                System.err.println("Error when closing socket");
+            }
+        }
+        playing = false;
+        active=false;
+    }
+
+    private void endGame(Exception e){
+        if(active){
+            if(playing){
+                close(gameMode);
+            }
+            playing = false;
+            active = false;
+            System.out.println(e.getMessage() + " closed SocketClientConnection");
+        } else {
+            System.out.println("SocketClientConnection already closed");
+        }
+    }
+
+
+    //------------------------ Methods used during initialization of the match ------------------------
+
     /**
      * the GodlikePlayer choose the God for this game
      * @param player number of player of the game
@@ -332,7 +325,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         asyncAnswer = null;
         return pickGod;
     }
-
 
     public God pickGod(ChosenGodMessage chosenGodMessage){
         try{
@@ -420,6 +412,15 @@ public class SocketClientConnection extends Observable<String> implements Runnab
         asyncAnswer = null;
         return new Position(Integer.parseInt(coordinates[0]),Integer.parseInt(coordinates[1]));
     }
+
+
+    //----------------------------- Miscellaneous -------------------------------
+
+    private synchronized boolean isActive(){
+        return active;
+    }
+
+    public void setIsInit(boolean b){ isInit = b; }
 
     public void setPlaying(boolean playing) {
         this.playing = playing;
