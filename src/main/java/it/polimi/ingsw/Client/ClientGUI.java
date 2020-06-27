@@ -33,7 +33,7 @@ public class ClientGUI extends Client implements EventHandler{
     private MiniController miniController;
     private PrintWriter socketOut;
     private static Map<String, God> playerGodMap;
-    LocalTime lastPingTime;
+    private LocalTime lastPingTime;
     private final Object ipLock = new Object();
 
     public ClientGUI(String ip, int port){
@@ -50,6 +50,7 @@ public class ClientGUI extends Client implements EventHandler{
         try {
             asyncReadFromSocket(socketIn);
             asyncManagePing();
+            asyncMangePong();
         }catch (NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         }
@@ -65,8 +66,10 @@ public class ClientGUI extends Client implements EventHandler{
                 playSpace.disHighlightsTile();
                 playSpace.reset();
                 System.out.println();
-                socketOut.println(out);
-                socketOut.flush();
+                synchronized (ipLock){
+                    socketOut.println(out);
+                    socketOut.flush();
+                }
             } else {
                 System.out.println(sBuilder);
             }
@@ -121,9 +124,10 @@ public class ClientGUI extends Client implements EventHandler{
                 synchronized(ipLock){
                     //System.out.println("Checking Ping, Thread time = " + lastThreadTime.toString() + " and Ping time = " + lastPingTime.toString());
                     if(lastThreadTime.equals(lastPingTime)){
-                        if(isActive())
+                        if(isActive()){
                             System.out.println("The Server connection was lost, please restart the game");
-                        Platform.runLater(()-> SceneBuilder.loseScene("The Server connection was lost, please restart the game"));
+                            Platform.runLater(()-> SceneBuilder.loseScene("The Server connection was lost, please restart the game"));
+                        }
                         setActive(false);
                     } else {
                         lastThreadTime = lastPingTime;
@@ -134,6 +138,28 @@ public class ClientGUI extends Client implements EventHandler{
         });
         t.start();
         return t;
+    }
+
+    public void asyncMangePong(){
+        new Thread(() ->{
+            while(isActive()){
+                pong();
+
+                try{
+                    Thread.sleep(5000);
+                } catch(InterruptedException e){
+                    setActive(false);
+                    System.out.println("Game Interrupted");
+                }
+            }
+        }).start();
+    }
+
+    public void pong(){
+        synchronized (ipLock){
+            socketOut.println("pong");
+            socketOut.flush();
+        }
     }
 
     @Override

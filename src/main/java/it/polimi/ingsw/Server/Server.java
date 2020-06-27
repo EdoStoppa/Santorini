@@ -244,9 +244,11 @@ public class Server {
 
             synchronized (godLike.lock){
                 godLike.lock.notify();
+                godLike.setIsInit(false);
             }
             synchronized (opponent.lock){
                 opponent.lock.notify();
+                opponent.setIsInit(false);
             }
 
             model.startGame();
@@ -377,12 +379,15 @@ public class Server {
             //unlocking all socketClientConnection to let them read from socket
             synchronized (godLike.lock) {
                 godLike.lock.notify();
+                godLike.setIsInit(false);
             }
             synchronized (opponent1.lock) {
                 opponent1.lock.notify();
+                opponent1.setIsInit(false);
             }
             synchronized (opponent2.lock) {
                 opponent2.lock.notify();
+                opponent2.setIsInit(false);
             }
 
             model.startGame();

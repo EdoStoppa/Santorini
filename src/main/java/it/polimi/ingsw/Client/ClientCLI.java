@@ -20,10 +20,11 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ClientCLI extends Client{
-    String idPlayer = null;
+    private String idPlayer = null;
     private MiniController miniController;
+    private PrintWriter socketOut;
     private final Object ipLock = new Object();
-    LocalTime lastPingTime;
+    private LocalTime lastPingTime;
     private Map<String, God> playerGodMap;
 
     public ClientCLI(String ip, int port) {
@@ -56,8 +57,10 @@ public class ClientCLI extends Client{
                                 miniController = null;
                                 playSpace.reset();
                                 System.out.println();
-                                socketOut.println(out);
-                                socketOut.flush();
+                                synchronized (ipLock){
+                                    socketOut.println(out);
+                                    socketOut.flush();
+                                }
                             } else {
                                 System.out.println(sBuilder);
                             }
@@ -139,6 +142,30 @@ public class ClientCLI extends Client{
         });
         t.start();
         return t;
+    }
+
+    public Thread asyncManagePong(){
+        Thread t = new Thread(() ->{
+            while(isActive()){
+                pong();
+
+                try{
+                    Thread.sleep(5000);
+                } catch(InterruptedException e){
+                    setActive(false);
+                    System.out.println("Game Interrupted");
+                }
+            }
+        });
+        t.start();
+        return t;
+    }
+
+    public void pong(){
+        synchronized (ipLock) {
+            socketOut.println("pong");
+            socketOut.flush();
+        }
     }
 
     /**
@@ -278,15 +305,17 @@ public class ClientCLI extends Client{
 
         System.out.println("Connection established!\n");
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+        socketOut = new PrintWriter(socket.getOutputStream());
 
         try {
             Thread t0 = asyncReadFromSocket(socketIn);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             Thread t2 = asyncManagePing();
+            Thread t3 = asyncManagePong();
             t0.join();
             t1.join();
             t2.join();
+            t3.join();
         }catch (InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
