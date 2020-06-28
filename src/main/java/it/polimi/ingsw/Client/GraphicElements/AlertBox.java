@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.ClientGUI;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Model.God;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 
@@ -26,14 +27,19 @@ public class AlertBox {
 
     public static boolean checkDome(String message){
         Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.getButtonTypes().addAll(ButtonType.YES,ButtonType.NO);
+        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
+        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.NO);
+
+        alert.getButtonTypes().addAll(yes,no);
         alert.setHeaderText(message);
         alert.initOwner(ClientGuiApp.getPrimaryStage());
+
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.YES){
+
+        if(result.get() == yes){
             answer=true;
             alert.close();
-        } else if(result.get() == ButtonType.NO){
+        } else if(result.get() == no){
             answer=false;
             alert.close();
         }
@@ -45,23 +51,27 @@ public class AlertBox {
         Map<String, God> playerGodMap=ClientGUI.getPlayerGodMap();
         ArrayList<String> keys = new ArrayList<>(playerGodMap.keySet());
         Alert alert=new Alert(Alert.AlertType.NONE);
-        alert.getButtonTypes().add(ButtonType.CLOSE);
+
+        ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().add(close);
+
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         dialogPane.setId("displayGod");
         dialogPane.setPrefWidth(450);
         alert.setTitle("God List");
-        String god1=keys.get(0)+" ---> "+playerGodMap.get(keys.get(0)).getGodName()+"\n"+playerGodMap.get(keys.get(0)).getGodPower()+"\n";
+        String god1=keys.get(0)+" ---> "+playerGodMap.get(keys.get(0)).getGodName()+"\n"+playerGodMap.get(keys.get(0)).getGodPower()+"\n\n";
         String god2=keys.get(1)+" ---> "+playerGodMap.get(keys.get(1)).getGodName()+"\n"+playerGodMap.get(keys.get(1)).getGodPower()+"\n";
         if(keys.size()==3){
-            String god3= keys.get(2)+" ---> "+playerGodMap.get(keys.get(2)).getGodName()+"\n"+playerGodMap.get(keys.get(2)).getGodPower();
+            String god3= "\n" + keys.get(2)+" ---> "+playerGodMap.get(keys.get(2)).getGodName()+"\n"+playerGodMap.get(keys.get(2)).getGodPower();
             alert.setHeaderText(god1+god2+god3);
         }else {
             alert.setHeaderText(god1 + god2);
         }
         alert.initOwner(ClientGuiApp.getPrimaryStage());
+
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.CLOSE){
+        if(result.get() == close){
             alert.close();
         }
 

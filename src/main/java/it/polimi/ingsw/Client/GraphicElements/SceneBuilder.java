@@ -41,6 +41,7 @@ public class SceneBuilder {
         //layout.setId("init");
         layout.setBackground(getBackground("initBackground"));
         Label welcome= new Label(message);
+        welcome.setFont(Font.font(ClientGuiApp.height*0.02571));
         HBox Buttons= new HBox(ClientGuiApp.width*0.1875);
         Button twoPlayer= new Button("2 player");
         Button treePlayer=new Button("3 player");
@@ -58,8 +59,9 @@ public class SceneBuilder {
         VBox layout=new VBox(ClientGuiApp.height*0.05714);
         layout.setBackground(getBackground("initBackground"));
         Text textName= new Text(message);
+        textName.setFont(Font.font(ClientGuiApp.height*0.02571));
         TextField name= new TextField();
-        Button go= new Button("go");
+        Button go= new Button("Go");
         go.setId("button");
         go.setOnAction(e-> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
         name.setMaxWidth(ClientGuiApp.width*0.1875);
@@ -76,110 +78,58 @@ public class SceneBuilder {
         HBox secondLine=new HBox();
         HBox thirdLine=new HBox();
         HBox fourLine= new HBox(ClientGuiApp.width*0.0375);
+
         firstLine.setAlignment(Pos.CENTER);
         secondLine.setAlignment(Pos.CENTER);
         thirdLine.setAlignment(Pos.CENTER);
-        CheckBox zero=new CheckBox();
-        CheckBox one=new CheckBox();
-        CheckBox two= new CheckBox();
-        CheckBox three= new CheckBox();
-        CheckBox four= new CheckBox();
-        CheckBox five= new CheckBox();
-        CheckBox six=new CheckBox();
-        CheckBox seven= new CheckBox();
-        CheckBox eight= new CheckBox();
-        ImageView IWOne= new ImageView(imageHashMap.get(message.GetGod(0).getGodName()));
-        setGodImage(IWOne);
-        ImageView IWTwo= new ImageView(imageHashMap.get(message.GetGod(1).getGodName()));
-        setGodImage(IWTwo);
-        ImageView IWThree= new ImageView(imageHashMap.get(message.GetGod(2).getGodName()));
-        setGodImage(IWThree);
-        ImageView IWFour= new ImageView(imageHashMap.get(message.GetGod(3).getGodName()));
-        setGodImage(IWFour);
-        ImageView IWFive = new ImageView(imageHashMap.get(message.GetGod(4).getGodName()));
-        setGodImage(IWFive);
-        ImageView IWSix = new ImageView(imageHashMap.get(message.GetGod(5).getGodName()));
-        setGodImage(IWSix);
-        ImageView IWSeven=new ImageView(imageHashMap.get(message.GetGod(6).getGodName()));
-        setGodImage(IWSeven);
-        ImageView IWEight= new ImageView(imageHashMap.get(message.GetGod(7).getGodName()));
-        setGodImage(IWEight);
-        ImageView IWNine= new ImageView(imageHashMap.get(message.GetGod(8).getGodName()));
-        setGodImage(IWNine);
-        Text desctripionZero =new Text(message.GetGod(0).getGodPower());
-        desctripionZero.setFont(Font.font(ClientGuiApp.height*0.01714));
-        desctripionZero.setWrappingWidth(ClientGuiApp.width*0.15);
-        Text desctripionOne =new Text(message.GetGod(1).getGodPower());
-        desctripionOne.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionOne.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text desctripionTwo =new Text(message.GetGod(2).getGodPower());
-        desctripionTwo.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionTwo.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text desctripionThree =new Text(message.GetGod(3).getGodPower());
-        desctripionThree.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionThree.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text desctripionFour =new Text(message.GetGod(4).getGodPower());
-        desctripionFour.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionFour.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text descriptionFive =new Text(message.GetGod(5).getGodPower());
-        descriptionFive.setWrappingWidth(ClientGuiApp.width*0.15);
-        descriptionFive.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text desctripionSix =new Text(message.GetGod(6).getGodPower());
-        desctripionSix.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionSix.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text desctripionSeven =new Text(message.GetGod(7).getGodPower());
-        desctripionSeven.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionSeven.setFont(Font.font(ClientGuiApp.height*0.01714));
-        Text desctripionEight =new Text(message.GetGod(8).getGodPower());
-        desctripionEight.setWrappingWidth(ClientGuiApp.width*0.15);
-        desctripionEight.setFont(Font.font(ClientGuiApp.height*0.01714));
-        firstLine.getChildren().addAll(zero,IWOne,desctripionZero,one,IWTwo,desctripionOne,two,IWThree,desctripionTwo);
-        secondLine.getChildren().addAll(three,IWFour,desctripionThree,four,IWFive,desctripionFour,five,IWSix,descriptionFive);
-        thirdLine.getChildren().addAll(six,IWSeven,desctripionSix,seven,IWEight,desctripionSeven,eight,IWNine,desctripionEight);
-        VBox griglia=new VBox(ClientGuiApp.width*0.02);
-        Button chosenGods=new Button("enter");
+
+        ArrayList<CheckBox> godCheckBox = new ArrayList<>();
+        ArrayList<ImageView> godIW = new ArrayList<>();
+        ArrayList<Text> powerGod = new ArrayList<>();
+
+        for(int i = 0; i < God.getAllGod().size(); i++){
+            godCheckBox.add(new CheckBox());
+
+            ImageView iw = new ImageView(imageHashMap.get(message.GetGod(i).getGodName()));
+            setGodImage(iw);
+            godIW.add(iw);
+
+            Text descriptionGod = new Text(message.GetGod(i).getGodPower());
+            descriptionGod.setFont(Font.font(ClientGuiApp.height*0.01714));
+            descriptionGod.setWrappingWidth(ClientGuiApp.width*0.15);
+            powerGod.add(descriptionGod);
+        }
+
+        firstLine.getChildren().addAll(godCheckBox.get(0),godIW.get(0),powerGod.get(0), godCheckBox.get(1),godIW.get(1),powerGod.get(1), godCheckBox.get(2),godIW.get(2),powerGod.get(2));
+        secondLine.getChildren().addAll(godCheckBox.get(3),godIW.get(3),powerGod.get(3), godCheckBox.get(4),godIW.get(4),powerGod.get(4), godCheckBox.get(5),godIW.get(5),powerGod.get(5));
+        thirdLine.getChildren().addAll(godCheckBox.get(6),godIW.get(6),powerGod.get(6), godCheckBox.get(7),godIW.get(7),powerGod.get(7), godCheckBox.get(8),godIW.get(8),powerGod.get(8));
+
+        VBox grid = new VBox(ClientGuiApp.width*0.02);
+        Button chosenGods = new Button("Go");
         chosenGods.setId("button");
-        chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),zero,one,two,three,four,five,six,seven,eight));
-        Text description= new Text("chose "+message.getNumPlayer()+" gods that will be in the match");
+        chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),godCheckBox));
+
+        Text description = new Text("Choose " + message.getNumPlayer() + " gods that will be in the match");
         description.setFont(Font.font(ClientGuiApp.height*0.02571));
+
         fourLine.getChildren().addAll(description,chosenGods);
         fourLine.setAlignment(Pos.CENTER);
-        griglia.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
-        layout.setCenter(griglia);
-        Scene scene= new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
+        grid.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
+        layout.setCenter(grid);
+
+        Scene scene = new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
         scene.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene);
     }
 
-    private static void handleOptions(int numPlayer, CheckBox zero, CheckBox one, CheckBox two, CheckBox three, CheckBox four, CheckBox five, CheckBox six, CheckBox seven, CheckBox eight) {
+    private static void handleOptions(int numPlayer, ArrayList<CheckBox> checkBoxList) {
         ArrayList<Integer>chosenGod = new ArrayList<>();
-        if (zero.isSelected()){
-            chosenGod.add(0);
+        for(CheckBox c : checkBoxList){
+            if(c.isSelected())
+                chosenGod.add(checkBoxList.indexOf(c));
+
         }
-        if(one.isSelected()){
-            chosenGod.add(1);
-        }
-        if(two.isSelected()){
-            chosenGod.add(2);
-        }
-        if(three.isSelected()){
-            chosenGod.add(3);
-        }
-        if(four.isSelected()){
-            chosenGod.add(4);
-        }
-        if(five.isSelected()){
-            chosenGod.add(5);
-        }
-        if(six.isSelected()){
-            chosenGod.add(6);
-        }
-        if(seven.isSelected()){
-            chosenGod.add(7);
-        }
-        if(eight.isSelected()){
-            chosenGod.add(8);
-        }
+
         if (chosenGod.size()==numPlayer){
             StringBuilder message= new StringBuilder();
             for(int i=0;i<numPlayer;i++){
@@ -191,7 +141,7 @@ public class SceneBuilder {
             ClientGuiApp.getClient().writeToSocketGUI(message.toString());
             waitScene();
         }else{
-            AlertBox.displayError("select a correct number of God");
+            AlertBox.displayError("Select the correct number of Gods");
         }
     }
 
@@ -236,7 +186,7 @@ public class SceneBuilder {
             layout.getChildren().add(thirdLine);
         }
         HBox fourLine= new HBox(ClientGuiApp.width*0.0375);
-        Button sendMessage= new Button("enter");
+        Button sendMessage= new Button("Go");
         Text description= new Text("Choose the god you'll use for this match");
         description.setFont(Font.font(ClientGuiApp.height*0.02571));
         fourLine.getChildren().addAll(description,sendMessage);
@@ -292,7 +242,7 @@ public class SceneBuilder {
             layout.getChildren().add(thirdLine);
         }
         HBox fourLine= new HBox(ClientGuiApp.width*0.025);
-        Button sendMessage= new Button("enter");
+        Button sendMessage= new Button("Go");
         Text description= new Text("Choose the player which'll move first");
         description.setFont(Font.font(ClientGuiApp.height*0.02571));
         fourLine.getChildren().addAll(description,sendMessage);
@@ -357,6 +307,7 @@ public class SceneBuilder {
             label = new Label("Thanks for playing!\nIf you want to play another match, please restart the application");
         else
             label = new Label(message);
+        label.setFont(Font.font(ClientGuiApp.height*0.034));
         VBox layout=new VBox(10);
         layout.setBackground(getBackground("initBackground"));
         layout.setAlignment(Pos.CENTER);
