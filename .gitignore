@@ -2,6 +2,7 @@
 !.gitignore
 !README.md
 !pom.xml
+!deliverables
 !resources/
 !src/
 !javadoc/
