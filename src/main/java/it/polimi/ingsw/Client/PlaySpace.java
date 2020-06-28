@@ -340,7 +340,6 @@ public class PlaySpace {
         for(Position position:tiles)
             BoardScene.getTile(position.getCol(),position.getRow()).highlightsTile();
         setTileToShow(tiles);
-        printPlaySpace();
     }
 
     public void disHighlightsTile(){

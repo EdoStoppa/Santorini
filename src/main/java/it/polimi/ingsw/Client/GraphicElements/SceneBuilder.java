@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -114,8 +115,10 @@ public class SceneBuilder {
 
         fourLine.getChildren().addAll(description,chosenGods);
         fourLine.setAlignment(Pos.CENTER);
-        grid.getChildren().addAll(firstLine,secondLine,thirdLine,fourLine);
+        grid.getChildren().addAll(firstLine,secondLine,thirdLine);
         layout.setCenter(grid);
+        layout.setBottom(fourLine);
+        layout.setPadding(new Insets(0,0,10,0));
 
         Scene scene = new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
         scene.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
@@ -147,7 +150,6 @@ public class SceneBuilder {
 
     public static void chooseGod(ChosenGodMessage message){
         VBox layout=new VBox(ClientGuiApp.height*0.0142);
-        //layout.setId("init");
         layout.setAlignment(Pos.CENTER);
         ToggleGroup radioGroup = new ToggleGroup();
         RadioButton third= new RadioButton();
@@ -275,29 +277,28 @@ public class SceneBuilder {
         ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
     }
 
-    public static void errorScene(){
-        Label label = new Label("Wait...");
-        label.setFont(Font.font(ClientGuiApp.height*0.034));
-        VBox layout = new VBox(10);
-        layout.setAlignment(Pos.CENTER);
-        layout.setBackground(getBackground("initBackground"));
-        layout.getChildren().add(label);
-        ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
-    }
 
     public static Parent endScene(String message){
         Label label= new Label(message);
+        label.setTextFill(Color.WHITE);
+        label.setFont(Font.font(ClientGuiApp.height*0.05));
         VBox layout=new VBox(10);
         if(message.equals("Wait")) {
-            //layout.setId("init");
             layout.setBackground(getBackground("initBackground"));
         } else {
-            //layout.setId("win");
+            label.setId("bold");
             layout.setBackground(getBackground("endBackground"));
         }
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().add(label);
-        return layout;
+        BorderPane pane=new BorderPane();
+        pane.setCenter(layout);
+        Label endMessage= new Label("Thanks for playing!\nIf you want to play another match, please restart the application");
+        endMessage.setTextFill(Color.WHITE);
+        endMessage.setFont(Font.font(ClientGuiApp.height*0.028));
+        pane.setBottom(endMessage);
+
+        return pane;
 
     }
 

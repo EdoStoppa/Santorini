@@ -180,7 +180,6 @@ public class ClientGUI extends Client implements EventHandler{
             } else {
                 updateText(inputObject);
             }
-            playSpace.printPlaySpace();
             System.out.println(inputObject.getMessage());
             return;
         }else if(inputObject instanceof RemovedPlayerMessage) {
@@ -209,7 +208,6 @@ public class ClientGUI extends Client implements EventHandler{
         /*if(!isMyTurn)
             updateText(inputObject);*/
         updatePlaySpaceGUI(inputObject);
-        playSpace.printPlaySpace();
     }
 
     @Override
