@@ -157,7 +157,7 @@ public class ClientGUI extends Client implements EventHandler{
 
     public void pong(){
         synchronized (ipLock){
-            socketOut.println("pong");
+            socketOut.println(HelpMessage.pong);
             socketOut.flush();
         }
     }

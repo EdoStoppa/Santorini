@@ -34,8 +34,7 @@ Nella cartella `deiverables/uml` sono presenti tre cartelle:
 chiara l'interpretazione di tutto.
 - In `/Development Snapshots UML` sono presenti una serie di file .jpg che contengono degli "snapshot" sullo stato di sviluppo
 dell'UML durante tutta la durata del progetto, fino all'UML finale
-- In `/Complete UML` sono presenti diversi UML generati automaticamente da Intellij che mostrano (con diversi livelli di precisione)
-tutto lo schema del progetto
+- In `/Complete UML` sono presenti diversi UML generati automaticamente da Intellij che mostrano tutto lo schema del progetto
 
 ## Testing e Code Coverage
 Per testare la solidità di tutto il progetto si è deciso di creare test sia randomici sia focalizzati a stressare parti cruciali
@@ -43,15 +42,13 @@ di tutta la struttura. Per farlo si è utilizzato esclusivamente JUnit, andando 
 dei test, ma allo stesso tempo andando a limitare le possibilità di testing (problema che non si sarebbe posto se avessimo 
 integrato altre librerie come ad esempio Mockito).
  
-In generale però siamo molto confidenti della solidità del nostro progetto (in particolare tutto il "core" del MVC).
-
-Come coverage abbiamo raggiunto:
+Come coverage si è raggiunto:
 - 96% di linee coperte per il package ***Model***
 - 85% di linee coperte per il package ***Controller***
 
 Purtroppo la maggior parte delle classi esterne a questi package risultano estremamente difficili (se non impossibili) da testare 
-attraverso JUnit, quindi si è preferito il testing manuale (in particolare per Client CLI/GUI e Server). Questo è risultato in un
-basso score nel coverage dell'intero progetto, anche se pre le parti testabili si è fatto tutto il possibile.
+attraverso JUnit, quindi si è preferito il testing manuale (in particolare per Client CLI/GUI e Server). Questo ha portato a un
+basso score nel coverage dell'intero progetto, anche se per le parti testabili si è fatto tutto il possibile.
 
 Nel caso si volesse avere una panoramica generale, nella cartella `deliverables/coverage` è presente il file index.html generato
 in automatico da Intellij.
@@ -68,16 +65,16 @@ I JAR generati saranno tre:
 - "ClientGuiApp.jar", adibito all'esecuzione del Client in versione GUI
 
 Tutti i JAR sono generabili tramite maven con `mvn clean package`, e si troveranno della cartella `executable`. 
-(Nel caso si volessero usare i JAR precompilati si possono trovare nella cartella `deliverables/JARs`) 
+(Nel caso si volessero usare i JAR precompilati si possono trovare nella cartella `deliverables/JARs`, anche se è fortemente
+sconsigliato) 
 
-Come si può vedere dal pom.xml,
-si è deciso di usare il plugin Maven Shade per la creazione di file JAR "standalone". Infatti i JAR generati non hanno 
-bisogno di alcuna libreria esterna particolare per essere avviati, e sono inoltre compatibili con tutti i SO.
+Come si può vedere dal pom.xml, si è deciso di usare il plugin Maven Shade per la creazione di file JAR "standalone". 
+Infatti i JAR generati non hanno bisogno di alcuna libreria esterna particolare per essere avviati, e sono inoltre 
+compatibili con tutti i SO.
 
 Durante l'esecuzione del comando "package" si andranno a generare diversi warning, ma tutti sono assolutamente innocui 
 e non inficiano la correttezza degli eseguibili.
 
-Tutti i JAR precompilati possono essere trovati
 
 ## Esecuzione JAR
 
@@ -86,10 +83,22 @@ Per eseguire il server è sufficiente eseguirlo da terminale (o cmd per Windows)
 ```
 java -jar ServerApp.jar [port number]
 ```
-Dove nel caso si volesse cambiare la porta di ascolto del Server (default 54321) è sufficiente inserire al posto di "\[port number\]"
+Dove nel caso si volesse cambiare la porta di ascolto del Server (default ***54321***) è sufficiente inserire al posto di "\[port number\]"
 il numero desiderato.
 
 ### Client
+Entrambi le versioni del Client permettono di connettersi al Server attraverso l'inserimento dell'IP e porta di connessione a runtime.
+I valori di default per entrambi i Client sono IP = "127.0.0.1" e port = "54321", nel caso si volesse eseguire sia Server e Client
+in locale non è richiesto l'inserimento di nessun parametro. Nel caso invece l'IP del Server, o la sua porta di connessione, dovessero
+essere modificati sarà necessario inserire a runtime entrambi i parametri.
+
+EX 1:
+Avvio il Server con valori di default (port 54321) ma non in locale, sarà necessario inserire manualmente nei Client l'ip del Server
+e la porta di default
+
+Ex 2:
+Avvio Server con nuova porta (55555) in locale, sarà necessario inserire manualmente nei Client l'ip di default ("127.0.0.1")
+del Server e la nuova porta.
 
 #### CLI
 Per l'esecuzione del gioco di versione CLI è richiesto un terminale in grado di supportare la codifica Unicode e gli
@@ -111,8 +120,8 @@ Il comando per avviare il Client versione GUI è:
 java -jar ClientGuiApp.jar
 ```
 Verrà aperta una nuova schermata contente il gioco, mentre nel terminale saranno visualizzati diversi messaggi utili
-al debugging (come tutti i messaggi inviati/ricevuti tramite socket e eventuali errori).
+al debugging (come tutti i messaggi inviati/ricevuti tramite socket ed eventuali errori).
 
 ***Nota Bene:*** nel caso si volesse eseguire il gioco in versione GUI solamente attraverso il "doppio-click" è necessario 
-avere installato almeno un JRE compatibile con Java 14 
+avere installato un JRE compatibile con Java 14 
 (si consiglia [AdoptOpenJDK](https://adoptopenjdk.net/releases.html)).

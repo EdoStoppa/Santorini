@@ -55,7 +55,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 try{
                     read = in.nextLine();
 
-                    if(read.equals("pong"))
+                    if(read.equals(HelpMessage.pong))
                         updatePong();
                     else {
                         gameMode = Integer.parseInt(read);
@@ -82,7 +82,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
             while(true){
                 name = in.nextLine();
 
-                if(name.equals("pong"))
+                if(name.equals(HelpMessage.pong))
                     updatePong();
                 else {
                     if(gameMode == 2){
@@ -157,7 +157,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                 while (isActive()) {
                     read = in.nextLine();
 
-                    if (read.equals("pong"))
+                    if (read.equals(HelpMessage.pong))
                         updatePong();
                     else {
                         if (!isInit) {
@@ -168,7 +168,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                         }
 
                     }
-                    //notify(read);
                 }
             } catch(Exception e){
                 endGame(e);
@@ -355,7 +354,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
 
             while(true){
                 name = in.nextLine();
-                if(name.equals("pong"))
+                if(name.equals(HelpMessage.pong))
                     updatePong();
                 else{
                     while (NameOpponent.containsKey(name)){
@@ -363,7 +362,7 @@ public class SocketClientConnection extends Observable<String> implements Runnab
                         while(true){
                             name = in.nextLine();
 
-                            if(name.equals("pong"))
+                            if(name.equals(HelpMessage.pong))
                                 updatePong();
                             else
                                 break;
@@ -396,7 +395,6 @@ public class SocketClientConnection extends Observable<String> implements Runnab
     }
 
     public Position firstPlaceConstructor(boolean isFirstMessage){
-        String Pos="";
         String[] coordinates;
         try {
             this.asyncSend(new PlaceFirstConstructorMessage(isFirstMessage));

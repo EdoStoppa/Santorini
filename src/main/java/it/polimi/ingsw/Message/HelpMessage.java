@@ -17,6 +17,7 @@ public class HelpMessage {
     public final static String gameMode="Welcome to Santorini!\n2 or 3 player mode?";
     public final static String enterName="Enter your name:";
 
+    public final static String pong = "__-PoNg-__";
     public final static String noAnswer = ".";
 
     public final static String santorini = "" +
@@ -27,5 +28,5 @@ public class HelpMessage {
             "███████║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║  ██║██║██║ ╚████║██║\n" +
             "╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝";
 
-    public final static String ruleCli = "";
+
 }

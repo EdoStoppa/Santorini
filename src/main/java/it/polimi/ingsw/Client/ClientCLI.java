@@ -225,7 +225,7 @@ public class ClientCLI extends Client{
 
     public void pong(){
         synchronized (ipLock) {
-            socketOut.println("pong");
+            socketOut.println(HelpMessage.pong);
             socketOut.flush();
         }
     }
