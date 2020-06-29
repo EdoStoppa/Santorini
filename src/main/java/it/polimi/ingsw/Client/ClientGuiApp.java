@@ -59,9 +59,13 @@ public class ClientGuiApp extends Application implements Serializable {
         });
     }
 
+    /**
+     * method to create the first scene
+     * @param message string to display
+     * @return root of the constructed scene
+     */
     public static Parent CreateContent (String message){
         VBox layout=new VBox(20);
-        //layout.setId("start");
         layout.setBackground(SceneBuilder.getBackground("startBackground"));
         Text textName = new Text(message);
         HBox firstLine =new HBox(20);
@@ -118,6 +122,10 @@ public class ClientGuiApp extends Application implements Serializable {
 
     }
 
+    /**
+     * method to change the resolution for the scene during all the game
+     * @param resolution dimension of the scene
+     */
     private static void changeResolution(String resolution){
         String[] spitted = resolution.split("x");
         width = Integer.parseInt(spitted[0]);

@@ -24,61 +24,83 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+
+/**
+ * this class create all the scenes
+ */
 public class SceneBuilder {
 
 
+    public static final HashMap<String, Image> imageHashMap = new HashMap<>();
 
-    public  static final HashMap<String,Image> imageHashMap= new HashMap<>();
-
-    public static void initImages(){
+    /**
+     * this method initializes the images
+     */
+    public static void initImages() {
         setGodImagesMap();
         setConstructionImagesMap();
         setHighlightedImagesMap();
     }
 
     //-------- Methods used to create different scenes --------
-    public static Parent ChooseGameMode(String message){
-        VBox layout= new VBox(ClientGuiApp.height*0.071);
-        //layout.setId("init");
+
+    /**
+     * this method create a scene where the player choose the number of player in the game
+     *
+     * @param message string to display
+     * @return the root of the constructed scene
+     */
+    public static Parent ChooseGameMode(String message) {
+        VBox layout = new VBox(ClientGuiApp.height * 0.071);
         layout.setBackground(getBackground("initBackground"));
-        Label welcome= new Label(message);
-        welcome.setFont(Font.font(ClientGuiApp.height*0.02571));
-        HBox Buttons= new HBox(ClientGuiApp.width*0.1875);
-        Button twoPlayer= new Button("2 player");
-        Button treePlayer=new Button("3 player");
-        twoPlayer.setOnAction(e->ClientGuiApp.getClient().writeToSocketGUI("2"));
-        treePlayer.setOnAction(e->ClientGuiApp.getClient().writeToSocketGUI("3"));
-        Buttons.getChildren().addAll(twoPlayer,treePlayer);
+        Label welcome = new Label(message);
+        welcome.setFont(Font.font(ClientGuiApp.height * 0.02571));
+        HBox Buttons = new HBox(ClientGuiApp.width * 0.1875);
+        Button twoPlayer = new Button("2 player");
+        Button treePlayer = new Button("3 player");
+        twoPlayer.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI("2"));
+        treePlayer.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI("3"));
+        Buttons.getChildren().addAll(twoPlayer, treePlayer);
         Buttons.setAlignment(Pos.CENTER);
         layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(welcome,Buttons);
+        layout.getChildren().addAll(welcome, Buttons);
         return layout;
 
     }
 
-    public static Parent ChooseName(String message){
-        VBox layout=new VBox(ClientGuiApp.height*0.05714);
+    /**
+     * this method create a scene where the player choose his nickname
+     *
+     * @param message string to display
+     * @return the root of the constructed scene
+     */
+    public static Parent ChooseName(String message) {
+        VBox layout = new VBox(ClientGuiApp.height * 0.05714);
         layout.setBackground(getBackground("initBackground"));
-        Text textName= new Text(message);
-        textName.setFont(Font.font(ClientGuiApp.height*0.02571));
-        TextField name= new TextField();
-        Button go= new Button("Go");
+        Text textName = new Text(message);
+        textName.setFont(Font.font(ClientGuiApp.height * 0.02571));
+        TextField name = new TextField();
+        Button go = new Button("Go");
         go.setId("button");
-        go.setOnAction(e-> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
-        name.setMaxWidth(ClientGuiApp.width*0.1875);
+        go.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
+        name.setMaxWidth(ClientGuiApp.width * 0.1875);
         layout.setAlignment(Pos.CENTER);
-        layout.getChildren().addAll(textName,name,go);
+        layout.getChildren().addAll(textName, name, go);
         return layout;
     }
 
-    public static void PickGod(PickGodMessage message){
-        BorderPane layout=new BorderPane();
-        //layout.setId("init");
+    /**
+     * this method create a scene where the godLikePlayer choose the god for the game
+     *
+     * @param message contains all the information for the god
+     */
+    public static void PickGod(PickGodMessage message) {
+        BorderPane layout = new BorderPane();
         layout.setBackground(getBackground("initBackground"));
-        HBox firstLine= new HBox();
-        HBox secondLine=new HBox();
-        HBox thirdLine=new HBox();
-        HBox fourLine= new HBox(ClientGuiApp.width*0.0375);
+        HBox firstLine = new HBox();
+        HBox secondLine = new HBox();
+        HBox thirdLine = new HBox();
+        HBox fourLine = new HBox(ClientGuiApp.width * 0.0375);
 
         firstLine.setAlignment(Pos.CENTER);
         secondLine.setAlignment(Pos.CENTER);
@@ -88,7 +110,7 @@ public class SceneBuilder {
         ArrayList<ImageView> godIW = new ArrayList<>();
         ArrayList<Text> powerGod = new ArrayList<>();
 
-        for(int i = 0; i < God.getAllGod().size(); i++){
+        for (int i = 0; i < God.getAllGod().size(); i++) {
             godCheckBox.add(new CheckBox());
 
             ImageView iw = new ImageView(imageHashMap.get(message.GetGod(i).getGodName()));
@@ -96,35 +118,40 @@ public class SceneBuilder {
             godIW.add(iw);
 
             Text descriptionGod = new Text(message.GetGod(i).getGodPower());
-            descriptionGod.setFont(Font.font(ClientGuiApp.height*0.01714));
-            descriptionGod.setWrappingWidth(ClientGuiApp.width*0.15);
+            descriptionGod.setFont(Font.font(ClientGuiApp.height * 0.01714));
+            descriptionGod.setWrappingWidth(ClientGuiApp.width * 0.15);
             powerGod.add(descriptionGod);
         }
 
-        firstLine.getChildren().addAll(godCheckBox.get(0),godIW.get(0),powerGod.get(0), godCheckBox.get(1),godIW.get(1),powerGod.get(1), godCheckBox.get(2),godIW.get(2),powerGod.get(2));
-        secondLine.getChildren().addAll(godCheckBox.get(3),godIW.get(3),powerGod.get(3), godCheckBox.get(4),godIW.get(4),powerGod.get(4), godCheckBox.get(5),godIW.get(5),powerGod.get(5));
-        thirdLine.getChildren().addAll(godCheckBox.get(6),godIW.get(6),powerGod.get(6), godCheckBox.get(7),godIW.get(7),powerGod.get(7), godCheckBox.get(8),godIW.get(8),powerGod.get(8));
+        firstLine.getChildren().addAll(godCheckBox.get(0), godIW.get(0), powerGod.get(0), godCheckBox.get(1), godIW.get(1), powerGod.get(1), godCheckBox.get(2), godIW.get(2), powerGod.get(2));
+        secondLine.getChildren().addAll(godCheckBox.get(3), godIW.get(3), powerGod.get(3), godCheckBox.get(4), godIW.get(4), powerGod.get(4), godCheckBox.get(5), godIW.get(5), powerGod.get(5));
+        thirdLine.getChildren().addAll(godCheckBox.get(6), godIW.get(6), powerGod.get(6), godCheckBox.get(7), godIW.get(7), powerGod.get(7), godCheckBox.get(8), godIW.get(8), powerGod.get(8));
 
-        VBox grid = new VBox(ClientGuiApp.width*0.02);
+        VBox grid = new VBox(ClientGuiApp.width * 0.02);
         Button chosenGods = new Button("Go");
         chosenGods.setId("button");
-        chosenGods.setOnAction(e->handleOptions(message.getNumPlayer(),godCheckBox));
+        chosenGods.setOnAction(e -> handleOptions(message.getNumPlayer(), godCheckBox));
 
         Text description = new Text("Choose " + message.getNumPlayer() + " gods that will be in the match");
-        description.setFont(Font.font(ClientGuiApp.height*0.02571));
+        description.setFont(Font.font(ClientGuiApp.height * 0.02571));
 
-        fourLine.getChildren().addAll(description,chosenGods);
+        fourLine.getChildren().addAll(description, chosenGods);
         fourLine.setAlignment(Pos.CENTER);
-        grid.getChildren().addAll(firstLine,secondLine,thirdLine);
+        grid.getChildren().addAll(firstLine, secondLine, thirdLine);
         layout.setCenter(grid);
         layout.setBottom(fourLine);
-        layout.setPadding(new Insets(0,0,10,0));
+        layout.setPadding(new Insets(0, 0, 10, 0));
 
-        Scene scene = new Scene(layout,ClientGuiApp.width,ClientGuiApp.height);
+        Scene scene = new Scene(layout, ClientGuiApp.width, ClientGuiApp.height);
         scene.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene);
     }
 
+    /**
+     *  this method check if the godLikePlayer choose a correct number of god
+     * @param numPlayer number of player in the game
+     * @param checkBoxList arraylist for all the CheckBox
+     */
     private static void handleOptions(int numPlayer, ArrayList<CheckBox> checkBoxList) {
         ArrayList<Integer>chosenGod = new ArrayList<>();
         for(CheckBox c : checkBoxList){
@@ -148,6 +175,10 @@ public class SceneBuilder {
         }
     }
 
+    /**
+     * this method create a scene where the player choose his god for the game
+     * @param message contains all the information for the chosen god
+     */
     public static void chooseGod(ChosenGodMessage message){
         VBox layout=new VBox(ClientGuiApp.height*0.0142);
         layout.setAlignment(Pos.CENTER);
@@ -212,7 +243,10 @@ public class SceneBuilder {
         scene4.getStylesheets().add(Objects.requireNonNull(SceneBuilder.class.getClassLoader().getResource("backgroundImage.css")).toExternalForm());
         ClientGuiApp.getPrimaryStage().setScene(scene4);
     }
-
+    /**
+     * this method create a scene where the godLikePlayer choose who start the game
+     * @param message contains all the player's name
+     */
     public static void orderGame(OrderGameMessage message){
         VBox layout=new VBox(ClientGuiApp.width*0.02857);
         layout.setBackground(getBackground("initBackground"));
@@ -267,6 +301,9 @@ public class SceneBuilder {
 
     }
 
+    /**
+     * this method creates a scene to be used when the client waits for information from server
+     */
     public static void waitScene(){
         Label label = new Label("Wait...");
         label.setFont(Font.font(ClientGuiApp.height*0.034));
@@ -278,6 +315,11 @@ public class SceneBuilder {
     }
 
 
+    /**
+     * this method creates a scene to used when the game ended
+     * @param message string to display
+     * @return root of the constructed scene
+     */
     public static Parent endScene(String message){
         Label label= new Label(message);
         label.setTextFill(Color.WHITE);
@@ -302,6 +344,10 @@ public class SceneBuilder {
 
     }
 
+    /**
+     * this method creates a scene to used when the player loose
+     * @param message string to display
+     */
     public static void loseScene(String message){
         Label label;
         if(message == null)
@@ -316,6 +362,11 @@ public class SceneBuilder {
         ClientGuiApp.getPrimaryStage().setScene(new Scene(layout, ClientGuiApp.width, ClientGuiApp.height));
     }
 
+    /**
+     * this method creates a scene to used when the game ended
+     * @param win a boolean to check if the player is the winner
+     * @param winner string to display for the looser
+     */
     public  static void endGameTransition(boolean win, String winner){
         Platform.runLater(()->{
             if (win){
@@ -333,6 +384,10 @@ public class SceneBuilder {
 
     //-------- Methods used to initialize and manipulate all the images --------
 
+
+    /**
+     * method to initialize the imageHashMap
+     */
     public static void setGodImagesMap(){
         for(God god : God.getAllGod()){
             String path = "God/" + god.getGodName() + ".png";
@@ -345,6 +400,9 @@ public class SceneBuilder {
         }
     }
 
+    /**
+     * method to initialize lightTileHashMap and darkTileHashMap
+     */
     private static void setConstructionImagesMap() {
         for (int i=0;i<=7;i++){
             String pathLight="Tile/light/" +i+ "light.png";
@@ -361,6 +419,10 @@ public class SceneBuilder {
         }
     }
 
+
+    /**
+     * method to initialize HighlightedLightTileHashMap and HighlightedDarkTileHashMap
+     */
     private static void setHighlightedImagesMap() {
         for (int i=0;i<=3;i++){
             String pathLight="Tile/highlighted/"+i+"showLight.png";
@@ -377,6 +439,10 @@ public class SceneBuilder {
         }
     }
 
+    /**
+     *  method for setting the image size
+     * @param IWGod image to be sized
+     */
     public static void setGodImage(ImageView IWGod){
         IWGod.setFitHeight(ClientGuiApp.height*0.27);
         IWGod.setFitWidth(ClientGuiApp.width*0.15);

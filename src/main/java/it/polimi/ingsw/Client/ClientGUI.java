@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class ClientGUI extends Client implements EventHandler{
+public class ClientGUI extends Client implements EventHandler {
     private String idPlayer = null;
     private MiniController miniController;
     private PrintWriter socketOut;
@@ -36,7 +36,7 @@ public class ClientGUI extends Client implements EventHandler{
     private LocalTime lastPingTime;
     private final Object ipLock = new Object();
 
-    public ClientGUI(String ip, int port){
+    public ClientGUI(String ip, int port) {
         super(ip, port);
     }
 
@@ -51,11 +51,20 @@ public class ClientGUI extends Client implements EventHandler{
             asyncReadFromSocket(socketIn);
             asyncManagePing();
             asyncMangePong();
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             System.out.println("Connection closed from the client side");
         }
     }
 
+    //------------------------------- Methods used to manage read/write on socket -------------------------------
+
+
+    /**
+     * This method will be used to process the user input, using as a support
+     * the current miniController (if present). In general is able to respond to a wrong (o when is not the
+     * turn of the player) input without checking the server.
+     * @param message string to check and write to the socket
+     */
     public void writeToSocketGUI(String message) {
         StringBuilder sBuilder = new StringBuilder();
         if (this.miniController != null) {
@@ -110,6 +119,15 @@ public class ClientGUI extends Client implements EventHandler{
         return t;
     }
 
+    //------------------------------- Methods used to check the connection between client and server -------------------------------
+
+    /**
+     * This method creates a thread used to check if the connection is still alive between client and server.
+     * Every 7 seconds the thread wakes up and check if while it was sleeping another ping was received.
+     * If no ping was received it means that the connection was lost, and proceed to end the game.
+     *
+     * @return The actual thread
+     */
     public Thread asyncManagePing(){
         Thread t = new Thread(() ->{
             LocalTime lastThreadTime = LocalTime.now();
@@ -122,7 +140,6 @@ public class ClientGUI extends Client implements EventHandler{
                 }
 
                 synchronized(ipLock){
-                    //System.out.println("Checking Ping, Thread time = " + lastThreadTime.toString() + " and Ping time = " + lastPingTime.toString());
                     if(lastThreadTime.equals(lastPingTime)){
                         if(isActive()){
                             System.out.println("The Server connection was lost, please restart the game");
@@ -162,17 +179,20 @@ public class ClientGUI extends Client implements EventHandler{
         }
     }
 
+    private synchronized void updatePing(){
+        lastPingTime = LocalTime.now();
+    }
+
+    //------------------------------- Methods used to manage incoming messages from server -------------------------------
+
     @Override
     public void manageGameMessage(GameMessage inputObject) {
         boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());
         inputObject.autoSetMessage(isMyTurn, false);
         BoardScene.setYourTurn(isMyTurn);
-        System.out.println(isMyTurn);
-
         if(inputObject instanceof TileToShowMessage){
             if(isMyTurn) {
                 BoardScene.setPhase(inputObject.getPhase());
-                System.out.println(BoardScene.getPhase());
                 this.miniController = ((TileToShowMessage) inputObject).getMiniController();
                 updateText(inputObject);
                 updatePlaySpaceGUI(inputObject);
@@ -180,12 +200,10 @@ public class ClientGUI extends Client implements EventHandler{
             } else {
                 updateText(inputObject);
             }
-            System.out.println(inputObject.getMessage());
             return;
         }else if(inputObject instanceof RemovedPlayerMessage) {
             updateText(inputObject);
             updatePlaySpaceGUI(inputObject);
-            System.out.println();
             if (isMyTurn && playSpace.CountPlayerRemains(((RemovedPlayerMessage) inputObject).getConstructorMatrix())==4){
                 Platform.runLater(()->{
                     boolean answer = AlertBox.checkDome("You lost!\nDo you want to continue to watch the game?");
@@ -205,8 +223,6 @@ public class ClientGUI extends Client implements EventHandler{
             return;
         }
 
-        /*if(!isMyTurn)
-            updateText(inputObject);*/
         updatePlaySpaceGUI(inputObject);
     }
 
@@ -252,11 +268,13 @@ public class ClientGUI extends Client implements EventHandler{
         update(inputObject);
     }
 
-    private synchronized void updatePing(){
-        lastPingTime = LocalTime.now();
-    }
 
     //---------- Methods to manage all the String messages ----------
+
+    /**
+     * This method create a new scene for special <em>HelpMessage</em> recived
+     * @param input string to check
+     */
     private void executeSpecialString(String input){
         if(input.equals(HelpMessage.forcedClose)){
             Platform.runLater(()->{
@@ -288,6 +306,14 @@ public class ClientGUI extends Client implements EventHandler{
             BoardScene.newText(input.substring(HelpMessage.noAnswer.length()));
     }
 
+
+    /**
+     * Method used to get the accepted name for the player
+     *
+     * @param s String returned by the Server
+     *
+     * @return Boolean that indicates if the name is accepted ora not
+     */
     private boolean getName(String s){
         String[] splitted = s.split(" ");
 
@@ -302,6 +328,10 @@ public class ClientGUI extends Client implements EventHandler{
         return false;
     }
 
+    /**
+     * Method used to create a scene if the name is already taken
+     * @param check true if the name is accepted
+     */
     public void checkName(boolean check){
         Platform.runLater(()->{
             if(check) {

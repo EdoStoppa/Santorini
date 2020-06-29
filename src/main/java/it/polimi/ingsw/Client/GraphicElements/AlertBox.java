@@ -13,9 +13,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * this class create all the AlertBox during initialization and game
+ */
 public class AlertBox {
     static  boolean answer;
 
+    /**
+     * this method create an Alert when the client insert a wrong input
+     * @param message string to display
+     */
     public static void displayError(String message){
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(message);
@@ -25,6 +32,13 @@ public class AlertBox {
 
     }
 
+
+    /**
+     *  <em>CheckDomeMessage</em> used this method to create an AlertBox to check
+     * if the player wants to place a dome or a normal level
+     * @param message string to display
+     * @return true if the player true if the player wants to place dome else false
+     */
     public static boolean checkDome(String message){
         Alert alert = new Alert(Alert.AlertType.NONE);
         ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.YES);
@@ -47,6 +61,9 @@ public class AlertBox {
         return answer;
     }
 
+    /**
+     * this method create an alertBox to summarize the gods of the game
+     */
     public static void displayGod(){
         Map<String, God> playerGodMap=ClientGUI.getPlayerGodMap();
         ArrayList<String> keys = new ArrayList<>(playerGodMap.keySet());

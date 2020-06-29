@@ -27,40 +27,6 @@ public class PlaySpace {
 
     }
 
-
-    public int[][] getConstructorMatrix() {
-        return constructorMatrix;
-    }
-
-    public void setBuildingMatrix(int[][] buildingMatrix) {
-        this.buildingMatrix = buildingMatrix;
-    }
-
-    public void setConstructorMatrix(int[][] constructorMatrix) {
-        this.constructorMatrix = constructorMatrix;
-    }
-
-    public List<Position> getTileToShow() {
-        return tileToShow;
-    }
-
-    public void setTileToShow(List<Position> tileToShow) {
-        this.tileToShow = tileToShow;
-    }
-
-    public List<Position> getTileToCheck() {
-        return tileToCheck;
-    }
-
-    public void setTileToCheck(List<Position> tileToCheck) {
-        this.tileToCheck = tileToCheck;
-    }
-
-    public void reset(){
-        this.tileToShow = null;
-        this.tileToCheck = null;
-    }
-
     /**
      * this funtion control if the position is contain in TileToShow
      * @param i row of the position to check
@@ -157,6 +123,10 @@ public class PlaySpace {
         System.out.println("  \u255A"+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ2 + "\u255D");
     }
 
+    /**
+     * this method identify movements on the board and update the constructorMatrix
+     * @param playSpaceUpdated is the new constructorMatrix
+     */
     public void updateConstructorGUI (int [][]playSpaceUpdated){
         if (BoardScene.isInit()) {
             for (int i = 0; i <= 4; i++) {
@@ -203,13 +173,14 @@ public class PlaySpace {
                                   Piece moved = BoardScene.getTile(j, i).getPiece();
                                   System.out.println(j+" "+i);
                                   if (moved==null)
-                                      System.out.println("non ho trovato il pezzo da spostare");
+                                      System.out.println("piece not found");
                                   BoardScene.animation(moved, k, h);
                                   BoardScene.getTile(j, i).setPiece(null);
                                   BoardScene.getTile(j + k, i + h).setPiece(moved);
                                   if (moved!=null){
                                   moved.setPosX((j + k)*BoardScene.TILE_SIZE);
                                   moved.setPosY((i + h)*BoardScene.TILE_SIZE);
+                                  System.out.println("piece moved from "+j+","+i+" to "+(j + k)+","+(i + h));
                               }}
 
                           }
@@ -223,49 +194,55 @@ public class PlaySpace {
         }
     }
 
+    /**
+     * this method identify update from buildingMatrix to updatedBuildingMatrix and draw this difference
+     * @param updatedBuildingMatrix is the new BuildingMatrix
+     * @param dome is true if is a dome to build
+     */
     public void updateBuildingGUI(int[][] updatedBuildingMatrix,boolean dome) {
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
                 if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && !dome){
-                    System.out.println(i+","+j);
                     BoardScene.getTile(j,i).drawNextLevel();
+                    System.out.println(" build a new level in "+j+","+i);
                 }else if(buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && dome){
-                    System.out.println(i+","+j);
                     BoardScene.getTile(j,i).drawDome();
+                    System.out.println("build a dome in "+i+","+j);
                 }
             }
         }
         setBuildingMatrix(updatedBuildingMatrix);
     }
 
+    /**
+     * method call from Apollo when used is special power. it is to swap two piece
+     * @param playSpaceUpdated is the new constructorMatrix
+     */
     public void swapConstructorGUI (int [][]playSpaceUpdated){
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
                 if (constructorMatrix[i][j]!=playSpaceUpdated[i][j]){
-                    System.out.println("swapped"+i+","+j);
                     for (int h=-1;h<=1;h++){
                         for (int k=-1;k<=1;k++){
                             if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0))){
-                                System.out.println("sono dentro l'if");
                                 System.out.println(h+","+k);
                                 System.out.println((i+h)+","+(j+k));
                                 if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==playSpaceUpdated[i][j]){
-                                    System.out.println("sono dentro l'if");
                                     Piece moved= BoardScene.getTile(j,i).getPiece();
                                     Piece swapped=BoardScene.getTile(j+k,i+h).getPiece();
                                     BoardScene.animation(moved,k,h);
                                     BoardScene.animation(swapped,-k,-h);
                                     BoardScene.getTile(j+k,i+h).setPiece(moved);
                                     BoardScene.getTile(j,i).setPiece(swapped);
-                                    System.out.println(j+"fs"+i+"ss"+k+"aa"+h+"xs");
                                     if (moved!=null){
                                         moved.setPosX((j+k)*BoardScene.TILE_SIZE);
                                         moved.setPosY((i+h)*BoardScene.TILE_SIZE);
+                                        System.out.println("apollo is moved from "+j+","+i+" to "+moved.getPosX()+","+moved.getPosY());
                                     }
                                     if (swapped!=null){
                                         swapped.setPosX(j*BoardScene.TILE_SIZE);
                                         swapped.setPosY(i*BoardScene.TILE_SIZE);
-                                        System.out.println(swapped.getPosX()+","+swapped.getPosY());
+                                        System.out.println("swapped is moved from "+moved.getPosX()+","+moved.getPosY()+" to "+swapped.getPosX()+","+swapped.getPosY());
                                     }
                                     setConstructorMatrix(playSpaceUpdated);
                                     return;
@@ -281,6 +258,10 @@ public class PlaySpace {
     }
     }
 
+    /**
+     * method call from minotaur when used is special power
+     * @param playSpaceUpdated is the new constructorMatrix
+     */
     public void pushConstructorGUI (int[][] playSpaceUpdated){
         for (int i=0;i<=4;i++){
             for (int j=0;j<=4;j++){
@@ -323,6 +304,10 @@ public class PlaySpace {
     }
 
 
+    /**
+     * this method removes piece of the player who lost
+     * @param playSpaceUpdated is the new constructorMatrix
+     */
     public void removeConstructorGUI (int[][] playSpaceUpdated){
 
                for(int i=0;i<=4;i++){
@@ -336,6 +321,25 @@ public class PlaySpace {
         setConstructorMatrix(playSpaceUpdated);
     }
 
+    /**
+     * this method count the number of piece remains on the board
+     * @param playSpaceUpdated PlaySpace to count the number of piece
+     * @return number of player remains
+     */
+    public int CountPlayerRemains(int[][] playSpaceUpdated){
+        int count=0;
+        for(int i=0;i<=4;i++){
+            for (int j=0;j<=4;j++){
+                if (playSpaceUpdated[i][j]!=0)
+                    count++;
+            }
+        }
+        return count;}
+
+    /**
+     * this method highlights tiles contains in the List tiles
+     * @param tiles tiles to highlight
+     */
     public void tileToShowGUI (List<Position> tiles){
         for(Position position:tiles)
             BoardScene.getTile(position.getCol(),position.getRow()).highlightsTile();
@@ -353,6 +357,8 @@ public class PlaySpace {
         }
     }
 
+    //-------------------------- getter and setter methods for variables ---------------------------
+
     public void setSpecial(boolean special){
         BoardScene.setEndPhase(special);
     }
@@ -361,14 +367,40 @@ public class PlaySpace {
         BoardScene.setCheckDome(checkDome);
     }
 
-    public int CountPlayerRemains(int[][] playSpaceUpdated){
-        int count=0;
-        for(int i=0;i<=4;i++){
-            for (int j=0;j<=4;j++){
-                if (playSpaceUpdated[i][j]!=0)
-                    count++;
+    public int[][] getConstructorMatrix() {
+        return constructorMatrix;
     }
-        }
-        return count;}
+
+    public void setBuildingMatrix(int[][] buildingMatrix) {
+        this.buildingMatrix = buildingMatrix;
+    }
+
+    public void setConstructorMatrix(int[][] constructorMatrix) {
+        this.constructorMatrix = constructorMatrix;
+    }
+
+    public List<Position> getTileToShow() {
+        return tileToShow;
+    }
+
+    public void setTileToShow(List<Position> tileToShow) {
+        this.tileToShow = tileToShow;
+    }
+
+    public List<Position> getTileToCheck() {
+        return tileToCheck;
+    }
+
+    public void setTileToCheck(List<Position> tileToCheck) {
+        this.tileToCheck = tileToCheck;
+    }
+
+    public void reset(){
+        this.tileToShow = null;
+        this.tileToCheck = null;
+    }
+
+
+
 
 }
