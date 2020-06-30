@@ -111,6 +111,10 @@ public class ClientGUI extends Client implements EventHandler {
                     }
                 }
             }catch (Exception e){
+                if(isActive()){
+                    System.out.println("Some problem occurred!\nIf you want to play again please restart the application");
+                    Platform.runLater(()-> SceneBuilder.loseScene("Some problem occurred!\nIf you want to play again please restart the application"));
+                }
                 setActive(false);
             }
 
