@@ -18,6 +18,15 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * This is the class the manage anc creates all the connection to the Server.
+ * It's main role is to accept connection from the client and manage the 2 different lobby (2 player and 3 player).
+ *
+ * The lobby are divided in "waiting" and "playing"
+ * - "waiting": here is where (after the choose of the game mode) the player is put waiting for the lobby to fill wth the number of player needed to
+ *              start a match.
+ * - "playing": here is where the player is put after the match started (until he/she loses or someone win).
+ */
 public class Server {
     private static int PORT = 54321;
     private ServerSocket serverSocket;
@@ -65,6 +74,7 @@ public class Server {
     /**
      * When the game is running this function close the connection and deregister ClientConnection
      * from the hashmap playingConnection2P
+     * 
      * @param c is the connection that have to be closed/removed
      */
     public synchronized void deregisterConnection2P(SocketClientConnection c){
@@ -80,6 +90,7 @@ public class Server {
     /**
      * When the game is running this function close the connection and deregister ClientConnection
      * from the hashmap playingConnection3P
+     *
      * @param c is the connection that have to be closed/removed
      */
     public synchronized void deregisterConnection3P(SocketClientConnection c){
@@ -102,8 +113,8 @@ public class Server {
 
     /**
      * add a name to the list waitingConnection2p and is the size of this list is 2 start a game
+     *
      * @param c SocketClientConnection of the player
-
      */
     public synchronized void lobby2P(SocketClientConnection c,String name){
         System.out.println("Registering in 2P lobby...");
@@ -124,6 +135,7 @@ public class Server {
 
     /**
      * add a name to the list waitingConnection3P and is the size of this list is 3 start a game
+     *
      * @param c SocketClientConnection of the player
      * @param name is the name choose from the player
      */
@@ -144,6 +156,10 @@ public class Server {
         }
     }
 
+    /**
+     * This method first move all the player in the 2 Player lobby to the hashMap containing all the connection of playing Client,
+     * then launch a new thread that will manage all the initialization phase for a 2 player match
+     */
     private void initGame2P() {
         Map<String, SocketClientConnection> waitingConnection2P = new HashMap<>(this.waitingConnection2P);
         List<SocketClientConnection> connectionList = new ArrayList<>(waitingConnection2P.values());
@@ -243,6 +259,10 @@ public class Server {
 
     }
 
+    /**
+     * This method first move all the player in the 3 Player lobby to the hashMap containing all the connection of playing Client,
+     * then launch a new thread that will manage all the initialization phase for a 3 player match
+     */
     private void initGame3P() {
         Map<String, SocketClientConnection> waitingConnection3P = new HashMap<>(this.waitingConnection3P);
         List<SocketClientConnection> connectionList = new ArrayList<>(waitingConnection3P.values());
