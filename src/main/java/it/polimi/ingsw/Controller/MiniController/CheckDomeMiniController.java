@@ -8,8 +8,19 @@ import it.polimi.ingsw.Message.HelpMessage;
 import java.io.Serializable;
 import java.util.Scanner;
 
+/**
+ * This MiniController is used when a player has ATLAS as god
+ */
 public class CheckDomeMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * This method checks if the input is correct and it parses the input.
+     * @param input
+     * @param playSpace
+     * @param stringBuilder
+     * @return true if the position passed as input belongs to the tileToShow of the playspace,
+     */
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
@@ -30,6 +41,12 @@ public class CheckDomeMiniController implements MiniController, Serializable {
         }
     }
 
+    /**
+     * This method "handles" the specialPower of ATLAS: it asks the player if he wants to place a dome
+     * instead of a normal construction.
+     * @param input
+     * @return two different messages, whether the player answered "y" or "n".
+     */
     @Override
     public String getMessage(String input) {
         Scanner in = new Scanner(System.in);
@@ -48,6 +65,12 @@ public class CheckDomeMiniController implements MiniController, Serializable {
 
     }
 
+    /**
+     * Same thing as the one above, with the only difference that on the GUI users answer by clicking
+     * on a button.
+     * @param input
+     * @return
+     */
     public String getMessageGui(String input){
         Boolean answer=null;
         answer= AlertBox.checkDome("Instead of a normal construction, do you want to place a dome? ");
@@ -59,6 +82,13 @@ public class CheckDomeMiniController implements MiniController, Serializable {
 
     }
 
+    /**
+     * This method calls checkPos above
+     * @param input
+     * @param playSpace
+     * @param stringBuilder
+     * @return
+     */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         return checkPos(input,playSpace,stringBuilder);

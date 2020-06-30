@@ -129,8 +129,6 @@ class ModelTest {
             List<Constructor> list = p.getAllConstructors();
             list.get(0).setCanMove(false);
             list.get(1).setCanMove(false);
-            System.out.println(p.getAllConstructors().get(0).getCanMove());
-            System.out.println(p.getAllConstructors().get(1).getCanMove());
             assertTrue(model.isLosing(p), "The player is losing");
         }
     }
@@ -210,10 +208,8 @@ class ModelTest {
         int i;
         Random random = new Random();
         Position pos1 = model.getCurrentConstructor().getPos();
-        System.out.println(pos1.toString());
         Position pos2 = null;
         int r = random.nextInt(8);
-        System.out.println(r);
         if(r == 0)    {
             pos2 = new Position(pos1.getRow() - 1, pos1.getCol() - 1);
         }

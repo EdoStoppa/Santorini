@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * This MiniController checks if the constructor chosen by the player can use the spacial power of his god
+ */
 public class MoreCheckMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
     List<Position> toCheck;
@@ -17,6 +20,15 @@ public class MoreCheckMiniController implements MiniController, Serializable {
         this.toCheck = toCheck;
     }
 
+    /**
+     * This method parses the input. If the constructor can't use his special power, the player
+     * is asked if he wants to pursue with his choice.
+     * @param input should be 3 characters long
+     * @param playSpace
+     * @param stringBuilder
+     * @return true if the constructor can use his special power or if the constructor can't use
+     * his special power, but the player wants to pursue with his choice, false elsewhere
+     */
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{

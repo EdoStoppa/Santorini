@@ -19,8 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * This is the class the manage anc creates all the connection to the Server.
- * It's main role is to accept connection from the client and manage the 2 different lobby (2 player and 3 player).
+ * This is the class that manages and creates all the connection to the Server.
+ * Its main role is to accept connection from the client and to manage the 2 different lobby (2 player and 3 player).
  *
  * The lobby are divided in "waiting" and "playing"
  * - "waiting": here is where (after the choose of the game mode) the player is put waiting for the lobby to fill wth the number of player needed to

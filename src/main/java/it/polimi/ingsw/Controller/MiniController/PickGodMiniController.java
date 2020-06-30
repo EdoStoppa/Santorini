@@ -4,6 +4,10 @@ import it.polimi.ingsw.Client.PlaySpace;
 
 import java.io.Serializable;
 
+/**
+ * This MiniController checks the input during the initialization part where the first player
+ * chooses 2/3 gods
+ */
 public class PickGodMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
     int numGod;
@@ -13,6 +17,13 @@ public class PickGodMiniController implements MiniController, Serializable {
         this.numPlayer = numPlayer;
     }
 
+    /**
+     * This method parses the input.
+     * @param input should be 3 characters long
+     * @param playSpace
+     * @param stringBuilder
+     * @return true if every god chosen is correct, false elsewhere
+     */
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         if(numPlayer == 2){
@@ -88,16 +99,33 @@ public class PickGodMiniController implements MiniController, Serializable {
         stringBuilder.append(" numbers all separated by a \",\" with no spaces");
     }
 
+    /**
+     *
+     * @param input
+     * @return the input
+     */
     @Override
     public String getMessage(String input) {
         return input;
     }
 
+    /**
+     * This method just calls getMessage above
+     * @param message
+     * @return
+     */
     @Override
     public String getMessageGui(String message) {
         return getMessage(message);
     }
 
+    /**
+     * This message just calls checkPos above
+     * @param input
+     * @param playSpace
+     * @param stringBuilder
+     * @return
+     */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         return checkPos(input,playSpace,stringBuilder);

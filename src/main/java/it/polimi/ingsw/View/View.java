@@ -9,9 +9,14 @@ import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.SocketClientConnection;
 
-
+/**
+ * This is the view of the application
+ */
 public class View extends Observable<PosMessage>  implements Observer<GameMessage> {
 
+    /**
+     * This class is used to receive messages
+     */
     private class MessageReceiver implements Observer<String> {
         @Override
         public void update(String input) {
@@ -37,14 +42,26 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
         this.clientConnection.addObserver(new MessageReceiver());
     }
 
+    /**
+     * @return the id of the player
+     */
     public String getIdPlayer() {
         return idPlayer;
     }
 
+    /**
+     * This method sends a message to the client
+     * @param message sent to the client
+     */
     public void sendToClient(Object message) {
         clientConnection.send(message);
     }
 
+    /**
+     * This method parses the input from the client. If input equals to "end", then it notifies a PosMessage
+     * with no position, elsewhere it notifies a PosMessage with the chosen position
+     * @param clientMessage
+     */
     public void parseClientInput(String clientMessage) {
         String[] cod = clientMessage.split(" ");
         String[] pos = cod[1].split(",");
@@ -58,7 +75,11 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
         }
     }
 
-
+    /**
+     * This method is used to update the view. If the idPlayer of the message is null then the game is
+     * ended, elsewhere the view sends the message to the client.
+     * @param message
+     */
     @Override
     public void update(GameMessage message) {
         if(message.getIdPlayer() != null)   {

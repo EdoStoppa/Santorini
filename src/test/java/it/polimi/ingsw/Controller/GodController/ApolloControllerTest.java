@@ -156,7 +156,6 @@ class ApolloControllerTest {
             posList.add(new Position(4,4));
 
             int n = 0;
-            System.out.println(pList.get(0).getGod().getGodName());
             for(Player p : pList){
                 for(int i = 0; i < 2; i++){
                     model.setCurrentConstructor(p.getAllConstructors().get(i));
@@ -186,7 +185,6 @@ class ApolloControllerTest {
             posList.add(new Position(4,4));
 
             int n = 0;
-            System.out.println(pList.get(0).getGod().getGodName());
             for(Player p : pList){
                 for(int i = 0; i < 2; i++){
                     model.setCurrentConstructor(p.getAllConstructors().get(i));

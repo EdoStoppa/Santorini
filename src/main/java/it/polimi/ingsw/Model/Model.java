@@ -14,6 +14,9 @@ import it.polimi.ingsw.Observer.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is the model of the application
+ */
 public class Model extends Observable<GameMessage> {
     private final GameState gameState;
     private final Board board;
@@ -25,18 +28,6 @@ public class Model extends Observable<GameMessage> {
         this.board = new Board();
         this.tileToShow = null;
         this.currentConstructor = null;
-    }
-
-    /**
-     * Method used to know if the <em>Tile</em> corresponding to the <em>Position</em> passed
-     * as input is already occupied by someone
-     *
-     * @param p <em>Position</em> where the <em>Tile</em> is located
-     * @return if the <em>Tile</em> is already occupied
-     */
-    public boolean isOccupied(Position p) {
-        Tile t = board.getTile(p);
-        return t.getOccupied();
     }
 
     /**
@@ -52,58 +43,29 @@ public class Model extends Observable<GameMessage> {
         }
     }
 
-    public List<Position> getTileToShow() {
-        return tileToShow;
-    }
-
-    public void setTileToShow(List<Position> tileToShow) {
-        this.tileToShow = tileToShow;
-    }
-
-    public void setCurrentConstructor(Constructor currentConstructor) {
-        this.currentConstructor = currentConstructor;
+    /**
+     * This method will be uused to notify a message
+     * @param message GameMessage we want to notify
+     */
+    public void forceNotify(GameMessage message)    {
+        notify(message);
     }
 
     /**
-     * Method used to know if a <em>Player</em> is losing due to the inability to move
-     * any of his/hers <em>Constructor</em>
-     *
-     * @param p <em>Player</em> to check
-     * @return if the <em>Player</em> is losing
+     * This method lets the game begins
      */
-    public boolean isLosing(Player p) {
-        List<Constructor> constructorList = p.getAllConstructors();
-        for (Constructor c : constructorList) {
-            if (c.getCanMove()) {
-                return false;
-            }
-        }
-        return true;
+    public void startGame() {
+        gameState.startGame();
     }
+
+    //METHODS THAT PERFORM AN ACTION
 
     /**
-     * Method used to check if the current <em>Player</em> won after performing any king of Move phase
-     *
-     * @return if the <em>Player</em> is now located on a level 3 construction
+     * This method places a constructor on the board during the initialization of the board
+     * @param c the constructor we want to place
+     * @param p the position we want to place the constructor in
+     * @param idPlayer id of the current player
      */
-    public boolean checkWin() {
-        Tile currentTile = board.getTile(currentConstructor.getPos());
-        Tile previousTile = board.getTile(currentConstructor.getPrevPos());
-
-        return (currentTile.getConstructionLevel() == 3 && previousTile.getConstructionLevel() == 2);
-    }
-
-    /**
-     * The method is used to check if it's the turn of the given <em>Player</em>
-     *
-     * @param p <em>Player</em> to check
-     * @return if it's his/hers turn
-     */
-    public boolean isPlayerTurn(String p) {
-        Player currentP = gameState.getCurrentPlayer();
-        return p.equals(currentP.getIdPlayer());
-    }
-
     public void serverMove(Constructor c, Position p, String idPlayer){
         Tile t = board.getTile(p);
         board.placeConstructor(t, c);
@@ -198,31 +160,7 @@ public class Model extends Observable<GameMessage> {
         notify(message);
     }
 
-    public List<Player> getListPlayer() {
-        return gameState.getPlayerList();
-    }
-
-    public PossiblePhases getCurrentPhase() {
-        return gameState.getCurrentPhase();
-    }
-
-    /**
-     * This method return the <em>GodController</em> of the <em>God</em> the current <em>Player</em> has.
-     *
-     * @return The <em>GodController</em> of the current player's <em>God</em>
-     */
-    public GodController getCurrentPlayerController()   {
-        return gameState.getCurrentPlayer().getGod().getGodController();
-    }
-
-    /**
-     * This method checks if the <em>Player</em> is the only one that can perform a move
-     *
-     * @return true if he is the only one that can perform a move, false if he is not.
-     */
-    public boolean isLastStanding() {
-        return (gameState.getPlayerList().size() == 1 && gameState.getPlayerList().get(0).equals(gameState.getCurrentPlayer()));
-    }
+    //METHODS THAT NOTIFY A LIST OF POSITION
 
     /**
      * This method is used to create an array of <em>Position</em>, which contains every <em>Constructor</em> of the
@@ -239,20 +177,6 @@ public class Model extends Observable<GameMessage> {
         setTileToShow(list);
 
         notify(new StandardTileMessage(gameState.getCurrentPlayer().getIdPlayer(), gameState.getCurrentPhase(), list));
-    }
-
-    /**
-     * This method checks if every <em>Constructor</em> of the current <em>Player</em> can perform a move. If it can
-     * not, the <em>Constructor</em> is deactivated.
-     */
-    public void changeActiveConstructors() {
-        List<Position> list;
-
-        for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
-
-            list = board.possibleMoveset(c);
-            c.setCanMove(list.size() != 0);
-        }
     }
 
     /**
@@ -298,9 +222,92 @@ public class Model extends Observable<GameMessage> {
 
     }
 
+    //CHECK METHODS
+
+    /**
+     * Method used to check if the <em>Tile</em> corresponding to the <em>Position</em> passed
+     * as input is already occupied by someone
+     *
+     * @param p <em>Position</em> where the <em>Tile</em> is located
+     * @return if the <em>Tile</em> is already occupied
+     */
+    public boolean isOccupied(Position p) {
+        Tile t = board.getTile(p);
+        return t.getOccupied();
+    }
+
+    /**
+     * This method checks if every <em>Constructor</em> of the current <em>Player</em> can perform a move. If it can
+     * not, the <em>Constructor</em> is deactivated.
+     */
+    public void changeActiveConstructors() {
+        List<Position> list;
+
+        for(Constructor c : gameState.getCurrentPlayer().getAllConstructors())  {
+
+            list = board.possibleMoveset(c);
+            c.setCanMove(list.size() != 0);
+        }
+    }
+
+    /**
+     * Method used to check if a <em>Player</em> is losing due to the inability to move
+     * any of his/hers <em>Constructor</em>
+     *
+     * @param p <em>Player</em> to check
+     * @return if the <em>Player</em> is losing
+     */
+    public boolean isLosing(Player p) {
+        List<Constructor> constructorList = p.getAllConstructors();
+        for (Constructor c : constructorList) {
+            if (c.getCanMove()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Method used to check if the current <em>Player</em> won after performing any king of Move phase
+     *
+     * @return if the <em>Player</em> is now located on a level 3 construction
+     */
+    public boolean checkWin() {
+        Tile currentTile = board.getTile(currentConstructor.getPos());
+        Tile previousTile = board.getTile(currentConstructor.getPrevPos());
+
+        return (currentTile.getConstructionLevel() == 3 && previousTile.getConstructionLevel() == 2);
+    }
+
+    /**
+     * The method is used to check if it's the turn of the given <em>Player</em>
+     *
+     * @param p <em>Player</em> to check
+     * @return if it's his/hers turn
+     */
+    public boolean isPlayerTurn(String p) {
+        Player currentP = gameState.getCurrentPlayer();
+        return p.equals(currentP.getIdPlayer());
+    }
+
+    /**
+     * This method checks if the <em>Player</em> is the only one that can perform a move
+     *
+     * @return true if he is the only one that can perform a move, false if he is not.
+     */
+    public boolean isLastStanding() {
+        return (gameState.getPlayerList().size() == 1 && gameState.getPlayerList().get(0).equals(gameState.getCurrentPlayer()));
+    }
+
+    /**
+     * This method will be used in the application to check if the current player is losing
+     * @return a boolean which indicates if the player is losing the game (TRUE) or not (FALSE)
+     */
     public boolean isLosing()  {
         return isLosing(gameState.getCurrentPlayer());
     }
+
+    //END METHODS
 
     /**
      * It destroys every phase of the current player.
@@ -308,22 +315,6 @@ public class Model extends Observable<GameMessage> {
     public void destroyRemainingPhases()    {
         List<PossiblePhases> list = getCurrentGod().getPhasesList();
         list.subList(1, list.size()).clear();
-    }
-
-    public God getCurrentGod()  {
-        return gameState.getCurrentPlayer().getGod();
-    }
-
-    public void forceNotify(GameMessage message)    {
-        notify(message);
-    }
-
-    public String getCurrentPlayerId(){
-        return gameState.getCurrentPlayer().getIdPlayer();
-    }
-
-    public void startGame() {
-        gameState.startGame();
     }
 
     /**
@@ -360,7 +351,7 @@ public class Model extends Observable<GameMessage> {
     }
 
     /**
-     * This method let th
+     * This method notify all players the game ended, showing the winner id on screen
      */
     public void endGame()   {
         notify(new WinMessage(getCurrentPlayerId(), null));
@@ -368,6 +359,78 @@ public class Model extends Observable<GameMessage> {
         notify(new WinMessage(null, null));
     }
 
+    //SETTER METHODS
+
+    /**
+     * This method sets the attribute tileToShow of this class
+     * @param tileToShow is a List of positions
+     */
+    public void setTileToShow(List<Position> tileToShow) {
+        this.tileToShow = tileToShow;
+    }
+
+    /**This method set the current constructor with the one passed as parameter
+     * @param currentConstructor the constructor we want to become as current.
+     */
+    public void setCurrentConstructor(Constructor currentConstructor) {
+        this.currentConstructor = currentConstructor;
+    }
+
+    //GETTER METHODS
+
+    /**
+     * This method returns the attribute tileToShow of this class
+     * @return a List of positions
+     */
+    public List<Position> getTileToShow() {
+        return tileToShow;
+    }
+
+    /**
+     * This method returns the List of players who are playing the game
+     * @return a List of Players
+     */
+    public List<Player> getListPlayer() {
+        return gameState.getPlayerList();
+    }
+
+    /**
+     * This method returns the phase the game is at the moment
+     * @return a PossiblePhases
+     */
+    public PossiblePhases getCurrentPhase() {
+        return gameState.getCurrentPhase();
+    }
+
+    /**
+     * This method return the <em>GodController</em> of the <em>God</em> the current <em>Player</em> has.
+     *
+     * @return The <em>GodController</em> of the current player's <em>God</em>
+     */
+    public GodController getCurrentPlayerController()   {
+        return gameState.getCurrentPlayer().getGod().getGodController();
+    }
+
+    /**
+     *
+     * @return the God of the current player
+     */
+    public God getCurrentGod()  {
+        return gameState.getCurrentPlayer().getGod();
+    }
+
+    /**
+     *
+     * @return the id of the current player
+     */
+    public String getCurrentPlayerId(){
+        return gameState.getCurrentPlayer().getIdPlayer();
+    }
+
+    /**
+     *
+     * @return a boolean which indicates if the currentConstructor can go up
+     */
     public boolean getCanGoUp() {
         return board.getCanGoUp();
     }
@@ -393,6 +456,8 @@ public class Model extends Observable<GameMessage> {
     public int getConstructionLevel(Position pos)   {
         return board.getTile(pos).getConstructionLevel();
     }
+
+    //HELPER
 
     /**
      * Helper method, it checks every parameter that will be add in the tileToShowList;

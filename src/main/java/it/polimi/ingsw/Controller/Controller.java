@@ -6,6 +6,9 @@ import it.polimi.ingsw.Model.Model;
 import it.polimi.ingsw.Model.PossiblePhases;
 import it.polimi.ingsw.Observer.Observer;
 
+/**
+ * This class is the controller of the application
+ */
 public class Controller implements Observer<PosMessage> {
 
     private Model model;
@@ -57,10 +60,19 @@ public class Controller implements Observer<PosMessage> {
         }
     }
 
+    /**
+     * This method places the current constructor in the position passed calling the method performChooseConstructor in model
+     * @param message PosMessage with the position where to place the currentConstructor
+     */
     public void handleChooseConstructor(PosMessage message) {
         model.performChooseConstructor(message.getPosition());
     }
 
+    /**
+     * This method calls the performMove method in model. It also checks if the game ends, when the currentConstructor
+     * goes up from the second level to the third.
+     * @param message
+     */
     public void handleMove(PosMessage message) {
         model.performMove(message.getPosition());
         if (model.checkWin()) {
@@ -69,6 +81,10 @@ public class Controller implements Observer<PosMessage> {
         }
     }
 
+    /**
+     * This method calls the performBuild in model.
+     * @param message PosMessage with the position where to build
+     */
     public void handleBuild(PosMessage message) {
         model.performBuild(message.getPosition());
     }
@@ -111,6 +127,11 @@ public class Controller implements Observer<PosMessage> {
         }
     }
 
+    /**
+     * This method prepares the chooseConstructorPhase. In particular, it checks if the current Player is the last standing
+     * and if he is losing. If none of the conditions mentioned before are TRUE, it creates the matrix with all possible
+     * constructors.
+     */
     public void prepareChooseConstructor() {
         if (model.isLastStanding()) {
             executeWinSequence();
@@ -126,10 +147,16 @@ public class Controller implements Observer<PosMessage> {
         model.createPossibleConstructorPos();
     }
 
+    /**
+     * This method creates the matrix with all the tiles where the currentConstructor can move.
+     */
     public void prepareMove() {
         model.createPossibleMovePos(null, null);
     }
 
+    /**
+     * This method creates the matrix with all the tiles where the currentConstructor can build.
+     */
     public void prepareBuild() {
         model.createPossibleBuildPos(null, null);
     }

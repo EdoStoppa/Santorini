@@ -458,7 +458,6 @@ class BoardTest {
     @DisplayName("First rep: with Atlas, second rep: without Atlas")
     void createBuildingMatrixTest(RepetitionInfo repetitionInfo) {
         if(repetitionInfo.getCurrentRepetition() == 1)  {
-            System.out.println("With Atlas");
             int[][] matrix;
             int[][] expected = new int[5][5];
             Random random = new Random();
@@ -501,7 +500,6 @@ class BoardTest {
         }
 
         if(repetitionInfo.getCurrentRepetition() == 2)  {
-            System.out.println("Without Atlas");
             int[][] matrix;
             int[][] expected = new int[5][5];
             Random random = new Random();
