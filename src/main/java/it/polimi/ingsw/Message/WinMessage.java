@@ -32,12 +32,12 @@ public class WinMessage extends GameMessage {
 
     @Override
     public void updatePlaySpace(PlaySpace playSpace) {
-
+        //useless
     }
 
     @Override
     public void updateGUI(PlaySpace playSpace) {
-
+        //useless
     }
 
 }

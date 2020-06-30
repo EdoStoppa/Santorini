@@ -45,8 +45,10 @@ public abstract class GameMessage implements Serializable {
 
     /**
      * This method is used to generate automatically the correct message that will be shown to the player.
+     * This method will be call only on the Client, because requires information not known by the Server.
      *
-     * This method will be call only on the Client, because requires information not known by the Server
+     * @param isMyTurn boolean telling if it's the player turn
+     * @param isCLI boolean telling if the Client is a CLI one
      */
     public abstract void autoSetMessage(boolean isMyTurn, boolean isCLI);
 

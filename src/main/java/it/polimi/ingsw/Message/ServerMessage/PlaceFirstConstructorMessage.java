@@ -20,7 +20,7 @@ public class PlaceFirstConstructorMessage extends ServerMessage {
     /**
      * Method used to know if the player is the first to actually place a constructor on the board (it's used only in CLI)
      *
-     * @return
+     * @return A boolean
      */
     public boolean isFirst(){
         return isFirst;
