@@ -19,6 +19,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * this class implements client for CLI's version
+ */
 public class ClientCLI extends Client{
     private PrintWriter socketOut;
     private final Object ipLock = new Object();

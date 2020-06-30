@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.Serializable;
 
 
+/**
+ * this class is responsible for creating the threads used by Java FX
+ */
 public class ClientGuiApp extends Application implements Serializable {
     private static final long serialVersionUID = 1L;
     private static ClientGUI  client;

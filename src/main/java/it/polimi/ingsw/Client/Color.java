@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Client;
 
+/**
+ * this enumeration contais all escape codes  to change color of Cli characters
+ */
 public enum Color {
     ANSI_RED("\u001B[31m"), //player1
     CYAN_BACKGROUND_BRIGHT("\033[0;106m"), // tiles to show

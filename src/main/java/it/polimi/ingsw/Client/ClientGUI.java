@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+/**
+ * this class implements client for GUI's version of the game using JavaFX 14
+ */
 public class ClientGUI extends Client implements EventHandler {
     private String idPlayer = null;
     private MiniController miniController;

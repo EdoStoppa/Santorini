@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
@@ -325,20 +326,25 @@ public class SceneBuilder {
         label.setTextFill(Color.WHITE);
         label.setFont(Font.font(ClientGuiApp.height*0.05));
         VBox layout=new VBox(10);
-        if(message.equals("Wait")) {
-            layout.setBackground(getBackground("initBackground"));
-        } else {
-            label.setId("bold");
-            layout.setBackground(getBackground("endBackground"));
-        }
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().add(label);
         BorderPane pane=new BorderPane();
         pane.setCenter(layout);
-        Label endMessage= new Label("Thanks for playing!\nIf you want to play another match, please restart the application");
-        endMessage.setTextFill(Color.WHITE);
+        Label endMessage= new Label("                                     Thanks for playing!\nIf you want to play another match, please restart the application");
+        label.setAlignment(Pos.CENTER);
+        endMessage.setAlignment(Pos.BOTTOM_CENTER);
         endMessage.setFont(Font.font(ClientGuiApp.height*0.028));
+        endMessage.setPadding(new Insets(0,0 ,10,ClientGuiApp.width*0.15));
+        endMessage.setTextFill(Color.WHITE);
+        endMessage.setId("bold");
         pane.setBottom(endMessage);
+        if(message.equals("Wait")) {
+            pane.setBackground(getBackground("initBackground"));
+        } else {
+            label.setId("bold");
+            label.setPadding(new Insets(ClientGuiApp.height*0.089,0,0,0));
+            pane.setBackground(getBackground("endBackground"));
+        }
 
         return pane;
 

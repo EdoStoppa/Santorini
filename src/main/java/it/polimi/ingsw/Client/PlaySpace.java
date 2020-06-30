@@ -10,6 +10,12 @@ import javafx.scene.paint.ImagePattern;
 
 import java.util.List;
 
+/**
+ *this class contains two matrix to indicate the position of all buildings and constructor.
+ * it is responsible to update the matrix when a new <em>BuildMessage</em> or <em>MoveMessage</em>.
+ * it is also responsible to find the changes between the new matrix and the old one and indicate to <em>
+ *     BoardScene</em> a movement or a construction.
+ */
 public class PlaySpace {
     private int[][] buildingMatrix;
     private int[][] constructorMatrix;

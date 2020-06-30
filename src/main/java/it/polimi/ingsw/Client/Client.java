@@ -8,6 +8,10 @@ import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+/**
+ * this abstract client class has been organized to made transparent all messages between client and server,
+ * independently which type of implementation is used in the client (CLI, GUI)
+ */
 public abstract class Client {
     protected String ip;
     protected int port;
