@@ -62,7 +62,7 @@ public class AlertBox {
     }
 
     /**
-     * this method create an alertBox to summarize the gods of the game
+     * this method create an AlertBox to summarize the gods of the game
      */
     public static void displayGod(){
         Map<String, God> playerGodMap=ClientGUI.getPlayerGodMap();
