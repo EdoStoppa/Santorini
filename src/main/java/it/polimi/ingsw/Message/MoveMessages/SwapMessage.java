@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+/**
+ * This message is generated when a constructor swap with another one (generally done by Apollo)
+ */
 public class SwapMessage extends MoveMessage {
 
     public SwapMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {

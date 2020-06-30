@@ -6,6 +6,11 @@ import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.io.Serializable;
 
+/**
+ * This abstract class represents all messages created in respond to a move choice performed by the player.
+ *
+ * This will carrie a new constructorMatrix representing the new state of the board (regarding all constructor positions).
+ */
 public abstract class MoveMessage extends GameMessage implements Serializable{
     private static final long serialVersionUID = 1L;
     private final int[][] constructorMatrix;
@@ -19,7 +24,7 @@ public abstract class MoveMessage extends GameMessage implements Serializable{
         return this.constructorMatrix;
     }
 
-
+    @Override
     public void updatePlaySpace(PlaySpace playSpace) {
         playSpace.setConstructorMatrix(getConstructorMatrix());
 

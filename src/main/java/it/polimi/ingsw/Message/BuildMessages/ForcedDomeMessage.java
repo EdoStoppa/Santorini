@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+/**
+ * This message is created when a Dome is placed on the board forcefully.
+ */
 public class ForcedDomeMessage extends BuildMessage {
     public ForcedDomeMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {
         super(currentPlayer, currentPhase, matrix);

@@ -5,6 +5,9 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+/**
+ * This message is the standard Move message, generated after a move from any player.
+ */
 public class StandardMoveMessage extends MoveMessage {
 
     public StandardMoveMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {

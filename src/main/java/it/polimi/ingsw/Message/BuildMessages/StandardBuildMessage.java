@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+/**
+ * This message is the standard message created every time the player place a construction
+ */
 public class StandardBuildMessage extends BuildMessage {
     public StandardBuildMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {
         super(currentPlayer, currentPhase, matrix);

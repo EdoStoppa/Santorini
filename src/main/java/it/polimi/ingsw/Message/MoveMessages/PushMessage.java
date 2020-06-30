@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.PlaySpace;
 import it.polimi.ingsw.Message.HelpMessage;
 import it.polimi.ingsw.Model.PossiblePhases;
 
+/**
+ * This message is generated when a constructor pushes another one (generally done by Minotaur)
+ */
 public class PushMessage extends MoveMessage {
     public PushMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {
         super(currentPlayer, currentPhase, matrix);

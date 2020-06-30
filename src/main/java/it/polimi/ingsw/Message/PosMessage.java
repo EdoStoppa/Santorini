@@ -3,6 +3,11 @@ package it.polimi.ingsw.Message;
 import it.polimi.ingsw.Model.Position;
 import it.polimi.ingsw.View.View;
 
+/**
+ * This is a special class created by the view only. After receiving a message during the game from the Client,
+ * the view parses it and than creates one of this message that will be consequently used by the rest of the Application
+ * to process the Client choice.
+ */
 public class PosMessage {
     private final String code;
     private final String player;

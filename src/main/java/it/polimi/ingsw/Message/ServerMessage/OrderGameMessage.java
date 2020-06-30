@@ -6,6 +6,9 @@ import it.polimi.ingsw.Controller.MiniController.OrderMiniController;
 
 import java.util.ArrayList;
 
+/**
+ * This message is generated when the player must choose which of the participants should start
+ */
 public class OrderGameMessage extends ServerMessage{
     ArrayList<String> playerlist;
 

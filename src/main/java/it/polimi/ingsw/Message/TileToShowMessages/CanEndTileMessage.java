@@ -9,6 +9,10 @@ import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.util.List;
 
+/**
+ * This message is sent during a phase that can be ended by the Player (thanks to his/her God's power), so carries a normal
+ * list of positions and a CanEndMiniController
+ */
 public class CanEndTileMessage extends TileToShowMessage {
     public CanEndTileMessage(String player, PossiblePhases phase, List<Position> list) {
         super(player, phase, list);

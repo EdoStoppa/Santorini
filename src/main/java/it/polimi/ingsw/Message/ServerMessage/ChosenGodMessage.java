@@ -7,7 +7,9 @@ import it.polimi.ingsw.Model.God;
 
 import java.util.ArrayList;
 
-
+/**
+ * This message is sent to every player that has to choose his/hers god card
+ */
 public class ChosenGodMessage extends ServerMessage {
     ArrayList<God> ChosenGod;
     int numPlayer;

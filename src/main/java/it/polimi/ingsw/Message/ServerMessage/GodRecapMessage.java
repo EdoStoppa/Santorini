@@ -5,6 +5,11 @@ import it.polimi.ingsw.Model.God;
 
 import java.util.Map;
 
+/**
+ * This is a special message. For the GUI is used to create a special button that reminds every time the player click it which player
+ * has which god card, instead in the CLI is used to show a sort of recap about which player has which god card before the end of the
+ * match initialization.
+ */
 public class GodRecapMessage extends ServerMessage{
     private final Map<String, God> playerGodMap;
     private final String firstPlayer;

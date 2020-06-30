@@ -6,6 +6,11 @@ import it.polimi.ingsw.Model.PossiblePhases;
 
 import java.io.Serializable;
 
+/**
+ * This abstract class represents all messages created in respond to a build choice performed by the player.
+ *
+ * This will carries a new buildingMatrix representing the new state of the board (regarding all construction levels)
+ */
 public abstract class BuildMessage extends GameMessage implements Serializable{
     private static final long serialVersionUID = 1L;
     private final int[][] buildingMatrix;

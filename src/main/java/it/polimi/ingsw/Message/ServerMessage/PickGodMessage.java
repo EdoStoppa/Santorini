@@ -9,6 +9,9 @@ import it.polimi.ingsw.Model.God;
 
 import java.util.List;
 
+/**
+ * This message is generated when a player must choose all the god cards that will be available during the match
+ */
 public class PickGodMessage extends ServerMessage {
     List<God> AllGod = God.getAllGod();
     int numPlayer;
@@ -19,6 +22,10 @@ public class PickGodMessage extends ServerMessage {
 
     public God GetGod (int i){
         return AllGod.get(i);
+    }
+
+    public int getNumPlayer()   {
+        return this.numPlayer;
     }
 
     @Override
@@ -36,11 +43,6 @@ public class PickGodMessage extends ServerMessage {
         }
         return message + "\nType the corresponding number to choose them " + (numPlayer==2? "(ex. 2,4)" : "(ex. 1,3,6)");
     }
-
-    public int getNumPlayer()   {
-        return this.numPlayer;
-    }
-
 
     @Override
     public void buildScene() {
