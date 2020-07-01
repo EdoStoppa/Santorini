@@ -268,6 +268,7 @@ public class ClientCLI extends Client{
         if (inputObject instanceof GodRecapMessage) {
             String name = ((GodRecapMessage) inputObject).getFirstPlayer();
             if (!name.equals(idPlayer)) {
+                System.out.println("\u001b[2J\u001b[H");
                 System.out.println(inputObject.getMessage() + "\nPlease wait while " + name + " is choosing where to place a constructor");
             }
             this.playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();
@@ -301,9 +302,10 @@ public class ClientCLI extends Client{
             }
             System.out.println(inputObject.getMessage());
         }else if(inputObject instanceof WinMessage){
+            System.out.println("\u001b[2J\u001b[H");
             playSpace.printPlaySpace();
             System.out.println(inputObject.getMessage());
-            System.out.println("Thank for playing.\nIf you want to restart the game, close this session and restart the application.");
+            System.out.println("\nThanks for playing!\nIf you want to restart the game, close this session and restart the application.");
             setActive(false);
         } else {
             inputObject.updatePlaySpace(playSpace);

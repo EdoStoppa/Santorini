@@ -1,0 +1,17 @@
+module:it.polimi.ingsw
+it.polimi.ingsw
+it.polimi.ingsw.Client
+it.polimi.ingsw.Client.GraphicElements
+it.polimi.ingsw.Client.GraphicElements.Board
+it.polimi.ingsw.Controller
+it.polimi.ingsw.Controller.GodController
+it.polimi.ingsw.Controller.MiniController
+it.polimi.ingsw.Message
+it.polimi.ingsw.Message.BuildMessages
+it.polimi.ingsw.Message.MoveMessages
+it.polimi.ingsw.Message.ServerMessage
+it.polimi.ingsw.Message.TileToShowMessages
+it.polimi.ingsw.Model
+it.polimi.ingsw.Observer
+it.polimi.ingsw.Server
+it.polimi.ingsw.View

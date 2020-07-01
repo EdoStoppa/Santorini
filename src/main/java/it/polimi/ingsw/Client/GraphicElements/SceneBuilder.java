@@ -330,7 +330,7 @@ public class SceneBuilder {
         layout.getChildren().add(label);
         BorderPane pane=new BorderPane();
         pane.setCenter(layout);
-        Label endMessage= new Label("Thanks for playing! To play again, please restart the application");
+        Label endMessage= new Label("To play again, please restart the App!");
         label.setAlignment(Pos.CENTER);
         endMessage.setAlignment(Pos.BOTTOM_CENTER);
         endMessage.setFont(Font.font(ClientGuiApp.height*0.028));
