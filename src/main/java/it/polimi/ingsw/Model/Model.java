@@ -38,7 +38,6 @@ public class Model extends Observable<GameMessage> {
         try {
             this.gameState.nextPhase();
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
             this.gameState.nextTurn();
         }
     }
