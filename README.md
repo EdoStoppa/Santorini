@@ -112,7 +112,7 @@ java -jar ClientCliApp.jar
 
 ***Nota Bene:*** durante l'esecuzione del gioco in versione CLI, la posizione dei vari costruttori sarà indicata da un colore 
 unico per ogni giocatore, mentre l'altezza di ogni costruzione da un numero compreso fra 0 (nessuna costruzione presente nella 
-casella) e 3 (terzo livello). In caso fosse presente una "dome" verrà visualizzata una D in blu.
+casella) a 3 (terzo livello). In caso fosse presente una "dome" verrà visualizzata una D in blu.
 
 #### GUI
 Il comando per avviare il Client versione GUI è:
