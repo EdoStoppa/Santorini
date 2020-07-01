@@ -1,0 +1,145 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: God</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: God (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">God</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42,9%
+  </span>
+  <span class="absValue">
+    (3/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    17,6%
+  </span>
+  <span class="absValue">
+    (3/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Controller.GodController.GodController;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.io.Serializable;
+<i>6</i>&nbsp;import java.util.ArrayList;
+<i>7</i>&nbsp;import java.util.List;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**Represents the god card that every player choose at the start of the game.
+<i>10</i>&nbsp; * It&#39;s an abstract class because every god card is extremely different in its initialization
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;
+<b class="fc"><i>13</i>&nbsp;public abstract class God implements Serializable{</b>
+<i>14</i>&nbsp;    private static final long serialVersionUID = 1L;
+<i>15</i>&nbsp;    protected String godName;
+<i>16</i>&nbsp;    protected String godSubtitle;
+<i>17</i>&nbsp;    protected String powerDescription;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /**Represents the sequence of phases during a player turn that have this card
+<i>20</i>&nbsp;     */
+<i>21</i>&nbsp;    protected List&lt;PossiblePhases&gt; phasesList;
+<i>22</i>&nbsp;    /**Holds an helper class used by the controller to manage special move/build
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    protected GodController godController;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    public String getGodName(){
+<b class="nc"><i>27</i>&nbsp;        return (this.godName);</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public String getGodSubtitle(){
+<b class="nc"><i>31</i>&nbsp;        return (this.godSubtitle);</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public String getGodPower(){
+<b class="nc"><i>35</i>&nbsp;        return (this.powerDescription);</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public List&lt;PossiblePhases&gt; getPhasesList(){
+<b class="fc"><i>39</i>&nbsp;        return this.phasesList;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public GodController getGodController(){
+<b class="fc"><i>43</i>&nbsp;        return godController;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public static List&lt;God&gt; getAllGod(){
+<b class="nc"><i>47</i>&nbsp;        List&lt;God&gt; list = new ArrayList&lt;&gt;();</b>
+<i>48</i>&nbsp;
+<b class="nc"><i>49</i>&nbsp;        list.add(new Apollo());</b>
+<b class="nc"><i>50</i>&nbsp;        list.add(new Artemis());</b>
+<b class="nc"><i>51</i>&nbsp;        list.add(new Athena());</b>
+<b class="nc"><i>52</i>&nbsp;        list.add(new Atlas());</b>
+<b class="nc"><i>53</i>&nbsp;        list.add(new Demeter());</b>
+<b class="nc"><i>54</i>&nbsp;        list.add(new Hephaestus());</b>
+<b class="nc"><i>55</i>&nbsp;        list.add(new Minotaur());</b>
+<b class="nc"><i>56</i>&nbsp;        list.add(new Pan());</b>
+<b class="nc"><i>57</i>&nbsp;        list.add(new Prometheus());</b>
+<i>58</i>&nbsp;
+<b class="nc"><i>59</i>&nbsp;        return list;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

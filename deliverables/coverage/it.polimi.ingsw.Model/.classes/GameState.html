@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameState</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameState (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameState</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (36/ 36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.util.ArrayList;
+<i>4</i>&nbsp;import java.util.List;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Represents the state of the Game, holding all the players, the player who&#39;s playing and the current phase of each turn
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class GameState {
+<i>11</i>&nbsp;    private List&lt;Player&gt; playerList;
+<i>12</i>&nbsp;    private Player currentPlayer;
+<i>13</i>&nbsp;    private PossiblePhases currentPhase;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * Creates a &lt;em&gt;GameState&lt;/em&gt; in which the playerList is the parameter passed, set currentPlayer as the firs in the list pList
+<i>17</i>&nbsp;     * and set the currentPhase as the first phase contained in the player&#39;s god card
+<i>18</i>&nbsp;     *
+<i>19</i>&nbsp;     * @param pList List of playing players
+<i>20</i>&nbsp;     */
+<b class="fc"><i>21</i>&nbsp;    public GameState(List&lt;Player&gt; pList){</b>
+<b class="fc"><i>22</i>&nbsp;        this.playerList = pList;</b>
+<b class="fc"><i>23</i>&nbsp;        this.currentPlayer = pList.get(0);</b>
+<b class="fc"><i>24</i>&nbsp;        this.currentPhase  = this.currentPlayer.getGod().getPhasesList().get(0);</b>
+<b class="fc"><i>25</i>&nbsp;    }</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    public Player getCurrentPlayer(){
+<b class="fc"><i>28</i>&nbsp;        return this.currentPlayer;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public PossiblePhases getCurrentPhase(){
+<b class="fc"><i>32</i>&nbsp;        return this.currentPhase;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public List&lt;Player&gt; getPlayerList(){
+<b class="fc"><i>36</i>&nbsp;        return this.playerList;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Set the game at the starting point
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    public void startGame(){
+<b class="fc"><i>43</i>&nbsp;        this.currentPlayer = this.playerList.get(0);</b>
+<b class="fc"><i>44</i>&nbsp;        this.currentPhase  = this.currentPlayer.getGod().getPhasesList().get(0);</b>
+<b class="fc"><i>45</i>&nbsp;    }</b>
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    /**
+<i>49</i>&nbsp;     * Method used to change the turn&#39;s phase
+<i>50</i>&nbsp;     * If a next phase exist simply refreshes &lt;em&gt;GameState&lt;/em&gt;, otherwise throws an exception
+<i>51</i>&nbsp;     *
+<i>52</i>&nbsp;     * @throws IndexOutOfBoundsException to let know the caller that there&#39;s no more phases left
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    public void nextPhase() throws IndexOutOfBoundsException{
+<b class="fc"><i>55</i>&nbsp;        God g = this.currentPlayer.getGod();</b>
+<b class="fc"><i>56</i>&nbsp;        List&lt;PossiblePhases&gt; phasesList = g.getPhasesList();</b>
+<b class="fc"><i>57</i>&nbsp;        int index = phasesList.indexOf(this.currentPhase);</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        if(index == phasesList.size() -1){</b>
+<b class="fc"><i>60</i>&nbsp;            throw new IndexOutOfBoundsException(&quot;No more phases, required new turn&quot;);</b>
+<i>61</i>&nbsp;        } else {
+<b class="fc"><i>62</i>&nbsp;            this.currentPhase = phasesList.get(index +1);</b>
+<i>63</i>&nbsp;        }
+<b class="fc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * Used to change the current turn, so changes the player and set the first phase
+<i>68</i>&nbsp;     */
+<i>69</i>&nbsp;    public void nextTurn(){
+<b class="fc"><i>70</i>&nbsp;        this.currentPlayer = nextPlayer();</b>
+<b class="fc"><i>71</i>&nbsp;        this.currentPhase  = this.currentPlayer.getGod().getPhasesList().get(0);</b>
+<b class="fc"><i>72</i>&nbsp;    }</b>
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * Used to change the playing player
+<i>76</i>&nbsp;     *
+<i>77</i>&nbsp;     * @return &lt;em&gt;Player&lt;/em&gt; who is the next player
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    private Player nextPlayer(){
+<b class="fc"><i>80</i>&nbsp;        int pLen = playerList.size();</b>
+<b class="fc"><i>81</i>&nbsp;        int posP = playerList.indexOf(currentPlayer);</b>
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;        if(posP == pLen - 1){</b>
+<b class="fc"><i>84</i>&nbsp;            return this.playerList.get(0);</b>
+<i>85</i>&nbsp;        }  else {
+<b class="fc"><i>86</i>&nbsp;            return this.playerList.get(posP + 1);</b>
+<i>87</i>&nbsp;        }
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    public void removePlayer(Player p){
+<b class="fc"><i>91</i>&nbsp;        if(p == getCurrentPlayer()){</b>
+<b class="fc"><i>92</i>&nbsp;            this.currentPlayer = nextPlayer();</b>
+<i>93</i>&nbsp;        }
+<b class="fc"><i>94</i>&nbsp;        this.playerList.remove(p);</b>
+<b class="fc"><i>95</i>&nbsp;    }</b>
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    protected void setCurrentPhase(PossiblePhases phase){
+<b class="fc"><i>98</i>&nbsp;        this.currentPhase = phase;</b>
+<b class="fc"><i>99</i>&nbsp;    }</b>
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;//----------------------------------------------------------------------------------------------------------------------
+<i>102</i>&nbsp;//                                             FOR TESTING PURPOSE
+<i>103</i>&nbsp;//----------------------------------------------------------------------------------------------------------------------
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    protected void setCurrentPlayer(Player p)   {
+<b class="fc"><i>106</i>&nbsp;        this.currentPlayer = p;</b>
+<b class="fc"><i>107</i>&nbsp;    }</b>
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    protected void setPlayerList(ArrayList&lt;Player&gt; list)    {
+<b class="fc"><i>110</i>&nbsp;        this.playerList = list;</b>
+<b class="fc"><i>111</i>&nbsp;    }</b>
+<i>112</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

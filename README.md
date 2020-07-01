@@ -31,10 +31,10 @@ Il nostro gruppo ha codice ***GC25***, ed è composto dai seguenti membri:
 Nella cartella `deiverables/uml` sono presenti tre cartelle:
 
 - In `/Final UML` è presente (in formato .png e .jpg) l'UML finale del progetto, leggermente modificato per rendere più 
-chiara l'interpretazione di tutto.
+chiara l'interpretazione del tutto.
 - In `/Development Snapshots UML` sono presenti una serie di file .jpg che contengono degli "snapshot" sullo stato di sviluppo
-dell'UML durante tutta la durata del progetto, fino all'UML finale
-- In `/Complete UML` sono presenti diversi UML generati automaticamente da Intellij che mostrano tutto lo schema del progetto
+dell'UML durante tutta la durata del progetto, fino all'UML finale.
+- In `/Complete UML` sono presenti diversi UML generati automaticamente da Intellij che mostrano tutto lo schema del progetto.
 
 ## Testing e Code Coverage
 Per testare la solidità di tutto il progetto si è deciso di creare test sia randomici sia focalizzati a stressare parti cruciali
@@ -50,7 +50,7 @@ Purtroppo la maggior parte delle classi esterne a questi package risultano estre
 attraverso JUnit, quindi si è preferito il testing manuale (in particolare per Client CLI/GUI e Server). Questo ha portato a un
 basso score nel coverage dell'intero progetto, anche se per le parti testabili si è fatto tutto il possibile.
 
-Nel caso si volesse avere una panoramica generale, nella cartella `deliverables/coverage` è presente il file index.html generato
+Nel caso si volesse avere una panoramica generale, nella cartella `deliverables/coverage` sono presente tutti i file generati
 in automatico da Intellij.
 
 ## JavaDoc
@@ -64,9 +64,9 @@ I JAR generati saranno tre:
 - "ClientCliApp.jar", adibito all'esecuzione del Client in versione CLI
 - "ClientGuiApp.jar", adibito all'esecuzione del Client in versione GUI
 
-Tutti i JAR sono generabili tramite maven con `mvn clean package`, e si troveranno della cartella `executable`. 
-(Nel caso si volessero usare i JAR precompilati si possono trovare nella cartella `deliverables/JARs`, anche se è fortemente
-sconsigliato) 
+Tutti i file JAR sono generabili tramite maven con il comando: `mvn package`, e si troveranno della cartella `executable`. 
+Nel caso si volessero usare i JAR precompilati possono essere trovati nella cartella `deliverables/JARs`, anche se il loro 
+utilizzo è fortemente sconsigliato.
 
 Come si può vedere dal pom.xml, si è deciso di usare il plugin Maven Shade per la creazione di file JAR "standalone". 
 Infatti i JAR generati non hanno bisogno di alcuna libreria esterna particolare per essere avviati, e sono inoltre 

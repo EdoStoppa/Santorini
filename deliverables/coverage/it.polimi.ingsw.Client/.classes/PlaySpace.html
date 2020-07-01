@@ -1,0 +1,487 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlaySpace</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlaySpace (it.polimi.ingsw.Client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlaySpace</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23,8%
+  </span>
+  <span class="absValue">
+    (5/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    8,1%
+  </span>
+  <span class="absValue">
+    (16/ 198)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
+<i>4</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.Board.Piece;
+<i>5</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.Board.PieceType;
+<i>6</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.Board.TileGui;
+<i>7</i>&nbsp;import it.polimi.ingsw.Model.Position;
+<i>8</i>&nbsp;import javafx.scene.paint.ImagePattern;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; *this class contains two matrix to indicate the position of all buildings and constructor.
+<i>15</i>&nbsp; * it is responsible to update the matrix when a new &lt;em&gt;BuildMessage&lt;/em&gt; or &lt;em&gt;MoveMessage&lt;/em&gt;.
+<i>16</i>&nbsp; * it is also responsible to find the changes between the new matrix and the old one and indicate to &lt;em&gt;
+<i>17</i>&nbsp; *     BoardScene&lt;/em&gt; a movement or a construction.
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;public class PlaySpace {
+<i>20</i>&nbsp;    private int[][] buildingMatrix;
+<i>21</i>&nbsp;    private int[][] constructorMatrix;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    private List&lt;Position&gt; tileToShow;
+<i>24</i>&nbsp;    private List&lt;Position&gt; tileToCheck;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;    public PlaySpace(){</b>
+<b class="fc"><i>28</i>&nbsp;        this.tileToShow = null;</b>
+<b class="fc"><i>29</i>&nbsp;        this.tileToCheck = null;</b>
+<i>30</i>&nbsp;
+<b class="fc"><i>31</i>&nbsp;        this.buildingMatrix = new int[5][5];</b>
+<b class="fc"><i>32</i>&nbsp;        this.constructorMatrix = new int[5][5];</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;    }</b>
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * this funtion control if the position is contain in TileToShow
+<i>38</i>&nbsp;     * @param i row of the position to check
+<i>39</i>&nbsp;     * @param j column pf the position to check
+<i>40</i>&nbsp;     * @return true is the position is contain in TileToShow
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    public boolean isTileToShow(int i, int j){
+<b class="fc"><i>43</i>&nbsp;        if(this.tileToShow != null){</b>
+<b class="fc"><i>44</i>&nbsp;            for (int k=0;k&lt;this.tileToShow.size();k++){</b>
+<b class="fc"><i>45</i>&nbsp;                if (this.tileToShow.get(k).getRow()==i &amp;&amp; this.tileToShow.get(k).getCol()==j){</b>
+<b class="fc"><i>46</i>&nbsp;                    return true;</b>
+<i>47</i>&nbsp;                }
+<i>48</i>&nbsp;            }
+<i>49</i>&nbsp;        }
+<b class="fc"><i>50</i>&nbsp;        return false;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * print of board with construction and constructor during the game
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    public void printPlaySpace(){
+<b class="nc"><i>57</i>&nbsp;        String ORIZ = &quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;;</b>
+<b class="nc"><i>58</i>&nbsp;        String VERT= &quot;\u2551&quot;;</b>
+<b class="nc"><i>59</i>&nbsp;        String ORIZ2= &quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;+&quot;\u2550&quot;;</b>
+<b class="nc"><i>60</i>&nbsp;        System.out.println(&quot;       0         1         2         3         4&quot;);</b>
+<b class="nc"><i>61</i>&nbsp;        System.out.println(&quot;  \u2554&quot;+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ2+&quot;\u2557&quot;);</b>
+<i>62</i>&nbsp;
+<b class="nc"><i>63</i>&nbsp;        int k = 0;</b>
+<b class="nc"><i>64</i>&nbsp;        for (int i=0;i&lt;15;i++){</b>
+<b class="nc"><i>65</i>&nbsp;            String line=&quot;&quot;;</b>
+<b class="nc"><i>66</i>&nbsp;            if((i+2)%3 == 0){</b>
+<b class="nc"><i>67</i>&nbsp;                line+=k+&quot; &quot;;</b>
+<b class="nc"><i>68</i>&nbsp;                line+=VERT;</b>
+<b class="nc"><i>69</i>&nbsp;                for (int j=0;j&lt;5;j++){</b>
+<b class="nc"><i>70</i>&nbsp;                    switch (constructorMatrix[k][j]) {</b>
+<i>71</i>&nbsp;                        case 1:
+<b class="nc"><i>72</i>&nbsp;                            if (this.isTileToShow(k, j)) {</b>
+<b class="nc"><i>73</i>&nbsp;                                line += (Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot; + Color.RESET + &quot; &quot; + Color.ANSI_RED+ buildingMatrix[k][j] + Color.RESET + &quot; &quot; + Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot;);</b>
+<i>74</i>&nbsp;                            } else {
+<b class="nc"><i>75</i>&nbsp;                                line += (Color.ANSI_RED + &quot;    &quot; + buildingMatrix[k][j] + &quot;    &quot;);</b>
+<i>76</i>&nbsp;                            }
+<b class="nc"><i>77</i>&nbsp;                            break;</b>
+<i>78</i>&nbsp;                        case 2:
+<b class="nc"><i>79</i>&nbsp;                            if (this.isTileToShow(k, j)) {</b>
+<b class="nc"><i>80</i>&nbsp;                                line += (Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot; + Color.RESET + &quot; &quot; + Color.ANSI_YELLOW+ buildingMatrix[k][j] + Color.RESET + &quot; &quot; + Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot;);</b>
+<i>81</i>&nbsp;                            } else {
+<b class="nc"><i>82</i>&nbsp;                                line += (Color.ANSI_YELLOW + &quot;    &quot; + buildingMatrix[k][j] + &quot;    &quot;);</b>
+<i>83</i>&nbsp;                            }
+<b class="nc"><i>84</i>&nbsp;                            break;</b>
+<i>85</i>&nbsp;                        case 3:
+<b class="nc"><i>86</i>&nbsp;                            if (this.isTileToShow(k, j)) {</b>
+<b class="nc"><i>87</i>&nbsp;                                line += (Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot; + Color.RESET + &quot; &quot; + Color.ANSI_PURPLE+ buildingMatrix[k][j] + Color.RESET + &quot; &quot; + Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot;);</b>
+<i>88</i>&nbsp;                            } else {
+<b class="nc"><i>89</i>&nbsp;                                line += (Color.ANSI_PURPLE + &quot;    &quot; + buildingMatrix[k][j] + &quot;    &quot;);</b>
+<i>90</i>&nbsp;                            }
+<b class="nc"><i>91</i>&nbsp;                            break;</b>
+<i>92</i>&nbsp;                        case 0:
+<b class="nc"><i>93</i>&nbsp;                            if (this.isTileToShow(k, j) &amp;&amp; buildingMatrix[k][j] &lt; 4) {</b>
+<b class="nc"><i>94</i>&nbsp;                                line += (Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot; + Color.RESET + &quot; &quot; + buildingMatrix[k][j] + Color.RESET + &quot; &quot; + Color.CYAN_BACKGROUND_BRIGHT + &quot;   &quot;);</b>
+<b class="nc"><i>95</i>&nbsp;                            } else if (buildingMatrix[k][j] != 0 &amp;&amp; buildingMatrix[k][j] &lt; 4) {</b>
+<b class="nc"><i>96</i>&nbsp;                                line += (Color.RESET + &quot;    &quot; + buildingMatrix[k][j] + &quot;    &quot;);</b>
+<b class="nc"><i>97</i>&nbsp;                            } else if (buildingMatrix[k][j] &gt;= 4) {</b>
+<b class="nc"><i>98</i>&nbsp;                                line += (Color.ANSI_BLUE + &quot;    D    &quot;);</b>
+<i>99</i>&nbsp;                            } else {
+<b class="nc"><i>100</i>&nbsp;                                line += (Color.RESET + &quot;         &quot;);</b>
+<i>101</i>&nbsp;                            }
+<i>102</i>&nbsp;                    }
+<b class="nc"><i>103</i>&nbsp;                    if (j!=4){</b>
+<b class="nc"><i>104</i>&nbsp;                        line+=(Color.RESET+&quot;|&quot;);</b>
+<i>105</i>&nbsp;                    } else {
+<b class="nc"><i>106</i>&nbsp;                        line+=(Color.RESET+VERT);</b>
+<i>107</i>&nbsp;                    }
+<i>108</i>&nbsp;                }
+<b class="nc"><i>109</i>&nbsp;                k++;</b>
+<i>110</i>&nbsp;            } else {
+<b class="nc"><i>111</i>&nbsp;                line += &quot;  &quot;+VERT;</b>
+<b class="nc"><i>112</i>&nbsp;                for(int l=0; l&lt; 5; l++){</b>
+<b class="nc"><i>113</i>&nbsp;                    if(isTileToShow(i/3,l)){</b>
+<b class="nc"><i>114</i>&nbsp;                        line += Color.CYAN_BACKGROUND_BRIGHT + &quot;         &quot;;</b>
+<i>115</i>&nbsp;                    } else {
+<b class="nc"><i>116</i>&nbsp;                        line += &quot;         &quot;;</b>
+<i>117</i>&nbsp;                    }
+<i>118</i>&nbsp;
+<b class="nc"><i>119</i>&nbsp;                    if(l!=4){</b>
+<b class="nc"><i>120</i>&nbsp;                        line += Color.RESET + &quot;|&quot;;</b>
+<i>121</i>&nbsp;                    } else {
+<b class="nc"><i>122</i>&nbsp;                        line += Color.RESET + VERT;</b>
+<i>123</i>&nbsp;                    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;                }
+<i>126</i>&nbsp;            }
+<b class="nc"><i>127</i>&nbsp;            System.out.println(line);</b>
+<i>128</i>&nbsp;        }
+<b class="nc"><i>129</i>&nbsp;        System.out.println(&quot;  \u255A&quot;+ORIZ+ORIZ+ORIZ+ORIZ+ORIZ2 + &quot;\u255D&quot;);</b>
+<b class="nc"><i>130</i>&nbsp;    }</b>
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    /**
+<i>133</i>&nbsp;     * this method identify movements on the board and update the constructorMatrix
+<i>134</i>&nbsp;     * @param playSpaceUpdated is the new constructorMatrix
+<i>135</i>&nbsp;     */
+<i>136</i>&nbsp;    public void updateConstructorGUI (int [][]playSpaceUpdated){
+<b class="nc"><i>137</i>&nbsp;        if (BoardScene.isInit()) {</b>
+<b class="nc"><i>138</i>&nbsp;            for (int i = 0; i &lt;= 4; i++) {</b>
+<b class="nc"><i>139</i>&nbsp;                for (int j = 0; j &lt;= 4; j++) {</b>
+<b class="nc"><i>140</i>&nbsp;                    if (playSpaceUpdated[i][j] != 0 &amp;&amp; constructorMatrix[i][j] == 0) {</b>
+<b class="nc"><i>141</i>&nbsp;                        if (!BoardScene.isYourTurn()) {</b>
+<i>142</i>&nbsp;                            Piece piece;
+<b class="nc"><i>143</i>&nbsp;                            if (playSpaceUpdated[i][j] == 1) {</b>
+<b class="nc"><i>144</i>&nbsp;                                piece = BoardScene.makePiece(PieceType.RED, j, i);</b>
+<b class="nc"><i>145</i>&nbsp;                            } else if(playSpaceUpdated[i][j]==2){</b>
+<b class="nc"><i>146</i>&nbsp;                                piece = BoardScene.makePiece(PieceType.WHITE, j, i);</b>
+<i>147</i>&nbsp;                            }else{
+<b class="nc"><i>148</i>&nbsp;                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i);</b>
+<i>149</i>&nbsp;                            }
+<b class="nc"><i>150</i>&nbsp;                            BoardScene.getTile(j,i).setPiece(piece);</b>
+<b class="nc"><i>151</i>&nbsp;                            BoardScene.pieceGroup.getChildren().add(piece);</b>
+<b class="nc"><i>152</i>&nbsp;                            setConstructorMatrix(playSpaceUpdated);</b>
+<b class="nc"><i>153</i>&nbsp;                        } else {</b>
+<i>154</i>&nbsp;                            Piece piece;
+<b class="nc"><i>155</i>&nbsp;                            if (playSpaceUpdated[i][j] == 1) {</b>
+<b class="nc"><i>156</i>&nbsp;                                piece = BoardScene.makePiece(PieceType.RED, j, i);</b>
+<b class="nc"><i>157</i>&nbsp;                            } else if(playSpaceUpdated[i][j]==2){</b>
+<b class="nc"><i>158</i>&nbsp;                                piece = BoardScene.makePiece(PieceType.WHITE, j, i);</b>
+<i>159</i>&nbsp;                            }else {
+<b class="nc"><i>160</i>&nbsp;                                piece = BoardScene.makePiece(PieceType.LIGHT_BLU, j, i);</b>
+<i>161</i>&nbsp;                            }
+<b class="nc"><i>162</i>&nbsp;                            BoardScene.getTile(j,i).setPiece(piece);</b>
+<b class="nc"><i>163</i>&nbsp;                            BoardScene.pieceGroup.getChildren().add(piece);</b>
+<b class="nc"><i>164</i>&nbsp;                            setConstructorMatrix(playSpaceUpdated);</b>
+<i>165</i>&nbsp;                        }
+<i>166</i>&nbsp;                    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;                }
+<i>169</i>&nbsp;            }
+<i>170</i>&nbsp;        }else{
+<b class="nc"><i>171</i>&nbsp;        for(int i=0;i&lt;=4;i++){</b>
+<b class="nc"><i>172</i>&nbsp;            for(int j=0;j&lt;=4;j++){</b>
+<b class="nc"><i>173</i>&nbsp;                 if (constructorMatrix[i][j]!=0 &amp;&amp; playSpaceUpdated[i][j]==0){</b>
+<b class="nc"><i>174</i>&nbsp;                  for (int h=-1;h&lt;=1;h++){</b>
+<b class="nc"><i>175</i>&nbsp;                      for (int k=-1;k&lt;=1;k++){</b>
+<b class="nc"><i>176</i>&nbsp;                          if ((i+h)&gt;=0 &amp;&amp; (i+h)&lt;=4 &amp;&amp; (j+k)&gt;=0 &amp;&amp; (j+k)&lt;=4) {</b>
+<b class="nc"><i>177</i>&nbsp;                              if ((h==0 &amp;&amp; k!=0) || (h!=0 &amp;&amp; k==0) || (h!=0 &amp;&amp; k!=0) ){</b>
+<b class="nc"><i>178</i>&nbsp;                              if (playSpaceUpdated[i + h][j + k] == constructorMatrix[i][j] &amp;&amp; constructorMatrix[i + h][j + k] == 0) {</b>
+<b class="nc"><i>179</i>&nbsp;                                  Piece moved = BoardScene.getTile(j, i).getPiece();</b>
+<b class="nc"><i>180</i>&nbsp;                                  if (moved==null)</b>
+<b class="nc"><i>181</i>&nbsp;                                      System.out.println(&quot;Piece not found&quot;);</b>
+<b class="nc"><i>182</i>&nbsp;                                  BoardScene.animation(moved, k, h);</b>
+<b class="nc"><i>183</i>&nbsp;                                  BoardScene.getTile(j, i).setPiece(null);</b>
+<b class="nc"><i>184</i>&nbsp;                                  BoardScene.getTile(j + k, i + h).setPiece(moved);</b>
+<b class="nc"><i>185</i>&nbsp;                                  if (moved!=null){</b>
+<b class="nc"><i>186</i>&nbsp;                                  moved.setPosX((j + k)*BoardScene.TILE_SIZE);</b>
+<b class="nc"><i>187</i>&nbsp;                                  moved.setPosY((i + h)*BoardScene.TILE_SIZE);</b>
+<i>188</i>&nbsp;                              }}
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;                          }
+<i>191</i>&nbsp;                          }
+<i>192</i>&nbsp;                      }
+<i>193</i>&nbsp;                  }
+<i>194</i>&nbsp;                }
+<i>195</i>&nbsp;            }
+<i>196</i>&nbsp;        }
+<b class="nc"><i>197</i>&nbsp;            setConstructorMatrix(playSpaceUpdated);</b>
+<i>198</i>&nbsp;        }
+<b class="nc"><i>199</i>&nbsp;    }</b>
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;    /**
+<i>202</i>&nbsp;     * this method identify update from buildingMatrix to updatedBuildingMatrix and draw this difference
+<i>203</i>&nbsp;     * @param updatedBuildingMatrix is the new BuildingMatrix
+<i>204</i>&nbsp;     * @param dome is true if is a dome to build
+<i>205</i>&nbsp;     */
+<i>206</i>&nbsp;    public void updateBuildingGUI(int[][] updatedBuildingMatrix,boolean dome) {
+<b class="nc"><i>207</i>&nbsp;        for (int i=0;i&lt;=4;i++){</b>
+<b class="nc"><i>208</i>&nbsp;            for (int j=0;j&lt;=4;j++){</b>
+<b class="nc"><i>209</i>&nbsp;                if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] &amp;&amp; !dome){</b>
+<b class="nc"><i>210</i>&nbsp;                    BoardScene.getTile(j,i).drawNextLevel();</b>
+<b class="nc"><i>211</i>&nbsp;                }else if(buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] &amp;&amp; dome){</b>
+<b class="nc"><i>212</i>&nbsp;                    BoardScene.getTile(j,i).drawDome();</b>
+<i>213</i>&nbsp;                }
+<i>214</i>&nbsp;            }
+<i>215</i>&nbsp;        }
+<b class="nc"><i>216</i>&nbsp;        setBuildingMatrix(updatedBuildingMatrix);</b>
+<b class="nc"><i>217</i>&nbsp;    }</b>
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;    /**
+<i>220</i>&nbsp;     * method call from Apollo when used is special power. it is to swap two piece
+<i>221</i>&nbsp;     * @param playSpaceUpdated is the new constructorMatrix
+<i>222</i>&nbsp;     */
+<i>223</i>&nbsp;    public void swapConstructorGUI (int [][]playSpaceUpdated){
+<b class="nc"><i>224</i>&nbsp;        for (int i=0;i&lt;=4;i++){</b>
+<b class="nc"><i>225</i>&nbsp;            for (int j=0;j&lt;=4;j++){</b>
+<b class="nc"><i>226</i>&nbsp;                if (constructorMatrix[i][j]!=playSpaceUpdated[i][j]){</b>
+<b class="nc"><i>227</i>&nbsp;                    for (int h=-1;h&lt;=1;h++){</b>
+<b class="nc"><i>228</i>&nbsp;                        for (int k=-1;k&lt;=1;k++){</b>
+<b class="nc"><i>229</i>&nbsp;                            if ((i+h)&gt;=0 &amp;&amp; (i+h)&lt;=4 &amp;&amp; (j+k)&gt;=0 &amp;&amp; (j+k)&lt;=4 &amp;&amp; ((h==0 &amp;&amp; k!=0) || (h!=0 &amp;&amp; k==0) || (h!=0 &amp;&amp; k!=0))){</b>
+<b class="nc"><i>230</i>&nbsp;                                if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] &amp;&amp; constructorMatrix[i+h][j+k]==playSpaceUpdated[i][j]){</b>
+<b class="nc"><i>231</i>&nbsp;                                    Piece moved= BoardScene.getTile(j,i).getPiece();</b>
+<b class="nc"><i>232</i>&nbsp;                                    Piece swapped=BoardScene.getTile(j+k,i+h).getPiece();</b>
+<b class="nc"><i>233</i>&nbsp;                                    BoardScene.animation(moved,k,h);</b>
+<b class="nc"><i>234</i>&nbsp;                                    BoardScene.animation(swapped,-k,-h);</b>
+<b class="nc"><i>235</i>&nbsp;                                    BoardScene.getTile(j+k,i+h).setPiece(moved);</b>
+<b class="nc"><i>236</i>&nbsp;                                    BoardScene.getTile(j,i).setPiece(swapped);</b>
+<b class="nc"><i>237</i>&nbsp;                                    if (moved!=null){</b>
+<b class="nc"><i>238</i>&nbsp;                                        moved.setPosX((j+k)*BoardScene.TILE_SIZE);</b>
+<b class="nc"><i>239</i>&nbsp;                                        moved.setPosY((i+h)*BoardScene.TILE_SIZE);</b>
+<i>240</i>&nbsp;                                    }
+<b class="nc"><i>241</i>&nbsp;                                    if (swapped!=null){</b>
+<b class="nc"><i>242</i>&nbsp;                                        swapped.setPosX(j*BoardScene.TILE_SIZE);</b>
+<b class="nc"><i>243</i>&nbsp;                                        swapped.setPosY(i*BoardScene.TILE_SIZE);</b>
+<i>244</i>&nbsp;                                    }
+<b class="nc"><i>245</i>&nbsp;                                    setConstructorMatrix(playSpaceUpdated);</b>
+<b class="nc"><i>246</i>&nbsp;                                    return;</b>
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;
+<i>249</i>&nbsp;            }
+<i>250</i>&nbsp;        }
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;    }
+<i>253</i>&nbsp;                }
+<i>254</i>&nbsp;            }
+<i>255</i>&nbsp;        }
+<i>256</i>&nbsp;    }
+<b class="nc"><i>257</i>&nbsp;    }</b>
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    /**
+<i>260</i>&nbsp;     * method call from minotaur when used is special power
+<i>261</i>&nbsp;     * @param playSpaceUpdated is the new constructorMatrix
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;    public void pushConstructorGUI (int[][] playSpaceUpdated){
+<b class="nc"><i>264</i>&nbsp;        for (int i=0;i&lt;=4;i++){</b>
+<b class="nc"><i>265</i>&nbsp;            for (int j=0;j&lt;=4;j++){</b>
+<b class="nc"><i>266</i>&nbsp;                if(constructorMatrix[i][j]!=0 &amp;&amp; playSpaceUpdated[i][j]==0){</b>
+<b class="nc"><i>267</i>&nbsp;                    for (int h=-1;h&lt;=1;h++){</b>
+<b class="nc"><i>268</i>&nbsp;                        for (int k=-1;k&lt;=1;k++){</b>
+<b class="nc"><i>269</i>&nbsp;                            if ((i+h)&gt;=0 &amp;&amp; (i+h)&lt;=4 &amp;&amp; (j+k)&gt;=0 &amp;&amp; (j+k)&lt;=4 &amp;&amp; ((h==0 &amp;&amp; k!=0) || (h!=0 &amp;&amp; k==0) || (h!=0 &amp;&amp; k!=0))){</b>
+<b class="nc"><i>270</i>&nbsp;                                if(playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] &amp;&amp; playSpaceUpdated[i+h][j+k]!=constructorMatrix[i+h][j+k]){</b>
+<b class="nc"><i>271</i>&nbsp;                                   Piece minotaur=BoardScene.getTile(j,i).getPiece();</b>
+<b class="nc"><i>272</i>&nbsp;                                   Piece pushed=BoardScene.getTile(j+k,i+h).getPiece();</b>
+<b class="nc"><i>273</i>&nbsp;                                   if (minotaur==null){</b>
+<b class="nc"><i>274</i>&nbsp;                                       System.out.println((i+h*2)+&quot; error minotaur &quot;+(j+k*2));</b>
+<i>275</i>&nbsp;                                   }
+<b class="nc"><i>276</i>&nbsp;                                    if (pushed==null){</b>
+<b class="nc"><i>277</i>&nbsp;                                        System.out.println((i+h)+&quot; error pushed &quot;+(j+k));</b>
+<i>278</i>&nbsp;                                    }
+<b class="nc"><i>279</i>&nbsp;                                   BoardScene.animation(minotaur,k,h);</b>
+<b class="nc"><i>280</i>&nbsp;                                   BoardScene.animation(pushed,k,h);</b>
+<b class="nc"><i>281</i>&nbsp;                                   BoardScene.getTile(j+k*2,i+h*2).setPiece(pushed);</b>
+<b class="nc"><i>282</i>&nbsp;                                   BoardScene.getTile(j+k,i+h).setPiece(minotaur);</b>
+<b class="nc"><i>283</i>&nbsp;                                   BoardScene.getTile(j,i).setPiece(null);</b>
+<b class="nc"><i>284</i>&nbsp;                                    if (pushed!=null){</b>
+<b class="nc"><i>285</i>&nbsp;                                        pushed.setPosX((j+k*2)*BoardScene.TILE_SIZE);</b>
+<b class="nc"><i>286</i>&nbsp;                                        pushed.setPosY((i+h*2)*BoardScene.TILE_SIZE);</b>
+<i>287</i>&nbsp;                                    }
+<b class="nc"><i>288</i>&nbsp;                                    if (minotaur!=null){</b>
+<b class="nc"><i>289</i>&nbsp;                                        minotaur.setPosX((j+k)*BoardScene.TILE_SIZE);</b>
+<b class="nc"><i>290</i>&nbsp;                                        minotaur.setPosY((i+h)*BoardScene.TILE_SIZE);</b>
+<i>291</i>&nbsp;                                    }
+<b class="nc"><i>292</i>&nbsp;                                    setConstructorMatrix(playSpaceUpdated);</b>
+<i>293</i>&nbsp;                                }
+<i>294</i>&nbsp;                            }
+<i>295</i>&nbsp;                        }
+<i>296</i>&nbsp;                    }
+<i>297</i>&nbsp;
+<i>298</i>&nbsp;                }
+<i>299</i>&nbsp;
+<i>300</i>&nbsp;            }
+<i>301</i>&nbsp;        }
+<b class="nc"><i>302</i>&nbsp;    }</b>
+<i>303</i>&nbsp;
+<i>304</i>&nbsp;
+<i>305</i>&nbsp;    /**
+<i>306</i>&nbsp;     * this method removes piece of the player who lost
+<i>307</i>&nbsp;     * @param playSpaceUpdated is the new constructorMatrix
+<i>308</i>&nbsp;     */
+<i>309</i>&nbsp;    public void removeConstructorGUI (int[][] playSpaceUpdated){
+<i>310</i>&nbsp;
+<b class="nc"><i>311</i>&nbsp;               for(int i=0;i&lt;=4;i++){</b>
+<b class="nc"><i>312</i>&nbsp;            for (int j=0;j&lt;=4;j++){</b>
+<b class="nc"><i>313</i>&nbsp;                if (playSpaceUpdated[i][j]==0 &amp;&amp; constructorMatrix[i][j]!=0){</b>
+<b class="nc"><i>314</i>&nbsp;                    BoardScene.pieceGroup.getChildren().remove(BoardScene.getTile(j,i).getPiece());</b>
+<b class="nc"><i>315</i>&nbsp;                    BoardScene.getTile(j,i).setPiece(null);</b>
+<i>316</i>&nbsp;                }
+<i>317</i>&nbsp;            }
+<i>318</i>&nbsp;        }
+<b class="nc"><i>319</i>&nbsp;        setConstructorMatrix(playSpaceUpdated);</b>
+<b class="nc"><i>320</i>&nbsp;    }</b>
+<i>321</i>&nbsp;
+<i>322</i>&nbsp;    /**
+<i>323</i>&nbsp;     * this method count the number of piece remains on the board
+<i>324</i>&nbsp;     * @param playSpaceUpdated PlaySpace to count the number of piece
+<i>325</i>&nbsp;     * @return number of player remains
+<i>326</i>&nbsp;     */
+<i>327</i>&nbsp;    public int CountPlayerRemains(int[][] playSpaceUpdated){
+<b class="nc"><i>328</i>&nbsp;        int count=0;</b>
+<b class="nc"><i>329</i>&nbsp;        for(int i=0;i&lt;=4;i++){</b>
+<b class="nc"><i>330</i>&nbsp;            for (int j=0;j&lt;=4;j++){</b>
+<b class="nc"><i>331</i>&nbsp;                if (playSpaceUpdated[i][j]!=0)</b>
+<b class="nc"><i>332</i>&nbsp;                    count++;</b>
+<i>333</i>&nbsp;            }
+<i>334</i>&nbsp;        }
+<b class="nc"><i>335</i>&nbsp;        return count;}</b>
+<i>336</i>&nbsp;
+<i>337</i>&nbsp;    /**
+<i>338</i>&nbsp;     * this method highlights tiles contains in the List tiles
+<i>339</i>&nbsp;     * @param tiles tiles to highlight
+<i>340</i>&nbsp;     */
+<i>341</i>&nbsp;    public void tileToShowGUI (List&lt;Position&gt; tiles){
+<b class="nc"><i>342</i>&nbsp;        for(Position position:tiles)</b>
+<b class="nc"><i>343</i>&nbsp;            BoardScene.getTile(position.getCol(),position.getRow()).highlightsTile();</b>
+<b class="nc"><i>344</i>&nbsp;        setTileToShow(tiles);</b>
+<b class="nc"><i>345</i>&nbsp;    }</b>
+<i>346</i>&nbsp;
+<i>347</i>&nbsp;    public void disHighlightsTile(){
+<b class="nc"><i>348</i>&nbsp;        if (tileToShow!=null)</b>
+<b class="nc"><i>349</i>&nbsp;        for (Position position: tileToShow) {</b>
+<b class="nc"><i>350</i>&nbsp;            TileGui highlight = BoardScene.getTile(position.getCol(), position.getRow());</b>
+<b class="nc"><i>351</i>&nbsp;            if (highlight.isLight())</b>
+<b class="nc"><i>352</i>&nbsp;                highlight.getTile().setFill(new ImagePattern(BoardScene.lightTileHashMap.get(highlight.getLevel())));</b>
+<i>353</i>&nbsp;            else
+<b class="nc"><i>354</i>&nbsp;                highlight.getTile().setFill(new ImagePattern(BoardScene.darkTileHashMap.get(highlight.getLevel())));</b>
+<b class="nc"><i>355</i>&nbsp;        }</b>
+<b class="nc"><i>356</i>&nbsp;    }</b>
+<i>357</i>&nbsp;
+<i>358</i>&nbsp;    //-------------------------- getter and setter methods for variables ---------------------------
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;    public void setSpecial(boolean special){
+<b class="nc"><i>361</i>&nbsp;        BoardScene.setEndPhase(special);</b>
+<b class="nc"><i>362</i>&nbsp;    }</b>
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;    public void setCheckDome(boolean checkDome){
+<b class="nc"><i>365</i>&nbsp;        BoardScene.setCheckDome(checkDome);</b>
+<b class="nc"><i>366</i>&nbsp;    }</b>
+<i>367</i>&nbsp;
+<i>368</i>&nbsp;    public int[][] getConstructorMatrix() {
+<b class="fc"><i>369</i>&nbsp;        return constructorMatrix;</b>
+<i>370</i>&nbsp;    }
+<i>371</i>&nbsp;
+<i>372</i>&nbsp;    public void setBuildingMatrix(int[][] buildingMatrix) {
+<b class="nc"><i>373</i>&nbsp;        this.buildingMatrix = buildingMatrix;</b>
+<b class="nc"><i>374</i>&nbsp;    }</b>
+<i>375</i>&nbsp;
+<i>376</i>&nbsp;    public void setConstructorMatrix(int[][] constructorMatrix) {
+<b class="fc"><i>377</i>&nbsp;        this.constructorMatrix = constructorMatrix;</b>
+<b class="fc"><i>378</i>&nbsp;    }</b>
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;    public List&lt;Position&gt; getTileToShow() {
+<b class="nc"><i>381</i>&nbsp;        return tileToShow;</b>
+<i>382</i>&nbsp;    }
+<i>383</i>&nbsp;
+<i>384</i>&nbsp;    public void setTileToShow(List&lt;Position&gt; tileToShow) {
+<b class="fc"><i>385</i>&nbsp;        this.tileToShow = tileToShow;</b>
+<b class="fc"><i>386</i>&nbsp;    }</b>
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;    public List&lt;Position&gt; getTileToCheck() {
+<b class="nc"><i>389</i>&nbsp;        return tileToCheck;</b>
+<i>390</i>&nbsp;    }
+<i>391</i>&nbsp;
+<i>392</i>&nbsp;    public void setTileToCheck(List&lt;Position&gt; tileToCheck) {
+<b class="nc"><i>393</i>&nbsp;        this.tileToCheck = tileToCheck;</b>
+<b class="nc"><i>394</i>&nbsp;    }</b>
+<i>395</i>&nbsp;
+<i>396</i>&nbsp;    public void reset(){
+<b class="nc"><i>397</i>&nbsp;        this.tileToShow = null;</b>
+<b class="nc"><i>398</i>&nbsp;        this.tileToCheck = null;</b>
+<b class="nc"><i>399</i>&nbsp;    }</b>
+<i>400</i>&nbsp;
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;
+<i>403</i>&nbsp;
+<i>404</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

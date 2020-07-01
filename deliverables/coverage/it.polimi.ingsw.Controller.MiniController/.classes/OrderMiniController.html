@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OrderMiniController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Controller.MiniController</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OrderMiniController (it.polimi.ingsw.Controller.MiniController)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OrderMiniController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/ 11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Controller.MiniController;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Client.PlaySpace;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.io.Serializable;
+<i>6</i>&nbsp;import java.util.List;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * This MiniController selects the first player to start by parsing the input
+<i>10</i>&nbsp; */
+<i>11</i>&nbsp;public class OrderMiniController implements MiniController, Serializable {
+<i>12</i>&nbsp;    private static final long serialVersionUID = 1L;
+<i>13</i>&nbsp;    List&lt;String&gt; pList;
+<b class="fc"><i>14</i>&nbsp;    public OrderMiniController(List&lt;String&gt; pList){</b>
+<b class="fc"><i>15</i>&nbsp;        this.pList = pList;</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * This method parses the input
+<i>20</i>&nbsp;     * @param input should be equal to a idPlayer in Plist
+<i>21</i>&nbsp;     * @param playSpace The playspace where to search for the position
+<i>22</i>&nbsp;     * @param stringBuilder a string placeholder to return the correct message to the player
+<i>23</i>&nbsp;     * @return true if the input is correct, false elsewhere.
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    @Override
+<i>26</i>&nbsp;    public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
+<b class="fc"><i>27</i>&nbsp;        for(String s : pList){</b>
+<b class="fc"><i>28</i>&nbsp;            if(s.equals(input)){</b>
+<b class="fc"><i>29</i>&nbsp;                return true;</b>
+<i>30</i>&nbsp;            }
+<b class="fc"><i>31</i>&nbsp;        }</b>
+<b class="fc"><i>32</i>&nbsp;        return false;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * This method return the input
+<i>37</i>&nbsp;     * @param input a string passed from user
+<i>38</i>&nbsp;     * @return the input
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    @Override
+<i>41</i>&nbsp;    public String getMessage(String input) {
+<b class="fc"><i>42</i>&nbsp;        return input;</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * This method just call getMessage above
+<i>47</i>&nbsp;     * @param message a string passed from user
+<i>48</i>&nbsp;     * @return same as getMessage(String)
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    @Override
+<i>51</i>&nbsp;    public String getMessageGui(String message) {
+<b class="fc"><i>52</i>&nbsp;        return getMessage(message);</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    /**
+<i>56</i>&nbsp;     * This method just calls checkPos above
+<i>57</i>&nbsp;     * @param input a string passed as input
+<i>58</i>&nbsp;     * @param playSpace The playspace where to search for the position
+<i>59</i>&nbsp;     * @param stringBuilder a string placeholder to return the correct message to the player
+<i>60</i>&nbsp;     * @return the same as checkPos(..)
+<i>61</i>&nbsp;     */
+<i>62</i>&nbsp;    @Override
+<i>63</i>&nbsp;    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
+<b class="fc"><i>64</i>&nbsp;        return checkPos(input,playSpace,stringBuilder);</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

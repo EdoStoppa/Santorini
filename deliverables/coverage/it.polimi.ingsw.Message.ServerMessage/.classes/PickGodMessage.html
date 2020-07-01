@@ -1,0 +1,135 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PickGodMessage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Message.ServerMessage</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PickGodMessage (it.polimi.ingsw.Message.ServerMessage)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PickGodMessage</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Message.ServerMessage;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
+<i>5</i>&nbsp;import it.polimi.ingsw.Controller.MiniController.MiniController;
+<i>6</i>&nbsp;import it.polimi.ingsw.Controller.MiniController.PickGodMiniController;
+<i>7</i>&nbsp;import it.polimi.ingsw.Model.God;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.List;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * This message is generated when a player must choose all the god cards that will be available during the match
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;public class PickGodMessage extends ServerMessage {
+<b class="nc"><i>16</i>&nbsp;    List&lt;God&gt; AllGod = God.getAllGod();</b>
+<i>17</i>&nbsp;    int numPlayer;
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;    public PickGodMessage(int numPlayer) {</b>
+<b class="nc"><i>20</i>&nbsp;        this.numPlayer = numPlayer;</b>
+<b class="nc"><i>21</i>&nbsp;    }</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    public God GetGod (int i){
+<b class="nc"><i>24</i>&nbsp;        return AllGod.get(i);</b>
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    public int getNumPlayer()   {
+<b class="nc"><i>28</i>&nbsp;        return this.numPlayer;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    @Override
+<i>32</i>&nbsp;    public MiniController getMiniController() {
+<b class="nc"><i>33</i>&nbsp;        return new PickGodMiniController(AllGod.size(), numPlayer);</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @Override
+<i>37</i>&nbsp;    public String getMessage() {
+<b class="nc"><i>38</i>&nbsp;        String message = &quot;Choose &quot; + numPlayer + &quot; gods that will be in the match\n\n&quot;;</b>
+<b class="nc"><i>39</i>&nbsp;        int i = 0;</b>
+<b class="nc"><i>40</i>&nbsp;        for(God god : AllGod)   {</b>
+<b class="nc"><i>41</i>&nbsp;            message = message + i + &quot;) &quot; + god.getGodName() + &quot; - &quot; + god.getGodSubtitle() +&quot;\n&quot; + god.getGodPower() + &quot;\n&quot;;</b>
+<b class="nc"><i>42</i>&nbsp;            i++;</b>
+<b class="nc"><i>43</i>&nbsp;        }</b>
+<b class="nc"><i>44</i>&nbsp;        return message + &quot;\nType the corresponding number to choose them &quot; + (numPlayer==2? &quot;(ex. 2,4)&quot; : &quot;(ex. 1,3,6)&quot;);</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    @Override
+<i>48</i>&nbsp;    public void buildScene() {
+<b class="nc"><i>49</i>&nbsp;        SceneBuilder.PickGod(this);</b>
+<b class="nc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

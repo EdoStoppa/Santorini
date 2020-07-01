@@ -1,0 +1,88 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MiniController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Controller.MiniController</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MiniController (it.polimi.ingsw.Controller.MiniController)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">MiniController</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Controller.MiniController;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Client.PlaySpace;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * This interface creates every class that allows to parse the input of the user directly on the client,
+<i>7</i>&nbsp; * without using the server
+<i>8</i>&nbsp; */
+<i>9</i>&nbsp;public interface MiniController {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;    /**
+<i>12</i>&nbsp;     * This method parses the input
+<i>13</i>&nbsp;     * @param input a string passed from user
+<i>14</i>&nbsp;     * @param playSpace The playspace where to search for the position
+<i>15</i>&nbsp;     * @param stringBuilder a string placeholder to return the correct message to the player
+<i>16</i>&nbsp;     * @return true or false whether certain conditions are satisfied or not
+<i>17</i>&nbsp;     */
+<i>18</i>&nbsp;    public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * @param input string passed from user
+<i>22</i>&nbsp;     * @return the input
+<i>23</i>&nbsp;     */
+<i>24</i>&nbsp;    public String getMessage(String input);
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Same thing as getMessage above, for the GUI
+<i>28</i>&nbsp;     * @param message string passed from user
+<i>29</i>&nbsp;     * @return the message passed as parameter
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public String getMessageGui(String message);
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    /**
+<i>34</i>&nbsp;     * Same thing for checkPos above, for GUI
+<i>35</i>&nbsp;     * @param input a string passed from user
+<i>36</i>&nbsp;     * @param playSpace The playspace where to search for the position
+<i>37</i>&nbsp;     * @param stringBuilder a string placeholder to return the correct message to the player
+<i>38</i>&nbsp;     * @return true or false whether certain conditions are satisfied or not
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder);
+<i>41</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

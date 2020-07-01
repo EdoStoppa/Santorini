@@ -1,0 +1,115 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Color</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Color (it.polimi.ingsw.Client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Color</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * this enumeration contais all escape codes  to change color of Cli characters
+<i>5</i>&nbsp; */
+<b class="nc"><i>6</i>&nbsp;public enum Color {</b>
+<b class="nc"><i>7</i>&nbsp;    ANSI_RED(&quot;\u001B[31m&quot;), //player1</b>
+<b class="nc"><i>8</i>&nbsp;    CYAN_BACKGROUND_BRIGHT(&quot;\033[0;106m&quot;), // tiles to show</b>
+<b class="nc"><i>9</i>&nbsp;    ANSI_YELLOW(&quot;\u001B[33m&quot;),</b>
+<b class="nc"><i>10</i>&nbsp;    ANSI_PURPLE(&quot;\033[095m&quot;),</b>
+<b class="nc"><i>11</i>&nbsp;    ANSI_BLACK(&quot;\u001B[30m&quot;),</b>
+<b class="nc"><i>12</i>&nbsp;    ANSI_BLUE(&quot;\u001B[34m&quot;);</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    static final String RESET=&quot;\u001B[0m&quot;;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private String escape;
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;    Color(String escape){</b>
+<b class="nc"><i>19</i>&nbsp;        this.escape=escape;</b>
+<b class="nc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public String getEscape(){
+<b class="nc"><i>23</i>&nbsp;        return escape;</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @Override
+<i>27</i>&nbsp;    public String toString(){
+<b class="nc"><i>28</i>&nbsp;        return escape;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

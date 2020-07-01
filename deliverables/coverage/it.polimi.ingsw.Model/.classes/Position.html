@@ -1,0 +1,128 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Position</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Position (it.polimi.ingsw.Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Position</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.Serializable;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**This is an helper class used to represent the &lt;em&gt;Position&lt;/em&gt; of
+<i>6</i>&nbsp; * &lt;em&gt;Tiles&lt;/em&gt; or any &lt;em&gt;Constructor&lt;/em&gt;
+<i>7</i>&nbsp; */
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public class Position implements Cloneable, Serializable {
+<i>10</i>&nbsp;    private static final long serialVersionUID = 1L;
+<i>11</i>&nbsp;    private final int row;
+<i>12</i>&nbsp;    private final int col;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /**Creates a &lt;em&gt;Position&lt;/em&gt; given the row and column
+<i>15</i>&nbsp;     *
+<i>16</i>&nbsp;     * @param row Actual row on the &lt;em&gt;Board&lt;/em&gt;
+<i>17</i>&nbsp;     * @param col Actual column on the &lt;em&gt;Board&lt;/em&gt;
+<i>18</i>&nbsp;     */
+<b class="fc"><i>19</i>&nbsp;    public Position(int row, int col){</b>
+<b class="fc"><i>20</i>&nbsp;        this.row = row;</b>
+<b class="fc"><i>21</i>&nbsp;        this.col = col;</b>
+<b class="fc"><i>22</i>&nbsp;    }</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public int getRow() {
+<b class="fc"><i>26</i>&nbsp;        return row;</b>
+<i>27</i>&nbsp;    }
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    public int getCol() {
+<b class="fc"><i>30</i>&nbsp;        return col;</b>
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public Position clone(){
+<b class="fc"><i>35</i>&nbsp;        return new Position(this.row, this.col);</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public String toString(){
+<b class="fc"><i>39</i>&nbsp;        return (row + &quot;,&quot; + col);</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public boolean equals(Position p){
+<b class="fc"><i>43</i>&nbsp;        return ((p.getRow() == row) &amp;&amp; (p.getCol() == col));</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

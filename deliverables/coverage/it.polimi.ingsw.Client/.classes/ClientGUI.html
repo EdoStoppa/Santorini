@@ -1,0 +1,463 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientGUI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientGUI (it.polimi.ingsw.Client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientGUI</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 201)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.AlertBox;
+<i>4</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
+<i>5</i>&nbsp;import it.polimi.ingsw.Client.GraphicElements.SceneBuilder;
+<i>6</i>&nbsp;import it.polimi.ingsw.Controller.MiniController.BaseMiniController;
+<i>7</i>&nbsp;import it.polimi.ingsw.Controller.MiniController.MiniController;
+<i>8</i>&nbsp;import it.polimi.ingsw.Message.GameMessage;
+<i>9</i>&nbsp;import it.polimi.ingsw.Message.HelpMessage;
+<i>10</i>&nbsp;import it.polimi.ingsw.Message.MoveMessages.RemovedPlayerMessage;
+<i>11</i>&nbsp;import it.polimi.ingsw.Message.ServerMessage.GodRecapMessage;
+<i>12</i>&nbsp;import it.polimi.ingsw.Message.ServerMessage.PlaceFirstConstructorMessage;
+<i>13</i>&nbsp;import it.polimi.ingsw.Message.ServerMessage.ServerMessage;
+<i>14</i>&nbsp;import it.polimi.ingsw.Message.TileToShowMessages.TileToShowMessage;
+<i>15</i>&nbsp;import it.polimi.ingsw.Message.WinMessage;
+<i>16</i>&nbsp;import it.polimi.ingsw.Model.God;
+<i>17</i>&nbsp;import it.polimi.ingsw.Model.PossiblePhases;
+<i>18</i>&nbsp;import javafx.application.Platform;
+<i>19</i>&nbsp;import javafx.scene.Scene;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;import java.io.IOException;
+<i>23</i>&nbsp;import java.io.ObjectInputStream;
+<i>24</i>&nbsp;import java.io.PrintWriter;
+<i>25</i>&nbsp;import java.net.Socket;
+<i>26</i>&nbsp;import java.time.LocalTime;
+<i>27</i>&nbsp;import java.util.Map;
+<i>28</i>&nbsp;import java.util.NoSuchElementException;
+<i>29</i>&nbsp;import java.util.Objects;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;/**
+<i>32</i>&nbsp; * this class implements client for GUI&#39;s version of the game using JavaFX 14
+<i>33</i>&nbsp; */
+<i>34</i>&nbsp;public class ClientGUI extends Client implements EventHandler {
+<b class="nc"><i>35</i>&nbsp;    private String idPlayer = null;</b>
+<i>36</i>&nbsp;    private MiniController miniController;
+<i>37</i>&nbsp;    private PrintWriter socketOut;
+<i>38</i>&nbsp;    private static Map&lt;String, God&gt; playerGodMap;
+<i>39</i>&nbsp;    private LocalTime lastPingTime;
+<b class="nc"><i>40</i>&nbsp;    private final Object ipLock = new Object();</b>
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public ClientGUI(String ip, int port) {
+<b class="nc"><i>43</i>&nbsp;        super(ip, port);</b>
+<b class="nc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    @Override
+<i>48</i>&nbsp;    public void run() throws IOException {
+<b class="nc"><i>49</i>&nbsp;        Socket socket = new Socket(ip, port);</b>
+<b class="nc"><i>50</i>&nbsp;        ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());</b>
+<b class="nc"><i>51</i>&nbsp;        socketOut = new PrintWriter(socket.getOutputStream());</b>
+<b class="nc"><i>52</i>&nbsp;        SceneBuilder.initImages();</b>
+<i>53</i>&nbsp;        try {
+<b class="nc"><i>54</i>&nbsp;            asyncReadFromSocket(socketIn);</b>
+<b class="nc"><i>55</i>&nbsp;            asyncManagePing();</b>
+<b class="nc"><i>56</i>&nbsp;            asyncMangePong();</b>
+<b class="nc"><i>57</i>&nbsp;        } catch (NoSuchElementException e) {</b>
+<b class="nc"><i>58</i>&nbsp;            System.out.println(&quot;Connection closed from the client side&quot;);</b>
+<b class="nc"><i>59</i>&nbsp;        }</b>
+<b class="nc"><i>60</i>&nbsp;    }</b>
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    //------------------------------- Methods used to manage read/write on socket -------------------------------
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * This method will be used to process the user input, using as a support
+<i>67</i>&nbsp;     * the current miniController (if present). In general is able to respond to a wrong (o when is not the
+<i>68</i>&nbsp;     * turn of the player) input without checking the server.
+<i>69</i>&nbsp;     * @param message string to check and write to the socket
+<i>70</i>&nbsp;     */
+<i>71</i>&nbsp;    public void writeToSocketGUI(String message) {
+<b class="nc"><i>72</i>&nbsp;        StringBuilder sBuilder = new StringBuilder();</b>
+<b class="nc"><i>73</i>&nbsp;        if (this.miniController != null) {</b>
+<b class="nc"><i>74</i>&nbsp;            if (this.miniController.checkPosGui(message, playSpace, sBuilder)) {</b>
+<b class="nc"><i>75</i>&nbsp;                String out = this.miniController.getMessageGui(message);</b>
+<b class="nc"><i>76</i>&nbsp;                BoardScene.setEndPhaseButton(false);</b>
+<b class="nc"><i>77</i>&nbsp;                miniController = null;</b>
+<b class="nc"><i>78</i>&nbsp;                playSpace.disHighlightsTile();</b>
+<b class="nc"><i>79</i>&nbsp;                playSpace.reset();</b>
+<b class="nc"><i>80</i>&nbsp;                System.out.println(&quot;Message sent: &quot; + out);</b>
+<b class="nc"><i>81</i>&nbsp;                synchronized (ipLock){</b>
+<b class="nc"><i>82</i>&nbsp;                    socketOut.println(out);</b>
+<b class="nc"><i>83</i>&nbsp;                    socketOut.flush();</b>
+<b class="nc"><i>84</i>&nbsp;                }</b>
+<b class="nc"><i>85</i>&nbsp;            } else {</b>
+<b class="nc"><i>86</i>&nbsp;                System.out.println(sBuilder);</b>
+<i>87</i>&nbsp;            }
+<i>88</i>&nbsp;        } else {
+<b class="nc"><i>89</i>&nbsp;            System.out.println(&quot;Now you can&#39;t make a move. Please wait&quot;);</b>
+<i>90</i>&nbsp;        }
+<i>91</i>&nbsp;
+<b class="nc"><i>92</i>&nbsp;    }</b>
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    @Override
+<i>95</i>&nbsp;    public Thread asyncReadFromSocket(ObjectInputStream socketIn) {
+<b class="nc"><i>96</i>&nbsp;        Thread t= new Thread(() -&gt; {</b>
+<i>97</i>&nbsp;            try {
+<b class="nc"><i>98</i>&nbsp;                while(isActive()){</b>
+<b class="nc"><i>99</i>&nbsp;                    Object inputObject = socketIn.readObject();</b>
+<i>100</i>&nbsp;
+<b class="nc"><i>101</i>&nbsp;                    if(inputObject.equals(true)){</b>
+<b class="nc"><i>102</i>&nbsp;                        synchronized (ipLock){</b>
+<b class="nc"><i>103</i>&nbsp;                            updatePing();</b>
+<b class="nc"><i>104</i>&nbsp;                        }</b>
+<b class="nc"><i>105</i>&nbsp;                    } else synchronized(this){</b>
+<b class="nc"><i>106</i>&nbsp;                        System.out.println(&quot;Message received: &quot; + inputObject.getClass().getSimpleName() +</b>
+<b class="nc"><i>107</i>&nbsp;                                (inputObject instanceof GameMessage? &quot;, Current Player: &quot; + ((GameMessage)inputObject).getIdPlayer() : &quot;&quot;));</b>
+<b class="nc"><i>108</i>&nbsp;                        if(inputObject instanceof String) {</b>
+<b class="nc"><i>109</i>&nbsp;                            manageString((String) inputObject);</b>
+<b class="nc"><i>110</i>&nbsp;                        }else if (inputObject instanceof ServerMessage){</b>
+<b class="nc"><i>111</i>&nbsp;                            manageServerMessage((ServerMessage)inputObject);</b>
+<b class="nc"><i>112</i>&nbsp;                        }else if (inputObject instanceof GameMessage){</b>
+<b class="nc"><i>113</i>&nbsp;                            manageGameMessage((GameMessage)inputObject);</b>
+<i>114</i>&nbsp;                        }
+<i>115</i>&nbsp;
+<b class="nc"><i>116</i>&nbsp;                    }</b>
+<b class="nc"><i>117</i>&nbsp;                }</b>
+<b class="nc"><i>118</i>&nbsp;            }catch (Exception e){</b>
+<b class="nc"><i>119</i>&nbsp;                if(isActive()){</b>
+<b class="nc"><i>120</i>&nbsp;                    System.out.println(&quot;Some problem occurred!\nIf you want to play again please restart the application&quot;);</b>
+<b class="nc"><i>121</i>&nbsp;                    Platform.runLater(()-&gt; SceneBuilder.loseScene(&quot;Some problem occurred!\nIf you want to play again please restart the application&quot;));</b>
+<i>122</i>&nbsp;                }
+<b class="nc"><i>123</i>&nbsp;                setActive(false);</b>
+<b class="nc"><i>124</i>&nbsp;            }</b>
+<i>125</i>&nbsp;
+<b class="nc"><i>126</i>&nbsp;        });</b>
+<b class="nc"><i>127</i>&nbsp;        t.start();</b>
+<b class="nc"><i>128</i>&nbsp;        return t;</b>
+<i>129</i>&nbsp;    }
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    //------------------------------- Methods used to check the connection between client and server -------------------------------
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * This method creates a thread used to check if the connection is still alive between client and server.
+<i>135</i>&nbsp;     * Every 7 seconds the thread wakes up and check if while it was sleeping another ping was received.
+<i>136</i>&nbsp;     * If no ping was received it means that the connection was lost, and proceed to end the game.
+<i>137</i>&nbsp;     *
+<i>138</i>&nbsp;     * @return The actual thread
+<i>139</i>&nbsp;     */
+<i>140</i>&nbsp;    public Thread asyncManagePing(){
+<b class="nc"><i>141</i>&nbsp;        Thread t = new Thread(() -&gt;{</b>
+<b class="nc"><i>142</i>&nbsp;            LocalTime lastThreadTime = LocalTime.now();</b>
+<b class="nc"><i>143</i>&nbsp;            while(isActive()){</b>
+<i>144</i>&nbsp;                try{
+<b class="nc"><i>145</i>&nbsp;                    Thread.sleep(7000);</b>
+<b class="nc"><i>146</i>&nbsp;                } catch(InterruptedException e){</b>
+<b class="nc"><i>147</i>&nbsp;                    setActive(false);</b>
+<b class="nc"><i>148</i>&nbsp;                    Platform.runLater(()-&gt; SceneBuilder.loseScene(&quot;Something went horribly wrong, please restart the game&quot;));</b>
+<b class="nc"><i>149</i>&nbsp;                    System.out.println(&quot;\n\nSomething went horribly wrong, please restart the game&quot;);</b>
+<b class="nc"><i>150</i>&nbsp;                }</b>
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;                synchronized(ipLock){</b>
+<b class="nc"><i>153</i>&nbsp;                    if(lastThreadTime.equals(lastPingTime)){</b>
+<b class="nc"><i>154</i>&nbsp;                        if(isActive()){</b>
+<b class="nc"><i>155</i>&nbsp;                            System.out.println(&quot;The Server connection was lost, please restart the game&quot;);</b>
+<b class="nc"><i>156</i>&nbsp;                            Platform.runLater(()-&gt; SceneBuilder.loseScene(&quot;The Server connection was lost, please restart the game&quot;));</b>
+<i>157</i>&nbsp;                        }
+<b class="nc"><i>158</i>&nbsp;                        setActive(false);</b>
+<i>159</i>&nbsp;                    } else {
+<b class="nc"><i>160</i>&nbsp;                        lastThreadTime = lastPingTime;</b>
+<i>161</i>&nbsp;                    }
+<b class="nc"><i>162</i>&nbsp;                }</b>
+<i>163</i>&nbsp;
+<i>164</i>&nbsp;            }
+<b class="nc"><i>165</i>&nbsp;        });</b>
+<b class="nc"><i>166</i>&nbsp;        t.start();</b>
+<b class="nc"><i>167</i>&nbsp;        return t;</b>
+<i>168</i>&nbsp;    }
+<i>169</i>&nbsp;
+<i>170</i>&nbsp;    public void asyncMangePong(){
+<b class="nc"><i>171</i>&nbsp;        new Thread(() -&gt;{</b>
+<b class="nc"><i>172</i>&nbsp;            while(isActive()){</b>
+<b class="nc"><i>173</i>&nbsp;                pong();</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;                try{
+<b class="nc"><i>176</i>&nbsp;                    Thread.sleep(5000);</b>
+<b class="nc"><i>177</i>&nbsp;                } catch(InterruptedException e){</b>
+<b class="nc"><i>178</i>&nbsp;                    setActive(false);</b>
+<b class="nc"><i>179</i>&nbsp;                    System.out.println(&quot;Game Interrupted&quot;);</b>
+<b class="nc"><i>180</i>&nbsp;                }</b>
+<i>181</i>&nbsp;            }
+<b class="nc"><i>182</i>&nbsp;        }).start();</b>
+<b class="nc"><i>183</i>&nbsp;    }</b>
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;    public void pong(){
+<b class="nc"><i>186</i>&nbsp;        synchronized (ipLock){</b>
+<b class="nc"><i>187</i>&nbsp;            socketOut.println(HelpMessage.pong);</b>
+<b class="nc"><i>188</i>&nbsp;            socketOut.flush();</b>
+<b class="nc"><i>189</i>&nbsp;        }</b>
+<b class="nc"><i>190</i>&nbsp;    }</b>
+<i>191</i>&nbsp;
+<i>192</i>&nbsp;    private synchronized void updatePing(){
+<b class="nc"><i>193</i>&nbsp;        lastPingTime = LocalTime.now();</b>
+<b class="nc"><i>194</i>&nbsp;    }</b>
+<i>195</i>&nbsp;
+<i>196</i>&nbsp;    //------------------------------- Methods used to manage incoming messages from server -------------------------------
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;    @Override
+<i>199</i>&nbsp;    public void manageGameMessage(GameMessage inputObject) {
+<b class="nc"><i>200</i>&nbsp;        boolean isMyTurn = idPlayer.equals(inputObject.getIdPlayer());</b>
+<b class="nc"><i>201</i>&nbsp;        inputObject.autoSetMessage(isMyTurn, false);</b>
+<b class="nc"><i>202</i>&nbsp;        BoardScene.setYourTurn(isMyTurn);</b>
+<b class="nc"><i>203</i>&nbsp;        if(inputObject instanceof TileToShowMessage){</b>
+<b class="nc"><i>204</i>&nbsp;            if(isMyTurn) {</b>
+<b class="nc"><i>205</i>&nbsp;                BoardScene.setPhase(inputObject.getPhase());</b>
+<b class="nc"><i>206</i>&nbsp;                this.miniController = ((TileToShowMessage) inputObject).getMiniController();</b>
+<b class="nc"><i>207</i>&nbsp;                updateText(inputObject);</b>
+<b class="nc"><i>208</i>&nbsp;                updatePlaySpaceGUI(inputObject);</b>
+<b class="nc"><i>209</i>&nbsp;                BoardScene.setInit(false);</b>
+<i>210</i>&nbsp;            } else {
+<b class="nc"><i>211</i>&nbsp;                updateText(inputObject);</b>
+<i>212</i>&nbsp;            }
+<b class="nc"><i>213</i>&nbsp;            return;</b>
+<b class="nc"><i>214</i>&nbsp;        }else if(inputObject instanceof RemovedPlayerMessage) {</b>
+<b class="nc"><i>215</i>&nbsp;            updateText(inputObject);</b>
+<b class="nc"><i>216</i>&nbsp;            updatePlaySpaceGUI(inputObject);</b>
+<b class="nc"><i>217</i>&nbsp;            if (isMyTurn &amp;&amp; playSpace.CountPlayerRemains(((RemovedPlayerMessage) inputObject).getConstructorMatrix())==4){</b>
+<b class="nc"><i>218</i>&nbsp;                Platform.runLater(()-&gt;{</b>
+<b class="nc"><i>219</i>&nbsp;                    boolean answer = AlertBox.checkDome(&quot;You lost!\nDo you want to continue to watch the game?&quot;);</b>
+<b class="nc"><i>220</i>&nbsp;                    if (!answer){</b>
+<b class="nc"><i>221</i>&nbsp;                        SceneBuilder.loseScene(null);</b>
+<b class="nc"><i>222</i>&nbsp;                        setActive(false);</b>
+<i>223</i>&nbsp;                    }
+<b class="nc"><i>224</i>&nbsp;                }); }</b>
+<b class="nc"><i>225</i>&nbsp;            else if(isMyTurn){</b>
+<b class="nc"><i>226</i>&nbsp;                Platform.runLater(() -&gt; SceneBuilder.loseScene(null));</b>
+<b class="nc"><i>227</i>&nbsp;                setActive(false);</b>
+<i>228</i>&nbsp;            }
+<b class="nc"><i>229</i>&nbsp;            return;</b>
+<b class="nc"><i>230</i>&nbsp;        } else if(inputObject instanceof WinMessage){</b>
+<b class="nc"><i>231</i>&nbsp;            SceneBuilder.endGameTransition(isMyTurn, inputObject.getIdPlayer());</b>
+<b class="nc"><i>232</i>&nbsp;            setActive(false);</b>
+<b class="nc"><i>233</i>&nbsp;            return;</b>
+<i>234</i>&nbsp;        }
+<i>235</i>&nbsp;
+<b class="nc"><i>236</i>&nbsp;        updatePlaySpaceGUI(inputObject);</b>
+<b class="nc"><i>237</i>&nbsp;    }</b>
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;    @Override
+<i>240</i>&nbsp;    public void manageString(String input){
+<b class="nc"><i>241</i>&nbsp;        executeSpecialString(input);</b>
+<i>242</i>&nbsp;
+<b class="nc"><i>243</i>&nbsp;        if(input.startsWith(HelpMessage.noAnswer)){</b>
+<i>244</i>&nbsp;            //System.out.println(input.substring(HelpMessage.noAnswer.length()));
+<i>245</i>&nbsp;            //System.out.println();
+<i>246</i>&nbsp;        } else {
+<b class="nc"><i>247</i>&nbsp;            if(idPlayer == null) {</b>
+<b class="nc"><i>248</i>&nbsp;                if (!getName(input)) {</b>
+<b class="nc"><i>249</i>&nbsp;                    this.miniController = new BaseMiniController();</b>
+<i>250</i>&nbsp;                }
+<i>251</i>&nbsp;            } else{
+<b class="nc"><i>252</i>&nbsp;                this.miniController = new BaseMiniController();</b>
+<i>253</i>&nbsp;            }
+<i>254</i>&nbsp;        }
+<b class="nc"><i>255</i>&nbsp;    }</b>
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;    @Override
+<i>258</i>&nbsp;    public void manageServerMessage(ServerMessage inputObject){
+<b class="nc"><i>259</i>&nbsp;        if (inputObject instanceof GodRecapMessage) {</b>
+<b class="nc"><i>260</i>&nbsp;            String name = ((GodRecapMessage) inputObject).getFirstPlayer();</b>
+<b class="nc"><i>261</i>&nbsp;            if (!name.equals(idPlayer)) {</b>
+<b class="nc"><i>262</i>&nbsp;                BoardScene.newText(&quot;Please wait while &quot; + name + &quot; is choosing where to place a constructor&quot;);</b>
+<i>263</i>&nbsp;            }
+<b class="nc"><i>264</i>&nbsp;            playerGodMap = ((GodRecapMessage) inputObject).getPlayerGodMap();</b>
+<b class="nc"><i>265</i>&nbsp;            Platform.runLater(()-&gt;{</b>
+<b class="nc"><i>266</i>&nbsp;                Scene scene=new Scene(BoardScene.createContent(),ClientGuiApp.width,ClientGuiApp.height);</b>
+<b class="nc"><i>267</i>&nbsp;                ClientGuiApp.getPrimaryStage().setScene(scene);</b>
+<b class="nc"><i>268</i>&nbsp;                scene.getStylesheets().add(Objects.requireNonNull(ClientGUI.class.getClassLoader().getResource(&quot;backgroundImage.css&quot;)).toExternalForm());</b>
+<b class="nc"><i>269</i>&nbsp;            });</b>
+<b class="nc"><i>270</i>&nbsp;            return;</b>
+<i>271</i>&nbsp;        }
+<b class="nc"><i>272</i>&nbsp;        if (inputObject instanceof PlaceFirstConstructorMessage){</b>
+<b class="nc"><i>273</i>&nbsp;            BoardScene.newText(inputObject.getMessage());</b>
+<i>274</i>&nbsp;        }
+<b class="nc"><i>275</i>&nbsp;        this.miniController=inputObject.getMiniController();</b>
+<b class="nc"><i>276</i>&nbsp;        update(inputObject);</b>
+<b class="nc"><i>277</i>&nbsp;    }</b>
+<i>278</i>&nbsp;
+<i>279</i>&nbsp;
+<i>280</i>&nbsp;    //---------- Methods to manage all the String messages ----------
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;    /**
+<i>283</i>&nbsp;     * This method create a new scene for special &lt;em&gt;HelpMessage&lt;/em&gt; recived
+<i>284</i>&nbsp;     * @param input string to check
+<i>285</i>&nbsp;     */
+<i>286</i>&nbsp;    private void executeSpecialString(String input){
+<b class="nc"><i>287</i>&nbsp;        if(input.equals(HelpMessage.forcedClose)){</b>
+<b class="nc"><i>288</i>&nbsp;            Platform.runLater(()-&gt;{</b>
+<b class="nc"><i>289</i>&nbsp;                SceneBuilder.loseScene(input);</b>
+<b class="nc"><i>290</i>&nbsp;                setActive(false);</b>
+<b class="nc"><i>291</i>&nbsp;            });</b>
+<b class="nc"><i>292</i>&nbsp;            return;</b>
+<i>293</i>&nbsp;        }
+<i>294</i>&nbsp;
+<b class="nc"><i>295</i>&nbsp;        if (input.equals(HelpMessage.enterName)){</b>
+<b class="nc"><i>296</i>&nbsp;            Platform.runLater(()-&gt;{</b>
+<b class="nc"><i>297</i>&nbsp;                Scene scene=new Scene(SceneBuilder.ChooseName(HelpMessage.enterName),ClientGuiApp.width,ClientGuiApp.height);</b>
+<b class="nc"><i>298</i>&nbsp;                scene.getStylesheets().add(Objects.requireNonNull(ClientGUI.class.getClassLoader().getResource(&quot;backgroundImage.css&quot;)).toExternalForm());</b>
+<b class="nc"><i>299</i>&nbsp;                ClientGuiApp.getPrimaryStage().setScene(scene);</b>
+<b class="nc"><i>300</i>&nbsp;            });</b>
+<b class="nc"><i>301</i>&nbsp;            return;</b>
+<i>302</i>&nbsp;        }
+<i>303</i>&nbsp;
+<b class="nc"><i>304</i>&nbsp;        if (input.equals(HelpMessage.gameMode)) {</b>
+<b class="nc"><i>305</i>&nbsp;            Platform.runLater(() -&gt; {</b>
+<b class="nc"><i>306</i>&nbsp;                Scene scene = new Scene(SceneBuilder.ChooseGameMode(HelpMessage.gameMode), ClientGuiApp.width, ClientGuiApp.height);</b>
+<b class="nc"><i>307</i>&nbsp;                scene.getStylesheets().add(Objects.requireNonNull(ClientGUI.class.getClassLoader().getResource(&quot;backgroundImage.css&quot;)).toExternalForm());</b>
+<b class="nc"><i>308</i>&nbsp;                ClientGuiApp.getPrimaryStage().setScene(scene);</b>
+<b class="nc"><i>309</i>&nbsp;            });</b>
+<b class="nc"><i>310</i>&nbsp;            return;</b>
+<i>311</i>&nbsp;        }
+<i>312</i>&nbsp;
+<b class="nc"><i>313</i>&nbsp;        if(input.startsWith(HelpMessage.noAnswer + &quot;Please wait while&quot;))</b>
+<b class="nc"><i>314</i>&nbsp;            BoardScene.newText(input.substring(HelpMessage.noAnswer.length()));</b>
+<b class="nc"><i>315</i>&nbsp;    }</b>
+<i>316</i>&nbsp;
+<i>317</i>&nbsp;
+<i>318</i>&nbsp;    /**
+<i>319</i>&nbsp;     * Method used to get the accepted name for the player
+<i>320</i>&nbsp;     *
+<i>321</i>&nbsp;     * @param s String returned by the Server
+<i>322</i>&nbsp;     *
+<i>323</i>&nbsp;     * @return Boolean that indicates if the name is accepted ora not
+<i>324</i>&nbsp;     */
+<i>325</i>&nbsp;    private boolean getName(String s){
+<b class="nc"><i>326</i>&nbsp;        String[] splitted = s.split(&quot; &quot;);</b>
+<i>327</i>&nbsp;
+<b class="nc"><i>328</i>&nbsp;        if(splitted[0].equals(&quot;Accepted&quot;)){</b>
+<b class="nc"><i>329</i>&nbsp;            this.idPlayer = s.substring(splitted[0].length()+1);</b>
+<b class="nc"><i>330</i>&nbsp;            checkName(true);</b>
+<b class="nc"><i>331</i>&nbsp;            return true;</b>
+<b class="nc"><i>332</i>&nbsp;        }else if(s.equals(HelpMessage.taken)) {</b>
+<b class="nc"><i>333</i>&nbsp;            checkName(false);</b>
+<i>334</i>&nbsp;        }
+<i>335</i>&nbsp;
+<b class="nc"><i>336</i>&nbsp;        return false;</b>
+<i>337</i>&nbsp;    }
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;    /**
+<i>340</i>&nbsp;     * Method used to create a scene if the name is already taken
+<i>341</i>&nbsp;     * @param check true if the name is accepted
+<i>342</i>&nbsp;     */
+<i>343</i>&nbsp;    public void checkName(boolean check){
+<b class="nc"><i>344</i>&nbsp;        Platform.runLater(()-&gt;{</b>
+<b class="nc"><i>345</i>&nbsp;            if(check) {</b>
+<b class="nc"><i>346</i>&nbsp;                SceneBuilder.waitScene();</b>
+<i>347</i>&nbsp;            }else{
+<b class="nc"><i>348</i>&nbsp;                Scene newName= new Scene(SceneBuilder.ChooseName(&quot;This name is already taken, please choose another one&quot;),ClientGuiApp.width,ClientGuiApp.height);</b>
+<b class="nc"><i>349</i>&nbsp;                newName.getStylesheets().add(Objects.requireNonNull(ClientGUI.class.getClassLoader().getResource(&quot;backgroundImage.css&quot;)).toExternalForm());</b>
+<b class="nc"><i>350</i>&nbsp;                ClientGuiApp.getPrimaryStage().setScene(newName);</b>
+<i>351</i>&nbsp;            }
+<b class="nc"><i>352</i>&nbsp;        });</b>
+<b class="nc"><i>353</i>&nbsp;    }</b>
+<i>354</i>&nbsp;
+<i>355</i>&nbsp;    //---------- Methods to update and change the client GUI ----------
+<i>356</i>&nbsp;    @Override
+<i>357</i>&nbsp;    public void update(ServerMessage message) {
+<b class="nc"><i>358</i>&nbsp;        Platform.runLater(message::buildScene);</b>
+<b class="nc"><i>359</i>&nbsp;    }</b>
+<i>360</i>&nbsp;
+<i>361</i>&nbsp;    @Override
+<i>362</i>&nbsp;    public void updatePlaySpaceGUI(GameMessage message) {
+<b class="nc"><i>363</i>&nbsp;        Platform.runLater(()-&gt; message.updateGUI(playSpace));</b>
+<b class="nc"><i>364</i>&nbsp;    }</b>
+<i>365</i>&nbsp;
+<i>366</i>&nbsp;    public void updateText(GameMessage message){
+<b class="nc"><i>367</i>&nbsp;        Platform.runLater(()-&gt; {</b>
+<b class="nc"><i>368</i>&nbsp;            if (message.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || message.getPhase() == PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR)</b>
+<b class="nc"><i>369</i>&nbsp;                BoardScene.clearText();</b>
+<b class="nc"><i>370</i>&nbsp;            BoardScene.newText(message.getMessage());</b>
+<b class="nc"><i>371</i>&nbsp;        });</b>
+<b class="nc"><i>372</i>&nbsp;    }</b>
+<i>373</i>&nbsp;
+<i>374</i>&nbsp;    //---------- Miscellaneous ----------
+<i>375</i>&nbsp;    public static Map&lt;String, God&gt; getPlayerGodMap() {
+<b class="nc"><i>376</i>&nbsp;        return playerGodMap;</b>
+<i>377</i>&nbsp;    }
+<i>378</i>&nbsp;
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>

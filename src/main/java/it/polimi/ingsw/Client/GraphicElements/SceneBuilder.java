@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 
 import java.util.ArrayList;
@@ -338,9 +339,11 @@ public class SceneBuilder {
         pane.setCenter(layout);
         Label endMessage= new Label("To play again, please restart the App!");
         label.setAlignment(Pos.CENTER);
+        endMessage.setPrefWidth(ClientGuiApp.width);
         endMessage.setAlignment(Pos.BOTTOM_CENTER);
+        endMessage.setTextAlignment(TextAlignment.CENTER);
         endMessage.setFont(Font.font(ClientGuiApp.height*0.028));
-        endMessage.setPadding(new Insets(0,0 ,10,ClientGuiApp.width*0.15));
+        endMessage.setPadding(new Insets(0,0 ,10,0));
         endMessage.setId("bold");
         pane.setBottom(endMessage);
         if(message.equals("Wait")) {

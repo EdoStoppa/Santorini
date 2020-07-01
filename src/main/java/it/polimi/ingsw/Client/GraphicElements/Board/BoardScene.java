@@ -84,7 +84,6 @@ public class BoardScene {
         controller.getChildren().addAll(godList,message, end);
         end.setVisible(false);
         end.setId("endPhase");
-        end.setMinWidth(ClientGuiApp.height*0.045);
         end.setFont(Font.font(ClientGuiApp.height*0.0285));
         HBox boardLine= new HBox();
         boardLine.setAlignment(Pos.CENTER);

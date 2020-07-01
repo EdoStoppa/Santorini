@@ -1,0 +1,118 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: StandardBuildMessage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.Message.BuildMessages</a> ]
+</div>
+
+<h1>Coverage Summary for Class: StandardBuildMessage (it.polimi.ingsw.Message.BuildMessages)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StandardBuildMessage</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (1/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (2/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.Message.BuildMessages;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.Client.PlaySpace;
+<i>4</i>&nbsp;import it.polimi.ingsw.Message.HelpMessage;
+<i>5</i>&nbsp;import it.polimi.ingsw.Model.PossiblePhases;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * This message is the standard message created every time the player place a construction
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class StandardBuildMessage extends BuildMessage {
+<i>11</i>&nbsp;    public StandardBuildMessage(String currentPlayer, PossiblePhases currentPhase, int[][] matrix) {
+<b class="fc"><i>12</i>&nbsp;        super(currentPlayer, currentPhase, matrix);</b>
+<b class="fc"><i>13</i>&nbsp;    }</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    @Override
+<i>16</i>&nbsp;    public void autoSetMessage(boolean isMyTurn, boolean isCLI) {
+<i>17</i>&nbsp;        String text;
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;        if(isMyTurn){</b>
+<b class="nc"><i>20</i>&nbsp;            text = HelpMessage.endedPhase;</b>
+<i>21</i>&nbsp;        } else {
+<b class="nc"><i>22</i>&nbsp;            text = getIdPlayer() + &quot; built on position &quot; + getMessage();</b>
+<i>23</i>&nbsp;        }
+<i>24</i>&nbsp;
+<b class="nc"><i>25</i>&nbsp;        setMessage(text);</b>
+<b class="nc"><i>26</i>&nbsp;    }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public void updateGUI(PlaySpace playSpace) {
+<b class="nc"><i>30</i>&nbsp;        playSpace.updateBuildingGUI(getBuildingMatrix(),false);</b>
+<b class="nc"><i>31</i>&nbsp;        playSpace.setSpecial(false);</b>
+<b class="nc"><i>32</i>&nbsp;    }</b>
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-07-01 20:27</div>
+</div>
+</body>
+</html>
