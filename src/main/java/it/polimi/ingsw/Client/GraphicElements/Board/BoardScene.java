@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.HashMap;
@@ -69,11 +70,12 @@ public class BoardScene {
         controller.prefHeight(ClientGuiApp.height*0.142857);
         Pane message= new Pane();
         messages.setPrefHeight(ClientGuiApp.height*0.142857);
+        messages.setFont(Font.font(ClientGuiApp.height*0.02));
         message.getChildren().add(messages);
-        Button godList= new Button("God List");
+        Button godList= new Button("God\nList");
+        godList.setFont(Font.font(ClientGuiApp.height*0.0285));
 
         godList.setOnAction(e->AlertBox.displayGod());
-        end.setPrefSize(50, 50);
         end.setOnAction(e->{
             if(endPhase && yourTurn){
                 ClientGuiApp.getClient().writeToSocketGUI("end");
@@ -82,6 +84,8 @@ public class BoardScene {
         controller.getChildren().addAll(godList,message, end);
         end.setVisible(false);
         end.setId("endPhase");
+        end.setMinWidth(ClientGuiApp.height*0.045);
+        end.setFont(Font.font(ClientGuiApp.height*0.0285));
         HBox boardLine= new HBox();
         boardLine.setAlignment(Pos.CENTER);
         boardLine.getChildren().add(root);

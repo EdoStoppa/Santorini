@@ -1,5 +1,7 @@
 .button{
+    -fx-background-color: yellow;
     -fx-transition-duration: 0.4s;
+    -fx-border-color: black;
 }
 
 .button:hover{
@@ -8,6 +10,7 @@
 
 #endPhase{
     -fx-background-color: red;
+    -fx-font-weight: bold;
 }
 
 #displayGod{

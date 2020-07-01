@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Client.GraphicElements;
 
-import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Client.ClientGuiApp;
 import it.polimi.ingsw.Client.GraphicElements.Board.BoardScene;
 import it.polimi.ingsw.Message.ServerMessage.ChosenGodMessage;
@@ -58,7 +57,9 @@ public class SceneBuilder {
         welcome.setFont(Font.font(ClientGuiApp.height * 0.02571));
         HBox Buttons = new HBox(ClientGuiApp.width * 0.1875);
         Button twoPlayer = new Button("2 player");
+        twoPlayer.setFont(Font.font(ClientGuiApp.height*0.0285));
         Button treePlayer = new Button("3 player");
+        treePlayer.setFont(Font.font(ClientGuiApp.height*0.0285));
         twoPlayer.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI("2"));
         treePlayer.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI("3"));
         Buttons.getChildren().addAll(twoPlayer, treePlayer);
@@ -82,9 +83,11 @@ public class SceneBuilder {
         textName.setFont(Font.font(ClientGuiApp.height * 0.02571));
         TextField name = new TextField();
         Button go = new Button("Go");
+        go.setFont(Font.font(ClientGuiApp.height*0.0285));
         go.setId("button");
         go.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
         name.setMaxWidth(ClientGuiApp.width * 0.1875);
+        name.setFont(Font.font(ClientGuiApp.height*0.04));
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName, name, go);
         return layout;
@@ -130,6 +133,7 @@ public class SceneBuilder {
 
         VBox grid = new VBox(ClientGuiApp.width * 0.02);
         Button chosenGods = new Button("Go");
+        chosenGods.setFont(Font.font(ClientGuiApp.height*0.0285));
         chosenGods.setId("button");
         chosenGods.setOnAction(e -> handleOptions(message.getNumPlayer(), godCheckBox));
 
@@ -221,6 +225,7 @@ public class SceneBuilder {
         }
         HBox fourLine= new HBox(ClientGuiApp.width*0.0375);
         Button sendMessage= new Button("Go");
+        sendMessage.setFont(Font.font(ClientGuiApp.height*0.0285));
         Text description= new Text("Choose the god you'll use for this match");
         description.setFont(Font.font(ClientGuiApp.height*0.02571));
         fourLine.getChildren().addAll(description,sendMessage);
@@ -280,6 +285,7 @@ public class SceneBuilder {
         }
         HBox fourLine= new HBox(ClientGuiApp.width*0.025);
         Button sendMessage= new Button("Go");
+        sendMessage.setFont(Font.font(ClientGuiApp.height*0.0285));
         Text description= new Text("Choose the player which'll move first");
         description.setFont(Font.font(ClientGuiApp.height*0.02571));
         fourLine.getChildren().addAll(description,sendMessage);

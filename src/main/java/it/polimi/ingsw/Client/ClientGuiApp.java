@@ -13,6 +13,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -71,14 +72,20 @@ public class ClientGuiApp extends Application implements Serializable {
         VBox layout=new VBox(20);
         layout.setBackground(SceneBuilder.getBackground("startBackground"));
         Text textName = new Text(message);
+        textName.setFont(Font.font(ClientGuiApp.height*0.02));
         HBox firstLine =new HBox(20);
         HBox secondLine =new HBox(20);
         HBox thirdLine =new HBox(20);
         Text textIp = new Text("Insert ip");
         Text textPort = new Text("Insert port");
         Text display =new Text("Choose the resolution for your game");
+        textIp.setFont(Font.font(ClientGuiApp.height*0.02));
+        textPort.setFont(Font.font(ClientGuiApp.height*0.02));
+        display.setFont(Font.font(ClientGuiApp.height*0.02));
         TextField serverIp = new TextField(ip);
+        serverIp.setFont(Font.font(ClientGuiApp.height*0.02));
         TextField portField = new TextField(port);
+        portField.setFont(Font.font(ClientGuiApp.height*0.02));
         ChoiceBox<String> resolution= new ChoiceBox<>();
         resolution.getItems().add("640x560");
         resolution.getItems().add("800x700");
