@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 
 
 /**
- * this class is responsible for creating and updating the tiles on the <\em>BoardScene</\em>
+ * this class is responsible for creating and updating the tiles on the <em>BoardScene</em>
  */
 public class TileGui extends StackPane {
 

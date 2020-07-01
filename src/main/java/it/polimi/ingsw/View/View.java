@@ -58,7 +58,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
     /**
      * This method parses the input from the client. If input equals to "end", then it notifies a PosMessage
      * with no position, elsewhere it notifies a PosMessage with the chosen position
-     * @param clientMessage
+     * @param clientMessage The string input from Client
      */
     public void parseClientInput(String clientMessage) {
         String[] cod = clientMessage.split(" ");
@@ -76,7 +76,7 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
     /**
      * This method is used to update the view. If the idPlayer of the message is null then the game is
      * ended, elsewhere the view sends the message to the client.
-     * @param message
+     * @param message The GameMessage generated after a change in Model
      */
     @Override
     public void update(GameMessage message) {

@@ -70,7 +70,7 @@ public class Controller implements Observer<PosMessage> {
     /**
      * This method calls the performMove method in model. It also checks if the game ends, when the currentConstructor
      * goes up from the second level to the third.
-     * @param message
+     * @param message The positionMessage representing where the player is going to move
      */
     public void handleMove(PosMessage message) {
         model.performMove(message.getPosition());

@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model;
 
 import java.util.ArrayList;
 
-/**Represents the playing <em>Player</em>. After getting multiple information from the <em>Player<em> (idPlayer and playerBirthday)
+/**Represents the playing <em>Player</em>. After getting multiple information from the <em>Player</em> (idPlayer and playerBirthday)
  * the class creates and stores the assigned <em>Constructor</em> (2 of them), stores a god Card and the assigned numPlayer.
  */
 public class Player {

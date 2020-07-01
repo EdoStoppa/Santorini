@@ -13,6 +13,7 @@ public abstract class GodController implements Serializable {
     /**Used to handle all the correct calls to the model for a special choose constructor
      *
      * @param model Model of the game
+     * @param controller The Controller of the Application
      * @param posMessage Message containing the selected move position
      */
     public void handleSpecialChooseConstructor(Model model, Controller controller, PosMessage posMessage){}
@@ -20,6 +21,7 @@ public abstract class GodController implements Serializable {
     /**Used to handle all the correct calls to the model for a special move
      *
      * @param model Model of the game
+     * @param controller The Controller of the Application
      * @param posMessage Message containing the selected move position
      */
     public void handleSpecialMove(Model model, Controller controller, PosMessage posMessage){};
@@ -27,6 +29,7 @@ public abstract class GodController implements Serializable {
     /**Used to handle all the correct calls to the model for a special move
      *
      * @param model Model of the game
+     * @param controller The Controller of the Application
      * @param posMessage Message containing the selected move position
      */
     public void handleSpecialBuild(Model model, Controller controller, PosMessage posMessage){};
@@ -34,18 +37,21 @@ public abstract class GodController implements Serializable {
     /**Used to handle all the correct calls to the model to prepare a special choose constructor phase
      *
      * @param model Model of the game
+     * @param controller The Controller of the Application
      */
     public void prepareSpecialChooseConstructor(Model model, Controller controller){};
 
     /**Used to handle all the correct calls to the model to prepare a special move phase
      *
      * @param model Model of the game
+     * @param controller The Controller of the Application
      */
     public void prepareSpecialMove(Model model, Controller controller){};
 
     /**Used to handle all the correct calls to the model to prepare a special build phase
      *
      * @param model Model of the game
+     * @param controller The Controller of the Application
      */
     public void prepareSpecialBuild(Model model, Controller controller){};
 }

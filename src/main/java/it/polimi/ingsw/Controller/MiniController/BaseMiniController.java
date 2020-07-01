@@ -11,11 +11,11 @@ public class BaseMiniController implements MiniController, Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * This method parses the user's input just by checking if input.length() >= 1
+     * This method parses the user's input just by checking if input.length() is greater or equal to 1
      * @param input The input received from the user
      * @param playSpace The playspace where to search for the position(not needed)
      * @param stringBuilder A string placeholder to return the correct message to the player
-     * @return True if input.length() >= 1, false elsewhere
+     * @return True if input.length() is greater or equal to 1, false elsewhere
      */
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
@@ -47,7 +47,7 @@ public class BaseMiniController implements MiniController, Serializable {
      * @param input Same as checkPos(String, PlaySpace, StringBuilder)
      * @param playSpace Same as checkPos(String, PlaySpace, StringBuilder)
      * @param stringBuilder Same as checkPos(String, PlaySpace, StringBuilder)
-     * @return true if input.length() >= 1, false elsewhere
+     * @return true if input.length() is greater or equal to 1, false elsewhere
      */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {

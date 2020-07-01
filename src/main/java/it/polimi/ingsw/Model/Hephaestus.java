@@ -37,7 +37,7 @@ public class Hephaestus extends God {
      * @param model the <em>Model</em> of the game
      * @param pos <em>Tile</em>'s <em>Position</em> which will be checked
      *
-     * @return if the <em>Tile</em>> has a dome or is at level 3, return true
+     * @return if the <em>Tile</em> has a dome or is at level 3, return true
      */
     public boolean cantDoAnother(Model model, Position pos){
         Tile t = model.getBoard().getTile(pos);

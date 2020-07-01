@@ -115,6 +115,7 @@ public class Server {
      * add a name to the list waitingConnection2p and is the size of this list is 2 start a game
      *
      * @param c SocketClientConnection of the player
+     * @param name Player's name to be added to the lobby
      */
     public synchronized void lobby2P(SocketClientConnection c,String name){
         System.out.println("Registering in 2P lobby...");
@@ -137,7 +138,7 @@ public class Server {
      * add a name to the list waitingConnection3P and is the size of this list is 3 start a game
      *
      * @param c SocketClientConnection of the player
-     * @param name is the name choose from the player
+     * @param name Player's name to be added to the lobby
      */
     public synchronized void lobby3P(SocketClientConnection c,String name){
         System.out.println("Registering in 3P lobby...");
