@@ -12,10 +12,10 @@ public class BaseMiniController implements MiniController, Serializable {
 
     /**
      * This method parses the user's input just by checking if input.length() >= 1
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
-     * @return true if input.length() >= 1, false elsewhere
+     * @param input The input received from the user
+     * @param playSpace The playSpace needed to check the positions (not needed)
+     * @param stringBuilder A string placeholder to return the correct message to the player
+     * @return True if input.length() >= 1, false elsewhere
      */
     @Override
     public boolean checkPos(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
@@ -25,7 +25,7 @@ public class BaseMiniController implements MiniController, Serializable {
     /**
      * This method return the input
      * @param input String passed
-     * @return
+     * @return The same input that was passed
      */
     @Override
     public String getMessage(String input) {
@@ -34,8 +34,8 @@ public class BaseMiniController implements MiniController, Serializable {
 
     /**
      * This method just calls the one above
-     * @param message
-     * @return
+     * @param message String from user
+     * @return The result of getMessage(String)
      */
     @Override
     public String getMessageGui(String message) {
@@ -44,9 +44,9 @@ public class BaseMiniController implements MiniController, Serializable {
 
     /**
      * This method just call the method checkPos
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
+     * @param input Same as checkPos(String, PlaySpace, StringBuilder)
+     * @param playSpace Same as checkPos(String, PlaySpace, StringBuilder)
+     * @param stringBuilder Same as checkPos(String, PlaySpace, StringBuilder)
      * @return true if input.length() >= 1, false elsewhere
      */
     @Override
