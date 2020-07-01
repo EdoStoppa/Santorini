@@ -11,7 +11,7 @@ public interface MiniController {
     /**
      * This method parses the input
      * @param input a string passed from user
-     * @param playSpace the playspace needed to check the position
+     * @param playSpace The playspace where to search for the position
      * @param stringBuilder a string placeholder to return the correct message to the player
      * @return true or false whether certain conditions are satisfied or not
      */
@@ -33,7 +33,7 @@ public interface MiniController {
     /**
      * Same thing for checkPos above, for GUI
      * @param input a string passed from user
-     * @param playSpace the playspace needed to check the position (not always needed)
+     * @param playSpace The playspace where to search for the position
      * @param stringBuilder a string placeholder to return the correct message to the player
      * @return true or false whether certain conditions are satisfied or not
      */
