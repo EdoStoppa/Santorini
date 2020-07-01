@@ -330,12 +330,11 @@ public class SceneBuilder {
         layout.getChildren().add(label);
         BorderPane pane=new BorderPane();
         pane.setCenter(layout);
-        Label endMessage= new Label("                                     Thanks for playing!\nIf you want to play another match, please restart the application");
+        Label endMessage= new Label("Thanks for playing! To play again, please restart the application");
         label.setAlignment(Pos.CENTER);
         endMessage.setAlignment(Pos.BOTTOM_CENTER);
         endMessage.setFont(Font.font(ClientGuiApp.height*0.028));
         endMessage.setPadding(new Insets(0,0 ,10,ClientGuiApp.width*0.15));
-        endMessage.setTextFill(Color.WHITE);
         endMessage.setId("bold");
         pane.setBottom(endMessage);
         if(message.equals("Wait")) {

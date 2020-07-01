@@ -32,7 +32,7 @@ public class BoardScene {
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
     public static TextArea messages= new TextArea();
-    private static final Button end= new Button("End Phase");
+    private static final Button end = new Button("End\nPhase");
 
 
     private static boolean yourTurn=false;
@@ -73,6 +73,7 @@ public class BoardScene {
         Button godList= new Button("God List");
 
         godList.setOnAction(e->AlertBox.displayGod());
+        end.setPrefSize(50, 50);
         end.setOnAction(e->{
             if(endPhase && yourTurn){
                 ClientGuiApp.getClient().writeToSocketGUI("end");
