@@ -19,9 +19,9 @@ public class PickGodMiniController implements MiniController, Serializable {
 
     /**
      * This method parses the input.
-     * @param input should be 3 characters long
-     * @param playSpace
-     * @param stringBuilder
+     * @param input string passed from user
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
      * @return true if every god chosen is correct, false elsewhere
      */
     @Override
@@ -92,6 +92,11 @@ public class PickGodMiniController implements MiniController, Serializable {
         }
     }
 
+    /**
+     * This method creates the correct message
+     * @param numPlayer player number
+     * @param stringBuilder a string placeholder to return the correct message to the player
+     */
     private void stringBuilder(int numPlayer, StringBuilder stringBuilder){
         stringBuilder.delete(0, 100);
         stringBuilder.append("Your choice is invalid, please input ");
@@ -101,7 +106,7 @@ public class PickGodMiniController implements MiniController, Serializable {
 
     /**
      *
-     * @param input
+     * @param input a string passed from user
      * @return the input
      */
     @Override
@@ -111,8 +116,8 @@ public class PickGodMiniController implements MiniController, Serializable {
 
     /**
      * This method just calls getMessage above
-     * @param message
-     * @return
+     * @param message a string passed from user
+     * @return same as getMessage(String)
      */
     @Override
     public String getMessageGui(String message) {
@@ -121,10 +126,10 @@ public class PickGodMiniController implements MiniController, Serializable {
 
     /**
      * This message just calls checkPos above
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
-     * @return
+     * @param input a string passed
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
+     * @return same as checkPos(..)
      */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {

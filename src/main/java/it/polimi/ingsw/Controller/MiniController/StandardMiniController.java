@@ -13,8 +13,8 @@ public class StandardMiniController implements MiniController, Serializable {
     /**
      * This method parses the input.
      * @param input should be 3 characters long
-     * @param playSpace
-     * @param stringBuilder
+     * @param playSpace the playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
      * @return true if the position parsed belongs to the tileToShow list of the playspace,
      * false elsewhere.
      */
@@ -42,7 +42,7 @@ public class StandardMiniController implements MiniController, Serializable {
     }
 
     /**
-     * @param input
+     * @param input a string passed from user
      * @return "standard" + input
      */
     @Override
@@ -52,8 +52,8 @@ public class StandardMiniController implements MiniController, Serializable {
 
     /**
      * This method just calls getMessage above
-     * @param message
-     * @return
+     * @param message a string passed from user
+     * @return same as getMessage(String)
      */
     @Override
     public String getMessageGui(String message) {
@@ -62,10 +62,10 @@ public class StandardMiniController implements MiniController, Serializable {
 
     /**
      * This method just calls checkPos above
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
-     * @return
+     * @param input a string passed from user
+     * @param playSpace the playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
+     * @return same as checkPos(..)
      */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {

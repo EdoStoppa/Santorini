@@ -16,9 +16,9 @@ public class CheckDomeMiniController implements MiniController, Serializable {
 
     /**
      * This method checks if the input is correct and it parses the input.
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
+     * @param input a string passed from user
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
      * @return true if the position passed as input belongs to the tileToShow of the playspace,
      */
     @Override
@@ -44,7 +44,7 @@ public class CheckDomeMiniController implements MiniController, Serializable {
     /**
      * This method "handles" the specialPower of ATLAS: it asks the player if he wants to place a dome
      * instead of a normal construction.
-     * @param input
+     * @param input a string passed from user
      * @return two different messages, whether the player answered "y" or "n".
      */
     @Override
@@ -66,10 +66,9 @@ public class CheckDomeMiniController implements MiniController, Serializable {
     }
 
     /**
-     * Same thing as the one above, with the only difference that on the GUI users answer by clicking
-     * on a button.
-     * @param input
-     * @return
+     * Same thing as getMessage above
+     * @param input string passed from user
+     * @return the return of getMessage(String)
      */
     public String getMessageGui(String input){
         Boolean answer=null;
@@ -84,10 +83,10 @@ public class CheckDomeMiniController implements MiniController, Serializable {
 
     /**
      * This method calls checkPos above
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
-     * @return
+     * @param input a string passed from user
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
+     * @return the return of checkPos(..)
      */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {

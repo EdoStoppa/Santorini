@@ -270,7 +270,8 @@ public class Model extends Observable<GameMessage> {
     /**
      * Method used to check if the current <em>Player</em> won after performing any king of Move phase
      *
-     * @return if the <em>Player</em> is now located on a level 3 construction
+     * @return if the <em>Player</em> is now located on a level 3 construction and his position before was on a level 2
+     * construction
      */
     public boolean checkWin() {
         Tile currentTile = board.getTile(currentConstructor.getPos());

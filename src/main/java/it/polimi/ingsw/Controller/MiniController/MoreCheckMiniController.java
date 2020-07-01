@@ -24,8 +24,8 @@ public class MoreCheckMiniController implements MiniController, Serializable {
      * This method parses the input. If the constructor can't use his special power, the player
      * is asked if he wants to pursue with his choice.
      * @param input should be 3 characters long
-     * @param playSpace
-     * @param stringBuilder
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
      * @return true if the constructor can use his special power or if the constructor can't use
      * his special power, but the player wants to pursue with his choice, false elsewhere
      */
@@ -74,6 +74,11 @@ public class MoreCheckMiniController implements MiniController, Serializable {
         }
     }
 
+    /**
+     * @param input string passed from user
+     * @return "skipPhase" + input if the return of the moreCheck method is true, elsewhere
+     * "standard" + input
+     */
     @Override
     public String getMessage(String input) {
         String[] p = input.split(",");
@@ -84,11 +89,24 @@ public class MoreCheckMiniController implements MiniController, Serializable {
         return "standard " + input;
     }
 
+    /**
+     *
+     * @param message string passed from user
+     * @return the return of getMessage(String)
+     */
     @Override
     public String getMessageGui(String message) {
         return getMessage(message);
     }
 
+    /**
+     *
+     * @param input a string passed from user
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder a string placeholder to return the correct message to the player
+     * @return true if the position parsed from input belongs to the tileToShow of the playspace,
+     * false elsewhere
+     */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
         try{
@@ -109,6 +127,12 @@ public class MoreCheckMiniController implements MiniController, Serializable {
         }
     }
 
+    /**
+     * Helper method that checks if the position belongs to the checkList
+     * @param pos position we want to check
+     * @param checkList list of position where to search pos
+     * @return true if pos belongs to checkList, false elsewhere
+     */
     boolean moreCheck(Position pos, List<Position> checkList){
         if (checkList != null){
             for(Position p : checkList){

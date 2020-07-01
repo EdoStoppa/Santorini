@@ -12,10 +12,10 @@ public class CanEndMiniController implements MiniController, Serializable {
 
     /**
      * Checks that the input passed is correct.
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
-     * @return true if the input = "end" or if it represents a position which belongs to the tileToShow
+     * @param input the String received from user
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder A String placeholder to return the correct message to the player
+     * @return True if the input = "end" or if it represents a position which belongs to the tileToShow
      * of the playspace, false if it doesn't belong or if its length() is != 3
      */
     @Override
@@ -44,8 +44,8 @@ public class CanEndMiniController implements MiniController, Serializable {
 
     /**
      * Check if the input equals to "end"
-     * @param input
-     * @return "end -1,-1 if the input equals to "end", "standard" + input elsewhere.
+     * @param input String passed
+     * @return "end -1,-1" if the input equals to "end", "standard" + input elsewhere.
      */
     @Override
     public String getMessage(String input) {
@@ -57,8 +57,8 @@ public class CanEndMiniController implements MiniController, Serializable {
 
     /**
      * This method just calls the one above
-     * @param message
-     * @return
+     * @param message String passed
+     * @return The return of getMessage(String)
      */
     @Override
     public String getMessageGui(String message) {
@@ -67,10 +67,10 @@ public class CanEndMiniController implements MiniController, Serializable {
 
     /**
      * This method just calls checkPos above.
-     * @param input
-     * @param playSpace
-     * @param stringBuilder
-     * @return
+     * @param input String received from user
+     * @param playSpace The playspace where to search for the position
+     * @param stringBuilder A string placeholder to return the correct message to the player
+     * @return The return of getMessage(String)
      */
     @Override
     public boolean checkPosGui(String input, PlaySpace playSpace, StringBuilder stringBuilder) {
