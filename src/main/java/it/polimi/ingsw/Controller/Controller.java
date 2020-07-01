@@ -11,7 +11,7 @@ import it.polimi.ingsw.Observer.Observer;
  */
 public class Controller implements Observer<PosMessage> {
 
-    private Model model;
+    private final Model model;
     private boolean shouldContinue;
 
     public Controller(Model model) {
@@ -30,7 +30,6 @@ public class Controller implements Observer<PosMessage> {
      * @param message the message arrived from a view
      */
     public void handleAction(PosMessage message) {
-        System.out.println("Started handleAction");
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
@@ -98,7 +97,6 @@ public class Controller implements Observer<PosMessage> {
      * </p>
      */
     public void preparePhase() {
-        System.out.println("Started PreparePhase");
         PossiblePhases phase = model.getCurrentPhase();
         switch (phase) {
             case CHOOSE_CONSTRUCTOR:
@@ -167,9 +165,6 @@ public class Controller implements Observer<PosMessage> {
      */
     public void executeLoseSequence() {
         model.destroyRemainingPhases();
-        // SEND TO VIEW THAT THIS PLAYER HAS LOST IN THIS LINE <-
-        System.out.println("Lose");
-
         String toDeleteId = model.getCurrentPlayerId();
         model.nextPhase();
         model.removePlayer(toDeleteId);
@@ -182,7 +177,6 @@ public class Controller implements Observer<PosMessage> {
     public void executeWinSequence() {
         model.endGame();
         shouldContinue = false;
-        System.out.println("Win");
     }
 
     /**

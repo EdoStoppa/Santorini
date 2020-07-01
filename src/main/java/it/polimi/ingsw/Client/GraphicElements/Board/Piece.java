@@ -36,10 +36,8 @@ public class Piece extends StackPane {
         getChildren().add(ellipse);
 
         setOnMouseClicked(e -> {
-            System.out.println(BoardScene.isYourTurn() + " " + BoardScene.getPhase());
             if (BoardScene.isYourTurn()) {
                 if (BoardScene.getPhase() == PossiblePhases.CHOOSE_CONSTRUCTOR || BoardScene.getPhase() == PossiblePhases.SPECIAL_CHOOSE_CONSTRUCTOR) {
-                    System.out.println(BoardScene.toBoard(posY) + "," + BoardScene.toBoard(posX));
                     ClientGuiApp.getClient().writeToSocketGUI(BoardScene.toBoard(posY) + "," + BoardScene.toBoard(posX));
                 }
                 if (BoardScene.getPhase() == PossiblePhases.SPECIAL_MOVE) {

@@ -177,16 +177,14 @@ public class PlaySpace {
                               if ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0) ){
                               if (playSpaceUpdated[i + h][j + k] == constructorMatrix[i][j] && constructorMatrix[i + h][j + k] == 0) {
                                   Piece moved = BoardScene.getTile(j, i).getPiece();
-                                  System.out.println(j+" "+i);
                                   if (moved==null)
-                                      System.out.println("piece not found");
+                                      System.out.println("Piece not found");
                                   BoardScene.animation(moved, k, h);
                                   BoardScene.getTile(j, i).setPiece(null);
                                   BoardScene.getTile(j + k, i + h).setPiece(moved);
                                   if (moved!=null){
                                   moved.setPosX((j + k)*BoardScene.TILE_SIZE);
                                   moved.setPosY((i + h)*BoardScene.TILE_SIZE);
-                                  System.out.println("piece moved from "+j+","+i+" to "+(j + k)+","+(i + h));
                               }}
 
                           }
@@ -210,10 +208,8 @@ public class PlaySpace {
             for (int j=0;j<=4;j++){
                 if (buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && !dome){
                     BoardScene.getTile(j,i).drawNextLevel();
-                    System.out.println(" build a new level in "+j+","+i);
                 }else if(buildingMatrix[i][j]!=updatedBuildingMatrix[i][j] && dome){
                     BoardScene.getTile(j,i).drawDome();
-                    System.out.println("build a dome in "+i+","+j);
                 }
             }
         }
@@ -231,8 +227,6 @@ public class PlaySpace {
                     for (int h=-1;h<=1;h++){
                         for (int k=-1;k<=1;k++){
                             if ((i+h)>=0 && (i+h)<=4 && (j+k)>=0 && (j+k)<=4 && ((h==0 && k!=0) || (h!=0 && k==0) || (h!=0 && k!=0))){
-                                System.out.println(h+","+k);
-                                System.out.println((i+h)+","+(j+k));
                                 if (playSpaceUpdated[i+h][j+k]==constructorMatrix[i][j] && constructorMatrix[i+h][j+k]==playSpaceUpdated[i][j]){
                                     Piece moved= BoardScene.getTile(j,i).getPiece();
                                     Piece swapped=BoardScene.getTile(j+k,i+h).getPiece();
@@ -243,12 +237,10 @@ public class PlaySpace {
                                     if (moved!=null){
                                         moved.setPosX((j+k)*BoardScene.TILE_SIZE);
                                         moved.setPosY((i+h)*BoardScene.TILE_SIZE);
-                                        System.out.println("apollo is moved from "+j+","+i+" to "+moved.getPosX()+","+moved.getPosY());
                                     }
                                     if (swapped!=null){
                                         swapped.setPosX(j*BoardScene.TILE_SIZE);
                                         swapped.setPosY(i*BoardScene.TILE_SIZE);
-                                        System.out.println("swapped is moved from "+moved.getPosX()+","+moved.getPosY()+" to "+swapped.getPosX()+","+swapped.getPosY());
                                     }
                                     setConstructorMatrix(playSpaceUpdated);
                                     return;
@@ -279,10 +271,10 @@ public class PlaySpace {
                                    Piece minotaur=BoardScene.getTile(j,i).getPiece();
                                    Piece pushed=BoardScene.getTile(j+k,i+h).getPiece();
                                    if (minotaur==null){
-                                       System.out.println((i+h*2)+"error minotaur"+(j+k*2));
+                                       System.out.println((i+h*2)+" error minotaur "+(j+k*2));
                                    }
                                     if (pushed==null){
-                                        System.out.println((i+h)+"error pushed"+(j+k));
+                                        System.out.println((i+h)+" error pushed "+(j+k));
                                     }
                                    BoardScene.animation(minotaur,k,h);
                                    BoardScene.animation(pushed,k,h);

@@ -119,7 +119,6 @@ public class BoardScene {
      * @return the piece made
      */
     public static Piece makePiece(PieceType type, int x, int y){
-        System.out.println("piece created and placed in position "+x+" "+y);
         return new Piece(type,x,y);
     }
 

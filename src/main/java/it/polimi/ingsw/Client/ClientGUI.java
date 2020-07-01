@@ -77,7 +77,7 @@ public class ClientGUI extends Client implements EventHandler {
                 miniController = null;
                 playSpace.disHighlightsTile();
                 playSpace.reset();
-                System.out.println();
+                System.out.println("Message sent: " + out);
                 synchronized (ipLock){
                     socketOut.println(out);
                     socketOut.flush();
@@ -102,7 +102,9 @@ public class ClientGUI extends Client implements EventHandler {
                         synchronized (ipLock){
                             updatePing();
                         }
-                    } synchronized(this){
+                    } else synchronized(this){
+                        System.out.println("Message received: " + inputObject.getClass().getSimpleName() +
+                                (inputObject instanceof GameMessage? ", Current Player: " + ((GameMessage)inputObject).getIdPlayer() : ""));
                         if(inputObject instanceof String) {
                             manageString((String) inputObject);
                         }else if (inputObject instanceof ServerMessage){
@@ -143,6 +145,7 @@ public class ClientGUI extends Client implements EventHandler {
                     Thread.sleep(7000);
                 } catch(InterruptedException e){
                     setActive(false);
+                    Platform.runLater(()-> SceneBuilder.loseScene("Something went horribly wrong, please restart the game"));
                     System.out.println("\n\nSomething went horribly wrong, please restart the game");
                 }
 
@@ -238,17 +241,15 @@ public class ClientGUI extends Client implements EventHandler {
         executeSpecialString(input);
 
         if(input.startsWith(HelpMessage.noAnswer)){
-            System.out.println(input.substring(HelpMessage.noAnswer.length()));
-            System.out.println();
+            //System.out.println(input.substring(HelpMessage.noAnswer.length()));
+            //System.out.println();
         } else {
             if(idPlayer == null) {
                 if (!getName(input)) {
                     this.miniController = new BaseMiniController();
-                    System.out.println(input);
                 }
             } else{
                 this.miniController = new BaseMiniController();
-                System.out.println(input);
             }
         }
     }

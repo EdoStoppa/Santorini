@@ -29,15 +29,13 @@ public class View extends Observable<PosMessage>  implements Observer<GameMessag
         }
     }
 
-    private String idPlayer;
-    private int numPlayer;
-    private final Boolean isCli;
-    private SocketClientConnection clientConnection;
+    private final String idPlayer;
+    private final int numPlayer;
+    private final SocketClientConnection clientConnection;
 
-    public View(String id, int numPlayer, Boolean CLI, SocketClientConnection clientConnection) {
+    public View(String id, int numPlayer, SocketClientConnection clientConnection) {
         this.idPlayer = id;
         this.numPlayer = numPlayer;
-        this.isCli = CLI;
         this.clientConnection = clientConnection;
         this.clientConnection.addObserver(new MessageReceiver());
     }
