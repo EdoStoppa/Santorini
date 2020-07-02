@@ -33,12 +33,10 @@ public class Piece extends StackPane {
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(BoardScene.TILE_SIZE * 0.03);
         ellipse.setTranslateX(BoardScene.TILE_SIZE*0.23);
-        if(ClientGuiApp.width==800){
-            ellipse.setTranslateY(BoardScene.TILE_SIZE*0.24);
-        }else if(ClientGuiApp.width==640) {
-            ellipse.setTranslateY(BoardScene.TILE_SIZE * 0.26);
+        if(ClientGuiApp.width==640){
+            ellipse.setTranslateY(BoardScene.TILE_SIZE * 0.28);
         }else{
-            ellipse.setTranslateY(BoardScene.TILE_SIZE * 0.22);
+            ellipse.setTranslateY(BoardScene.TILE_SIZE * 0.24);
         }
 
         getChildren().add(ellipse);
