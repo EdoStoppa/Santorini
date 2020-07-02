@@ -175,6 +175,10 @@ public class Controller implements Observer<PosMessage> {
      * This method launches the win sequence, where is declared a winner and the game simply end
      */
     public void executeWinSequence() {
+        //This is just to slow a bit the response of the Server to let every client process the move
+        try{Thread.sleep(1000);}
+        catch(Exception e) {System.out.println(e.getMessage() + ", happened during \"winSequence\"");}
+
         model.endGame();
         shouldContinue = false;
     }
