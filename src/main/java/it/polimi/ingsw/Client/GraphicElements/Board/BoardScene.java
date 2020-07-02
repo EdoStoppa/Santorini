@@ -65,12 +65,14 @@ public class BoardScene {
         Pane root= new Pane();
         root.setPrefSize(WIDTH*TILE_SIZE,HEIGHT*TILE_SIZE);
         root.getChildren().addAll(tileGroup,pieceGroup);
-        HBox controller =new HBox(ClientGuiApp.width*0.01);
+        HBox controller =new HBox(ClientGuiApp.width*0.035);
+        controller.setPadding(new Insets(0,0,0,ClientGuiApp.width*0.023));
         controller.setAlignment(Pos.BOTTOM_CENTER);
         controller.prefHeight(ClientGuiApp.height*0.142857);
         Pane message= new Pane();
         messages.setPrefHeight(ClientGuiApp.height*0.142857);
         messages.setFont(Font.font(ClientGuiApp.height*0.02));
+        messages.setPrefWidth(ClientGuiApp.width*0.685);
         message.getChildren().add(messages);
         Button godList= new Button("God\nList");
         godList.setFont(Font.font(ClientGuiApp.height*0.0285));

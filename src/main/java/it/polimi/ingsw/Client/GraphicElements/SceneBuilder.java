@@ -83,12 +83,12 @@ public class SceneBuilder {
         Text textName = new Text(message);
         textName.setFont(Font.font(ClientGuiApp.height * 0.02571));
         TextField name = new TextField();
+        name.setMaxWidth(ClientGuiApp.width*0.2857);
+        name.setFont(Font.font(ClientGuiApp.height*0.02));
         Button go = new Button("Go");
         go.setFont(Font.font(ClientGuiApp.height*0.0285));
         go.setId("button");
         go.setOnAction(e -> ClientGuiApp.getClient().writeToSocketGUI(name.getText()));
-        name.setMaxWidth(ClientGuiApp.width * 0.1875);
-        name.setFont(Font.font(ClientGuiApp.height*0.04));
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(textName, name, go);
         return layout;

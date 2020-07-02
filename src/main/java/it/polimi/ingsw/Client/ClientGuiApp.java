@@ -76,7 +76,7 @@ public class ClientGuiApp extends Application implements Serializable {
         HBox firstLine =new HBox(20);
         HBox secondLine =new HBox(20);
         HBox thirdLine =new HBox(20);
-        Text textIp = new Text("Insert ip");
+        Text textIp = new Text("Insert ip   ");
         Text textPort = new Text("Insert port");
         Text display =new Text("Choose the resolution for your game");
         textIp.setFont(Font.font(ClientGuiApp.height*0.02));
@@ -84,8 +84,10 @@ public class ClientGuiApp extends Application implements Serializable {
         display.setFont(Font.font(ClientGuiApp.height*0.02));
         TextField serverIp = new TextField(ip);
         serverIp.setFont(Font.font(ClientGuiApp.height*0.02));
+        serverIp.setPrefWidth(ClientGuiApp.width*0.2857);
         TextField portField = new TextField(port);
         portField.setFont(Font.font(ClientGuiApp.height*0.02));
+        portField.setPrefWidth(ClientGuiApp.width*0.2857);
         ChoiceBox<String> resolution= new ChoiceBox<>();
         resolution.getItems().add("640x560");
         resolution.getItems().add("800x700");
@@ -101,6 +103,7 @@ public class ClientGuiApp extends Application implements Serializable {
         firstLine.getChildren().addAll(textIp,serverIp);
         secondLine.getChildren().addAll(textPort,portField);
         Button go= new Button("Start");
+        go.setFont(Font.font(ClientGuiApp.height*0.0285));
         go.setOnAction(e->{
             if(serverIp.getText().equals("") && portField.getText().equals("")){
                 client = new ClientGUI("127.0.0.1", 54321);
