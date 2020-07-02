@@ -228,8 +228,8 @@ public class ClientGUI extends Client implements EventHandler {
             }
             return;
         } else if(inputObject instanceof WinMessage){
-            SceneBuilder.endGameTransition(isMyTurn, inputObject.getIdPlayer());
             setActive(false);
+            SceneBuilder.endGameTransition(isMyTurn, inputObject.getIdPlayer());
             return;
         }
 

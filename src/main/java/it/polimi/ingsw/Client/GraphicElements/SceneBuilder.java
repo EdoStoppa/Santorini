@@ -382,6 +382,11 @@ public class SceneBuilder {
      * @param winner string to display for the looser
      */
     public  static void endGameTransition(boolean win, String winner){
+        //This is just to slow a bit the response to let the last animation to complete
+        try {
+            Thread.sleep(600);
+        } catch(Exception e) {System.out.println(e.getMessage() + " during endGameTransition");}
+
         Platform.runLater(()->{
             if (win){
                 Scene SceneWin = new Scene(SceneBuilder.endScene("You!"),ClientGuiApp.width,ClientGuiApp.height);
