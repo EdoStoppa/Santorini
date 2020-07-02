@@ -83,10 +83,10 @@ public class ClientGuiApp extends Application implements Serializable {
         textPort.setFont(Font.font(ClientGuiApp.height*0.02));
         display.setFont(Font.font(ClientGuiApp.height*0.02));
         TextField serverIp = new TextField(ip);
-        serverIp.setFont(Font.font(ClientGuiApp.height*0.02));
+        serverIp.setFont(Font.font(ClientGuiApp.height*0.015));
         serverIp.setPrefWidth(ClientGuiApp.width*0.2857);
         TextField portField = new TextField(port);
-        portField.setFont(Font.font(ClientGuiApp.height*0.02));
+        portField.setFont(Font.font(ClientGuiApp.height*0.015));
         portField.setPrefWidth(ClientGuiApp.width*0.2857);
         ChoiceBox<String> resolution= new ChoiceBox<>();
         resolution.getItems().add("640x560");
