@@ -32,8 +32,14 @@ public class Piece extends StackPane {
         ellipse.setFill(type == PieceType.RED ? Color.valueOf("#c40003") : type == PieceType.WHITE ? Color.valueOf("fff9f4") : Color.valueOf("#45ffff"));
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(BoardScene.TILE_SIZE * 0.03);
-        ellipse.setTranslateX(BoardScene.TILE_SIZE/4);
-        ellipse.setTranslateY(BoardScene.TILE_SIZE/4);
+        ellipse.setTranslateX(BoardScene.TILE_SIZE*0.23);
+        if(ClientGuiApp.width==800){
+            ellipse.setTranslateY(BoardScene.TILE_SIZE*0.24);
+        }else if(ClientGuiApp.width==640) {
+            ellipse.setTranslateY(BoardScene.TILE_SIZE * 0.26);
+        }else{
+            ellipse.setTranslateY(BoardScene.TILE_SIZE * 0.22);
+        }
 
         getChildren().add(ellipse);
 
