@@ -27,12 +27,22 @@ public class Piece extends StackPane {
         placePiece(x, y);
 
 
-        Ellipse ellipse = new Ellipse(BoardScene.TILE_SIZE * 0.26, BoardScene.TILE_SIZE * 0.26);
+
+        Ellipse ellipse = new Ellipse(BoardScene.TILE_SIZE * 0.3, BoardScene.TILE_SIZE * 0.3);
         ellipse.setFill(type == PieceType.RED ? Color.valueOf("#c40003") : type == PieceType.WHITE ? Color.valueOf("fff9f4") : Color.valueOf("#45ffff"));
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(BoardScene.TILE_SIZE * 0.03);
-        ellipse.setTranslateX((BoardScene.TILE_SIZE - BoardScene.TILE_SIZE * 0.26 * 2) / 2);
-        ellipse.setTranslateY((BoardScene.TILE_SIZE - BoardScene.TILE_SIZE * 0.23 * 2) / 2);
+        if (ClientGuiApp.width==800){
+            ellipse.setTranslateX(BoardScene.TILE_SIZE*0.19);
+            ellipse.setTranslateY(BoardScene.TILE_SIZE*0.195);
+        }else if (ClientGuiApp.width==640){
+            ellipse.setTranslateX(BoardScene.TILE_SIZE*0.19);
+            ellipse.setTranslateY(BoardScene.TILE_SIZE*0.23);
+        }else{
+            ellipse.setTranslateX(BoardScene.TILE_SIZE*0.20);
+            ellipse.setTranslateY(BoardScene.TILE_SIZE*0.20);
+        }
+
         getChildren().add(ellipse);
 
         setOnMouseClicked(e -> {
@@ -67,14 +77,6 @@ public class Piece extends StackPane {
 
     public void setPosY(double posY) {
         this.posY = posY;
-    }
-
-    public double getPosX() {
-        return posX;
-    }
-
-    public double getPosY() {
-        return posY;
     }
 
 

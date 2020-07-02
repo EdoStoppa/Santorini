@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class BoardScene {
 
     //-------------------------- graphic element of the scene ---------------------------
-    public static final int TILE_SIZE= (int) (ClientGuiApp.width*0.1375);
+    public static final double TILE_SIZE= (ClientGuiApp.width*0.1375);
     public static final int WIDTH=5;
     public static final int HEIGHT=5;
     public static TextArea messages= new TextArea();
@@ -113,7 +113,7 @@ public class BoardScene {
      * @return the value of the related tile
      */
     static int toBoard(double pixel){
-        return (int)(pixel+TILE_SIZE/2)/TILE_SIZE;
+        return (int)((pixel+TILE_SIZE/2)/TILE_SIZE);
     }
 
     /**
@@ -134,7 +134,7 @@ public class BoardScene {
      * @param y vertical transition of Y tile
      */
     public static synchronized void animation(Piece piece, int x, int y){
-        TranslateTransition transition= new TranslateTransition(Duration.seconds(0.5),piece);
+        TranslateTransition transition= new TranslateTransition(Duration.seconds(0.4),piece);
         transition.setByY(y*TILE_SIZE);
         transition.setByX(x*TILE_SIZE);
         transition.play();
