@@ -15,8 +15,8 @@ The development team was formed by:
 
   
 <div align="center">
-  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/chose_gods.png?raw=true" alt="God Choosing Screen" width="500" height="450" >
-  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/in_game.png?raw=true" alt="Game Board" width="500" height="450" >
+  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/chose_gods.png?raw=true" alt="God Choosing Screen" width="450" height="400" >
+  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/in_game.png?raw=true" alt="Game Board" width="450" height="400" >
 <div />
 <div align="left"><div /><br />
 
