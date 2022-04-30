@@ -124,4 +124,4 @@ al debugging (come tutti i messaggi inviati/ricevuti tramite socket ed eventuali
 
 ***Nota Bene:*** nel caso si volesse eseguire il gioco in versione GUI solamente attraverso il "doppio-click" è necessario 
 avere installato un JRE compatibile con Java 14 
-(si consiglia [AdoptOpenJDK](https://adoptopenjdk.net/releases.html)).
+(si consiglia [AdoptOpenJDK](https://adoptopenjdk.net/releases.html)) .
