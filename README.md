@@ -1,13 +1,24 @@
-# Santorini
+<div align="center">
+  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/startBackground.png?raw=true" alt="Santorini">
+<div />
+<div align="left"><div /><br />
 
 This prject is the virtual adaptation of the board game called "Santorini".
-The game is multiplayer (up to 4 players), and can be played using a GUI or a CLI.
-The project was deisgned following the MVC architectural pattern using Java. 
+The game is multiplayer (up to 3 players), and can be played using a GUI or a CLI.
+The project was deisgned following the MVC architectural pattern using Java.
+To run a multiplayer game a Server application was built completely from scratch.
 
 The development team was formed by:
 - Samuele Tagliabue - [samtagliabue](https://github.com/samtagliabue)
 - Gianmarco Vuolo - [GiamboVuolo](https://github.com/GiamboVuolo)
 - Edoardo Stoppa - [EdoStoppa](https://github.com/EdoStoppa)
+
+  
+<div align="center">
+  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/chose_gods.png?raw=true" alt="God Choosing Screen" width="500" height="450" >
+  <img src="https://github.com/EdoStoppa/EdoStoppa/blob/main/imgs/Santorini/in_game.png?raw=true" alt="Game Board" width="500" height="450" >
+<div />
+<div align="left"><div /><br />
 
 ## Technology Stack
 
@@ -70,5 +81,5 @@ The command to execute the GUI client is:
 java -jar ClientGuiApp.jar
 ```
 
-***N.B.:*** A Java SDK or Javas JRE  wrsion 14+ is necessary to use the GUI.
+***N.B.:*** A Java SDK or Java JRE  wrsion 14+ is necessary to use the GUI.
 (si consiglia [AdoptOpenJDK](https://adoptopenjdk.net/releases.html)) .
